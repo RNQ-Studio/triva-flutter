@@ -5,22 +5,18 @@ import 'package:go_router/go_router.dart';
 
 import 'onboarding_notifier.dart';
 
-/// Data class for a single onboarding page.
 class _OnboardingPage {
   const _OnboardingPage({
     required this.icon,
     required this.title,
     required this.description,
-    required this.color,
   });
 
   final IconData icon;
   final String title;
   final String description;
-  final Color color;
 }
 
-/// Premium onboarding screen with a PageView, dot indicator and CTA button.
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -32,112 +28,83 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _pageController = PageController();
   int _currentPage = 0;
 
-  static const _pages = [
-    _OnboardingPage(
-      icon: Icons.bolt_rounded,
-      title: 'Cepat & Efisien',
-      description: 'Arsitektur modern dengan Riverpod, Go Router, dan Drift '
-          'untuk pengalaman pengembangan yang cepat dan andal.',
-      color: Color(0xFF18181B),
-    ),
-    _OnboardingPage(
-      icon: Icons.shield_rounded,
-      title: 'Aman & Terpercaya',
-      description: 'Autentikasi biometrik, auto-refresh token, dan penyimpanan '
-          'terenkripsi untuk menjaga data pengguna tetap aman.',
-      color: Color(0xFF27272A),
-    ),
-    _OnboardingPage(
-      icon: Icons.palette_rounded,
-      title: 'Siap Produksi',
-      description:
-          'Multi-flavor, lokalisasi, tema dinamis, dan push notification '
-          'sudah tersedia — langsung mulai membangun fitur Anda.',
-      color: Color(0xFF3F3F46),
-    ),
-  ];
-
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
 
-  Future<void> _completeOnboarding() async {
+  Future<void> _complete() async {
     await ref.read(onboardingProvider.notifier).completeOnboarding();
-    if (mounted) context.go('/');
+    if (!mounted) return;
+    context.go('/');
   }
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isLastPage = _currentPage == _pages.length - 1;
+    final l10n = AppLocalizations.of(context)!;
+    final pages = [
+      _OnboardingPage(
+        icon: Icons.directions_car_filled_outlined,
+        title: l10n.onboardingValueTitle,
+        description: l10n.onboardingValueDescription,
+      ),
+      _OnboardingPage(
+        icon: Icons.fact_check_outlined,
+        title: l10n.onboardingTrackTitle,
+        description: l10n.onboardingTrackDescription,
+      ),
+      _OnboardingPage(
+        icon: Icons.trending_up_rounded,
+        title: l10n.onboardingUpgradeTitle,
+        description: l10n.onboardingUpgradeDescription,
+      ),
+    ];
+    final isLastPage = _currentPage == pages.length - 1;
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // Skip button
             Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: _completeOnboarding,
-                child: const Text('Lewati'),
-              ),
-            ),
-
-            // Pages
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pages.length,
-                onPageChanged: (index) => setState(() => _currentPage = index),
-                itemBuilder: (context, index) {
-                  final page = _pages[index];
-                  return _OnboardingPageWidget(page: page);
-                },
-              ),
-            ),
-
-            // Dot indicator
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _pages.length,
-                  (index) => AnimatedContainer(
-                    duration: AppConstants.animationNormal,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _currentPage == index ? 24 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: _currentPage == index
-                          ? colorScheme.primary
-                          : colorScheme.outline.withValues(alpha: 0.3),
-                    ),
-                  ),
+              alignment: AlignmentDirectional.centerEnd,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.small,
+                ),
+                child: TextButton(
+                  onPressed: _complete,
+                  child: Text(l10n.onboardingSkip),
                 ),
               ),
             ),
-
-            // Bottom button
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: pages.length,
+                onPageChanged: (index) => setState(() => _currentPage = index),
+                itemBuilder: (context, index) {
+                  return _OnboardingPageView(page: pages[index]);
+                },
+              ),
+            ),
+            _PageIndicator(
+              count: pages.length,
+              currentIndex: _currentPage,
+            ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+              padding: const EdgeInsets.all(AppSpacing.xLarge),
               child: SizedBox(
                 width: double.infinity,
-                height: 56,
                 child: FilledButton(
                   onPressed: isLastPage
-                      ? _completeOnboarding
+                      ? _complete
                       : () => _pageController.nextPage(
-                            duration: AppConstants.animationNormal,
-                            curve: Curves.easeInOut,
+                            duration: Durations.medium4,
+                            curve: Easing.standard,
                           ),
                   child: Text(
-                    isLastPage ? 'Mulai Sekarang' : 'Selanjutnya',
-                    style: const TextStyle(fontSize: 16),
+                    isLastPage ? l10n.onboardingStart : l10n.onboardingNext,
                   ),
                 ),
               ),
@@ -149,47 +116,94 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 }
 
-class _OnboardingPageWidget extends StatelessWidget {
-  const _OnboardingPageWidget({required this.page});
+class _OnboardingPageView extends StatelessWidget {
+  const _OnboardingPageView({required this.page});
 
   final _OnboardingPage page;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: page.color.withValues(alpha: 0.12),
-              shape: BoxShape.circle,
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.xLarge,
+        vertical: AppSpacing.large,
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 560),
+        child: Column(
+          children: [
+            const SizedBox(height: AppSpacing.xLarge),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: AppRadius.dialog,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.xxLarge),
+                child: Icon(
+                  page.icon,
+                  size: 64,
+                  color: colorScheme.onPrimaryContainer,
+                ),
+              ),
             ),
-            child: Icon(page.icon, size: 72, color: page.color),
+            const SizedBox(height: AppSpacing.xxLarge),
+            Text(
+              page.title,
+              style: theme.textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.medium),
+            Text(
+              page.description,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PageIndicator extends StatelessWidget {
+  const _PageIndicator({
+    required this.count,
+    required this.currentIndex,
+  });
+
+  final int count;
+  final int currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        count,
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xSmall,
           ),
-          const SizedBox(height: 40),
-          Text(
-            page.title,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
+          child: AnimatedContainer(
+            duration: Durations.short4,
+            width: index == currentIndex ? 24 : 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: index == currentIndex
+                  ? colorScheme.primary
+                  : colorScheme.outline,
+              borderRadius: AppRadius.small,
+            ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            page.description,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.7),
-                  height: 1.5,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }

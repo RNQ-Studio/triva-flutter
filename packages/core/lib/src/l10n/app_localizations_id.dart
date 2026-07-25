@@ -9,7 +9,7 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
-  String get appName => 'Flutter Starter';
+  String get appName => 'TRIVA';
 
   @override
   String get home => 'Beranda';
@@ -18,7 +18,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get settings => 'Pengaturan';
 
   @override
-  String get welcome => 'Selamat datang!';
+  String get welcome => 'Selamat datang';
 
   @override
   String get appearance => 'Tampilan';
@@ -33,55 +33,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get themeDark => 'Gelap';
 
   @override
-  String get themeDarkSubtitle => 'Tampilan gelap';
-
-  @override
   String get language => 'Bahasa';
 
   @override
   String get langIndonesia => 'Indonesia';
 
   @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langEnglishSubtitle => 'Use English language';
+  String get langEnglish => 'Inggris';
 
   @override
   String get version => 'Versi';
 
   @override
-  String get appVersion => 'Versi Aplikasi';
-
-  @override
-  String get signIn => 'Masuk';
-
-  @override
-  String get ok => 'OK';
-
-  @override
-  String get cancel => 'Batal';
-
-  @override
-  String get save => 'Simpan';
-
-  @override
-  String get delete => 'Hapus';
-
-  @override
-  String get loading => 'Memuat...';
-
-  @override
-  String get errorGeneral => 'Terjadi kesalahan. Coba lagi.';
-
-  @override
-  String get errorNetwork => 'Tidak ada koneksi internet.';
-
-  @override
-  String get errorInvalidEmail => 'Masukkan email yang valid';
-
-  @override
-  String get errorPasswordTooShort => 'Minimal 6 karakter';
+  String get signIn => 'Masuk ke TRIVA';
 
   @override
   String get login => 'Masuk';
@@ -90,13 +54,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get logout => 'Keluar';
 
   @override
-  String get register => 'Daftar';
-
-  @override
   String get email => 'Email';
 
   @override
-  String get password => 'Kata Sandi';
+  String get password => 'Kata sandi';
 
   @override
   String get profile => 'Profil';
@@ -105,450 +66,143 @@ class AppLocalizationsId extends AppLocalizations {
   String get name => 'Nama';
 
   @override
-  String get logoutConfirm => 'Yakin ingin keluar?';
+  String get errorGeneral => 'Terjadi kendala. Silakan coba lagi.';
 
   @override
-  String get galleryTitle => 'UI Component Gallery';
+  String get errorInvalidEmail => 'Masukkan alamat email yang valid';
 
   @override
-  String get gallerySubtitle => '8 kategori komponen interaktif';
+  String get errorPasswordTooShort => 'Kata sandi minimal 6 karakter';
 
   @override
-  String get galleryMenuDialogTitle => 'Dialog & Popup';
+  String get splashTagline => 'Upload, Appraise, Upgrade';
 
   @override
-  String get galleryMenuDialogSubtitle => 'Alert, bottom sheet, custom dialog';
+  String get onboardingSkip => 'Lewati';
 
   @override
-  String get galleryMenuFormTitle => 'Form & Input';
+  String get onboardingNext => 'Selanjutnya';
 
   @override
-  String get galleryMenuFormSubtitle => 'TextField, dropdown, date picker';
+  String get onboardingStart => 'Mulai';
 
   @override
-  String get galleryMenuCardsTitle => 'Cards & List';
+  String get onboardingValueTitle => 'Kenali nilai kendaraan';
 
   @override
-  String get galleryMenuCardsSubtitle => 'Card variants dan dismissible list';
+  String get onboardingValueDescription =>
+      'Lengkapi data dan foto kendaraan untuk memperoleh indikasi nilai yang mudah dipahami.';
 
   @override
-  String get galleryMenuNavTitle => 'Navigation';
+  String get onboardingTrackTitle => 'Pantau proses appraisal';
 
   @override
-  String get galleryMenuNavSubtitle => 'TabBar, stepper, drawer demo';
+  String get onboardingTrackDescription =>
+      'Ikuti perkembangan permintaan dari pengajuan hingga hasil yang telah ditinjau appraiser.';
 
   @override
-  String get galleryMenuLoadingTitle => 'Loading & Empty';
+  String get onboardingUpgradeTitle => 'Siapkan langkah berikutnya';
 
   @override
-  String get galleryMenuLoadingSubtitle => 'Shimmer, progress, empty states';
+  String get onboardingUpgradeDescription =>
+      'Lanjutkan hasil appraisal ke simulasi kredit, perbaikan, atau layanan kendaraan yang sesuai.';
 
   @override
-  String get galleryMenuAnimTitle => 'Animation';
+  String get loginSubtitle =>
+      'Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.';
 
   @override
-  String get galleryMenuAnimSubtitle => 'Hero, animated container, stagger';
+  String get loginFailedTitle => 'Tidak dapat masuk';
 
   @override
-  String get galleryMenuFeedbackTitle => 'Feedback';
+  String get loginFailedAction => 'Tutup';
 
   @override
-  String get galleryMenuFeedbackSubtitle => 'Rating, like, poll, OTP input';
+  String get loginBiometricDivider => 'atau gunakan biometrik';
 
   @override
-  String get galleryMenuUtilitiesTitle => 'Utilities';
+  String get loginBiometricAction => 'Masuk dengan biometrik';
 
   @override
-  String get galleryMenuUtilitiesSubtitle => 'Chip, badge, search, clipboard';
+  String get homeHeroTitle => 'Kenali nilai kendaraan Anda';
 
   @override
-  String get galleryDialogScreenTitle => 'Dialog & Popup';
+  String get homeHeroDescription =>
+      'Satu alur untuk mengunggah data kendaraan, memantau appraisal, dan menyiapkan langkah upgrade berikutnya.';
 
   @override
-  String get galleryFormScreenTitle => 'Form & Input Components';
+  String get homeLoginAction => 'Masuk ke TRIVA';
 
   @override
-  String get galleryCardsScreenTitle => 'Cards & List Variants';
+  String get homeProfileAction => 'Lihat profil saya';
 
   @override
-  String get galleryNavScreenTitle => 'Navigation & Tab Patterns';
+  String get homeServicesTitle => 'Layanan TRIVA';
 
   @override
-  String get galleryLoadingScreenTitle => 'Loading & Empty States';
+  String get homeServicesSubtitle =>
+      'TRIVA menyatukan appraisal dan layanan lanjutan Auto2000 Kertajaya dalam pengalaman yang ringkas.';
 
   @override
-  String get galleryAnimScreenTitle => 'Animation Showcase';
+  String get serviceAppraisalTitle => 'Appraisal trade-in';
 
   @override
-  String get galleryFeedbackScreenTitle => 'Feedback & Interaksi';
+  String get serviceAppraisalDescription =>
+      'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang ditinjau appraiser.';
 
   @override
-  String get galleryUtilitiesScreenTitle => 'Utilities & Helpers';
+  String get serviceToyotaTitle => 'Booking servis Toyota';
 
   @override
-  String get galleryTabCards => 'Cards';
+  String get serviceToyotaDescription =>
+      'Ajukan jadwal perawatan kendaraan Toyota dan pantau konfirmasinya.';
 
   @override
-  String get galleryTabLists => 'Lists';
+  String get serviceOtoxpertTitle => 'Booking OtoXpert';
 
   @override
-  String get galleryTabTabBar => 'Tab Bar';
+  String get serviceOtoxpertDescription =>
+      'Temukan layanan perawatan untuk kendaraan non-Toyota melalui jaringan OtoXpert.';
 
   @override
-  String get galleryTabBottomNav => 'Bottom Nav';
+  String get serviceCreditTitle => 'Simulasi kredit';
 
   @override
-  String get galleryTabStepper => 'Stepper';
+  String get serviceCreditDescription =>
+      'Hitung estimasi cicilan berdasarkan program kredit, uang muka, dan tenor.';
 
   @override
-  String get galleryTabDrawer => 'Drawer';
+  String get serviceBodyPaintTitle => 'Estimasi Body & Paint';
 
   @override
-  String get galleryTabLoading => 'Loading';
+  String get serviceBodyPaintDescription =>
+      'Dapatkan indikasi biaya perbaikan panel sebelum pemeriksaan fisik.';
 
   @override
-  String get galleryTabEmptyState => 'Empty State';
+  String get homeProcessTitle => 'Cara kerja appraisal';
 
   @override
-  String get gallerySectionAlertDialogs => 'Alert Dialogs';
+  String get processVehicleTitle => 'Lengkapi kendaraan';
 
   @override
-  String get gallerySectionAlertDialogsDesc => 'Berbagai jenis alert dialog';
+  String get processVehicleDescription =>
+      'Isi identitas kendaraan dan unggah foto kondisi yang diminta.';
 
   @override
-  String get gallerySectionBottomSheets => 'Bottom Sheets';
+  String get processReviewTitle => 'Appraiser meninjau';
 
   @override
-  String get gallerySectionBottomSheetsDesc => 'Modal sheet dari bawah layar';
+  String get processReviewDescription =>
+      'Data pembanding dan kondisi kendaraan diperiksa sebelum hasil diterbitkan.';
 
   @override
-  String get gallerySectionCustomDialogs => 'Custom Dialogs';
+  String get processResultTitle => 'Terima hasil dan lanjutkan';
 
   @override
-  String get gallerySectionCustomDialogsDesc => 'Dialog animasi dan loading';
+  String get processResultDescription =>
+      'Gunakan hasil appraisal untuk memilih kredit, perbaikan, atau booking layanan.';
 
   @override
-  String get gallerySectionSnackbarVariants => 'SnackBar Variants';
-
-  @override
-  String get gallerySectionSnackbarVariantsDesc =>
-      'Info, sukses, warning, error';
-
-  @override
-  String get gallerySectionTextFields => 'Text Fields';
-
-  @override
-  String get gallerySectionTextFieldsDesc => 'Berbagai jenis input teks';
-
-  @override
-  String get gallerySectionSelectors => 'Selectors';
-
-  @override
-  String get gallerySectionSelectorsDesc =>
-      'Dropdown, date picker, radio, checkbox';
-
-  @override
-  String get gallerySectionTogglesSliders => 'Toggles & Sliders';
-
-  @override
-  String get gallerySectionTogglesSlidersDesc => 'Switch dan range input';
-
-  @override
-  String get gallerySectionShimmer => '1. Shimmer Loading';
-
-  @override
-  String get gallerySectionShimmerDesc =>
-      'Manual tanpa library, ShaderMask + LinearGradient';
-
-  @override
-  String get gallerySectionSkeleton => '2. Skeleton Screen';
-
-  @override
-  String get gallerySectionSkeletonDesc =>
-      'Layout placeholder sebelum konten siap';
-
-  @override
-  String get gallerySectionLinearProgress => '3. Linear Progress Indicator';
-
-  @override
-  String get gallerySectionLinearProgressDesc =>
-      'Determinate, 0–100% dalam 3 detik';
-
-  @override
-  String get gallerySectionCircularProgress => '4. Circular Progress';
-
-  @override
-  String get gallerySectionCircularProgressDesc =>
-      'Determinate dengan % di tengah';
-
-  @override
-  String get gallerySectionPullToRefresh => '5. Pull-to-Refresh';
-
-  @override
-  String get gallerySectionPullToRefreshDesc =>
-      'Tarik ke bawah untuk refresh list';
-
-  @override
-  String get gallerySectionEmptyNoData => '6. Empty State — Tidak Ada Data';
-
-  @override
-  String get gallerySectionEmptyNoDataDesc => 'Ilustrasi + CTA';
-
-  @override
-  String get gallerySectionEmptyNoInternet =>
-      '7. Empty State — Tidak Ada Koneksi';
-
-  @override
-  String get gallerySectionEmptyNoInternetDesc =>
-      'Retry dengan loading simulasi';
-
-  @override
-  String get gallerySectionEmptyError => '8. Empty State — Error';
-
-  @override
-  String get gallerySectionEmptyErrorDesc => 'Something went wrong';
-
-  @override
-  String get gallerySectionHeroAnim => '1. Hero Animation';
-
-  @override
-  String get gallerySectionHeroAnimDesc =>
-      'Tap kotak untuk navigasi dengan Hero transition';
-
-  @override
-  String get gallerySectionAnimContainer => '2. Animated Container';
-
-  @override
-  String get gallerySectionAnimContainerDesc =>
-      'Toggle ukuran, warna, border radius';
-
-  @override
-  String get gallerySectionPageTransition => '3. Page Transition Custom';
-
-  @override
-  String get gallerySectionPageTransitionDesc => 'Fade, slide, scale';
-
-  @override
-  String get gallerySectionAnimatedList => '4. Animated List';
-
-  @override
-  String get gallerySectionAnimatedListDesc =>
-      'Tambah dan hapus item dengan animasi';
-
-  @override
-  String get gallerySectionAnimatedIcons => '5. Animated Icons';
-
-  @override
-  String get gallerySectionAnimatedIconsDesc =>
-      'Toggle animasi ikon Flutter bawaan';
-
-  @override
-  String get gallerySectionStaggered => '6. Staggered Animation';
-
-  @override
-  String get gallerySectionStaggeredDesc =>
-      'Card muncul satu per satu dengan delay';
-
-  @override
-  String get gallerySectionStarRating => '1. Star Rating';
-
-  @override
-  String get gallerySectionStarRatingDesc => 'Tap atau drag untuk beri rating';
-
-  @override
-  String get gallerySectionLikeButton => '2. Like Button';
-
-  @override
-  String get gallerySectionLikeButtonDesc => 'Animasi pop saat di-tap';
-
-  @override
-  String get gallerySectionReactionPicker => '3. Reaction Picker';
-
-  @override
-  String get gallerySectionReactionPickerDesc =>
-      'Long press untuk emoji reactions';
-
-  @override
-  String get gallerySectionCommentInput => '4. Comment Input';
-
-  @override
-  String get gallerySectionCommentInputDesc => 'Kirim komentar, masuk ke list';
-
-  @override
-  String get gallerySectionQuickPoll => '5. Quick Poll';
-
-  @override
-  String get gallerySectionQuickPollDesc =>
-      'Pilih satu opsi, lihat hasil persentase';
-
-  @override
-  String get gallerySectionOtpInput => '6. OTP / PIN Input';
-
-  @override
-  String get gallerySectionOtpInputDesc => 'Coba masukkan 123456';
-
-  @override
-  String get gallerySectionChipVariants => '1. Chip Variants';
-
-  @override
-  String get gallerySectionChipVariantsDesc =>
-      'Input, filter, action, choice chip';
-
-  @override
-  String get gallerySectionBadge => '2. Badge & Notification Dot';
-
-  @override
-  String get gallerySectionBadgeDesc => 'Angka badge +1 / reset';
-
-  @override
-  String get gallerySectionSearchFilter => '3. Search Bar + Filter';
-
-  @override
-  String get gallerySectionSearchFilterDesc =>
-      'Filter list real-time saat mengetik';
-
-  @override
-  String get gallerySectionTooltip => '4. Tooltip';
-
-  @override
-  String get gallerySectionTooltipDesc =>
-      'Long press untuk lihat tooltip custom';
-
-  @override
-  String get gallerySectionClipboard => '5. Copy to Clipboard';
-
-  @override
-  String get gallerySectionClipboardDesc => 'Tap salin untuk copy token/kode';
-
-  @override
-  String get gallerySectionImagePicker => '6. Image Picker Placeholder';
-
-  @override
-  String get gallerySectionImagePickerDesc =>
-      'Tap area foto untuk opsi pilih gambar';
-
-  @override
-  String get gallerySectionColorPicker => '7. Color Picker';
-
-  @override
-  String get gallerySectionColorPickerDesc =>
-      'Tap palet warna untuk pilih warna';
-
-  @override
-  String get quotesTitle => 'Manajemen Kutipan';
-
-  @override
-  String get quotesEmpty =>
-      'Belum ada kutipan. Mulai tambahkan inspirasi Anda!';
-
-  @override
-  String get quotesAdd => 'Tambah Kutipan';
-
-  @override
-  String get quotesCreate => 'Buat Kutipan Baru';
-
-  @override
-  String get quotesEdit => 'Edit Kutipan';
-
-  @override
-  String get quotesDelete => 'Hapus Kutipan';
-
-  @override
-  String get quotesDeleteConfirm =>
-      'Apakah Anda yakin ingin menghapus kutipan ini?';
-
-  @override
-  String get quotesDeleteSuccess => 'Kutipan berhasil dihapus';
-
-  @override
-  String get quotesSaveSuccess => 'Kutipan berhasil disimpan';
-
-  @override
-  String get quotesUpdateSuccess => 'Kutipan berhasil diperbarui';
-
-  @override
-  String get quotesTextLabel => 'Isi Kutipan';
-
-  @override
-  String get quotesTextHint => 'Tulis isi kutipan di sini...';
-
-  @override
-  String get quotesTextValidation => 'Isi kutipan minimal 5 karakter';
-
-  @override
-  String get quotesAuthorLabel => 'Nama Penulis / Tokoh';
-
-  @override
-  String get quotesAuthorHint => 'Contoh: Ir. Soekarno';
-
-  @override
-  String get quotesAuthorValidation => 'Nama penulis wajib diisi';
-
-  @override
-  String get quotesSourceLabel => 'Sumber (opsional)';
-
-  @override
-  String get quotesSourceHint => 'Contoh: Buku, Pidato, Wawancara';
-
-  @override
-  String get quotesIsActive => 'Status Aktif';
-
-  @override
-  String get quotesMenuLabel => 'Kutipan';
-
-  @override
-  String get quotesSyncPending => 'Menunggu Sinkronisasi';
-
-  @override
-  String get quotesSyncOfflineEdit => 'Diedit Offline';
-
-  @override
-  String get quotesSynced => 'Tersinkronisasi';
-
-  @override
-  String get quotesWorkingOffline => 'Bekerja Offline';
-
-  @override
-  String get quotesFilterAll => 'Semua';
-
-  @override
-  String get quotesFilterActive => 'Aktif';
-
-  @override
-  String get quotesFilterInactive => 'Nonaktif';
-
-  @override
-  String get quotesSortAZ => 'A-Z Penulis';
-
-  @override
-  String get quotesSortNewest => 'Terbaru';
-
-  @override
-  String get quotesSearchHint => 'Cari kutipan atau penulis...';
-
-  @override
-  String get quotesRetry => 'Coba Lagi';
-
-  @override
-  String get quotesLoadError => 'Gagal Memuat Data';
-
-  @override
-  String get quotesSave => 'Simpan Kutipan';
-
-  @override
-  String get quotesCancel => 'Batal';
-
-  @override
-  String get quotesConfirmDelete => 'Hapus';
-
-  @override
-  String get quoteOfTheDayTitle => 'Kutipan Hari Ini';
-
-  @override
-  String get quoteOfTheDayEmpty =>
-      'Belum ada kutipan aktif. Ketuk di sini untuk menulis inspirasi pertama Anda!';
-
-  @override
-  String get quoteOfTheDayCopySuccess =>
-      'Kutipan berhasil disalin ke papan klip!';
+  String get homeFooter =>
+      'TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya';
 }

@@ -67,3 +67,4 @@ export 'src/onboarding/data/onboarding_repository_impl.dart';
 export 'src/onboarding/presentation/onboarding_notifier.dart';
 export 'src/onboarding/presentation/splash_screen.dart';
 export 'src/onboarding/presentation/onboarding_screen.dart';
+export 'src/branding/triva_logo.dart';

@@ -1,4 +1,4 @@
-import 'package:app_main/features/settings/presentation/settings_screen.dart';
+import 'package:triva_app/features/settings/presentation/settings_screen.dart';
 import 'package:core/core.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ void main() {
   testWidgets('shows all three theme options', (tester) async {
     await tester.pumpWidget(buildSubject());
     await tester.pump();
-    expect(find.text('System default'), findsOneWidget);
+    expect(find.text('Use system setting'), findsOneWidget);
     expect(find.text('Light'), findsOneWidget);
     expect(find.text('Dark'), findsOneWidget);
   });

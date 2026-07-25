@@ -6,6 +6,5 @@ abstract class ProfileRepository {
   Future<Profile?> getProfile();
 
   /// Memperbarui data profil.
-  /// TODO: implementasi via API — Sprint 006 scope hanya read-only.
   Future<void> updateProfile(Profile profile);
 }

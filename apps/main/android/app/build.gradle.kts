@@ -14,7 +14,7 @@ plugins {
 }
 
 android {
-    namespace = "id.rmq.app_main"
+    namespace = "id.rnq.triva"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -33,8 +33,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Replace with your project's application ID before publishing.
-        applicationId = "id.rmq.main"
+        applicationId = "id.rnq.triva"
         minSdk = 24
         targetSdk = 36
         versionCode = flutter.versionCode

@@ -1,1 +1,0 @@
-Baca CONTRIBUTING.md dan CHANGELOG.md, kemudian push perubahannya sesuai panduan dan arahan disana.

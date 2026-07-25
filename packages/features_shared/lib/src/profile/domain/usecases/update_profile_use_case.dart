@@ -6,7 +6,6 @@ class UpdateProfileUseCase {
 
   final ProfileRepository _repository;
 
-  // TODO: Sprint 006 scope hanya read-only.
-  // Usecase ini disiapkan untuk extension di sprint selanjutnya.
+  /// Updates the canonical profile owned by the authenticated user.
   Future<void> call(Profile profile) => _repository.updateProfile(profile);
 }

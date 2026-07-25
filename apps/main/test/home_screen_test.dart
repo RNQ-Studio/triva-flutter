@@ -1,97 +1,91 @@
-import 'package:app_main/features/home/domain/entities/user_profile.dart';
-import 'package:app_main/features/home/presentation/home_provider.dart';
-import 'package:app_main/features/home/presentation/home_screen.dart';
-import 'package:app_main/features/quotes/presentation/quotes_notifier.dart';
-import 'package:app_main/features/quotes/domain/entities/quote_entity.dart';
 import 'package:core/core.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
+import 'package:triva_app/features/home/presentation/home_screen.dart';
 
-class FakeAuthNotifier extends AuthNotifier {
-  FakeAuthNotifier(this._initialState);
-  final AuthState _initialState;
+class _FakeAuthNotifier extends AuthNotifier {
+  _FakeAuthNotifier(this.initialState);
+
+  final AuthState initialState;
 
   @override
-  AuthState build() => _initialState;
-}
-
-class FakeQuotesNotifier extends QuotesNotifier {
-  @override
-  Future<List<QuoteEntity>> build() async => [];
+  AuthState build() => initialState;
 }
 
 void main() {
-  const testProfile = UserProfile(
-    name: 'Test User',
-    email: 'test@example.com',
-    phone: '08123456789',
-    avatarUrl: null,
-    role: 'Member',
-  );
+  Future<void> pumpHome(
+    WidgetTester tester, {
+    required ThemeData theme,
+    required AuthState authState,
+    double textScale = 1.3,
+  }) async {
+    tester.view
+      ..physicalSize = const Size(360, 690)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
 
-  Widget buildSubject() => ProviderScope(
+    await tester.pumpWidget(
+      ProviderScope(
         overrides: [
-          authProvider.overrideWith(() => FakeAuthNotifier(
-                const AuthAuthenticated(User(
-                  id: '1',
-                  name: 'Test User',
-                  email: 'test@example.com',
-                  phone: '08123456789',
-                  roles: ['Member'],
-                )),
-              )),
-          quotesProvider.overrideWith(() => FakeQuotesNotifier()),
-          userProfileProvider.overrideWith((_) async => testProfile),
+          authProvider.overrideWith(
+            () => _FakeAuthNotifier(authState),
+          ),
         ],
-        child: MaterialApp.router(
+        child: MaterialApp(
+          theme: theme,
+          locale: const Locale('id'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('en'),
-          routerConfig: GoRouter(
-            routes: [
-              GoRoute(
-                path: '/',
-                builder: (_, __) => const HomeScreen(),
+          builder: (context, child) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(textScale),
               ),
-              GoRoute(
-                path: AppRoutes.settings,
-                builder: (_, __) => const Scaffold(body: Text('Settings')),
-              ),
-            ],
-          ),
+              child: child!,
+            );
+          },
+          home: const HomeScreen(),
         ),
-      );
-
-  testWidgets('shows user header after profile loads', (tester) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
-    expect(find.textContaining('Hi, Test User'), findsOneWidget);
-    expect(find.text('test@example.com'), findsOneWidget);
-  });
-
-  testWidgets('shows all 15 menu items', (tester) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
-    expect(find.text('Kutipan'), findsOneWidget);
-    expect(find.text('Menu 15'), findsOneWidget);
-  });
-
-  testWidgets('tap menu shows snackbar', (tester) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Menu 02'));
+      ),
+    );
     await tester.pump();
-    expect(find.textContaining('Fitur belum tersedia'), findsOneWidget);
-  });
+  }
 
-  testWidgets('settings icon navigates to settings route', (tester) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.settings_outlined));
-    await tester.pumpAndSettle();
-    expect(find.text('Settings'), findsOneWidget);
+  for (final brightness in Brightness.values) {
+    testWidgets(
+      'renders compact guest home without overflow in ${brightness.name}',
+      (tester) async {
+        await pumpHome(
+          tester,
+          theme:
+              brightness == Brightness.light ? AppTheme.light : AppTheme.dark,
+          authState: const AuthUnauthenticated(),
+        );
+
+        expect(find.text('Kenali nilai kendaraan Anda'), findsOneWidget);
+        expect(find.text('Appraisal trade-in'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  testWidgets('remains usable at 2.0 text scaling', (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthAuthenticated(
+        User(
+          id: 'user-1',
+          name: 'Ramadhan',
+          email: 'ramadhan@example.com',
+        ),
+      ),
+      textScale: 2,
+    );
+
+    expect(find.text('Lihat profil saya'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

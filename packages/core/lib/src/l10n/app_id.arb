@@ -1,276 +1,64 @@
 {
   "@@locale": "id",
-  "appName": "Flutter Starter",
-  "@appName": {
-    "description": "Nama aplikasi"
-  },
+  "appName": "TRIVA",
   "home": "Beranda",
-  "@home": {
-    "description": "Label halaman beranda"
-  },
   "settings": "Pengaturan",
-  "@settings": {
-    "description": "Label halaman pengaturan"
-  },
-  "welcome": "Selamat datang!",
-  "@welcome": {
-    "description": "Teks sambutan di halaman beranda"
-  },
+  "welcome": "Selamat datang",
   "appearance": "Tampilan",
-  "@appearance": {
-    "description": "Judul seksi tampilan di settings"
-  },
   "themeSystem": "Ikuti sistem",
-  "@themeSystem": {
-    "description": "Pilihan tema: ikuti sistem"
-  },
   "themeLight": "Terang",
-  "@themeLight": {
-    "description": "Pilihan tema: terang"
-  },
   "themeDark": "Gelap",
-  "@themeDark": {
-    "description": "Pilihan tema: gelap"
-  },
-  "themeDarkSubtitle": "Tampilan gelap",
-  "@themeDarkSubtitle": {
-    "description": "Subjudul mode gelap di variant settings"
-  },
   "language": "Bahasa",
-  "@language": {
-    "description": "Judul seksi bahasa di settings"
-  },
   "langIndonesia": "Indonesia",
-  "@langIndonesia": {
-    "description": "Pilihan bahasa: Indonesia"
-  },
-  "langEnglish": "English",
-  "@langEnglish": {
-    "description": "Pilihan bahasa: Inggris"
-  },
-  "langEnglishSubtitle": "Use English language",
-  "@langEnglishSubtitle": {
-    "description": "Subjudul pilihan bahasa Inggris di variant settings"
-  },
+  "langEnglish": "Inggris",
   "version": "Versi",
-  "@version": {
-    "description": "Label versi di settings"
-  },
-  "appVersion": "Versi Aplikasi",
-  "@appVersion": {
-    "description": "Label versi aplikasi di variant settings"
-  },
-  "signIn": "Masuk",
-  "@signIn": {
-    "description": "Judul halaman login"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "Tombol OK"
-  },
-  "cancel": "Batal",
-  "@cancel": {
-    "description": "Tombol batal"
-  },
-  "save": "Simpan",
-  "@save": {
-    "description": "Tombol simpan"
-  },
-  "delete": "Hapus",
-  "@delete": {
-    "description": "Tombol hapus"
-  },
-  "loading": "Memuat...",
-  "@loading": {
-    "description": "Teks loading"
-  },
-  "errorGeneral": "Terjadi kesalahan. Coba lagi.",
-  "@errorGeneral": {
-    "description": "Pesan error umum"
-  },
-  "errorNetwork": "Tidak ada koneksi internet.",
-  "@errorNetwork": {
-    "description": "Pesan error jaringan"
-  },
-  "errorInvalidEmail": "Masukkan email yang valid",
-  "@errorInvalidEmail": {
-    "description": "Validasi email tidak valid"
-  },
-  "errorPasswordTooShort": "Minimal 6 karakter",
-  "@errorPasswordTooShort": {
-    "description": "Validasi password terlalu pendek"
-  },
+  "signIn": "Masuk ke TRIVA",
   "login": "Masuk",
-  "@login": {
-    "description": "Tombol masuk"
-  },
   "logout": "Keluar",
-  "@logout": {
-    "description": "Tombol keluar"
-  },
-  "register": "Daftar",
-  "@register": {
-    "description": "Tombol daftar"
-  },
   "email": "Email",
-  "@email": {
-    "description": "Label email"
-  },
-  "password": "Kata Sandi",
-  "@password": {
-    "description": "Label kata sandi"
-  },
+  "password": "Kata sandi",
   "profile": "Profil",
-  "@profile": {
-    "description": "Label halaman profil"
-  },
   "name": "Nama",
-  "@name": {
-    "description": "Label nama pengguna"
-  },
-  "logoutConfirm": "Yakin ingin keluar?",
-  "@logoutConfirm": {
-    "description": "Konfirmasi dialog logout"
-  },
-  "galleryTitle": "UI Component Gallery",
-  "gallerySubtitle": "8 kategori komponen interaktif",
-  "galleryMenuDialogTitle": "Dialog & Popup",
-  "galleryMenuDialogSubtitle": "Alert, bottom sheet, custom dialog",
-  "galleryMenuFormTitle": "Form & Input",
-  "galleryMenuFormSubtitle": "TextField, dropdown, date picker",
-  "galleryMenuCardsTitle": "Cards & List",
-  "galleryMenuCardsSubtitle": "Card variants dan dismissible list",
-  "galleryMenuNavTitle": "Navigation",
-  "galleryMenuNavSubtitle": "TabBar, stepper, drawer demo",
-  "galleryMenuLoadingTitle": "Loading & Empty",
-  "galleryMenuLoadingSubtitle": "Shimmer, progress, empty states",
-  "galleryMenuAnimTitle": "Animation",
-  "galleryMenuAnimSubtitle": "Hero, animated container, stagger",
-  "galleryMenuFeedbackTitle": "Feedback",
-  "galleryMenuFeedbackSubtitle": "Rating, like, poll, OTP input",
-  "galleryMenuUtilitiesTitle": "Utilities",
-  "galleryMenuUtilitiesSubtitle": "Chip, badge, search, clipboard",
-  "galleryDialogScreenTitle": "Dialog & Popup",
-  "galleryFormScreenTitle": "Form & Input Components",
-  "galleryCardsScreenTitle": "Cards & List Variants",
-  "galleryNavScreenTitle": "Navigation & Tab Patterns",
-  "galleryLoadingScreenTitle": "Loading & Empty States",
-  "galleryAnimScreenTitle": "Animation Showcase",
-  "galleryFeedbackScreenTitle": "Feedback & Interaksi",
-  "galleryUtilitiesScreenTitle": "Utilities & Helpers",
-  "galleryTabCards": "Cards",
-  "galleryTabLists": "Lists",
-  "galleryTabTabBar": "Tab Bar",
-  "galleryTabBottomNav": "Bottom Nav",
-  "galleryTabStepper": "Stepper",
-  "galleryTabDrawer": "Drawer",
-  "galleryTabLoading": "Loading",
-  "galleryTabEmptyState": "Empty State",
-  "gallerySectionAlertDialogs": "Alert Dialogs",
-  "gallerySectionAlertDialogsDesc": "Berbagai jenis alert dialog",
-  "gallerySectionBottomSheets": "Bottom Sheets",
-  "gallerySectionBottomSheetsDesc": "Modal sheet dari bawah layar",
-  "gallerySectionCustomDialogs": "Custom Dialogs",
-  "gallerySectionCustomDialogsDesc": "Dialog animasi dan loading",
-  "gallerySectionSnackbarVariants": "SnackBar Variants",
-  "gallerySectionSnackbarVariantsDesc": "Info, sukses, warning, error",
-  "gallerySectionTextFields": "Text Fields",
-  "gallerySectionTextFieldsDesc": "Berbagai jenis input teks",
-  "gallerySectionSelectors": "Selectors",
-  "gallerySectionSelectorsDesc": "Dropdown, date picker, radio, checkbox",
-  "gallerySectionTogglesSliders": "Toggles & Sliders",
-  "gallerySectionTogglesSlidersDesc": "Switch dan range input",
-  "gallerySectionShimmer": "1. Shimmer Loading",
-  "gallerySectionShimmerDesc": "Manual tanpa library, ShaderMask + LinearGradient",
-  "gallerySectionSkeleton": "2. Skeleton Screen",
-  "gallerySectionSkeletonDesc": "Layout placeholder sebelum konten siap",
-  "gallerySectionLinearProgress": "3. Linear Progress Indicator",
-  "gallerySectionLinearProgressDesc": "Determinate, 0–100% dalam 3 detik",
-  "gallerySectionCircularProgress": "4. Circular Progress",
-  "gallerySectionCircularProgressDesc": "Determinate dengan % di tengah",
-  "gallerySectionPullToRefresh": "5. Pull-to-Refresh",
-  "gallerySectionPullToRefreshDesc": "Tarik ke bawah untuk refresh list",
-  "gallerySectionEmptyNoData": "6. Empty State — Tidak Ada Data",
-  "gallerySectionEmptyNoDataDesc": "Ilustrasi + CTA",
-  "gallerySectionEmptyNoInternet": "7. Empty State — Tidak Ada Koneksi",
-  "gallerySectionEmptyNoInternetDesc": "Retry dengan loading simulasi",
-  "gallerySectionEmptyError": "8. Empty State — Error",
-  "gallerySectionEmptyErrorDesc": "Something went wrong",
-  "gallerySectionHeroAnim": "1. Hero Animation",
-  "gallerySectionHeroAnimDesc": "Tap kotak untuk navigasi dengan Hero transition",
-  "gallerySectionAnimContainer": "2. Animated Container",
-  "gallerySectionAnimContainerDesc": "Toggle ukuran, warna, border radius",
-  "gallerySectionPageTransition": "3. Page Transition Custom",
-  "gallerySectionPageTransitionDesc": "Fade, slide, scale",
-  "gallerySectionAnimatedList": "4. Animated List",
-  "gallerySectionAnimatedListDesc": "Tambah dan hapus item dengan animasi",
-  "gallerySectionAnimatedIcons": "5. Animated Icons",
-  "gallerySectionAnimatedIconsDesc": "Toggle animasi ikon Flutter bawaan",
-  "gallerySectionStaggered": "6. Staggered Animation",
-  "gallerySectionStaggeredDesc": "Card muncul satu per satu dengan delay",
-  "gallerySectionStarRating": "1. Star Rating",
-  "gallerySectionStarRatingDesc": "Tap atau drag untuk beri rating",
-  "gallerySectionLikeButton": "2. Like Button",
-  "gallerySectionLikeButtonDesc": "Animasi pop saat di-tap",
-  "gallerySectionReactionPicker": "3. Reaction Picker",
-  "gallerySectionReactionPickerDesc": "Long press untuk emoji reactions",
-  "gallerySectionCommentInput": "4. Comment Input",
-  "gallerySectionCommentInputDesc": "Kirim komentar, masuk ke list",
-  "gallerySectionQuickPoll": "5. Quick Poll",
-  "gallerySectionQuickPollDesc": "Pilih satu opsi, lihat hasil persentase",
-  "gallerySectionOtpInput": "6. OTP / PIN Input",
-  "gallerySectionOtpInputDesc": "Coba masukkan 123456",
-  "gallerySectionChipVariants": "1. Chip Variants",
-  "gallerySectionChipVariantsDesc": "Input, filter, action, choice chip",
-  "gallerySectionBadge": "2. Badge & Notification Dot",
-  "gallerySectionBadgeDesc": "Angka badge +1 / reset",
-  "gallerySectionSearchFilter": "3. Search Bar + Filter",
-  "gallerySectionSearchFilterDesc": "Filter list real-time saat mengetik",
-  "gallerySectionTooltip": "4. Tooltip",
-  "gallerySectionTooltipDesc": "Long press untuk lihat tooltip custom",
-  "gallerySectionClipboard": "5. Copy to Clipboard",
-  "gallerySectionClipboardDesc": "Tap salin untuk copy token/kode",
-  "gallerySectionImagePicker": "6. Image Picker Placeholder",
-  "gallerySectionImagePickerDesc": "Tap area foto untuk opsi pilih gambar",
-  "gallerySectionColorPicker": "7. Color Picker",
-  "gallerySectionColorPickerDesc": "Tap palet warna untuk pilih warna",
-
-  "quotesTitle": "Manajemen Kutipan",
-  "quotesEmpty": "Belum ada kutipan. Mulai tambahkan inspirasi Anda!",
-  "quotesAdd": "Tambah Kutipan",
-  "quotesCreate": "Buat Kutipan Baru",
-  "quotesEdit": "Edit Kutipan",
-  "quotesDelete": "Hapus Kutipan",
-  "quotesDeleteConfirm": "Apakah Anda yakin ingin menghapus kutipan ini?",
-  "quotesDeleteSuccess": "Kutipan berhasil dihapus",
-  "quotesSaveSuccess": "Kutipan berhasil disimpan",
-  "quotesUpdateSuccess": "Kutipan berhasil diperbarui",
-  "quotesTextLabel": "Isi Kutipan",
-  "quotesTextHint": "Tulis isi kutipan di sini...",
-  "quotesTextValidation": "Isi kutipan minimal 5 karakter",
-  "quotesAuthorLabel": "Nama Penulis / Tokoh",
-  "quotesAuthorHint": "Contoh: Ir. Soekarno",
-  "quotesAuthorValidation": "Nama penulis wajib diisi",
-  "quotesSourceLabel": "Sumber (opsional)",
-  "quotesSourceHint": "Contoh: Buku, Pidato, Wawancara",
-  "quotesIsActive": "Status Aktif",
-  "quotesMenuLabel": "Kutipan",
-  "quotesSyncPending": "Menunggu Sinkronisasi",
-  "quotesSyncOfflineEdit": "Diedit Offline",
-  "quotesSynced": "Tersinkronisasi",
-  "quotesWorkingOffline": "Bekerja Offline",
-  "quotesFilterAll": "Semua",
-  "quotesFilterActive": "Aktif",
-  "quotesFilterInactive": "Nonaktif",
-  "quotesSortAZ": "A-Z Penulis",
-  "quotesSortNewest": "Terbaru",
-  "quotesSearchHint": "Cari kutipan atau penulis...",
-  "quotesRetry": "Coba Lagi",
-  "quotesLoadError": "Gagal Memuat Data",
-  "quotesSave": "Simpan Kutipan",
-  "quotesCancel": "Batal",
-  "quotesConfirmDelete": "Hapus",
-  "quoteOfTheDayTitle": "Kutipan Hari Ini",
-  "quoteOfTheDayEmpty": "Belum ada kutipan aktif. Ketuk di sini untuk menulis inspirasi pertama Anda!",
-  "quoteOfTheDayCopySuccess": "Kutipan berhasil disalin ke papan klip!"
+  "errorGeneral": "Terjadi kendala. Silakan coba lagi.",
+  "errorInvalidEmail": "Masukkan alamat email yang valid",
+  "errorPasswordTooShort": "Kata sandi minimal 6 karakter",
+  "splashTagline": "Upload, Appraise, Upgrade",
+  "onboardingSkip": "Lewati",
+  "onboardingNext": "Selanjutnya",
+  "onboardingStart": "Mulai",
+  "onboardingValueTitle": "Kenali nilai kendaraan",
+  "onboardingValueDescription": "Lengkapi data dan foto kendaraan untuk memperoleh indikasi nilai yang mudah dipahami.",
+  "onboardingTrackTitle": "Pantau proses appraisal",
+  "onboardingTrackDescription": "Ikuti perkembangan permintaan dari pengajuan hingga hasil yang telah ditinjau appraiser.",
+  "onboardingUpgradeTitle": "Siapkan langkah berikutnya",
+  "onboardingUpgradeDescription": "Lanjutkan hasil appraisal ke simulasi kredit, perbaikan, atau layanan kendaraan yang sesuai.",
+  "loginSubtitle": "Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.",
+  "loginFailedTitle": "Tidak dapat masuk",
+  "loginFailedAction": "Tutup",
+  "loginBiometricDivider": "atau gunakan biometrik",
+  "loginBiometricAction": "Masuk dengan biometrik",
+  "homeHeroTitle": "Kenali nilai kendaraan Anda",
+  "homeHeroDescription": "Satu alur untuk mengunggah data kendaraan, memantau appraisal, dan menyiapkan langkah upgrade berikutnya.",
+  "homeLoginAction": "Masuk ke TRIVA",
+  "homeProfileAction": "Lihat profil saya",
+  "homeServicesTitle": "Layanan TRIVA",
+  "homeServicesSubtitle": "TRIVA menyatukan appraisal dan layanan lanjutan Auto2000 Kertajaya dalam pengalaman yang ringkas.",
+  "serviceAppraisalTitle": "Appraisal trade-in",
+  "serviceAppraisalDescription": "Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang ditinjau appraiser.",
+  "serviceToyotaTitle": "Booking servis Toyota",
+  "serviceToyotaDescription": "Ajukan jadwal perawatan kendaraan Toyota dan pantau konfirmasinya.",
+  "serviceOtoxpertTitle": "Booking OtoXpert",
+  "serviceOtoxpertDescription": "Temukan layanan perawatan untuk kendaraan non-Toyota melalui jaringan OtoXpert.",
+  "serviceCreditTitle": "Simulasi kredit",
+  "serviceCreditDescription": "Hitung estimasi cicilan berdasarkan program kredit, uang muka, dan tenor.",
+  "serviceBodyPaintTitle": "Estimasi Body & Paint",
+  "serviceBodyPaintDescription": "Dapatkan indikasi biaya perbaikan panel sebelum pemeriksaan fisik.",
+  "homeProcessTitle": "Cara kerja appraisal",
+  "processVehicleTitle": "Lengkapi kendaraan",
+  "processVehicleDescription": "Isi identitas kendaraan dan unggah foto kondisi yang diminta.",
+  "processReviewTitle": "Appraiser meninjau",
+  "processReviewDescription": "Data pembanding dan kondisi kendaraan diperiksa sebelum hasil diterbitkan.",
+  "processResultTitle": "Terima hasil dan lanjutkan",
+  "processResultDescription": "Gunakan hasil appraisal untuk memilih kredit, perbaikan, atau booking layanan.",
+  "homeFooter": "TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya"
 }

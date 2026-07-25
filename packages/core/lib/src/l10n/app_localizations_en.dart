@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Flutter Starter';
+  String get appName => 'TRIVA';
 
   @override
   String get home => 'Home';
@@ -18,13 +18,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get welcome => 'Welcome!';
+  String get welcome => 'Welcome';
 
   @override
   String get appearance => 'Appearance';
 
   @override
-  String get themeSystem => 'System default';
+  String get themeSystem => 'Use system setting';
 
   @override
   String get themeLight => 'Light';
@@ -33,64 +33,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark => 'Dark';
 
   @override
-  String get themeDarkSubtitle => 'Dark display';
-
-  @override
   String get language => 'Language';
 
   @override
-  String get langIndonesia => 'Indonesia';
+  String get langIndonesia => 'Indonesian';
 
   @override
   String get langEnglish => 'English';
 
   @override
-  String get langEnglishSubtitle => 'Use English language';
-
-  @override
   String get version => 'Version';
 
   @override
-  String get appVersion => 'App Version';
+  String get signIn => 'Sign in to TRIVA';
 
   @override
-  String get signIn => 'Sign In';
+  String get login => 'Sign in';
 
   @override
-  String get ok => 'OK';
-
-  @override
-  String get cancel => 'Cancel';
-
-  @override
-  String get save => 'Save';
-
-  @override
-  String get delete => 'Delete';
-
-  @override
-  String get loading => 'Loading...';
-
-  @override
-  String get errorGeneral => 'Something went wrong. Please try again.';
-
-  @override
-  String get errorNetwork => 'No internet connection.';
-
-  @override
-  String get errorInvalidEmail => 'Enter a valid email';
-
-  @override
-  String get errorPasswordTooShort => 'Min 6 characters';
-
-  @override
-  String get login => 'Login';
-
-  @override
-  String get logout => 'Logout';
-
-  @override
-  String get register => 'Register';
+  String get logout => 'Sign out';
 
   @override
   String get email => 'Email';
@@ -105,447 +66,143 @@ class AppLocalizationsEn extends AppLocalizations {
   String get name => 'Name';
 
   @override
-  String get logoutConfirm => 'Are you sure you want to logout?';
+  String get errorGeneral => 'Something went wrong. Please try again.';
 
   @override
-  String get galleryTitle => 'UI Component Gallery';
+  String get errorInvalidEmail => 'Enter a valid email address';
 
   @override
-  String get gallerySubtitle => '8 interactive component categories';
+  String get errorPasswordTooShort => 'Password must be at least 6 characters';
 
   @override
-  String get galleryMenuDialogTitle => 'Dialog & Popup';
+  String get splashTagline => 'Upload, Appraise, Upgrade';
 
   @override
-  String get galleryMenuDialogSubtitle => 'Alert, bottom sheet, custom dialog';
+  String get onboardingSkip => 'Skip';
 
   @override
-  String get galleryMenuFormTitle => 'Form & Input';
+  String get onboardingNext => 'Next';
 
   @override
-  String get galleryMenuFormSubtitle => 'TextField, dropdown, date picker';
+  String get onboardingStart => 'Start';
 
   @override
-  String get galleryMenuCardsTitle => 'Cards & List';
+  String get onboardingValueTitle => 'Understand your vehicle value';
 
   @override
-  String get galleryMenuCardsSubtitle => 'Card variants and dismissible list';
+  String get onboardingValueDescription =>
+      'Complete the vehicle details and photos to receive a clear indicative valuation.';
 
   @override
-  String get galleryMenuNavTitle => 'Navigation';
+  String get onboardingTrackTitle => 'Track the appraisal';
 
   @override
-  String get galleryMenuNavSubtitle => 'TabBar, stepper, drawer demo';
+  String get onboardingTrackDescription =>
+      'Follow the request from submission until an appraiser-reviewed result is ready.';
 
   @override
-  String get galleryMenuLoadingTitle => 'Loading & Empty';
+  String get onboardingUpgradeTitle => 'Plan the next step';
 
   @override
-  String get galleryMenuLoadingSubtitle => 'Shimmer, progress, empty states';
+  String get onboardingUpgradeDescription =>
+      'Continue from the appraisal to financing, repairs, or the most suitable vehicle service.';
 
   @override
-  String get galleryMenuAnimTitle => 'Animation';
+  String get loginSubtitle =>
+      'Use your registered account to access services and vehicle history.';
 
   @override
-  String get galleryMenuAnimSubtitle => 'Hero, animated container, stagger';
+  String get loginFailedTitle => 'Unable to sign in';
 
   @override
-  String get galleryMenuFeedbackTitle => 'Feedback';
+  String get loginFailedAction => 'Close';
 
   @override
-  String get galleryMenuFeedbackSubtitle => 'Rating, like, poll, OTP input';
+  String get loginBiometricDivider => 'or use biometrics';
 
   @override
-  String get galleryMenuUtilitiesTitle => 'Utilities';
+  String get loginBiometricAction => 'Sign in with biometrics';
 
   @override
-  String get galleryMenuUtilitiesSubtitle => 'Chip, badge, search, clipboard';
+  String get homeHeroTitle => 'Understand your vehicle value';
 
   @override
-  String get galleryDialogScreenTitle => 'Dialog & Popup';
+  String get homeHeroDescription =>
+      'One flow to upload vehicle details, track the appraisal, and prepare your next upgrade.';
 
   @override
-  String get galleryFormScreenTitle => 'Form & Input Components';
+  String get homeLoginAction => 'Sign in to TRIVA';
 
   @override
-  String get galleryCardsScreenTitle => 'Cards & List Variants';
+  String get homeProfileAction => 'View my profile';
 
   @override
-  String get galleryNavScreenTitle => 'Navigation & Tab Patterns';
+  String get homeServicesTitle => 'TRIVA services';
 
   @override
-  String get galleryLoadingScreenTitle => 'Loading & Empty States';
+  String get homeServicesSubtitle =>
+      'TRIVA brings appraisal and Auto2000 Kertajaya follow-up services into one concise experience.';
 
   @override
-  String get galleryAnimScreenTitle => 'Animation Showcase';
+  String get serviceAppraisalTitle => 'Trade-in appraisal';
 
   @override
-  String get galleryFeedbackScreenTitle => 'Feedback & Interaction';
+  String get serviceAppraisalDescription =>
+      'Submit vehicle details and photos for an indicative value reviewed by an appraiser.';
 
   @override
-  String get galleryUtilitiesScreenTitle => 'Utilities & Helpers';
+  String get serviceToyotaTitle => 'Toyota service booking';
 
   @override
-  String get galleryTabCards => 'Cards';
+  String get serviceToyotaDescription =>
+      'Request a Toyota maintenance schedule and track its confirmation.';
 
   @override
-  String get galleryTabLists => 'Lists';
+  String get serviceOtoxpertTitle => 'OtoXpert booking';
 
   @override
-  String get galleryTabTabBar => 'Tab Bar';
+  String get serviceOtoxpertDescription =>
+      'Find maintenance services for non-Toyota vehicles through OtoXpert.';
 
   @override
-  String get galleryTabBottomNav => 'Bottom Nav';
+  String get serviceCreditTitle => 'Credit simulation';
 
   @override
-  String get galleryTabStepper => 'Stepper';
+  String get serviceCreditDescription =>
+      'Estimate installments based on financing program, down payment, and term.';
 
   @override
-  String get galleryTabDrawer => 'Drawer';
+  String get serviceBodyPaintTitle => 'Body & Paint estimate';
 
   @override
-  String get galleryTabLoading => 'Loading';
+  String get serviceBodyPaintDescription =>
+      'Receive an indicative panel repair cost before a physical inspection.';
 
   @override
-  String get galleryTabEmptyState => 'Empty State';
+  String get homeProcessTitle => 'How appraisal works';
 
   @override
-  String get gallerySectionAlertDialogs => 'Alert Dialogs';
+  String get processVehicleTitle => 'Complete vehicle details';
 
   @override
-  String get gallerySectionAlertDialogsDesc => 'Various types of alert dialogs';
+  String get processVehicleDescription =>
+      'Provide the vehicle identity and upload the requested condition photos.';
 
   @override
-  String get gallerySectionBottomSheets => 'Bottom Sheets';
+  String get processReviewTitle => 'Appraiser review';
 
   @override
-  String get gallerySectionBottomSheetsDesc =>
-      'Modal sheet from bottom of screen';
+  String get processReviewDescription =>
+      'Comparable data and vehicle condition are checked before publishing the result.';
 
   @override
-  String get gallerySectionCustomDialogs => 'Custom Dialogs';
+  String get processResultTitle => 'Receive and continue';
 
   @override
-  String get gallerySectionCustomDialogsDesc => 'Animated and loading dialogs';
+  String get processResultDescription =>
+      'Use the appraisal result to choose financing, repairs, or a service booking.';
 
   @override
-  String get gallerySectionSnackbarVariants => 'SnackBar Variants';
-
-  @override
-  String get gallerySectionSnackbarVariantsDesc =>
-      'Info, success, warning, error';
-
-  @override
-  String get gallerySectionTextFields => 'Text Fields';
-
-  @override
-  String get gallerySectionTextFieldsDesc => 'Various types of text input';
-
-  @override
-  String get gallerySectionSelectors => 'Selectors';
-
-  @override
-  String get gallerySectionSelectorsDesc =>
-      'Dropdown, date picker, radio, checkbox';
-
-  @override
-  String get gallerySectionTogglesSliders => 'Toggles & Sliders';
-
-  @override
-  String get gallerySectionTogglesSlidersDesc => 'Switch and range input';
-
-  @override
-  String get gallerySectionShimmer => '1. Shimmer Loading';
-
-  @override
-  String get gallerySectionShimmerDesc =>
-      'Manual without library, ShaderMask + LinearGradient';
-
-  @override
-  String get gallerySectionSkeleton => '2. Skeleton Screen';
-
-  @override
-  String get gallerySectionSkeletonDesc =>
-      'Layout placeholder before content is ready';
-
-  @override
-  String get gallerySectionLinearProgress => '3. Linear Progress Indicator';
-
-  @override
-  String get gallerySectionLinearProgressDesc =>
-      'Determinate, 0–100% in 3 seconds';
-
-  @override
-  String get gallerySectionCircularProgress => '4. Circular Progress';
-
-  @override
-  String get gallerySectionCircularProgressDesc =>
-      'Determinate with % in center';
-
-  @override
-  String get gallerySectionPullToRefresh => '5. Pull-to-Refresh';
-
-  @override
-  String get gallerySectionPullToRefreshDesc => 'Pull down to refresh the list';
-
-  @override
-  String get gallerySectionEmptyNoData => '6. Empty State — No Data';
-
-  @override
-  String get gallerySectionEmptyNoDataDesc => 'Illustration + CTA';
-
-  @override
-  String get gallerySectionEmptyNoInternet => '7. Empty State — No Connection';
-
-  @override
-  String get gallerySectionEmptyNoInternetDesc =>
-      'Retry with loading simulation';
-
-  @override
-  String get gallerySectionEmptyError => '8. Empty State — Error';
-
-  @override
-  String get gallerySectionEmptyErrorDesc => 'Something went wrong';
-
-  @override
-  String get gallerySectionHeroAnim => '1. Hero Animation';
-
-  @override
-  String get gallerySectionHeroAnimDesc =>
-      'Tap box to navigate with Hero transition';
-
-  @override
-  String get gallerySectionAnimContainer => '2. Animated Container';
-
-  @override
-  String get gallerySectionAnimContainerDesc =>
-      'Toggle size, color, border radius';
-
-  @override
-  String get gallerySectionPageTransition => '3. Custom Page Transition';
-
-  @override
-  String get gallerySectionPageTransitionDesc => 'Fade, slide, scale';
-
-  @override
-  String get gallerySectionAnimatedList => '4. Animated List';
-
-  @override
-  String get gallerySectionAnimatedListDesc =>
-      'Add and remove items with animation';
-
-  @override
-  String get gallerySectionAnimatedIcons => '5. Animated Icons';
-
-  @override
-  String get gallerySectionAnimatedIconsDesc =>
-      'Toggle Flutter built-in icon animations';
-
-  @override
-  String get gallerySectionStaggered => '6. Staggered Animation';
-
-  @override
-  String get gallerySectionStaggeredDesc =>
-      'Cards appear one by one with delay';
-
-  @override
-  String get gallerySectionStarRating => '1. Star Rating';
-
-  @override
-  String get gallerySectionStarRatingDesc => 'Tap or drag to give rating';
-
-  @override
-  String get gallerySectionLikeButton => '2. Like Button';
-
-  @override
-  String get gallerySectionLikeButtonDesc => 'Pop animation when tapped';
-
-  @override
-  String get gallerySectionReactionPicker => '3. Reaction Picker';
-
-  @override
-  String get gallerySectionReactionPickerDesc =>
-      'Long press for emoji reactions';
-
-  @override
-  String get gallerySectionCommentInput => '4. Comment Input';
-
-  @override
-  String get gallerySectionCommentInputDesc => 'Send comment, added to list';
-
-  @override
-  String get gallerySectionQuickPoll => '5. Quick Poll';
-
-  @override
-  String get gallerySectionQuickPollDesc =>
-      'Choose one option, see percentage results';
-
-  @override
-  String get gallerySectionOtpInput => '6. OTP / PIN Input';
-
-  @override
-  String get gallerySectionOtpInputDesc => 'Try entering 123456';
-
-  @override
-  String get gallerySectionChipVariants => '1. Chip Variants';
-
-  @override
-  String get gallerySectionChipVariantsDesc =>
-      'Input, filter, action, choice chip';
-
-  @override
-  String get gallerySectionBadge => '2. Badge & Notification Dot';
-
-  @override
-  String get gallerySectionBadgeDesc => 'Badge number +1 / reset';
-
-  @override
-  String get gallerySectionSearchFilter => '3. Search Bar + Filter';
-
-  @override
-  String get gallerySectionSearchFilterDesc =>
-      'Filter list in real-time while typing';
-
-  @override
-  String get gallerySectionTooltip => '4. Tooltip';
-
-  @override
-  String get gallerySectionTooltipDesc => 'Long press to see custom tooltip';
-
-  @override
-  String get gallerySectionClipboard => '5. Copy to Clipboard';
-
-  @override
-  String get gallerySectionClipboardDesc => 'Tap copy to copy token/code';
-
-  @override
-  String get gallerySectionImagePicker => '6. Image Picker Placeholder';
-
-  @override
-  String get gallerySectionImagePickerDesc =>
-      'Tap photo area for image pick options';
-
-  @override
-  String get gallerySectionColorPicker => '7. Color Picker';
-
-  @override
-  String get gallerySectionColorPickerDesc =>
-      'Tap color palette to select color';
-
-  @override
-  String get quotesTitle => 'Quote Management';
-
-  @override
-  String get quotesEmpty => 'No quotes yet. Start adding your inspirations!';
-
-  @override
-  String get quotesAdd => 'Add Quote';
-
-  @override
-  String get quotesCreate => 'Create New Quote';
-
-  @override
-  String get quotesEdit => 'Edit Quote';
-
-  @override
-  String get quotesDelete => 'Delete Quote';
-
-  @override
-  String get quotesDeleteConfirm =>
-      'Are you sure you want to delete this quote?';
-
-  @override
-  String get quotesDeleteSuccess => 'Quote deleted successfully';
-
-  @override
-  String get quotesSaveSuccess => 'Quote saved successfully';
-
-  @override
-  String get quotesUpdateSuccess => 'Quote updated successfully';
-
-  @override
-  String get quotesTextLabel => 'Quote Text';
-
-  @override
-  String get quotesTextHint => 'Write your quote here...';
-
-  @override
-  String get quotesTextValidation => 'Quote text must be at least 5 characters';
-
-  @override
-  String get quotesAuthorLabel => 'Author / Figure Name';
-
-  @override
-  String get quotesAuthorHint => 'Example: Albert Einstein';
-
-  @override
-  String get quotesAuthorValidation => 'Author name is required';
-
-  @override
-  String get quotesSourceLabel => 'Source (optional)';
-
-  @override
-  String get quotesSourceHint => 'Example: Book, Speech, Interview';
-
-  @override
-  String get quotesIsActive => 'Active Status';
-
-  @override
-  String get quotesMenuLabel => 'Quotes';
-
-  @override
-  String get quotesSyncPending => 'Pending Sync';
-
-  @override
-  String get quotesSyncOfflineEdit => 'Edited Offline';
-
-  @override
-  String get quotesSynced => 'Synced';
-
-  @override
-  String get quotesWorkingOffline => 'Working Offline';
-
-  @override
-  String get quotesFilterAll => 'All';
-
-  @override
-  String get quotesFilterActive => 'Active';
-
-  @override
-  String get quotesFilterInactive => 'Inactive';
-
-  @override
-  String get quotesSortAZ => 'A-Z Author';
-
-  @override
-  String get quotesSortNewest => 'Newest';
-
-  @override
-  String get quotesSearchHint => 'Search quotes or authors...';
-
-  @override
-  String get quotesRetry => 'Retry';
-
-  @override
-  String get quotesLoadError => 'Failed to Load Data';
-
-  @override
-  String get quotesSave => 'Save Quote';
-
-  @override
-  String get quotesCancel => 'Cancel';
-
-  @override
-  String get quotesConfirmDelete => 'Delete';
-
-  @override
-  String get quoteOfTheDayTitle => 'Quote of the Day';
-
-  @override
-  String get quoteOfTheDayEmpty =>
-      'No active quotes yet. Tap here to write your first inspiration!';
-
-  @override
-  String get quoteOfTheDayCopySuccess =>
-      'Quote successfully copied to clipboard!';
+  String get homeFooter =>
+      'TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya';
 }

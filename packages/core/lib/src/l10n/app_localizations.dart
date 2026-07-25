@@ -98,1043 +98,371 @@ abstract class AppLocalizations {
     Locale('id')
   ];
 
-  /// Nama aplikasi
+  /// No description provided for @appName.
   ///
   /// In id, this message translates to:
-  /// **'Flutter Starter'**
+  /// **'TRIVA'**
   String get appName;
 
-  /// Label halaman beranda
+  /// No description provided for @home.
   ///
   /// In id, this message translates to:
   /// **'Beranda'**
   String get home;
 
-  /// Label halaman pengaturan
+  /// No description provided for @settings.
   ///
   /// In id, this message translates to:
   /// **'Pengaturan'**
   String get settings;
 
-  /// Teks sambutan di halaman beranda
+  /// No description provided for @welcome.
   ///
   /// In id, this message translates to:
-  /// **'Selamat datang!'**
+  /// **'Selamat datang'**
   String get welcome;
 
-  /// Judul seksi tampilan di settings
+  /// No description provided for @appearance.
   ///
   /// In id, this message translates to:
   /// **'Tampilan'**
   String get appearance;
 
-  /// Pilihan tema: ikuti sistem
+  /// No description provided for @themeSystem.
   ///
   /// In id, this message translates to:
   /// **'Ikuti sistem'**
   String get themeSystem;
 
-  /// Pilihan tema: terang
+  /// No description provided for @themeLight.
   ///
   /// In id, this message translates to:
   /// **'Terang'**
   String get themeLight;
 
-  /// Pilihan tema: gelap
+  /// No description provided for @themeDark.
   ///
   /// In id, this message translates to:
   /// **'Gelap'**
   String get themeDark;
 
-  /// Subjudul mode gelap di variant settings
-  ///
-  /// In id, this message translates to:
-  /// **'Tampilan gelap'**
-  String get themeDarkSubtitle;
-
-  /// Judul seksi bahasa di settings
+  /// No description provided for @language.
   ///
   /// In id, this message translates to:
   /// **'Bahasa'**
   String get language;
 
-  /// Pilihan bahasa: Indonesia
+  /// No description provided for @langIndonesia.
   ///
   /// In id, this message translates to:
   /// **'Indonesia'**
   String get langIndonesia;
 
-  /// Pilihan bahasa: Inggris
+  /// No description provided for @langEnglish.
   ///
   /// In id, this message translates to:
-  /// **'English'**
+  /// **'Inggris'**
   String get langEnglish;
 
-  /// Subjudul pilihan bahasa Inggris di variant settings
-  ///
-  /// In id, this message translates to:
-  /// **'Use English language'**
-  String get langEnglishSubtitle;
-
-  /// Label versi di settings
+  /// No description provided for @version.
   ///
   /// In id, this message translates to:
   /// **'Versi'**
   String get version;
 
-  /// Label versi aplikasi di variant settings
+  /// No description provided for @signIn.
   ///
   /// In id, this message translates to:
-  /// **'Versi Aplikasi'**
-  String get appVersion;
-
-  /// Judul halaman login
-  ///
-  /// In id, this message translates to:
-  /// **'Masuk'**
+  /// **'Masuk ke TRIVA'**
   String get signIn;
 
-  /// Tombol OK
-  ///
-  /// In id, this message translates to:
-  /// **'OK'**
-  String get ok;
-
-  /// Tombol batal
-  ///
-  /// In id, this message translates to:
-  /// **'Batal'**
-  String get cancel;
-
-  /// Tombol simpan
-  ///
-  /// In id, this message translates to:
-  /// **'Simpan'**
-  String get save;
-
-  /// Tombol hapus
-  ///
-  /// In id, this message translates to:
-  /// **'Hapus'**
-  String get delete;
-
-  /// Teks loading
-  ///
-  /// In id, this message translates to:
-  /// **'Memuat...'**
-  String get loading;
-
-  /// Pesan error umum
-  ///
-  /// In id, this message translates to:
-  /// **'Terjadi kesalahan. Coba lagi.'**
-  String get errorGeneral;
-
-  /// Pesan error jaringan
-  ///
-  /// In id, this message translates to:
-  /// **'Tidak ada koneksi internet.'**
-  String get errorNetwork;
-
-  /// Validasi email tidak valid
-  ///
-  /// In id, this message translates to:
-  /// **'Masukkan email yang valid'**
-  String get errorInvalidEmail;
-
-  /// Validasi password terlalu pendek
-  ///
-  /// In id, this message translates to:
-  /// **'Minimal 6 karakter'**
-  String get errorPasswordTooShort;
-
-  /// Tombol masuk
+  /// No description provided for @login.
   ///
   /// In id, this message translates to:
   /// **'Masuk'**
   String get login;
 
-  /// Tombol keluar
+  /// No description provided for @logout.
   ///
   /// In id, this message translates to:
   /// **'Keluar'**
   String get logout;
 
-  /// Tombol daftar
-  ///
-  /// In id, this message translates to:
-  /// **'Daftar'**
-  String get register;
-
-  /// Label email
+  /// No description provided for @email.
   ///
   /// In id, this message translates to:
   /// **'Email'**
   String get email;
 
-  /// Label kata sandi
+  /// No description provided for @password.
   ///
   /// In id, this message translates to:
-  /// **'Kata Sandi'**
+  /// **'Kata sandi'**
   String get password;
 
-  /// Label halaman profil
+  /// No description provided for @profile.
   ///
   /// In id, this message translates to:
   /// **'Profil'**
   String get profile;
 
-  /// Label nama pengguna
+  /// No description provided for @name.
   ///
   /// In id, this message translates to:
   /// **'Nama'**
   String get name;
 
-  /// Konfirmasi dialog logout
+  /// No description provided for @errorGeneral.
   ///
   /// In id, this message translates to:
-  /// **'Yakin ingin keluar?'**
-  String get logoutConfirm;
+  /// **'Terjadi kendala. Silakan coba lagi.'**
+  String get errorGeneral;
 
-  /// No description provided for @galleryTitle.
+  /// No description provided for @errorInvalidEmail.
   ///
   /// In id, this message translates to:
-  /// **'UI Component Gallery'**
-  String get galleryTitle;
+  /// **'Masukkan alamat email yang valid'**
+  String get errorInvalidEmail;
 
-  /// No description provided for @gallerySubtitle.
+  /// No description provided for @errorPasswordTooShort.
   ///
   /// In id, this message translates to:
-  /// **'8 kategori komponen interaktif'**
-  String get gallerySubtitle;
+  /// **'Kata sandi minimal 6 karakter'**
+  String get errorPasswordTooShort;
 
-  /// No description provided for @galleryMenuDialogTitle.
+  /// No description provided for @splashTagline.
   ///
   /// In id, this message translates to:
-  /// **'Dialog & Popup'**
-  String get galleryMenuDialogTitle;
+  /// **'Upload, Appraise, Upgrade'**
+  String get splashTagline;
 
-  /// No description provided for @galleryMenuDialogSubtitle.
+  /// No description provided for @onboardingSkip.
   ///
   /// In id, this message translates to:
-  /// **'Alert, bottom sheet, custom dialog'**
-  String get galleryMenuDialogSubtitle;
+  /// **'Lewati'**
+  String get onboardingSkip;
 
-  /// No description provided for @galleryMenuFormTitle.
+  /// No description provided for @onboardingNext.
   ///
   /// In id, this message translates to:
-  /// **'Form & Input'**
-  String get galleryMenuFormTitle;
+  /// **'Selanjutnya'**
+  String get onboardingNext;
 
-  /// No description provided for @galleryMenuFormSubtitle.
+  /// No description provided for @onboardingStart.
   ///
   /// In id, this message translates to:
-  /// **'TextField, dropdown, date picker'**
-  String get galleryMenuFormSubtitle;
+  /// **'Mulai'**
+  String get onboardingStart;
 
-  /// No description provided for @galleryMenuCardsTitle.
+  /// No description provided for @onboardingValueTitle.
   ///
   /// In id, this message translates to:
-  /// **'Cards & List'**
-  String get galleryMenuCardsTitle;
+  /// **'Kenali nilai kendaraan'**
+  String get onboardingValueTitle;
 
-  /// No description provided for @galleryMenuCardsSubtitle.
+  /// No description provided for @onboardingValueDescription.
   ///
   /// In id, this message translates to:
-  /// **'Card variants dan dismissible list'**
-  String get galleryMenuCardsSubtitle;
+  /// **'Lengkapi data dan foto kendaraan untuk memperoleh indikasi nilai yang mudah dipahami.'**
+  String get onboardingValueDescription;
 
-  /// No description provided for @galleryMenuNavTitle.
+  /// No description provided for @onboardingTrackTitle.
   ///
   /// In id, this message translates to:
-  /// **'Navigation'**
-  String get galleryMenuNavTitle;
+  /// **'Pantau proses appraisal'**
+  String get onboardingTrackTitle;
 
-  /// No description provided for @galleryMenuNavSubtitle.
+  /// No description provided for @onboardingTrackDescription.
   ///
   /// In id, this message translates to:
-  /// **'TabBar, stepper, drawer demo'**
-  String get galleryMenuNavSubtitle;
+  /// **'Ikuti perkembangan permintaan dari pengajuan hingga hasil yang telah ditinjau appraiser.'**
+  String get onboardingTrackDescription;
 
-  /// No description provided for @galleryMenuLoadingTitle.
+  /// No description provided for @onboardingUpgradeTitle.
   ///
   /// In id, this message translates to:
-  /// **'Loading & Empty'**
-  String get galleryMenuLoadingTitle;
+  /// **'Siapkan langkah berikutnya'**
+  String get onboardingUpgradeTitle;
 
-  /// No description provided for @galleryMenuLoadingSubtitle.
+  /// No description provided for @onboardingUpgradeDescription.
   ///
   /// In id, this message translates to:
-  /// **'Shimmer, progress, empty states'**
-  String get galleryMenuLoadingSubtitle;
+  /// **'Lanjutkan hasil appraisal ke simulasi kredit, perbaikan, atau layanan kendaraan yang sesuai.'**
+  String get onboardingUpgradeDescription;
 
-  /// No description provided for @galleryMenuAnimTitle.
+  /// No description provided for @loginSubtitle.
   ///
   /// In id, this message translates to:
-  /// **'Animation'**
-  String get galleryMenuAnimTitle;
+  /// **'Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.'**
+  String get loginSubtitle;
 
-  /// No description provided for @galleryMenuAnimSubtitle.
+  /// No description provided for @loginFailedTitle.
   ///
   /// In id, this message translates to:
-  /// **'Hero, animated container, stagger'**
-  String get galleryMenuAnimSubtitle;
+  /// **'Tidak dapat masuk'**
+  String get loginFailedTitle;
 
-  /// No description provided for @galleryMenuFeedbackTitle.
+  /// No description provided for @loginFailedAction.
   ///
   /// In id, this message translates to:
-  /// **'Feedback'**
-  String get galleryMenuFeedbackTitle;
+  /// **'Tutup'**
+  String get loginFailedAction;
 
-  /// No description provided for @galleryMenuFeedbackSubtitle.
+  /// No description provided for @loginBiometricDivider.
   ///
   /// In id, this message translates to:
-  /// **'Rating, like, poll, OTP input'**
-  String get galleryMenuFeedbackSubtitle;
+  /// **'atau gunakan biometrik'**
+  String get loginBiometricDivider;
 
-  /// No description provided for @galleryMenuUtilitiesTitle.
+  /// No description provided for @loginBiometricAction.
   ///
   /// In id, this message translates to:
-  /// **'Utilities'**
-  String get galleryMenuUtilitiesTitle;
+  /// **'Masuk dengan biometrik'**
+  String get loginBiometricAction;
 
-  /// No description provided for @galleryMenuUtilitiesSubtitle.
+  /// No description provided for @homeHeroTitle.
   ///
   /// In id, this message translates to:
-  /// **'Chip, badge, search, clipboard'**
-  String get galleryMenuUtilitiesSubtitle;
+  /// **'Kenali nilai kendaraan Anda'**
+  String get homeHeroTitle;
 
-  /// No description provided for @galleryDialogScreenTitle.
+  /// No description provided for @homeHeroDescription.
   ///
   /// In id, this message translates to:
-  /// **'Dialog & Popup'**
-  String get galleryDialogScreenTitle;
+  /// **'Satu alur untuk mengunggah data kendaraan, memantau appraisal, dan menyiapkan langkah upgrade berikutnya.'**
+  String get homeHeroDescription;
 
-  /// No description provided for @galleryFormScreenTitle.
+  /// No description provided for @homeLoginAction.
   ///
   /// In id, this message translates to:
-  /// **'Form & Input Components'**
-  String get galleryFormScreenTitle;
+  /// **'Masuk ke TRIVA'**
+  String get homeLoginAction;
 
-  /// No description provided for @galleryCardsScreenTitle.
+  /// No description provided for @homeProfileAction.
   ///
   /// In id, this message translates to:
-  /// **'Cards & List Variants'**
-  String get galleryCardsScreenTitle;
+  /// **'Lihat profil saya'**
+  String get homeProfileAction;
 
-  /// No description provided for @galleryNavScreenTitle.
+  /// No description provided for @homeServicesTitle.
   ///
   /// In id, this message translates to:
-  /// **'Navigation & Tab Patterns'**
-  String get galleryNavScreenTitle;
+  /// **'Layanan TRIVA'**
+  String get homeServicesTitle;
 
-  /// No description provided for @galleryLoadingScreenTitle.
+  /// No description provided for @homeServicesSubtitle.
   ///
   /// In id, this message translates to:
-  /// **'Loading & Empty States'**
-  String get galleryLoadingScreenTitle;
+  /// **'TRIVA menyatukan appraisal dan layanan lanjutan Auto2000 Kertajaya dalam pengalaman yang ringkas.'**
+  String get homeServicesSubtitle;
 
-  /// No description provided for @galleryAnimScreenTitle.
+  /// No description provided for @serviceAppraisalTitle.
   ///
   /// In id, this message translates to:
-  /// **'Animation Showcase'**
-  String get galleryAnimScreenTitle;
+  /// **'Appraisal trade-in'**
+  String get serviceAppraisalTitle;
 
-  /// No description provided for @galleryFeedbackScreenTitle.
+  /// No description provided for @serviceAppraisalDescription.
   ///
   /// In id, this message translates to:
-  /// **'Feedback & Interaksi'**
-  String get galleryFeedbackScreenTitle;
+  /// **'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang ditinjau appraiser.'**
+  String get serviceAppraisalDescription;
 
-  /// No description provided for @galleryUtilitiesScreenTitle.
+  /// No description provided for @serviceToyotaTitle.
   ///
   /// In id, this message translates to:
-  /// **'Utilities & Helpers'**
-  String get galleryUtilitiesScreenTitle;
+  /// **'Booking servis Toyota'**
+  String get serviceToyotaTitle;
 
-  /// No description provided for @galleryTabCards.
+  /// No description provided for @serviceToyotaDescription.
   ///
   /// In id, this message translates to:
-  /// **'Cards'**
-  String get galleryTabCards;
+  /// **'Ajukan jadwal perawatan kendaraan Toyota dan pantau konfirmasinya.'**
+  String get serviceToyotaDescription;
 
-  /// No description provided for @galleryTabLists.
+  /// No description provided for @serviceOtoxpertTitle.
   ///
   /// In id, this message translates to:
-  /// **'Lists'**
-  String get galleryTabLists;
+  /// **'Booking OtoXpert'**
+  String get serviceOtoxpertTitle;
 
-  /// No description provided for @galleryTabTabBar.
+  /// No description provided for @serviceOtoxpertDescription.
   ///
   /// In id, this message translates to:
-  /// **'Tab Bar'**
-  String get galleryTabTabBar;
+  /// **'Temukan layanan perawatan untuk kendaraan non-Toyota melalui jaringan OtoXpert.'**
+  String get serviceOtoxpertDescription;
 
-  /// No description provided for @galleryTabBottomNav.
+  /// No description provided for @serviceCreditTitle.
   ///
   /// In id, this message translates to:
-  /// **'Bottom Nav'**
-  String get galleryTabBottomNav;
+  /// **'Simulasi kredit'**
+  String get serviceCreditTitle;
 
-  /// No description provided for @galleryTabStepper.
+  /// No description provided for @serviceCreditDescription.
   ///
   /// In id, this message translates to:
-  /// **'Stepper'**
-  String get galleryTabStepper;
+  /// **'Hitung estimasi cicilan berdasarkan program kredit, uang muka, dan tenor.'**
+  String get serviceCreditDescription;
 
-  /// No description provided for @galleryTabDrawer.
+  /// No description provided for @serviceBodyPaintTitle.
   ///
   /// In id, this message translates to:
-  /// **'Drawer'**
-  String get galleryTabDrawer;
+  /// **'Estimasi Body & Paint'**
+  String get serviceBodyPaintTitle;
 
-  /// No description provided for @galleryTabLoading.
+  /// No description provided for @serviceBodyPaintDescription.
   ///
   /// In id, this message translates to:
-  /// **'Loading'**
-  String get galleryTabLoading;
+  /// **'Dapatkan indikasi biaya perbaikan panel sebelum pemeriksaan fisik.'**
+  String get serviceBodyPaintDescription;
 
-  /// No description provided for @galleryTabEmptyState.
+  /// No description provided for @homeProcessTitle.
   ///
   /// In id, this message translates to:
-  /// **'Empty State'**
-  String get galleryTabEmptyState;
+  /// **'Cara kerja appraisal'**
+  String get homeProcessTitle;
 
-  /// No description provided for @gallerySectionAlertDialogs.
+  /// No description provided for @processVehicleTitle.
   ///
   /// In id, this message translates to:
-  /// **'Alert Dialogs'**
-  String get gallerySectionAlertDialogs;
+  /// **'Lengkapi kendaraan'**
+  String get processVehicleTitle;
 
-  /// No description provided for @gallerySectionAlertDialogsDesc.
+  /// No description provided for @processVehicleDescription.
   ///
   /// In id, this message translates to:
-  /// **'Berbagai jenis alert dialog'**
-  String get gallerySectionAlertDialogsDesc;
+  /// **'Isi identitas kendaraan dan unggah foto kondisi yang diminta.'**
+  String get processVehicleDescription;
 
-  /// No description provided for @gallerySectionBottomSheets.
+  /// No description provided for @processReviewTitle.
   ///
   /// In id, this message translates to:
-  /// **'Bottom Sheets'**
-  String get gallerySectionBottomSheets;
+  /// **'Appraiser meninjau'**
+  String get processReviewTitle;
 
-  /// No description provided for @gallerySectionBottomSheetsDesc.
+  /// No description provided for @processReviewDescription.
   ///
   /// In id, this message translates to:
-  /// **'Modal sheet dari bawah layar'**
-  String get gallerySectionBottomSheetsDesc;
+  /// **'Data pembanding dan kondisi kendaraan diperiksa sebelum hasil diterbitkan.'**
+  String get processReviewDescription;
 
-  /// No description provided for @gallerySectionCustomDialogs.
+  /// No description provided for @processResultTitle.
   ///
   /// In id, this message translates to:
-  /// **'Custom Dialogs'**
-  String get gallerySectionCustomDialogs;
+  /// **'Terima hasil dan lanjutkan'**
+  String get processResultTitle;
 
-  /// No description provided for @gallerySectionCustomDialogsDesc.
+  /// No description provided for @processResultDescription.
   ///
   /// In id, this message translates to:
-  /// **'Dialog animasi dan loading'**
-  String get gallerySectionCustomDialogsDesc;
+  /// **'Gunakan hasil appraisal untuk memilih kredit, perbaikan, atau booking layanan.'**
+  String get processResultDescription;
 
-  /// No description provided for @gallerySectionSnackbarVariants.
+  /// No description provided for @homeFooter.
   ///
   /// In id, this message translates to:
-  /// **'SnackBar Variants'**
-  String get gallerySectionSnackbarVariants;
-
-  /// No description provided for @gallerySectionSnackbarVariantsDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Info, sukses, warning, error'**
-  String get gallerySectionSnackbarVariantsDesc;
-
-  /// No description provided for @gallerySectionTextFields.
-  ///
-  /// In id, this message translates to:
-  /// **'Text Fields'**
-  String get gallerySectionTextFields;
-
-  /// No description provided for @gallerySectionTextFieldsDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Berbagai jenis input teks'**
-  String get gallerySectionTextFieldsDesc;
-
-  /// No description provided for @gallerySectionSelectors.
-  ///
-  /// In id, this message translates to:
-  /// **'Selectors'**
-  String get gallerySectionSelectors;
-
-  /// No description provided for @gallerySectionSelectorsDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Dropdown, date picker, radio, checkbox'**
-  String get gallerySectionSelectorsDesc;
-
-  /// No description provided for @gallerySectionTogglesSliders.
-  ///
-  /// In id, this message translates to:
-  /// **'Toggles & Sliders'**
-  String get gallerySectionTogglesSliders;
-
-  /// No description provided for @gallerySectionTogglesSlidersDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Switch dan range input'**
-  String get gallerySectionTogglesSlidersDesc;
-
-  /// No description provided for @gallerySectionShimmer.
-  ///
-  /// In id, this message translates to:
-  /// **'1. Shimmer Loading'**
-  String get gallerySectionShimmer;
-
-  /// No description provided for @gallerySectionShimmerDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Manual tanpa library, ShaderMask + LinearGradient'**
-  String get gallerySectionShimmerDesc;
-
-  /// No description provided for @gallerySectionSkeleton.
-  ///
-  /// In id, this message translates to:
-  /// **'2. Skeleton Screen'**
-  String get gallerySectionSkeleton;
-
-  /// No description provided for @gallerySectionSkeletonDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Layout placeholder sebelum konten siap'**
-  String get gallerySectionSkeletonDesc;
-
-  /// No description provided for @gallerySectionLinearProgress.
-  ///
-  /// In id, this message translates to:
-  /// **'3. Linear Progress Indicator'**
-  String get gallerySectionLinearProgress;
-
-  /// No description provided for @gallerySectionLinearProgressDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Determinate, 0–100% dalam 3 detik'**
-  String get gallerySectionLinearProgressDesc;
-
-  /// No description provided for @gallerySectionCircularProgress.
-  ///
-  /// In id, this message translates to:
-  /// **'4. Circular Progress'**
-  String get gallerySectionCircularProgress;
-
-  /// No description provided for @gallerySectionCircularProgressDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Determinate dengan % di tengah'**
-  String get gallerySectionCircularProgressDesc;
-
-  /// No description provided for @gallerySectionPullToRefresh.
-  ///
-  /// In id, this message translates to:
-  /// **'5. Pull-to-Refresh'**
-  String get gallerySectionPullToRefresh;
-
-  /// No description provided for @gallerySectionPullToRefreshDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tarik ke bawah untuk refresh list'**
-  String get gallerySectionPullToRefreshDesc;
-
-  /// No description provided for @gallerySectionEmptyNoData.
-  ///
-  /// In id, this message translates to:
-  /// **'6. Empty State — Tidak Ada Data'**
-  String get gallerySectionEmptyNoData;
-
-  /// No description provided for @gallerySectionEmptyNoDataDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Ilustrasi + CTA'**
-  String get gallerySectionEmptyNoDataDesc;
-
-  /// No description provided for @gallerySectionEmptyNoInternet.
-  ///
-  /// In id, this message translates to:
-  /// **'7. Empty State — Tidak Ada Koneksi'**
-  String get gallerySectionEmptyNoInternet;
-
-  /// No description provided for @gallerySectionEmptyNoInternetDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Retry dengan loading simulasi'**
-  String get gallerySectionEmptyNoInternetDesc;
-
-  /// No description provided for @gallerySectionEmptyError.
-  ///
-  /// In id, this message translates to:
-  /// **'8. Empty State — Error'**
-  String get gallerySectionEmptyError;
-
-  /// No description provided for @gallerySectionEmptyErrorDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Something went wrong'**
-  String get gallerySectionEmptyErrorDesc;
-
-  /// No description provided for @gallerySectionHeroAnim.
-  ///
-  /// In id, this message translates to:
-  /// **'1. Hero Animation'**
-  String get gallerySectionHeroAnim;
-
-  /// No description provided for @gallerySectionHeroAnimDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tap kotak untuk navigasi dengan Hero transition'**
-  String get gallerySectionHeroAnimDesc;
-
-  /// No description provided for @gallerySectionAnimContainer.
-  ///
-  /// In id, this message translates to:
-  /// **'2. Animated Container'**
-  String get gallerySectionAnimContainer;
-
-  /// No description provided for @gallerySectionAnimContainerDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Toggle ukuran, warna, border radius'**
-  String get gallerySectionAnimContainerDesc;
-
-  /// No description provided for @gallerySectionPageTransition.
-  ///
-  /// In id, this message translates to:
-  /// **'3. Page Transition Custom'**
-  String get gallerySectionPageTransition;
-
-  /// No description provided for @gallerySectionPageTransitionDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Fade, slide, scale'**
-  String get gallerySectionPageTransitionDesc;
-
-  /// No description provided for @gallerySectionAnimatedList.
-  ///
-  /// In id, this message translates to:
-  /// **'4. Animated List'**
-  String get gallerySectionAnimatedList;
-
-  /// No description provided for @gallerySectionAnimatedListDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tambah dan hapus item dengan animasi'**
-  String get gallerySectionAnimatedListDesc;
-
-  /// No description provided for @gallerySectionAnimatedIcons.
-  ///
-  /// In id, this message translates to:
-  /// **'5. Animated Icons'**
-  String get gallerySectionAnimatedIcons;
-
-  /// No description provided for @gallerySectionAnimatedIconsDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Toggle animasi ikon Flutter bawaan'**
-  String get gallerySectionAnimatedIconsDesc;
-
-  /// No description provided for @gallerySectionStaggered.
-  ///
-  /// In id, this message translates to:
-  /// **'6. Staggered Animation'**
-  String get gallerySectionStaggered;
-
-  /// No description provided for @gallerySectionStaggeredDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Card muncul satu per satu dengan delay'**
-  String get gallerySectionStaggeredDesc;
-
-  /// No description provided for @gallerySectionStarRating.
-  ///
-  /// In id, this message translates to:
-  /// **'1. Star Rating'**
-  String get gallerySectionStarRating;
-
-  /// No description provided for @gallerySectionStarRatingDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tap atau drag untuk beri rating'**
-  String get gallerySectionStarRatingDesc;
-
-  /// No description provided for @gallerySectionLikeButton.
-  ///
-  /// In id, this message translates to:
-  /// **'2. Like Button'**
-  String get gallerySectionLikeButton;
-
-  /// No description provided for @gallerySectionLikeButtonDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Animasi pop saat di-tap'**
-  String get gallerySectionLikeButtonDesc;
-
-  /// No description provided for @gallerySectionReactionPicker.
-  ///
-  /// In id, this message translates to:
-  /// **'3. Reaction Picker'**
-  String get gallerySectionReactionPicker;
-
-  /// No description provided for @gallerySectionReactionPickerDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Long press untuk emoji reactions'**
-  String get gallerySectionReactionPickerDesc;
-
-  /// No description provided for @gallerySectionCommentInput.
-  ///
-  /// In id, this message translates to:
-  /// **'4. Comment Input'**
-  String get gallerySectionCommentInput;
-
-  /// No description provided for @gallerySectionCommentInputDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Kirim komentar, masuk ke list'**
-  String get gallerySectionCommentInputDesc;
-
-  /// No description provided for @gallerySectionQuickPoll.
-  ///
-  /// In id, this message translates to:
-  /// **'5. Quick Poll'**
-  String get gallerySectionQuickPoll;
-
-  /// No description provided for @gallerySectionQuickPollDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Pilih satu opsi, lihat hasil persentase'**
-  String get gallerySectionQuickPollDesc;
-
-  /// No description provided for @gallerySectionOtpInput.
-  ///
-  /// In id, this message translates to:
-  /// **'6. OTP / PIN Input'**
-  String get gallerySectionOtpInput;
-
-  /// No description provided for @gallerySectionOtpInputDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Coba masukkan 123456'**
-  String get gallerySectionOtpInputDesc;
-
-  /// No description provided for @gallerySectionChipVariants.
-  ///
-  /// In id, this message translates to:
-  /// **'1. Chip Variants'**
-  String get gallerySectionChipVariants;
-
-  /// No description provided for @gallerySectionChipVariantsDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Input, filter, action, choice chip'**
-  String get gallerySectionChipVariantsDesc;
-
-  /// No description provided for @gallerySectionBadge.
-  ///
-  /// In id, this message translates to:
-  /// **'2. Badge & Notification Dot'**
-  String get gallerySectionBadge;
-
-  /// No description provided for @gallerySectionBadgeDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Angka badge +1 / reset'**
-  String get gallerySectionBadgeDesc;
-
-  /// No description provided for @gallerySectionSearchFilter.
-  ///
-  /// In id, this message translates to:
-  /// **'3. Search Bar + Filter'**
-  String get gallerySectionSearchFilter;
-
-  /// No description provided for @gallerySectionSearchFilterDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Filter list real-time saat mengetik'**
-  String get gallerySectionSearchFilterDesc;
-
-  /// No description provided for @gallerySectionTooltip.
-  ///
-  /// In id, this message translates to:
-  /// **'4. Tooltip'**
-  String get gallerySectionTooltip;
-
-  /// No description provided for @gallerySectionTooltipDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Long press untuk lihat tooltip custom'**
-  String get gallerySectionTooltipDesc;
-
-  /// No description provided for @gallerySectionClipboard.
-  ///
-  /// In id, this message translates to:
-  /// **'5. Copy to Clipboard'**
-  String get gallerySectionClipboard;
-
-  /// No description provided for @gallerySectionClipboardDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tap salin untuk copy token/kode'**
-  String get gallerySectionClipboardDesc;
-
-  /// No description provided for @gallerySectionImagePicker.
-  ///
-  /// In id, this message translates to:
-  /// **'6. Image Picker Placeholder'**
-  String get gallerySectionImagePicker;
-
-  /// No description provided for @gallerySectionImagePickerDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tap area foto untuk opsi pilih gambar'**
-  String get gallerySectionImagePickerDesc;
-
-  /// No description provided for @gallerySectionColorPicker.
-  ///
-  /// In id, this message translates to:
-  /// **'7. Color Picker'**
-  String get gallerySectionColorPicker;
-
-  /// No description provided for @gallerySectionColorPickerDesc.
-  ///
-  /// In id, this message translates to:
-  /// **'Tap palet warna untuk pilih warna'**
-  String get gallerySectionColorPickerDesc;
-
-  /// No description provided for @quotesTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Manajemen Kutipan'**
-  String get quotesTitle;
-
-  /// No description provided for @quotesEmpty.
-  ///
-  /// In id, this message translates to:
-  /// **'Belum ada kutipan. Mulai tambahkan inspirasi Anda!'**
-  String get quotesEmpty;
-
-  /// No description provided for @quotesAdd.
-  ///
-  /// In id, this message translates to:
-  /// **'Tambah Kutipan'**
-  String get quotesAdd;
-
-  /// No description provided for @quotesCreate.
-  ///
-  /// In id, this message translates to:
-  /// **'Buat Kutipan Baru'**
-  String get quotesCreate;
-
-  /// No description provided for @quotesEdit.
-  ///
-  /// In id, this message translates to:
-  /// **'Edit Kutipan'**
-  String get quotesEdit;
-
-  /// No description provided for @quotesDelete.
-  ///
-  /// In id, this message translates to:
-  /// **'Hapus Kutipan'**
-  String get quotesDelete;
-
-  /// No description provided for @quotesDeleteConfirm.
-  ///
-  /// In id, this message translates to:
-  /// **'Apakah Anda yakin ingin menghapus kutipan ini?'**
-  String get quotesDeleteConfirm;
-
-  /// No description provided for @quotesDeleteSuccess.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan berhasil dihapus'**
-  String get quotesDeleteSuccess;
-
-  /// No description provided for @quotesSaveSuccess.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan berhasil disimpan'**
-  String get quotesSaveSuccess;
-
-  /// No description provided for @quotesUpdateSuccess.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan berhasil diperbarui'**
-  String get quotesUpdateSuccess;
-
-  /// No description provided for @quotesTextLabel.
-  ///
-  /// In id, this message translates to:
-  /// **'Isi Kutipan'**
-  String get quotesTextLabel;
-
-  /// No description provided for @quotesTextHint.
-  ///
-  /// In id, this message translates to:
-  /// **'Tulis isi kutipan di sini...'**
-  String get quotesTextHint;
-
-  /// No description provided for @quotesTextValidation.
-  ///
-  /// In id, this message translates to:
-  /// **'Isi kutipan minimal 5 karakter'**
-  String get quotesTextValidation;
-
-  /// No description provided for @quotesAuthorLabel.
-  ///
-  /// In id, this message translates to:
-  /// **'Nama Penulis / Tokoh'**
-  String get quotesAuthorLabel;
-
-  /// No description provided for @quotesAuthorHint.
-  ///
-  /// In id, this message translates to:
-  /// **'Contoh: Ir. Soekarno'**
-  String get quotesAuthorHint;
-
-  /// No description provided for @quotesAuthorValidation.
-  ///
-  /// In id, this message translates to:
-  /// **'Nama penulis wajib diisi'**
-  String get quotesAuthorValidation;
-
-  /// No description provided for @quotesSourceLabel.
-  ///
-  /// In id, this message translates to:
-  /// **'Sumber (opsional)'**
-  String get quotesSourceLabel;
-
-  /// No description provided for @quotesSourceHint.
-  ///
-  /// In id, this message translates to:
-  /// **'Contoh: Buku, Pidato, Wawancara'**
-  String get quotesSourceHint;
-
-  /// No description provided for @quotesIsActive.
-  ///
-  /// In id, this message translates to:
-  /// **'Status Aktif'**
-  String get quotesIsActive;
-
-  /// No description provided for @quotesMenuLabel.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan'**
-  String get quotesMenuLabel;
-
-  /// No description provided for @quotesSyncPending.
-  ///
-  /// In id, this message translates to:
-  /// **'Menunggu Sinkronisasi'**
-  String get quotesSyncPending;
-
-  /// No description provided for @quotesSyncOfflineEdit.
-  ///
-  /// In id, this message translates to:
-  /// **'Diedit Offline'**
-  String get quotesSyncOfflineEdit;
-
-  /// No description provided for @quotesSynced.
-  ///
-  /// In id, this message translates to:
-  /// **'Tersinkronisasi'**
-  String get quotesSynced;
-
-  /// No description provided for @quotesWorkingOffline.
-  ///
-  /// In id, this message translates to:
-  /// **'Bekerja Offline'**
-  String get quotesWorkingOffline;
-
-  /// No description provided for @quotesFilterAll.
-  ///
-  /// In id, this message translates to:
-  /// **'Semua'**
-  String get quotesFilterAll;
-
-  /// No description provided for @quotesFilterActive.
-  ///
-  /// In id, this message translates to:
-  /// **'Aktif'**
-  String get quotesFilterActive;
-
-  /// No description provided for @quotesFilterInactive.
-  ///
-  /// In id, this message translates to:
-  /// **'Nonaktif'**
-  String get quotesFilterInactive;
-
-  /// No description provided for @quotesSortAZ.
-  ///
-  /// In id, this message translates to:
-  /// **'A-Z Penulis'**
-  String get quotesSortAZ;
-
-  /// No description provided for @quotesSortNewest.
-  ///
-  /// In id, this message translates to:
-  /// **'Terbaru'**
-  String get quotesSortNewest;
-
-  /// No description provided for @quotesSearchHint.
-  ///
-  /// In id, this message translates to:
-  /// **'Cari kutipan atau penulis...'**
-  String get quotesSearchHint;
-
-  /// No description provided for @quotesRetry.
-  ///
-  /// In id, this message translates to:
-  /// **'Coba Lagi'**
-  String get quotesRetry;
-
-  /// No description provided for @quotesLoadError.
-  ///
-  /// In id, this message translates to:
-  /// **'Gagal Memuat Data'**
-  String get quotesLoadError;
-
-  /// No description provided for @quotesSave.
-  ///
-  /// In id, this message translates to:
-  /// **'Simpan Kutipan'**
-  String get quotesSave;
-
-  /// No description provided for @quotesCancel.
-  ///
-  /// In id, this message translates to:
-  /// **'Batal'**
-  String get quotesCancel;
-
-  /// No description provided for @quotesConfirmDelete.
-  ///
-  /// In id, this message translates to:
-  /// **'Hapus'**
-  String get quotesConfirmDelete;
-
-  /// No description provided for @quoteOfTheDayTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan Hari Ini'**
-  String get quoteOfTheDayTitle;
-
-  /// No description provided for @quoteOfTheDayEmpty.
-  ///
-  /// In id, this message translates to:
-  /// **'Belum ada kutipan aktif. Ketuk di sini untuk menulis inspirasi pertama Anda!'**
-  String get quoteOfTheDayEmpty;
-
-  /// No description provided for @quoteOfTheDayCopySuccess.
-  ///
-  /// In id, this message translates to:
-  /// **'Kutipan berhasil disalin ke papan klip!'**
-  String get quoteOfTheDayCopySuccess;
+  /// **'TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya'**
+  String get homeFooter;
 }
 
 class _AppLocalizationsDelegate

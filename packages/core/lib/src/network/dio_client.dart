@@ -28,13 +28,6 @@ class DioClient {
       ),
       _errorInterceptor(),
     ]);
-
-    // Certificate pinning — production only.
-    // TODO: Uncomment after configuring real server fingerprints
-    //       in certificate_pinning.dart.
-    // if (AppConfig.instance.environment == Environment.prod) {
-    //   CertificatePinning.configure(_dio);
-    // }
   }
 
   late final Dio _dio;

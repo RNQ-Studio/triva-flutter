@@ -1,17 +1,20 @@
-# app_main
+# TRIVA app
 
-A new Flutter project.
+Entry point aplikasi pelanggan TRIVA.
 
-## Getting Started
+```powershell
+flutter run --dart-define=ENV=dev
+flutter build apk --release --dart-define=ENV=prod
+```
 
-This project is a starting point for a Flutter application.
+Identitas native:
 
-A few resources to get you started if this is your first Flutter project:
+- Android: `id.rnq.triva`
+- iOS: `id.rnq.triva`
+- Web title: `TRIVA`
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Launcher icon dibuat dari aset resmi di `assets/branding/` dengan:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```powershell
+dart run flutter_launcher_icons
+```

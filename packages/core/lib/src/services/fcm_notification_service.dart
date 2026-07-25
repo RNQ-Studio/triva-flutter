@@ -1,14 +1,13 @@
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 
 /// Callback handler for background messages.
 ///
 /// Must be a **top-level function** (not a class method)
 /// because it runs in its own isolate on Android.
 @pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint('Background message received: ${message.messageId}');
-}
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 /// Service layer for Firebase Cloud Messaging (FCM).
 ///
@@ -16,12 +15,16 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 /// for foreground, background, and terminated-state notifications.
 class FCMNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  StreamSubscription<String>? _tokenRefreshSubscription;
+  StreamSubscription<RemoteMessage>? _foregroundSubscription;
+  StreamSubscription<RemoteMessage>? _openedAppSubscription;
 
   /// Initializes FCM: requests permission, retrieves token,
   /// and registers foreground/background listeners.
   Future<void> init({
     required void Function(RemoteMessage) onForegroundMessage,
     required void Function(RemoteMessage) onMessageOpenedApp,
+    Future<void> Function(String token)? onTokenChanged,
   }) async {
     // 1. Request permission (iOS & Android 13+)
     final settings = await _fcm.requestPermission(
@@ -31,28 +34,28 @@ class FCMNotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      // 2. Get FCM token
       final token = await _fcm.getToken();
-      debugPrint('FCM Token: $token');
+      if (token != null && onTokenChanged != null) {
+        await onTokenChanged(token);
+      }
 
-      // 3. Listen for token refresh
-      _fcm.onTokenRefresh.listen((newToken) {
-        debugPrint('FCM Token refreshed: $newToken');
-        // TODO: Send the new token to your backend
+      await _tokenRefreshSubscription?.cancel();
+      _tokenRefreshSubscription = _fcm.onTokenRefresh.listen((newToken) async {
+        await onTokenChanged?.call(newToken);
       });
 
-      // 4. Configure foreground listener
-      FirebaseMessaging.onMessage.listen(onForegroundMessage);
+      await _foregroundSubscription?.cancel();
+      _foregroundSubscription =
+          FirebaseMessaging.onMessage.listen(onForegroundMessage);
 
-      // 5. Configure notification-click (app opened from background)
-      FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedApp);
+      await _openedAppSubscription?.cancel();
+      _openedAppSubscription =
+          FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedApp);
 
-      // 6. Register background handler
       FirebaseMessaging.onBackgroundMessage(
         firebaseMessagingBackgroundHandler,
       );
 
-      // 7. Handle initial message (app launched from terminated state)
       final initialMessage = await _fcm.getInitialMessage();
       if (initialMessage != null) {
         onMessageOpenedApp(initialMessage);
@@ -62,4 +65,10 @@ class FCMNotificationService {
 
   /// Returns the current FCM device token, or `null` if unavailable.
   Future<String?> getToken() => _fcm.getToken();
+
+  Future<void> dispose() async {
+    await _tokenRefreshSubscription?.cancel();
+    await _foregroundSubscription?.cancel();
+    await _openedAppSubscription?.cancel();
+  }
 }

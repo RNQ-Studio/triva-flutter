@@ -17,7 +17,6 @@ class App extends StatelessWidget {
       overrides: [
         storageServiceProvider.overrideWithValue(storage),
         appDatabaseProvider.overrideWithValue(database),
-
       ],
       child: const _AppRouter(),
     );
@@ -48,7 +47,8 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     final locale = ref.watch(localeProvider).asData?.value;
 
     return MaterialApp.router(
-      title: 'Starter Main',
+      title: 'TRIVA',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,

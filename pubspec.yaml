@@ -1,4 +1,4 @@
-name: flutter_starter_workspace
+name: triva_workspace
 publish_to: none
 
 environment:
@@ -11,7 +11,6 @@ workspace:
   - packages/core
   - packages/features_shared
   - apps/main
-  - apps/variant
 
 melos:
   packages:
@@ -21,10 +20,6 @@ melos:
     dev:
       run: cd apps/main && flutter run --dart-define=ENV=dev
       description: Run the main app in dev environment.
-
-    "dev:variant":
-      run: cd apps/variant && flutter run --dart-define=ENV=dev
-      description: Run the variant app in dev environment.
 
     l10n:
       run: cd packages/core && flutter gen-l10n
@@ -41,8 +36,8 @@ melos:
       description: Auto-generate l10n and run codegen after bootstrap
 
     analyze:
-      run: dart analyze packages/core packages/features_shared apps/main apps/variant
-      description: Analyze all packages and apps.
+      run: dart analyze packages/core packages/features_shared apps/main
+      description: Analyze the TRIVA app and shared packages.
 
     format:
       run: dart format --line-length=80 packages apps
@@ -53,61 +48,41 @@ melos:
       description: Check Dart formatting without changing files.
 
     build:android:
-      run: cd apps/main && flutter build apk --dart-define=ENV=prod && cd ../variant && flutter build apk --dart-define=ENV=prod
-      description: Build Android APKs for all apps.
+      run: cd apps/main && flutter build apk --dart-define=ENV=prod
+      description: Build the TRIVA Android APK.
 
     "build:android:main":
       run: cd apps/main && flutter build apk --dart-define=ENV=prod
       description: Build Android APK for the main app.
 
-    "build:android:variant":
-      run: cd apps/variant && flutter build apk --dart-define=ENV=prod
-      description: Build Android APK for the variant app.
-
     build:ios:
-      run: cd apps/main && flutter build ipa --dart-define=ENV=prod && cd ../variant && flutter build ipa --dart-define=ENV=prod
-      description: Build iOS IPAs for all apps.
+      run: cd apps/main && flutter build ipa --dart-define=ENV=prod
+      description: Build the TRIVA iOS IPA.
 
     "build:ios:main":
       run: cd apps/main && flutter build ipa --dart-define=ENV=prod
       description: Build iOS IPA for the main app.
 
-    "build:ios:variant":
-      run: cd apps/variant && flutter build ipa --dart-define=ENV=prod
-      description: Build iOS IPA for the variant app.
-
     build:web:
-      run: cd apps/main && flutter build web --dart-define=ENV=prod && cd ../variant && flutter build web --dart-define=ENV=prod
-      description: Build web output for all apps.
+      run: cd apps/main && flutter build web --dart-define=ENV=prod
+      description: Build the TRIVA web app.
 
     "build:web:main":
       run: cd apps/main && flutter build web --dart-define=ENV=prod
       description: Build web output for the main app.
 
-    "build:web:variant":
-      run: cd apps/variant && flutter build web --dart-define=ENV=prod
-      description: Build web output for the variant app.
-
     test:
-      run: flutter test apps/main/test apps/variant/test packages/core/test packages/features_shared/test
-      description: Run tests for all packages and apps.
+      run: cd packages/core && flutter test && cd ../features_shared && flutter test && cd ../../apps/main && flutter test
+      description: Run tests for TRIVA and its shared packages.
 
     "test:core":
-      run: flutter test packages/core/test
+      run: cd packages/core && flutter test
       description: Run tests for the core package.
 
     "test:features_shared":
-      run: flutter test packages/features_shared/test
+      run: cd packages/features_shared && flutter test
       description: Run tests for the features_shared package.
 
     "test:main":
-      run: flutter test apps/main/test
+      run: cd apps/main && flutter test
       description: Run tests for the main app.
-
-    "test:variant":
-      run: flutter test apps/variant/test
-      description: Run tests for the variant app.
-
-    make-feature:
-      run: mason make feature --output-dir packages/features_shared/lib/src/
-      description: Generate a new Clean Architecture feature with Mason
