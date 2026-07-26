@@ -73,5 +73,12 @@ Firebase CLI harus sudah terautentikasi ke akun yang memiliki akses ke project
 tersebut. Konfigurasi target dan Hosting berada di
 `apps/main/.firebaserc` serta `apps/main/firebase.json`.
 
+Database Drift pada web memakai `apps/main/web/sqlite3.wasm` dari release
+`sqlite3-3.3.1` dan `apps/main/web/drift_worker.js` dari release
+`drift-2.33.0`. Versi kedua asset harus selalu mengikuti `pubspec.lock`.
+Firebase Authentication juga harus mengizinkan domain `triva.web.app`, dan
+OAuth web client ID publik dikonfigurasi melalui meta tag di
+`apps/main/web/index.html`.
+
 Requirement produk, kontrak API, dan current state lintas stack berada di
 `../triva-docs`.
