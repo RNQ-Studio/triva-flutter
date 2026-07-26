@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/datasources/auth_local_data_source.dart';
 import '../data/datasources/auth_remote_data_source.dart';
+import '../data/google_sign_in_client.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../domain/repositories/auth_repository.dart';
 
@@ -31,9 +32,15 @@ AuthLocalDataSource _authLocalDataSource(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
+GoogleSignInClient _googleSignInClient(Ref ref) {
+  return GoogleSignInClient();
+}
+
+@Riverpod(keepAlive: true)
 AuthRepository authRepository(Ref ref) {
   return AuthRepositoryImpl(
     remote: ref.watch(_authRemoteDataSourceProvider),
     local: ref.watch(_authLocalDataSourceProvider),
+    googleSignInClient: ref.watch(_googleSignInClientProvider),
   );
 }

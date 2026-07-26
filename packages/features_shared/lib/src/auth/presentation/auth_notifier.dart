@@ -1,8 +1,10 @@
+import 'package:core/core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/biometric_auth_service.dart';
 import '../domain/usecases/get_current_user_use_case.dart';
 import '../domain/usecases/login_use_case.dart';
+import '../domain/usecases/login_with_google_use_case.dart';
 import '../domain/usecases/logout_use_case.dart';
 import '../domain/usecases/register_use_case.dart';
 import 'auth_repository_provider.dart';
@@ -14,6 +16,7 @@ part 'auth_notifier.g.dart';
 class AuthNotifier extends _$AuthNotifier {
   late GetCurrentUserUseCase _getCurrentUser;
   late LoginUseCase _login;
+  late LoginWithGoogleUseCase _loginWithGoogle;
   late LogoutUseCase _logout;
   late RegisterUseCase _register;
 
@@ -22,6 +25,7 @@ class AuthNotifier extends _$AuthNotifier {
     final repo = ref.watch(authRepositoryProvider);
     _getCurrentUser = GetCurrentUserUseCase(repo);
     _login = LoginUseCase(repo);
+    _loginWithGoogle = LoginWithGoogleUseCase(repo);
     _logout = LogoutUseCase(repo);
     _register = RegisterUseCase(repo);
     return const AuthInitial();
@@ -34,8 +38,8 @@ class AuthNotifier extends _$AuthNotifier {
       final user = await _getCurrentUser();
       state =
           user != null ? AuthAuthenticated(user) : const AuthUnauthenticated();
-    } catch (e) {
-      state = AuthError(e.toString());
+    } catch (error) {
+      state = AuthError(_failureKind(error));
     }
   }
 
@@ -45,7 +49,19 @@ class AuthNotifier extends _$AuthNotifier {
       final user = await _login(email: email, password: password);
       state = AuthAuthenticated(user);
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(_failureKind(e));
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    state = const AuthLoading();
+    try {
+      final user = await _loginWithGoogle();
+      state = AuthAuthenticated(user);
+    } on SignInCancelledException {
+      state = const AuthUnauthenticated();
+    } catch (error) {
+      state = AuthError(_failureKind(error));
     }
   }
 
@@ -60,7 +76,7 @@ class AuthNotifier extends _$AuthNotifier {
           await _register(name: name, email: email, password: password);
       state = AuthAuthenticated(user);
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(_failureKind(e));
     }
   }
 
@@ -70,7 +86,7 @@ class AuthNotifier extends _$AuthNotifier {
       await _logout();
       state = const AuthUnauthenticated();
     } catch (e) {
-      state = AuthError(e.toString());
+      state = AuthError(_failureKind(e));
     }
   }
 
@@ -102,7 +118,7 @@ class AuthNotifier extends _$AuthNotifier {
     final isSupported = await biometricService.isDeviceSupported();
 
     if (!isSupported) {
-      state = const AuthError('Biometric tidak didukung di perangkat ini');
+      state = const AuthError(AuthFailureKind.configuration);
       return;
     }
 
@@ -114,8 +130,17 @@ class AuthNotifier extends _$AuthNotifier {
       // Biometric passed — try to restore cached session.
       await checkCurrentUser();
     } else {
-      state = const AuthError('Verifikasi biometric gagal');
+      state = const AuthError(AuthFailureKind.general);
     }
+  }
+
+  AuthFailureKind _failureKind(Object error) {
+    return switch (error) {
+      NetworkException() => AuthFailureKind.network,
+      AuthConfigurationException() => AuthFailureKind.configuration,
+      UnauthorizedException() => AuthFailureKind.rejected,
+      _ => AuthFailureKind.general,
+    };
   }
 
   Future<void> uploadAvatar(String filePath) async {

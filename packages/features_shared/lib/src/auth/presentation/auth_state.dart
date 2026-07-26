@@ -21,7 +21,14 @@ final class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
+enum AuthFailureKind {
+  network,
+  configuration,
+  rejected,
+  general,
+}
+
 final class AuthError extends AuthState {
-  const AuthError(this.message);
-  final String message;
+  const AuthError(this.kind);
+  final AuthFailureKind kind;
 }

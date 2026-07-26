@@ -13,7 +13,7 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
   TokenRefreshInterceptor({
     required Dio dio,
     required StorageService storage,
-    this.refreshEndpoint = '/api/auth/refresh',
+    this.refreshEndpoint = 'v1/auth/refresh',
     this.onLogout,
   })  : _dio = dio,
         _storage = storage;
@@ -44,14 +44,14 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
       final refreshDio = Dio(BaseOptions(baseUrl: _dio.options.baseUrl));
       final response = await refreshDio.post(
         refreshEndpoint,
-        options: Options(
-          headers: {'Authorization': 'Bearer $refreshToken'},
-        ),
+        data: {'refresh_token': refreshToken},
       );
 
       // 3. Persist the new tokens.
-      final newAccessToken = response.data['access_token'] as String;
-      final newRefreshToken = response.data['refresh_token'] as String?;
+      final responseData = response.data as Map<String, dynamic>;
+      final tokenData = responseData['data'] as Map<String, dynamic>;
+      final newAccessToken = tokenData['access_token'] as String;
+      final newRefreshToken = tokenData['refresh_token'] as String?;
 
       await _storage.write(AppConstants.keyAuthToken, newAccessToken);
       if (newRefreshToken != null) {
@@ -63,8 +63,8 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
       opts.headers['Authorization'] = 'Bearer $newAccessToken';
       final retryResponse = await _dio.fetch(opts);
       return handler.resolve(retryResponse);
-    } catch (e) {
-      debugPrint('Token refresh failed: $e');
+    } on Object {
+      debugPrint('Token refresh failed');
       await _forceLogout();
       return handler.reject(err);
     }

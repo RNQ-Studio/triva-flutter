@@ -296,6 +296,54 @@ abstract class AppLocalizations {
   /// **'Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.'**
   String get loginSubtitle;
 
+  /// No description provided for @googleLoginSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan akun Google untuk mengakses layanan, kendaraan, dan aktivitas Anda dengan aman.'**
+  String get googleLoginSubtitle;
+
+  /// No description provided for @googleLoginAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjutkan dengan Google'**
+  String get googleLoginAction;
+
+  /// No description provided for @googleLoginLoading.
+  ///
+  /// In id, this message translates to:
+  /// **'Menghubungkan akun Google…'**
+  String get googleLoginLoading;
+
+  /// No description provided for @googleLoginAccountNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'TRIVA hanya menggunakan nama, email, dan foto profil dari akun Google untuk membuat dan mengamankan sesi Anda.'**
+  String get googleLoginAccountNotice;
+
+  /// No description provided for @googleLoginPrivacyNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Dengan melanjutkan, Anda menyetujui penggunaan identitas Google sesuai kebutuhan layanan TRIVA.'**
+  String get googleLoginPrivacyNotice;
+
+  /// No description provided for @googleLoginNetworkError.
+  ///
+  /// In id, this message translates to:
+  /// **'Koneksi ke Google terputus. Periksa internet Anda lalu coba lagi.'**
+  String get googleLoginNetworkError;
+
+  /// No description provided for @googleLoginConfigurationError.
+  ///
+  /// In id, this message translates to:
+  /// **'Google Sign-In belum dapat digunakan di perangkat ini. Silakan coba lagi atau hubungi tim TRIVA.'**
+  String get googleLoginConfigurationError;
+
+  /// No description provided for @googleLoginRejectedError.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun Google ini belum dapat masuk ke TRIVA. Gunakan akun lain atau hubungi tim TRIVA.'**
+  String get googleLoginRejectedError;
+
   /// No description provided for @loginFailedTitle.
   ///
   /// In id, this message translates to:

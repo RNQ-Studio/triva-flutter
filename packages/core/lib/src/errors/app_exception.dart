@@ -22,3 +22,11 @@ final class ServerException extends AppException {
 final class CacheException extends AppException {
   const CacheException(super.message);
 }
+
+final class SignInCancelledException extends AppException {
+  const SignInCancelledException() : super('Sign-in cancelled');
+}
+
+final class AuthConfigurationException extends AppException {
+  const AuthConfigurationException(super.message);
+}

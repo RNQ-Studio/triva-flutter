@@ -112,6 +112,36 @@ class AppLocalizationsId extends AppLocalizations {
       'Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.';
 
   @override
+  String get googleLoginSubtitle =>
+      'Gunakan akun Google untuk mengakses layanan, kendaraan, dan aktivitas Anda dengan aman.';
+
+  @override
+  String get googleLoginAction => 'Lanjutkan dengan Google';
+
+  @override
+  String get googleLoginLoading => 'Menghubungkan akun Google…';
+
+  @override
+  String get googleLoginAccountNotice =>
+      'TRIVA hanya menggunakan nama, email, dan foto profil dari akun Google untuk membuat dan mengamankan sesi Anda.';
+
+  @override
+  String get googleLoginPrivacyNotice =>
+      'Dengan melanjutkan, Anda menyetujui penggunaan identitas Google sesuai kebutuhan layanan TRIVA.';
+
+  @override
+  String get googleLoginNetworkError =>
+      'Koneksi ke Google terputus. Periksa internet Anda lalu coba lagi.';
+
+  @override
+  String get googleLoginConfigurationError =>
+      'Google Sign-In belum dapat digunakan di perangkat ini. Silakan coba lagi atau hubungi tim TRIVA.';
+
+  @override
+  String get googleLoginRejectedError =>
+      'Akun Google ini belum dapat masuk ke TRIVA. Gunakan akun lain atau hubungi tim TRIVA.';
+
+  @override
   String get loginFailedTitle => 'Tidak dapat masuk';
 
   @override

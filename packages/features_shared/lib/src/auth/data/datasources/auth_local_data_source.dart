@@ -10,6 +10,7 @@ class AuthLocalDataSource {
   final StorageService _storage;
 
   static const _tokenKey = 'auth_token';
+  static const _refreshTokenKey = 'refresh_token';
   static const _userKey = 'auth_user';
 
   Future<void> saveUser(UserModel user) async {
@@ -19,6 +20,9 @@ class AuthLocalDataSource {
     } else {
       await _storage.delete(_tokenKey);
     }
+    if (user.refreshToken != null) {
+      await _storage.write(_refreshTokenKey, user.refreshToken!);
+    }
   }
 
   Future<UserModel?> getUser() async {
@@ -27,7 +31,12 @@ class AuthLocalDataSource {
     try {
       final map = jsonDecode(raw) as Map<String, dynamic>;
       final token = await _storage.read(_tokenKey);
-      return UserModel.fromJson({...map, if (token != null) 'token': token});
+      final refreshToken = await _storage.read(_refreshTokenKey);
+      return UserModel.fromJson({
+        ...map,
+        if (token != null) 'token': token,
+        if (refreshToken != null) 'refresh_token': refreshToken,
+      });
     } on Object {
       return null;
     }
@@ -35,6 +44,7 @@ class AuthLocalDataSource {
 
   Future<void> clearUser() async {
     await _storage.delete(_tokenKey);
+    await _storage.delete(_refreshTokenKey);
     await _storage.delete(_userKey);
   }
 

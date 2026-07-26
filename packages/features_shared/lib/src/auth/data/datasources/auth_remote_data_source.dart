@@ -22,6 +22,7 @@ class AuthRemoteDataSource {
       final responseData = response.data as Map<String, dynamic>;
       final tokensData = responseData['data'] as Map<String, dynamic>;
       final token = tokensData['access_token'] as String;
+      final refreshToken = tokensData['refresh_token'] as String;
 
       // 2. Fetch the user profile from /v1/auth/me using this token manually
       final profileResponse = await _dio.get(
@@ -47,9 +48,50 @@ class AuthRemoteDataSource {
                 .toList() ??
             const [],
         token: token,
+        refreshToken: refreshToken,
       );
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Login failed');
+    }
+  }
+
+  Future<UserModel> loginWithGoogle({required String idToken}) async {
+    try {
+      final response = await _dio.post(
+        'v1/auth/google',
+        data: {'id_token': idToken},
+      );
+
+      final responseData = response.data as Map<String, dynamic>;
+      final tokensData = responseData['data'] as Map<String, dynamic>;
+      final token = tokensData['access_token'] as String;
+      final refreshToken = tokensData['refresh_token'] as String;
+
+      final profileResponse = await _dio.get(
+        'v1/auth/me',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      final profileData = profileResponse.data as Map<String, dynamic>;
+      final userJson = profileData['data'] as Map<String, dynamic>;
+
+      return UserModel(
+        id: userJson['id'].toString(),
+        name: userJson['name'] as String,
+        email: userJson['email'] as String,
+        phone: userJson['phone'] as String?,
+        avatarUrl: userJson['avatar_url'] as String?,
+        roles: (userJson['roles'] as List<dynamic>?)
+                ?.map((role) => role.toString())
+                .toList() ??
+            const [],
+        token: token,
+        refreshToken: refreshToken,
+      );
+    } on DioException catch (error) {
+      throw error.error ??
+          ServerException(error.message ?? 'Google sign-in failed');
     }
   }
 
@@ -68,6 +110,7 @@ class AuthRemoteDataSource {
       final responseData = response.data as Map<String, dynamic>;
       final tokensData = responseData['data'] as Map<String, dynamic>;
       final token = tokensData['access_token'] as String;
+      final refreshToken = tokensData['refresh_token'] as String;
 
       // 2. Fetch the user profile from /v1/auth/me using this token manually
       final profileResponse = await _dio.get(
@@ -93,6 +136,7 @@ class AuthRemoteDataSource {
                 .toList() ??
             const [],
         token: token,
+        refreshToken: refreshToken,
       );
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Register failed');

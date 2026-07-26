@@ -9,14 +9,25 @@ class _FakeAuthNotifier extends AuthNotifier {
   AuthState build() => const AuthUnauthenticated();
 }
 
+class _LoadingAuthNotifier extends AuthNotifier {
+  @override
+  AuthState build() => const AuthLoading();
+}
+
+class _NetworkErrorAuthNotifier extends AuthNotifier {
+  @override
+  AuthState build() => const AuthError(AuthFailureKind.network);
+}
+
 Widget _testApp({
   required Widget home,
   required ThemeData theme,
   double textScale = 1.3,
+  AuthNotifier Function() authNotifier = _FakeAuthNotifier.new,
 }) {
   return ProviderScope(
     overrides: [
-      authProvider.overrideWith(_FakeAuthNotifier.new),
+      authProvider.overrideWith(authNotifier),
     ],
     child: MaterialApp(
       theme: theme,
@@ -61,6 +72,8 @@ void main() {
         await tester.pump();
 
         expect(find.text('Masuk ke TRIVA'), findsOneWidget);
+        expect(find.text('Lanjutkan dengan Google'), findsOneWidget);
+        expect(find.byType(TextFormField), findsNothing);
         expect(tester.takeException(), isNull);
       },
     );
@@ -112,6 +125,49 @@ void main() {
     await tester.pump();
 
     expect(find.text('Selanjutnya'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Google login loading state is compact and disabled',
+      (tester) async {
+    await setCompactViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        home: const LoginScreen(),
+        theme: AppTheme.light,
+        authNotifier: _LoadingAuthNotifier.new,
+      ),
+    );
+
+    expect(find.text('Menghubungkan akun Google…'), findsOneWidget);
+    expect(
+      tester
+          .widget<OutlinedButton>(
+            find.byKey(const ValueKey('google-sign-in-button')),
+          )
+          .onPressed,
+      isNull,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Google login network error explains retry', (tester) async {
+    await setCompactViewport(tester);
+    await tester.pumpWidget(
+      _testApp(
+        home: const LoginScreen(),
+        theme: AppTheme.dark,
+        authNotifier: _NetworkErrorAuthNotifier.new,
+      ),
+    );
+
+    expect(
+      find.text(
+        'Koneksi ke Google terputus. Periksa internet Anda lalu coba lagi.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Lanjutkan dengan Google'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

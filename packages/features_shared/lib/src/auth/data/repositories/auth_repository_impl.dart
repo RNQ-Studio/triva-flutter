@@ -2,17 +2,21 @@ import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../google_sign_in_client.dart';
 import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({
     required AuthRemoteDataSource remote,
     required AuthLocalDataSource local,
+    required GoogleSignInClient googleSignInClient,
   })  : _remote = remote,
-        _local = local;
+        _local = local,
+        _googleSignInClient = googleSignInClient;
 
   final AuthRemoteDataSource _remote;
   final AuthLocalDataSource _local;
+  final GoogleSignInClient _googleSignInClient;
 
   @override
   Future<User> login({
@@ -25,6 +29,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<User> loginWithGoogle() async {
+    final idToken = await _googleSignInClient.signInAndGetFirebaseIdToken();
+    final user = await _remote.loginWithGoogle(idToken: idToken);
+    await _local.saveUser(user);
+    return user;
+  }
+
+  @override
   Future<void> logout() async {
     try {
       await _remote.logout();
@@ -32,7 +44,11 @@ class AuthRepositoryImpl implements AuthRepository {
       // Fail-safe: even if backend logout fails (e.g. offline),
       // we must still clear the local user session.
     } finally {
-      await _local.clearUser();
+      try {
+        await _googleSignInClient.signOut();
+      } finally {
+        await _local.clearUser();
+      }
     }
   }
 
@@ -66,6 +82,7 @@ class AuthRepositoryImpl implements AuthRepository {
         avatarUrl: fresh.avatarUrl ?? cached.avatarUrl,
         roles: fresh.roles.isNotEmpty ? fresh.roles : cached.roles,
         token: cached.token,
+        refreshToken: cached.refreshToken,
       );
       await _local.saveUser(merged);
       return merged;
@@ -94,6 +111,7 @@ class AuthRepositoryImpl implements AuthRepository {
           ? updated.roles
           : (currentUser?.roles ?? const []),
       token: currentUser?.token,
+      refreshToken: currentUser?.refreshToken,
     );
 
     await _local.saveUser(merged);
@@ -116,6 +134,7 @@ class AuthRepositoryImpl implements AuthRepository {
           ? updated.roles
           : (currentUser?.roles ?? const []),
       token: currentUser?.token,
+      refreshToken: currentUser?.refreshToken,
     );
 
     await _local.saveUser(merged);

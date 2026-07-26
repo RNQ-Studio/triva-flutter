@@ -9,9 +9,11 @@ class UserModel extends User {
     super.avatarUrl,
     super.roles,
     this.token,
+    this.refreshToken,
   });
 
   final String? token;
+  final String? refreshToken;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json['id'].toString(),
@@ -24,6 +26,7 @@ class UserModel extends User {
                 .toList() ??
             const [],
         token: json['token'] as String?,
+        refreshToken: json['refresh_token'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +37,6 @@ class UserModel extends User {
         if (avatarUrl != null) 'avatar_url': avatarUrl,
         'roles': roles,
         if (token != null) 'token': token,
+        if (refreshToken != null) 'refresh_token': refreshToken,
       };
 }

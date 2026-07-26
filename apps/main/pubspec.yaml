@@ -23,6 +23,7 @@ dependencies:
   dio: ^5.9.2
   drift: ^2.33.0
   package_info_plus: ^10.1.0
+  firebase_core: ^3.15.2
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1074553653742",
+    "project_id": "triva-7138e",
+    "storage_bucket": "triva-7138e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074553653742:android:a577626fe1b33fcda526ff",
+        "android_client_info": {
+          "package_name": "id.rnq.triva"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074553653742-o2il4kiadefbfgk2qgsdq1lglucj010j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.rnq.triva",
+            "certificate_hash": "f3cc122434aaf0b0deb36163231bf508bba9c4f7"
+          }
+        },
+        {
+          "client_id": "1074553653742-248qhoj1sq8c0j5e7loj5g8lbe9volh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPjIxg5cV5wVQUX1Svdb4jrKusCFl3-no"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074553653742-248qhoj1sq8c0j5e7loj5g8lbe9volh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

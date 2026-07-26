@@ -49,6 +49,8 @@ build/
 google-services.json
 GoogleService-Info.plist
 firebase_options.dart
+!apps/main/android/app/google-services.json
+!apps/main/lib/firebase_options.dart
 
 # Signing keys
 *.jks

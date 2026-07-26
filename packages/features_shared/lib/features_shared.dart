@@ -3,6 +3,7 @@ export 'src/auth/domain/entities/user.dart';
 export 'src/auth/domain/repositories/auth_repository.dart';
 export 'src/auth/domain/usecases/get_current_user_use_case.dart';
 export 'src/auth/domain/usecases/login_use_case.dart';
+export 'src/auth/domain/usecases/login_with_google_use_case.dart';
 export 'src/auth/domain/usecases/logout_use_case.dart';
 export 'src/auth/domain/usecases/register_use_case.dart';
 
@@ -11,6 +12,7 @@ export 'src/auth/data/models/user_model.dart';
 export 'src/auth/data/datasources/auth_local_data_source.dart';
 export 'src/auth/data/datasources/auth_remote_data_source.dart';
 export 'src/auth/data/repositories/auth_repository_impl.dart';
+export 'src/auth/data/google_sign_in_client.dart';
 export 'src/auth/data/biometric_auth_service.dart';
 
 // auth — presentation

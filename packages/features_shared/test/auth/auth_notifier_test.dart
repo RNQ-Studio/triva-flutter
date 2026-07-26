@@ -54,7 +54,37 @@ void main() {
 
     final state = container.read(authProvider);
     expect(state, isA<AuthError>());
-    expect((state as AuthError).message, 'Invalid credentials');
+    expect((state as AuthError).kind, AuthFailureKind.general);
+  });
+
+  test('Google login success becomes AuthAuthenticated', () async {
+    when(() => mockRepo.loginWithGoogle()).thenAnswer((_) async => tUser);
+
+    await container.read(authProvider.notifier).loginWithGoogle();
+
+    final state = container.read(authProvider);
+    expect(state, isA<AuthAuthenticated>());
+    expect((state as AuthAuthenticated).user, tUser);
+  });
+
+  test('Google login cancellation becomes AuthUnauthenticated', () async {
+    when(() => mockRepo.loginWithGoogle())
+        .thenThrow(const SignInCancelledException());
+
+    await container.read(authProvider.notifier).loginWithGoogle();
+
+    expect(container.read(authProvider), isA<AuthUnauthenticated>());
+  });
+
+  test('Google login network failure becomes network AuthError', () async {
+    when(() => mockRepo.loginWithGoogle())
+        .thenThrow(const NetworkException('offline'));
+
+    await container.read(authProvider.notifier).loginWithGoogle();
+
+    final state = container.read(authProvider);
+    expect(state, isA<AuthError>());
+    expect((state as AuthError).kind, AuthFailureKind.network);
   });
 
   test('logout → AuthUnauthenticated', () async {

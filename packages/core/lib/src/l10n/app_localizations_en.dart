@@ -112,6 +112,36 @@ class AppLocalizationsEn extends AppLocalizations {
       'Use your registered account to access services and vehicle history.';
 
   @override
+  String get googleLoginSubtitle =>
+      'Use your Google account to securely access your services, vehicles, and activity.';
+
+  @override
+  String get googleLoginAction => 'Continue with Google';
+
+  @override
+  String get googleLoginLoading => 'Connecting your Google account…';
+
+  @override
+  String get googleLoginAccountNotice =>
+      'TRIVA only uses your name, email, and profile photo from Google to create and secure your session.';
+
+  @override
+  String get googleLoginPrivacyNotice =>
+      'By continuing, you agree to the use of your Google identity as needed to provide TRIVA services.';
+
+  @override
+  String get googleLoginNetworkError =>
+      'The connection to Google was interrupted. Check your internet connection and try again.';
+
+  @override
+  String get googleLoginConfigurationError =>
+      'Google Sign-In is not available on this device yet. Try again or contact the TRIVA team.';
+
+  @override
+  String get googleLoginRejectedError =>
+      'This Google account cannot sign in to TRIVA yet. Use another account or contact the TRIVA team.';
+
+  @override
   String get loginFailedTitle => 'Unable to sign in';
 
   @override
