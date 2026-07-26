@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 
 import 'auth_provider.dart';
 import 'auth_state.dart';
+import '../domain/entities/region_option.dart';
+import 'region_provider.dart';
 
 class CompleteProfileScreen extends ConsumerStatefulWidget {
   const CompleteProfileScreen({super.key});
@@ -18,11 +20,16 @@ class CompleteProfileScreen extends ConsumerStatefulWidget {
 class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _phoneController;
-  late final TextEditingController _cityController;
+  final _phoneFocusNode = FocusNode();
+  final _provinceFocusNode = FocusNode();
+  final _cityFocusNode = FocusNode();
+  int? _selectedProvinceId;
+  int? _selectedCityId;
   bool _serviceConsent = false;
   bool _marketingConsent = false;
   bool _submitting = false;
   String? _error;
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   @override
   void initState() {
@@ -30,7 +37,6 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     final state = ref.read(authProvider);
     final user = state is AuthAuthenticated ? state.user : null;
     _phoneController = TextEditingController(text: user?.phone);
-    _cityController = TextEditingController(text: user?.city);
     _serviceConsent = user?.serviceConsentAt != null;
     _marketingConsent = user?.marketingConsent ?? false;
   }
@@ -38,14 +44,28 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
   @override
   void dispose() {
     _phoneController.dispose();
-    _cityController.dispose();
+    _phoneFocusNode.dispose();
+    _provinceFocusNode.dispose();
+    _cityFocusNode.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     final l10n = AppLocalizations.of(context)!;
     setState(() => _error = null);
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      setState(
+        () => _autovalidateMode = AutovalidateMode.onUserInteraction,
+      );
+      if (_validatePhone(_phoneController.text) != null) {
+        _phoneFocusNode.requestFocus();
+      } else if (_selectedProvinceId == null) {
+        _provinceFocusNode.requestFocus();
+      } else {
+        _cityFocusNode.requestFocus();
+      }
+      return;
+    }
     if (!_serviceConsent) {
       setState(() => _error = l10n.consentRequired);
       return;
@@ -60,7 +80,8 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
             name: state.user.name,
             email: state.user.email,
             phone: _phoneController.text.trim(),
-            city: _cityController.text.trim(),
+            provinceId: _selectedProvinceId,
+            cityId: _selectedCityId,
             serviceConsent: true,
             marketingConsent: _marketingConsent,
           );
@@ -72,12 +93,24 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     }
   }
 
+  String? _validatePhone(String? value) {
+    final l10n = AppLocalizations.of(context)!;
+    final normalized = value?.trim().replaceFirst(RegExp(r'^\+'), '') ?? '';
+    if (normalized.isEmpty) return l10n.fieldRequired;
+    if (!RegExp(r'^[0-9]{9,15}$').hasMatch(normalized)) {
+      return l10n.phoneInvalid;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
     final state = ref.watch(authProvider);
+    final provinces = ref.watch(provinceOptionsProvider);
     final user = state is AuthAuthenticated ? state.user : null;
+    final regionOptionsReady = provinces.asData?.value.isNotEmpty ?? false;
 
     return Scaffold(
       appBar: AppBar(title: const Text('TRIVA')),
@@ -89,6 +122,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
               constraints: const BoxConstraints(maxWidth: 520),
               child: Form(
                 key: _formKey,
+                autovalidateMode: _autovalidateMode,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -142,6 +176,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                     const SizedBox(height: AppSpacing.large),
                     TextFormField(
                       controller: _phoneController,
+                      focusNode: _phoneFocusNode,
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.telephoneNumber],
@@ -154,32 +189,26 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                         prefixIcon: const Icon(Icons.phone_outlined),
                         hintText: '+628123456789',
                       ),
-                      validator: (value) {
-                        final normalized =
-                            value?.trim().replaceFirst(RegExp(r'^\+'), '') ??
-                                '';
-                        if (normalized.isEmpty) return l10n.fieldRequired;
-                        if (!RegExp(r'^[0-9]{9,15}$').hasMatch(normalized)) {
-                          return l10n.phoneInvalid;
-                        }
-                        return null;
-                      },
+                      validator: _validatePhone,
+                      onEditingComplete: _provinceFocusNode.requestFocus,
                     ),
                     const SizedBox(height: AppSpacing.medium),
-                    TextFormField(
-                      controller: _cityController,
-                      textCapitalization: TextCapitalization.words,
-                      textInputAction: TextInputAction.done,
-                      autofillHints: const [AutofillHints.addressCity],
-                      decoration: InputDecoration(
-                        labelText: l10n.city,
-                        prefixIcon: const Icon(Icons.location_city_outlined),
-                      ),
-                      validator: (value) =>
-                          value == null || value.trim().isEmpty
-                              ? l10n.fieldRequired
-                              : null,
-                      onFieldSubmitted: (_) => _submit(),
+                    _RegionFields(
+                      provinces: provinces,
+                      selectedProvinceId: _selectedProvinceId,
+                      selectedCityId: _selectedCityId,
+                      provinceFocusNode: _provinceFocusNode,
+                      cityFocusNode: _cityFocusNode,
+                      onProvinceChanged: (value) {
+                        setState(() {
+                          _selectedProvinceId = value;
+                          _selectedCityId = null;
+                        });
+                      },
+                      onCityChanged: (value) {
+                        setState(() => _selectedCityId = value);
+                      },
+                      onRetry: () => ref.invalidate(provinceOptionsProvider),
                     ),
                     const SizedBox(height: AppSpacing.large),
                     CheckboxListTile(
@@ -216,10 +245,11 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                     ],
                     const SizedBox(height: AppSpacing.large),
                     FilledButton(
-                      onPressed: _submitting ? null : _submit,
+                      onPressed:
+                          _submitting || !regionOptionsReady ? null : _submit,
                       child: _submitting
                           ? const SizedBox.square(
-                              dimension: 22,
+                              dimension: AppSpacing.xLarge,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : Text(l10n.saveAndContinue),
@@ -229,6 +259,221 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RegionFields extends StatelessWidget {
+  const _RegionFields({
+    required this.provinces,
+    required this.selectedProvinceId,
+    required this.selectedCityId,
+    required this.provinceFocusNode,
+    required this.cityFocusNode,
+    required this.onProvinceChanged,
+    required this.onCityChanged,
+    required this.onRetry,
+  });
+
+  final AsyncValue<List<ProvinceOption>> provinces;
+  final int? selectedProvinceId;
+  final int? selectedCityId;
+  final FocusNode provinceFocusNode;
+  final FocusNode cityFocusNode;
+  final ValueChanged<int?> onProvinceChanged;
+  final ValueChanged<int?> onCityChanged;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return provinces.when(
+      loading: () => const _RegionLoadingFields(),
+      error: (_, __) => _RegionUnavailable(
+        message: l10n.regionLoadError,
+        onRetry: onRetry,
+      ),
+      data: (items) {
+        if (items.isEmpty) {
+          return _RegionUnavailable(
+            message: l10n.regionEmpty,
+            onRetry: onRetry,
+          );
+        }
+
+        ProvinceOption? selectedProvince;
+        for (final province in items) {
+          if (province.id == selectedProvinceId) {
+            selectedProvince = province;
+            break;
+          }
+        }
+        final cities = selectedProvince?.cities ?? const <CityOption>[];
+
+        return Column(
+          children: [
+            DropdownButtonFormField<int>(
+              initialValue: selectedProvinceId,
+              focusNode: provinceFocusNode,
+              isExpanded: true,
+              menuMaxHeight: 320,
+              decoration: InputDecoration(
+                labelText: l10n.province,
+                prefixIcon: const Icon(Icons.map_outlined),
+              ),
+              hint: Text(l10n.chooseProvince),
+              items: [
+                for (final province in items)
+                  DropdownMenuItem(
+                    value: province.id,
+                    child: Text(
+                      province.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+              ],
+              onChanged: onProvinceChanged,
+              validator: (value) => value == null ? l10n.fieldRequired : null,
+            ),
+            const SizedBox(height: AppSpacing.medium),
+            DropdownButtonFormField<int>(
+              key: ValueKey(selectedProvinceId),
+              initialValue: selectedCityId,
+              focusNode: cityFocusNode,
+              isExpanded: true,
+              menuMaxHeight: 320,
+              decoration: InputDecoration(
+                labelText: l10n.cityOrRegency,
+                prefixIcon: const Icon(Icons.location_city_outlined),
+              ),
+              hint: Text(
+                selectedProvinceId == null
+                    ? l10n.chooseProvinceFirst
+                    : l10n.chooseCity,
+              ),
+              items: [
+                for (final city in cities)
+                  DropdownMenuItem(
+                    value: city.id,
+                    child: Text(
+                      city.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+              ],
+              onChanged: selectedProvinceId == null || cities.isEmpty
+                  ? null
+                  : onCityChanged,
+              validator: (value) => value == null ? l10n.fieldRequired : null,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RegionLoadingFields extends StatelessWidget {
+  const _RegionLoadingFields();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        LinearProgressIndicator(
+          semanticsLabel: l10n.regionLoading,
+        ),
+        const SizedBox(height: AppSpacing.small),
+        DropdownButtonFormField<int>(
+          isExpanded: true,
+          items: const [],
+          onChanged: null,
+          decoration: InputDecoration(
+            labelText: l10n.province,
+            prefixIcon: const Icon(Icons.map_outlined),
+          ),
+          hint: Text(
+            l10n.regionLoading,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        DropdownButtonFormField<int>(
+          isExpanded: true,
+          items: const [],
+          onChanged: null,
+          decoration: InputDecoration(
+            labelText: l10n.cityOrRegency,
+            prefixIcon: const Icon(Icons.location_city_outlined),
+          ),
+          hint: Text(
+            l10n.chooseProvinceFirst,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RegionUnavailable extends StatelessWidget {
+  const _RegionUnavailable({
+    required this.message,
+    required this.onRetry,
+  });
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerLow,
+        borderRadius: AppRadius.medium,
+        border: Border.all(color: colors.outlineVariant),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.large),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.cloud_off_outlined,
+                  color: colors.onSurfaceVariant,
+                ),
+                const SizedBox(width: AppSpacing.small),
+                Expanded(
+                  child: Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.medium),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_outlined),
+              label: Text(l10n.retry),
+            ),
+          ],
         ),
       ),
     );

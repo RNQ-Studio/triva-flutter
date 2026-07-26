@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 
 import '../models/user_model.dart';
+import '../../domain/entities/region_option.dart';
+import '../models/region_option_model.dart';
 
 class AuthRemoteDataSource {
   const AuthRemoteDataSource(this._dio);
@@ -131,11 +133,29 @@ class AuthRemoteDataSource {
     }
   }
 
+  Future<List<ProvinceOption>> getIndonesianProvinces() async {
+    try {
+      final response = await _dio.get('v1/regions/provinces');
+      final responseData = response.data as Map<String, dynamic>;
+      final data = responseData['data'] as List<dynamic>? ?? const [];
+
+      return data
+          .whereType<Map<String, dynamic>>()
+          .map(RegionOptionModel.provinceFromJson)
+          .toList(growable: false);
+    } on DioException catch (error) {
+      throw error.error ??
+          ServerException(error.message ?? 'Failed to load regions');
+    }
+  }
+
   Future<UserModel> updateProfile({
     required String name,
     required String email,
     String? phone,
     String? city,
+    int? provinceId,
+    int? cityId,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
@@ -147,6 +167,8 @@ class AuthRemoteDataSource {
           'email': email,
           if (phone != null) 'phone': phone,
           if (city != null) 'city': city,
+          if (provinceId != null) 'province_id': provinceId,
+          if (cityId != null) 'city_id': cityId,
           if (serviceConsent != null) 'service_consent': serviceConsent,
           if (marketingConsent != null) 'marketing_consent': marketingConsent,
         },

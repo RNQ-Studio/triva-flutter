@@ -548,6 +548,54 @@ abstract class AppLocalizations {
   /// **'Kota domisili'**
   String get city;
 
+  /// No description provided for @province.
+  ///
+  /// In id, this message translates to:
+  /// **'Provinsi'**
+  String get province;
+
+  /// No description provided for @cityOrRegency.
+  ///
+  /// In id, this message translates to:
+  /// **'Kota/kabupaten'**
+  String get cityOrRegency;
+
+  /// No description provided for @chooseProvince.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih provinsi'**
+  String get chooseProvince;
+
+  /// No description provided for @chooseCity.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih kota/kabupaten'**
+  String get chooseCity;
+
+  /// No description provided for @chooseProvinceFirst.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih provinsi terlebih dahulu'**
+  String get chooseProvinceFirst;
+
+  /// No description provided for @regionLoading.
+  ///
+  /// In id, this message translates to:
+  /// **'Menyiapkan pilihan wilayahâ€¦'**
+  String get regionLoading;
+
+  /// No description provided for @regionLoadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilihan wilayah belum dapat dimuat. Periksa koneksi lalu coba lagi.'**
+  String get regionLoadError;
+
+  /// No description provided for @regionEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Master provinsi dan kota belum tersedia.'**
+  String get regionEmpty;
+
   /// No description provided for @serviceConsentLabel.
   ///
   /// In id, this message translates to:

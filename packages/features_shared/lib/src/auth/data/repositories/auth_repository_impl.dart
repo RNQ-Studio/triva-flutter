@@ -1,4 +1,5 @@
 import '../../domain/entities/user.dart';
+import '../../domain/entities/region_option.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -97,11 +98,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<List<ProvinceOption>> getIndonesianProvinces() {
+    return _remote.getIndonesianProvinces();
+  }
+
+  @override
   Future<User> updateProfile({
     required String name,
     required String email,
     String? phone,
     String? city,
+    int? provinceId,
+    int? cityId,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
@@ -110,6 +118,8 @@ class AuthRepositoryImpl implements AuthRepository {
       email: email,
       phone: phone,
       city: city,
+      provinceId: provinceId,
+      cityId: cityId,
       serviceConsent: serviceConsent,
       marketingConsent: marketingConsent,
     );

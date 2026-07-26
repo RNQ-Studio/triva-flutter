@@ -257,6 +257,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get city => 'Kota domisili';
 
   @override
+  String get province => 'Provinsi';
+
+  @override
+  String get cityOrRegency => 'Kota/kabupaten';
+
+  @override
+  String get chooseProvince => 'Pilih provinsi';
+
+  @override
+  String get chooseCity => 'Pilih kota/kabupaten';
+
+  @override
+  String get chooseProvinceFirst => 'Pilih provinsi terlebih dahulu';
+
+  @override
+  String get regionLoading => 'Menyiapkan pilihan wilayahâ€¦';
+
+  @override
+  String get regionLoadError =>
+      'Pilihan wilayah belum dapat dimuat. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get regionEmpty => 'Master provinsi dan kota belum tersedia.';
+
+  @override
   String get serviceConsentLabel =>
       'Saya menyetujui pemrosesan data untuk layanan appraisal TRIVA.';
 

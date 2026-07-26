@@ -95,6 +95,8 @@ class AuthNotifier extends _$AuthNotifier {
     required String email,
     String? phone,
     String? city,
+    int? provinceId,
+    int? cityId,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
@@ -107,6 +109,8 @@ class AuthNotifier extends _$AuthNotifier {
         email: email,
         phone: phone,
         city: city,
+        provinceId: provinceId,
+        cityId: cityId,
         serviceConsent: serviceConsent,
         marketingConsent: marketingConsent,
       );

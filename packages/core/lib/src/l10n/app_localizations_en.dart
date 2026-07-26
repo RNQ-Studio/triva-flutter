@@ -257,6 +257,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get city => 'City of residence';
 
   @override
+  String get province => 'Province';
+
+  @override
+  String get cityOrRegency => 'City/regency';
+
+  @override
+  String get chooseProvince => 'Choose a province';
+
+  @override
+  String get chooseCity => 'Choose a city/regency';
+
+  @override
+  String get chooseProvinceFirst => 'Choose a province first';
+
+  @override
+  String get regionLoading => 'Preparing region optionsâ€¦';
+
+  @override
+  String get regionLoadError =>
+      'We could not load region options. Check your connection and try again.';
+
+  @override
+  String get regionEmpty =>
+      'Province and city master data is not available yet.';
+
+  @override
   String get serviceConsentLabel =>
       'I consent to data processing for the TRIVA appraisal service.';
 

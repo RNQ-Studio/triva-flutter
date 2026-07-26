@@ -1,5 +1,6 @@
 // auth — domain
 export 'src/auth/domain/entities/user.dart';
+export 'src/auth/domain/entities/region_option.dart';
 export 'src/auth/domain/repositories/auth_repository.dart';
 export 'src/auth/domain/usecases/get_current_user_use_case.dart';
 export 'src/auth/domain/usecases/login_use_case.dart';
@@ -9,6 +10,7 @@ export 'src/auth/domain/usecases/register_use_case.dart';
 
 // auth — data
 export 'src/auth/data/models/user_model.dart';
+export 'src/auth/data/models/region_option_model.dart';
 export 'src/auth/data/datasources/auth_local_data_source.dart';
 export 'src/auth/data/datasources/auth_remote_data_source.dart';
 export 'src/auth/data/repositories/auth_repository_impl.dart';
@@ -22,6 +24,7 @@ export 'src/auth/presentation/auth_routes.dart';
 export 'src/auth/presentation/auth_state.dart';
 export 'src/auth/presentation/login_screen.dart';
 export 'src/auth/presentation/complete_profile_screen.dart';
+export 'src/auth/presentation/region_provider.dart';
 
 // profile — domain
 export 'src/profile/domain/entities/profile.dart';
