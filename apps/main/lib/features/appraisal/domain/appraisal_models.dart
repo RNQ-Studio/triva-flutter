@@ -6,9 +6,32 @@ const appraisalPhotoAngles = <String>[
   'dashboard_odometer',
 ];
 
+class VehicleMakeOption {
+  const VehicleMakeOption({
+    required this.id,
+    required this.slug,
+    required this.name,
+    this.logoUrl,
+  });
+
+  final int id;
+  final String slug;
+  final String name;
+  final String? logoUrl;
+
+  factory VehicleMakeOption.fromJson(Map<String, dynamic> json) =>
+      VehicleMakeOption(
+        id: (json['id'] as num).toInt(),
+        slug: json['slug']?.toString() ?? '',
+        name: json['name']?.toString() ?? '',
+        logoUrl: json['logo_url']?.toString(),
+      );
+}
+
 class VehicleData {
   const VehicleData({
     this.id,
+    this.makeId,
     required this.make,
     required this.model,
     required this.variant,
@@ -18,10 +41,13 @@ class VehicleData {
     required this.mileage,
     required this.color,
     required this.licensePlate,
+    this.provinceId,
+    this.cityId,
     required this.city,
   });
 
   final String? id;
+  final int? makeId;
   final String make;
   final String model;
   final String variant;
@@ -31,10 +57,13 @@ class VehicleData {
   final int mileage;
   final String color;
   final String licensePlate;
+  final int? provinceId;
+  final int? cityId;
   final String city;
 
   factory VehicleData.fromJson(Map<String, dynamic> json) => VehicleData(
         id: json['id']?.toString(),
+        makeId: (json['make_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -44,10 +73,13 @@ class VehicleData {
         mileage: (json['mileage'] as num?)?.toInt() ?? 0,
         color: json['color']?.toString() ?? '',
         licensePlate: json['license_plate']?.toString() ?? '',
+        provinceId: (json['province_id'] as num?)?.toInt(),
+        cityId: (json['city_id'] as num?)?.toInt(),
         city: json['city']?.toString() ?? '',
       );
 
   Map<String, dynamic> toJson() => {
+        if (makeId != null) 'make_id': makeId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -57,6 +89,8 @@ class VehicleData {
         'mileage': mileage,
         'color': color,
         'license_plate': licensePlate,
+        if (provinceId != null) 'province_id': provinceId,
+        if (cityId != null) 'city_id': cityId,
         'city': city,
       };
 }
@@ -225,6 +259,7 @@ class AppraisalData {
 
 class AppraisalDraft {
   const AppraisalDraft({
+    this.makeId,
     this.make = '',
     this.model = '',
     this.variant = '',
@@ -234,6 +269,8 @@ class AppraisalDraft {
     this.mileage,
     this.color = '',
     this.licensePlate = '',
+    this.provinceId,
+    this.cityId,
     this.city = '',
     this.taxStatus = '',
     this.floodHistory = '',
@@ -248,6 +285,7 @@ class AppraisalDraft {
     this.marketingConsent = false,
   });
 
+  final int? makeId;
   final String make;
   final String model;
   final String variant;
@@ -257,6 +295,8 @@ class AppraisalDraft {
   final int? mileage;
   final String color;
   final String licensePlate;
+  final int? provinceId;
+  final int? cityId;
   final String city;
   final String taxStatus;
   final String floodHistory;
@@ -271,13 +311,19 @@ class AppraisalDraft {
   final bool marketingConsent;
 
   bool get hasIdentity =>
-      make.isNotEmpty && model.isNotEmpty && variant.isNotEmpty && year != null;
+      makeId != null &&
+      make.isNotEmpty &&
+      model.isNotEmpty &&
+      variant.isNotEmpty &&
+      year != null;
   bool get hasDetails =>
       transmission.isNotEmpty &&
       fuelType.isNotEmpty &&
       mileage != null &&
       color.isNotEmpty &&
       licensePlate.isNotEmpty &&
+      provinceId != null &&
+      cityId != null &&
       city.isNotEmpty;
   bool get hasCondition =>
       taxStatus.isNotEmpty &&
@@ -288,6 +334,7 @@ class AppraisalDraft {
   bool get hasAllPhotos => appraisalPhotoAngles.every(photoPaths.containsKey);
 
   AppraisalDraft copyWith({
+    int? makeId,
     String? make,
     String? model,
     String? variant,
@@ -297,6 +344,8 @@ class AppraisalDraft {
     int? mileage,
     String? color,
     String? licensePlate,
+    int? provinceId,
+    int? cityId,
     String? city,
     String? taxStatus,
     String? floodHistory,
@@ -311,6 +360,7 @@ class AppraisalDraft {
     bool? marketingConsent,
   }) =>
       AppraisalDraft(
+        makeId: makeId ?? this.makeId,
         make: make ?? this.make,
         model: model ?? this.model,
         variant: variant ?? this.variant,
@@ -320,6 +370,8 @@ class AppraisalDraft {
         mileage: mileage ?? this.mileage,
         color: color ?? this.color,
         licensePlate: licensePlate ?? this.licensePlate,
+        provinceId: provinceId ?? this.provinceId,
+        cityId: cityId ?? this.cityId,
         city: city ?? this.city,
         taxStatus: taxStatus ?? this.taxStatus,
         floodHistory: floodHistory ?? this.floodHistory,
@@ -335,6 +387,7 @@ class AppraisalDraft {
       );
 
   factory AppraisalDraft.fromJson(Map<String, dynamic> json) => AppraisalDraft(
+        makeId: (json['make_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -344,6 +397,8 @@ class AppraisalDraft {
         mileage: (json['mileage'] as num?)?.toInt(),
         color: json['color']?.toString() ?? '',
         licensePlate: json['license_plate']?.toString() ?? '',
+        provinceId: (json['province_id'] as num?)?.toInt(),
+        cityId: (json['city_id'] as num?)?.toInt(),
         city: json['city']?.toString() ?? '',
         taxStatus: json['tax_status']?.toString() ?? '',
         floodHistory: json['flood_history']?.toString() ?? '',
@@ -363,6 +418,7 @@ class AppraisalDraft {
       );
 
   Map<String, dynamic> toJson() => {
+        'make_id': makeId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -372,6 +428,8 @@ class AppraisalDraft {
         'mileage': mileage,
         'color': color,
         'license_plate': licensePlate,
+        'province_id': provinceId,
+        'city_id': cityId,
         'city': city,
         'tax_status': taxStatus,
         'flood_history': floodHistory,
@@ -388,6 +446,7 @@ class AppraisalDraft {
 
   VehicleData toVehicle() => VehicleData(
         id: vehicleId,
+        makeId: makeId,
         make: make,
         model: model,
         variant: variant,
@@ -397,6 +456,8 @@ class AppraisalDraft {
         mileage: mileage!,
         color: color,
         licensePlate: licensePlate,
+        provinceId: provinceId,
+        cityId: cityId,
         city: city,
       );
 

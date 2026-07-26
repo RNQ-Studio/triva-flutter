@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,9 +22,10 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
   final _mileage = TextEditingController();
   final _color = TextEditingController();
   final _plate = TextEditingController();
-  final _city = TextEditingController();
   String? _transmission;
   String? _fuel;
+  int? _provinceId;
+  int? _cityId;
   bool _initialized = false;
   bool _saving = false;
 
@@ -32,12 +34,26 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
     _mileage.dispose();
     _color.dispose();
     _plate.dispose();
-    _city.dispose();
     super.dispose();
   }
 
   Future<void> _continue() async {
     if (!_formKey.currentState!.validate()) return;
+    final provinces = ref.read(provinceOptionsProvider).value ?? const [];
+    ProvinceOption? selectedProvince;
+    CityOption? selectedCity;
+    for (final province in provinces) {
+      if (province.id != _provinceId) continue;
+      selectedProvince = province;
+      for (final city in province.cities) {
+        if (city.id == _cityId) {
+          selectedCity = city;
+          break;
+        }
+      }
+      break;
+    }
+    if (selectedProvince == null || selectedCity == null) return;
     setState(() => _saving = true);
     await ref.read(appraisalFlowProvider.notifier).saveDetails(
           transmission: _transmission!,
@@ -45,7 +61,9 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
           mileage: int.parse(_mileage.text),
           color: _color.text,
           licensePlate: _plate.text,
-          city: _city.text,
+          provinceId: selectedProvince.id,
+          cityId: selectedCity.id,
+          city: selectedCity.name,
         );
     if (mounted) context.push(appraisalConditionPath);
     if (mounted) setState(() => _saving = false);
@@ -64,8 +82,10 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
       _mileage.text = draft.mileage?.toString() ?? '';
       _color.text = draft.color;
       _plate.text = draft.licensePlate;
-      _city.text = draft.city;
+      _provinceId = draft.provinceId;
+      _cityId = draft.cityId;
     }
+    final regions = ref.watch(provinceOptionsProvider);
 
     return AppraisalFlowScaffold(
       step: 1,
@@ -146,7 +166,93 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
                 validator: _required,
               ),
               const SizedBox(height: AppSpacing.medium),
-              _textField(_city, l10n.vehicleCity, submit: true),
+              regions.when(
+                data: (provinces) {
+                  ProvinceOption? selectedProvince;
+                  for (final province in provinces) {
+                    if (province.id == _provinceId) {
+                      selectedProvince = province;
+                      break;
+                    }
+                  }
+                  final cities =
+                      selectedProvince?.cities ?? const <CityOption>[];
+                  CityOption? selectedCity;
+                  for (final city in cities) {
+                    if (city.id == _cityId) {
+                      selectedCity = city;
+                      break;
+                    }
+                  }
+                  if (provinces.isEmpty) {
+                    return _RegionMessage(
+                      message: l10n.regionEmpty,
+                      onRetry: () => ref.invalidate(provinceOptionsProvider),
+                    );
+                  }
+                  return Column(
+                    children: [
+                      DropdownButtonFormField<int>(
+                        isExpanded: true,
+                        initialValue: selectedProvince?.id,
+                        decoration: InputDecoration(
+                          labelText: l10n.province,
+                          prefixIcon: const Icon(Icons.map_outlined),
+                        ),
+                        items: [
+                          for (final province in provinces)
+                            DropdownMenuItem(
+                              value: province.id,
+                              child: Text(province.name),
+                            ),
+                        ],
+                        onChanged: (value) => setState(() {
+                          _provinceId = value;
+                          _cityId = null;
+                        }),
+                        validator: (value) =>
+                            value == null ? l10n.fieldRequired : null,
+                      ),
+                      const SizedBox(height: AppSpacing.medium),
+                      DropdownButtonFormField<int>(
+                        key: ValueKey(_provinceId),
+                        isExpanded: true,
+                        initialValue: selectedCity?.id,
+                        decoration: InputDecoration(
+                          labelText: l10n.vehicleCity,
+                          prefixIcon: const Icon(Icons.location_city_outlined),
+                          hintText: selectedProvince == null
+                              ? l10n.chooseProvinceFirst
+                              : l10n.chooseCity,
+                        ),
+                        items: [
+                          for (final city in cities)
+                            DropdownMenuItem(
+                              value: city.id,
+                              child: Text(city.name),
+                            ),
+                        ],
+                        onChanged: selectedProvince == null
+                            ? null
+                            : (value) => setState(() => _cityId = value),
+                        validator: (value) =>
+                            value == null ? l10n.fieldRequired : null,
+                      ),
+                    ],
+                  );
+                },
+                loading: () => Column(
+                  children: [
+                    const LinearProgressIndicator(),
+                    const SizedBox(height: AppSpacing.small),
+                    Text(l10n.regionLoading),
+                  ],
+                ),
+                error: (_, __) => _RegionMessage(
+                  message: l10n.regionLoadError,
+                  onRetry: () => ref.invalidate(provinceOptionsProvider),
+                ),
+              ),
             ],
           ),
         ),
@@ -178,5 +284,30 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
     return number == null || number < 0 || number > 2000000
         ? AppLocalizations.of(context)!.fieldRequired
         : null;
+  }
+}
+
+class _RegionMessage extends StatelessWidget {
+  const _RegionMessage({
+    required this.message,
+    required this.onRetry,
+  });
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.cloud_off_outlined),
+        const SizedBox(width: AppSpacing.medium),
+        Expanded(child: Text(message)),
+        TextButton(
+          onPressed: onRetry,
+          child: Text(AppLocalizations.of(context)!.retry),
+        ),
+      ],
+    );
   }
 }

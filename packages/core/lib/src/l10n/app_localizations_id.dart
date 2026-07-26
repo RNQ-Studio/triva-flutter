@@ -333,6 +333,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get vehicleMake => 'Merek';
 
   @override
+  String get chooseVehicleMake => 'Pilih merek mobil';
+
+  @override
+  String get searchVehicleMake => 'Cari merek mobil';
+
+  @override
+  String get vehicleMakeLoadError =>
+      'Master merek mobil belum dapat dimuat. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get vehicleMakeEmpty => 'Master merek mobil belum tersedia.';
+
+  @override
   String get vehicleModel => 'Model';
 
   @override
@@ -520,6 +533,57 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get activityEmpty => 'Belum ada aktivitas appraisal.';
+
+  @override
+  String get demoActivityNotice =>
+      'Data berikut merupakan contoh tampilan aktivitas dan akan diganti otomatis saat transaksi Anda tersedia.';
+
+  @override
+  String get demoActivityRecentTitle => 'Aktivitas terbaru';
+
+  @override
+  String get demoActivityAppraisalTitle => 'Appraisal Toyota Avanza';
+
+  @override
+  String get demoActivityAppraisalSubtitle =>
+      'Hari ini, 09.30 · TIA-20260727-0001';
+
+  @override
+  String get demoActivityReviewStatus => 'Sedang ditinjau';
+
+  @override
+  String get demoActivityServiceTitle => 'Booking servis berkala';
+
+  @override
+  String get demoActivityServiceSubtitle => 'Besok, 10.00 · Auto2000 Kertajaya';
+
+  @override
+  String get demoActivityConfirmedStatus => 'Jadwal dikonfirmasi';
+
+  @override
+  String get demoActivityCreditTitle => 'Simulasi kredit Innova Zenix';
+
+  @override
+  String get demoActivityCreditSubtitle => '26 Jul 2026 · Tenor 60 bulan';
+
+  @override
+  String get demoActivitySavedStatus => 'Simulasi tersimpan';
+
+  @override
+  String get demoActivityBodyPaintTitle => 'Estimasi Body & Paint';
+
+  @override
+  String get demoActivityBodyPaintSubtitle => '25 Jul 2026 · Bumper belakang';
+
+  @override
+  String get demoActivityDraftStatus => 'Draft';
+
+  @override
+  String get notificationsEmptyTitle => 'Belum ada notifikasi';
+
+  @override
+  String get notificationsEmptyDescription =>
+      'Pembaruan appraisal, jadwal layanan, dan penawaran akan muncul di sini.';
 
   @override
   String get appraisalProgressTitle => 'Perkembangan appraisal';

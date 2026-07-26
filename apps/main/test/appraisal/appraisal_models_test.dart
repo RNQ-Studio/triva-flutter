@@ -4,6 +4,7 @@ import 'package:triva_app/features/appraisal/domain/appraisal_models.dart';
 void main() {
   test('draft round-trip keeps resume-critical identifiers and photos', () {
     const draft = AppraisalDraft(
+      makeId: 1,
       make: 'Toyota',
       model: 'Avanza',
       variant: '1.5 G',
@@ -13,6 +14,8 @@ void main() {
       mileage: 42000,
       color: 'Putih',
       licensePlate: 'L 1234 TRV',
+      provinceId: 35,
+      cityId: 3578,
       city: 'Surabaya',
       taxStatus: 'active',
       floodHistory: 'no',
@@ -29,6 +32,9 @@ void main() {
     final restored = AppraisalDraft.fromJson(draft.toJson());
 
     expect(restored.vehicleId, 'vehicle-1');
+    expect(restored.makeId, 1);
+    expect(restored.provinceId, 35);
+    expect(restored.cityId, 3578);
     expect(restored.appraisalId, 'appraisal-1');
     expect(restored.assetIds['front'], 'asset-1');
     expect(restored.idempotencyKey, draft.idempotencyKey);

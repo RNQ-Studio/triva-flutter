@@ -33,6 +33,16 @@ class AppraisalRepository {
 
   Future<void> clearDraft() => _storage.delete(_draftKey);
 
+  Future<List<VehicleMakeOption>> listVehicleMakes() async {
+    final response = await _dio.get<dynamic>('v1/vehicle-makes');
+    final envelope = response.data as Map<String, dynamic>;
+    final items = envelope['data'] as List<dynamic>? ?? const [];
+    return items
+        .whereType<Map<String, dynamic>>()
+        .map(VehicleMakeOption.fromJson)
+        .toList(growable: false);
+  }
+
   Future<VehicleData> createVehicle(VehicleData vehicle) async {
     final response = await _dio.post<dynamic>(
       'v1/vehicles',

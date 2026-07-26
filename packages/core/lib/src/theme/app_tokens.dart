@@ -15,3 +15,10 @@ abstract final class AppRadius {
   static const BorderRadius large = BorderRadius.all(Radius.circular(16));
   static const BorderRadius dialog = BorderRadius.all(Radius.circular(28));
 }
+
+abstract final class AppIconSize {
+  static const double medium = 24;
+  static const double large = 32;
+  static const double service = 44;
+  static const double hero = 88;
+}

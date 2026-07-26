@@ -21,21 +21,7 @@ class AppraisalActivityScreen extends ConsumerWidget {
           data: (items) => RefreshIndicator(
             onRefresh: () async => ref.refresh(appraisalsProvider.future),
             child: items.isEmpty
-                ? ListView(
-                    children: [
-                      const SizedBox(height: 160),
-                      Icon(
-                        Icons.inbox_outlined,
-                        size: 56,
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                      const SizedBox(height: AppSpacing.medium),
-                      Text(
-                        l10n.activityEmpty,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  )
+                ? const _DemoActivityList()
                 : ListView.separated(
                     padding: const EdgeInsets.all(AppSpacing.large),
                     itemCount: items.length,
@@ -50,6 +36,178 @@ class AppraisalActivityScreen extends ConsumerWidget {
             onRetry: () => ref.invalidate(appraisalsProvider),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DemoActivityList extends StatelessWidget {
+  const _DemoActivityList();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final activities = [
+      (
+        Icons.fact_check_rounded,
+        l10n.demoActivityAppraisalTitle,
+        l10n.demoActivityAppraisalSubtitle,
+        l10n.demoActivityReviewStatus,
+        AppColors.appraisalBlue,
+        AppColors.appraisalBlueSoft,
+      ),
+      (
+        Icons.car_repair_rounded,
+        l10n.demoActivityServiceTitle,
+        l10n.demoActivityServiceSubtitle,
+        l10n.demoActivityConfirmedStatus,
+        AppColors.serviceOrange,
+        AppColors.serviceOrangeSoft,
+      ),
+      (
+        Icons.calculate_rounded,
+        l10n.demoActivityCreditTitle,
+        l10n.demoActivityCreditSubtitle,
+        l10n.demoActivitySavedStatus,
+        AppColors.serviceGreen,
+        AppColors.serviceGreenSoft,
+      ),
+      (
+        Icons.format_paint_rounded,
+        l10n.demoActivityBodyPaintTitle,
+        l10n.demoActivityBodyPaintSubtitle,
+        l10n.demoActivityDraftStatus,
+        AppColors.serviceRose,
+        AppColors.serviceRoseSoft,
+      ),
+    ];
+    return ListView(
+      padding: const EdgeInsets.all(AppSpacing.large),
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: AppRadius.medium,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.medium),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                const SizedBox(width: AppSpacing.medium),
+                Expanded(
+                  child: Text(
+                    l10n.demoActivityNotice,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.large),
+        Text(
+          l10n.demoActivityRecentTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: AppSpacing.small),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: AppRadius.large,
+          ),
+          child: Column(
+            children: [
+              for (var index = 0; index < activities.length; index++) ...[
+                _DemoActivityTile(activity: activities[index]),
+                if (index != activities.length - 1)
+                  const Divider(
+                    height: 1,
+                    indent: 80,
+                    endIndent: AppSpacing.large,
+                  ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DemoActivityTile extends StatelessWidget {
+  const _DemoActivityTile({required this.activity});
+
+  final (
+    IconData,
+    String,
+    String,
+    String,
+    Color,
+    Color,
+  ) activity;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.medium,
+        vertical: AppSpacing.small,
+      ),
+      child: Row(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: activity.$6,
+              borderRadius: AppRadius.medium,
+            ),
+            child: SizedBox.square(
+              dimension: 52,
+              child: Icon(
+                activity.$1,
+                color: activity.$5,
+                size: AppIconSize.large,
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.medium),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  activity.$2,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.xSmall),
+                Text(
+                  activity.$3,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                ),
+                const SizedBox(height: AppSpacing.small),
+                Text(
+                  activity.$4,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: activity.$5,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

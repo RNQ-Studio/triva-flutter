@@ -43,8 +43,7 @@ class HomeScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _Header(
-                            onNotifications: () =>
-                                context.push('/notifications'),
+                            onNotifications: () => context.go('/notifications'),
                           ),
                           const SizedBox(height: AppSpacing.xLarge),
                           Text(
@@ -107,38 +106,6 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 0,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home_rounded),
-            label: l10n.home,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.receipt_long_outlined),
-            label: l10n.activity,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.notifications_outlined),
-            label: l10n.notifications,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline_rounded),
-            label: l10n.profile,
-          ),
-        ],
-        onDestinationSelected: (index) {
-          switch (index) {
-            case 1:
-              context.push(appraisalActivityPath);
-            case 2:
-              context.push('/notifications');
-            case 3:
-              context.push(AppRoutes.profile);
-          }
-        },
-      ),
     );
   }
 }
@@ -189,7 +156,7 @@ class _AppraisalHero extends StatelessWidget {
                   Icon(
                     Icons.price_check_rounded,
                     color: colors.onPrimary,
-                    size: 32,
+                    size: AppIconSize.large,
                   ),
                   const SizedBox(height: AppSpacing.medium),
                   Text(
@@ -216,7 +183,7 @@ class _AppraisalHero extends StatelessWidget {
             const SizedBox(width: AppSpacing.medium),
             Icon(
               Icons.directions_car_filled_rounded,
-              size: 88,
+              size: AppIconSize.hero,
               color: colors.onPrimary.withValues(alpha: 0.22),
             ),
           ],
@@ -235,47 +202,146 @@ class _ServiceGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final services = [
-      (Icons.car_repair_outlined, l10n.serviceToyotaTitle),
-      (Icons.handyman_outlined, l10n.serviceOtoxpertTitle),
-      (Icons.calculate_outlined, l10n.serviceCreditTitle),
-      (Icons.format_paint_outlined, l10n.serviceBodyPaintTitle),
-    ];
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: AppSpacing.medium,
-        mainAxisSpacing: AppSpacing.medium,
-        childAspectRatio: 1.15,
+      (
+        Icons.car_repair_rounded,
+        l10n.serviceToyotaTitle,
+        AppColors.serviceOrange,
+        AppColors.serviceOrangeSoft,
       ),
-      itemCount: services.length,
-      itemBuilder: (context, index) {
-        final service = services[index];
-        return Card(
-          margin: EdgeInsets.zero,
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: onUnavailable,
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.medium),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(service.$1),
-                  Text(
-                    service.$2,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ],
-              ),
-            ),
+      (
+        Icons.handyman_rounded,
+        l10n.serviceOtoxpertTitle,
+        AppColors.serviceViolet,
+        AppColors.serviceVioletSoft,
+      ),
+      (
+        Icons.calculate_rounded,
+        l10n.serviceCreditTitle,
+        AppColors.serviceGreen,
+        AppColors.serviceGreenSoft,
+      ),
+      (
+        Icons.format_paint_rounded,
+        l10n.serviceBodyPaintTitle,
+        AppColors.serviceRose,
+        AppColors.serviceRoseSoft,
+      ),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final textScale = MediaQuery.textScalerOf(context).scale(1);
+        final columns = textScale < 1.6 ? 2 : 1;
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            crossAxisSpacing: AppSpacing.medium,
+            mainAxisSpacing: AppSpacing.medium,
+            mainAxisExtent: columns == 1 ? 112 : 168,
           ),
+          itemCount: services.length,
+          itemBuilder: (context, index) {
+            final service = services[index];
+            return Material(
+              color: service.$4,
+              borderRadius: AppRadius.large,
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: onUnavailable,
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.large),
+                  child: columns == 1
+                      ? Row(
+                          children: [
+                            _ServiceIcon(
+                              icon: service.$1,
+                              foreground: AppColors.surfaceLight,
+                              background: service.$3,
+                            ),
+                            const SizedBox(width: AppSpacing.medium),
+                            Expanded(
+                              child: _ServiceLabel(
+                                label: service.$2,
+                                color: service.$3,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _ServiceIcon(
+                              icon: service.$1,
+                              foreground: AppColors.surfaceLight,
+                              background: service.$3,
+                            ),
+                            _ServiceLabel(
+                              label: service.$2,
+                              color: service.$3,
+                            ),
+                          ],
+                        ),
+                ),
+              ),
+            );
+          },
         );
       },
+    );
+  }
+}
+
+class _ServiceIcon extends StatelessWidget {
+  const _ServiceIcon({
+    required this.icon,
+    required this.foreground,
+    required this.background,
+  });
+
+  final IconData icon;
+  final Color foreground;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: AppRadius.large,
+      ),
+      child: SizedBox.square(
+        dimension: 56,
+        child: Icon(
+          icon,
+          color: foreground,
+          size: AppIconSize.service,
+        ),
+      ),
+    );
+  }
+}
+
+class _ServiceLabel extends StatelessWidget {
+  const _ServiceLabel({
+    required this.label,
+    required this.color,
+  });
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      label,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: color,
+            fontWeight: FontWeight.w700,
+          ),
     );
   }
 }

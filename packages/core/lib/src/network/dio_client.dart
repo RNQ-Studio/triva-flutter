@@ -48,7 +48,9 @@ class DioClient {
         }
         if (err.type == DioExceptionType.connectionTimeout ||
             err.type == DioExceptionType.receiveTimeout ||
-            err.type == DioExceptionType.sendTimeout) {
+            err.type == DioExceptionType.sendTimeout ||
+            err.type == DioExceptionType.connectionError ||
+            (err.type == DioExceptionType.unknown && err.response == null)) {
           handler.reject(
             err.copyWith(
               error: NetworkException('Connection timeout',

@@ -686,6 +686,30 @@ abstract class AppLocalizations {
   /// **'Merek'**
   String get vehicleMake;
 
+  /// No description provided for @chooseVehicleMake.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih merek mobil'**
+  String get chooseVehicleMake;
+
+  /// No description provided for @searchVehicleMake.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari merek mobil'**
+  String get searchVehicleMake;
+
+  /// No description provided for @vehicleMakeLoadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Master merek mobil belum dapat dimuat. Periksa koneksi lalu coba lagi.'**
+  String get vehicleMakeLoadError;
+
+  /// No description provided for @vehicleMakeEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Master merek mobil belum tersedia.'**
+  String get vehicleMakeEmpty;
+
   /// No description provided for @vehicleModel.
   ///
   /// In id, this message translates to:
@@ -1051,6 +1075,102 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Belum ada aktivitas appraisal.'**
   String get activityEmpty;
+
+  /// No description provided for @demoActivityNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Data berikut merupakan contoh tampilan aktivitas dan akan diganti otomatis saat transaksi Anda tersedia.'**
+  String get demoActivityNotice;
+
+  /// No description provided for @demoActivityRecentTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas terbaru'**
+  String get demoActivityRecentTitle;
+
+  /// No description provided for @demoActivityAppraisalTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Appraisal Toyota Avanza'**
+  String get demoActivityAppraisalTitle;
+
+  /// No description provided for @demoActivityAppraisalSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hari ini, 09.30 · TIA-20260727-0001'**
+  String get demoActivityAppraisalSubtitle;
+
+  /// No description provided for @demoActivityReviewStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Sedang ditinjau'**
+  String get demoActivityReviewStatus;
+
+  /// No description provided for @demoActivityServiceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking servis berkala'**
+  String get demoActivityServiceTitle;
+
+  /// No description provided for @demoActivityServiceSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Besok, 10.00 · Auto2000 Kertajaya'**
+  String get demoActivityServiceSubtitle;
+
+  /// No description provided for @demoActivityConfirmedStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal dikonfirmasi'**
+  String get demoActivityConfirmedStatus;
+
+  /// No description provided for @demoActivityCreditTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi kredit Innova Zenix'**
+  String get demoActivityCreditTitle;
+
+  /// No description provided for @demoActivityCreditSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'26 Jul 2026 · Tenor 60 bulan'**
+  String get demoActivityCreditSubtitle;
+
+  /// No description provided for @demoActivitySavedStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi tersimpan'**
+  String get demoActivitySavedStatus;
+
+  /// No description provided for @demoActivityBodyPaintTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi Body & Paint'**
+  String get demoActivityBodyPaintTitle;
+
+  /// No description provided for @demoActivityBodyPaintSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'25 Jul 2026 · Bumper belakang'**
+  String get demoActivityBodyPaintSubtitle;
+
+  /// No description provided for @demoActivityDraftStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Draft'**
+  String get demoActivityDraftStatus;
+
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada notifikasi'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembaruan appraisal, jadwal layanan, dan penawaran akan muncul di sini.'**
+  String get notificationsEmptyDescription;
 
   /// No description provided for @appraisalProgressTitle.
   ///

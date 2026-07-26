@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:core/core.dart';
+import 'package:dio/dio.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +21,10 @@ final appraisalRepositoryProvider = Provider<AppraisalRepository>((ref) {
 
 final appraisalsProvider = FutureProvider<List<AppraisalData>>((ref) {
   return ref.watch(appraisalRepositoryProvider).listAppraisals();
+});
+
+final vehicleMakesProvider = FutureProvider<List<VehicleMakeOption>>((ref) {
+  return ref.watch(appraisalRepositoryProvider).listVehicleMakes();
 });
 
 final appraisalDetailProvider =
@@ -73,6 +78,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
   }
 
   Future<void> saveIdentity({
+    required int makeId,
     required String make,
     required String model,
     required String variant,
@@ -80,6 +86,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
   }) =>
       _updateDraft(
         (draft) => draft.copyWith(
+          makeId: makeId,
           make: make.trim(),
           model: model.trim(),
           variant: variant.trim(),
@@ -93,6 +100,8 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required int mileage,
     required String color,
     required String licensePlate,
+    required int provinceId,
+    required int cityId,
     required String city,
   }) =>
       _updateDraft(
@@ -102,6 +111,8 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
           mileage: mileage,
           color: color.trim(),
           licensePlate: licensePlate.trim().toUpperCase(),
+          provinceId: provinceId,
+          cityId: cityId,
           city: city.trim(),
         ),
       );
@@ -319,7 +330,9 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
   }
 
   String _friendlyError(Object error) {
-    return switch (error) {
+    final cause =
+        error is DioException && error.error != null ? error.error! : error;
+    return switch (cause) {
       NetworkException() => 'network',
       UnauthorizedException() => 'auth',
       _ => 'general',

@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 
 import 'appraisal_paths.dart';
-import 'screens/appraisal_activity_screen.dart';
 import 'screens/appraisal_complete_screen.dart';
 import 'screens/appraisal_detail_screen.dart';
 import 'screens/appraisal_result_screen.dart';
@@ -32,10 +31,6 @@ final appraisalRoutes = <GoRoute>[
   GoRoute(
     path: appraisalReviewPath,
     builder: (_, __) => const AppraisalReviewScreen(),
-  ),
-  GoRoute(
-    path: appraisalActivityPath,
-    builder: (_, __) => const AppraisalActivityScreen(),
   ),
   GoRoute(
     path: '/appraisals/submitted/:id',

@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,6 +26,7 @@ class _FakeFlowController extends AppraisalFlowController {
 }
 
 const _draft = AppraisalDraft(
+  makeId: 1,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -34,6 +36,8 @@ const _draft = AppraisalDraft(
   mileage: 42000,
   color: 'Putih',
   licensePlate: 'L 1234 TRV',
+  provinceId: 35,
+  cityId: 3578,
   city: 'Surabaya',
   taxStatus: 'active',
   floodHistory: 'no',
@@ -51,6 +55,7 @@ const _draft = AppraisalDraft(
 
 const _vehicle = VehicleData(
   id: 'vehicle-1',
+  makeId: 1,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -60,8 +65,27 @@ const _vehicle = VehicleData(
   mileage: 42000,
   color: 'Putih',
   licensePlate: 'L 1234 TRV',
+  provinceId: 35,
+  cityId: 3578,
   city: 'Surabaya',
 );
+
+const _vehicleMake = VehicleMakeOption(
+  id: 1,
+  slug: 'toyota',
+  name: 'Toyota',
+);
+
+const _provinces = [
+  ProvinceOption(
+    id: 35,
+    code: '35',
+    name: 'Jawa Timur',
+    cities: [
+      CityOption(id: 3578, code: '3578', name: 'Kota Surabaya'),
+    ],
+  ),
+];
 
 final _appraisal = AppraisalData(
   id: 'appraisal-1',
@@ -164,12 +188,30 @@ void main() {
       );
     }
   }
+
+  testWidgets('shows a clearly labelled dummy activity list when empty',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalActivityScreen(),
+      brightness: Brightness.light,
+      appraisalItems: const [],
+    );
+
+    expect(
+      find.textContaining('contoh tampilan aktivitas'),
+      findsOneWidget,
+    );
+    expect(find.text('Appraisal Toyota Avanza'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }
 
 Future<void> _pump(
   WidgetTester tester, {
   required Widget widget,
   required Brightness brightness,
+  List<AppraisalData>? appraisalItems,
 }) async {
   tester.view
     ..physicalSize = const Size(360, 690)
@@ -182,7 +224,11 @@ Future<void> _pump(
         appraisalFlowProvider.overrideWith(
           () => _FakeFlowController(_draft),
         ),
-        appraisalsProvider.overrideWith((ref) async => [_appraisal]),
+        appraisalsProvider.overrideWith(
+          (ref) async => appraisalItems ?? [_appraisal],
+        ),
+        vehicleMakesProvider.overrideWith((ref) async => [_vehicleMake]),
+        provinceOptionsProvider.overrideWith((ref) async => _provinces),
         appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
       ],
       child: MaterialApp(

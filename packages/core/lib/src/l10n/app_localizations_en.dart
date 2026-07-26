@@ -334,6 +334,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicleMake => 'Make';
 
   @override
+  String get chooseVehicleMake => 'Choose a vehicle make';
+
+  @override
+  String get searchVehicleMake => 'Search vehicle makes';
+
+  @override
+  String get vehicleMakeLoadError =>
+      'Vehicle make master data could not be loaded. Check your connection and try again.';
+
+  @override
+  String get vehicleMakeEmpty =>
+      'Vehicle make master data is not available yet.';
+
+  @override
   String get vehicleModel => 'Model';
 
   @override
@@ -521,6 +535,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityEmpty => 'No appraisal activity yet.';
+
+  @override
+  String get demoActivityNotice =>
+      'The following entries are sample activity data and will be replaced automatically when your transactions are available.';
+
+  @override
+  String get demoActivityRecentTitle => 'Recent activity';
+
+  @override
+  String get demoActivityAppraisalTitle => 'Toyota Avanza appraisal';
+
+  @override
+  String get demoActivityAppraisalSubtitle =>
+      'Today, 09:30 · TIA-20260727-0001';
+
+  @override
+  String get demoActivityReviewStatus => 'Under review';
+
+  @override
+  String get demoActivityServiceTitle => 'Periodic service booking';
+
+  @override
+  String get demoActivityServiceSubtitle =>
+      'Tomorrow, 10:00 · Auto2000 Kertajaya';
+
+  @override
+  String get demoActivityConfirmedStatus => 'Schedule confirmed';
+
+  @override
+  String get demoActivityCreditTitle => 'Innova Zenix credit simulation';
+
+  @override
+  String get demoActivityCreditSubtitle => '26 Jul 2026 · 60-month term';
+
+  @override
+  String get demoActivitySavedStatus => 'Simulation saved';
+
+  @override
+  String get demoActivityBodyPaintTitle => 'Body & Paint estimate';
+
+  @override
+  String get demoActivityBodyPaintSubtitle => '25 Jul 2026 · Rear bumper';
+
+  @override
+  String get demoActivityDraftStatus => 'Draft';
+
+  @override
+  String get notificationsEmptyTitle => 'No notifications yet';
+
+  @override
+  String get notificationsEmptyDescription =>
+      'Appraisal updates, service schedules, and offers will appear here.';
 
   @override
   String get appraisalProgressTitle => 'Appraisal progress';
