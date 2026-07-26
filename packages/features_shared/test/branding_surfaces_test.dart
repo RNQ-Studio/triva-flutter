@@ -3,6 +3,7 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 class _FakeAuthNotifier extends AuthNotifier {
   @override
@@ -80,23 +81,6 @@ void main() {
     );
 
     testWidgets(
-      'onboarding is overflow-free in compact ${brightness.name} theme',
-      (tester) async {
-        await setCompactViewport(tester);
-        await tester.pumpWidget(
-          _testApp(
-            home: const OnboardingScreen(),
-            theme: theme,
-          ),
-        );
-        await tester.pump();
-
-        expect(find.text('Kenali nilai kendaraan'), findsOneWidget);
-        expect(tester.takeException(), isNull);
-      },
-    );
-
-    testWidgets(
       'splash is overflow-free in compact ${brightness.name} theme',
       (tester) async {
         await setCompactViewport(tester);
@@ -113,21 +97,6 @@ void main() {
       },
     );
   }
-
-  testWidgets('onboarding remains usable at 2.0 text scaling', (tester) async {
-    await setCompactViewport(tester);
-    await tester.pumpWidget(
-      _testApp(
-        home: const OnboardingScreen(),
-        theme: AppTheme.light,
-        textScale: 2,
-      ),
-    );
-    await tester.pump();
-
-    expect(find.text('Selanjutnya'), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
 
   testWidgets('Google login loading state is compact and disabled',
       (tester) async {
@@ -148,6 +117,46 @@ void main() {
           )
           .onPressed,
       isNull,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('splash continues directly to Google login', (tester) async {
+    final router = GoRouter(
+      initialLocation: '/splash',
+      redirect: authRedirect,
+      routes: [
+        ...authRoutes,
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const SizedBox.shrink(),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await setCompactViewport(tester);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authProvider.overrideWith(_FakeAuthNotifier.new),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pump(Durations.extralong4);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Lanjutkan dengan Google'), findsOneWidget);
+    expect(
+      authRoutes.map((route) => route.path),
+      isNot(contains('/onboarding')),
     );
     expect(tester.takeException(), isNull);
   });

@@ -78,36 +78,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splashTagline => 'Upload, Appraise, Upgrade';
 
   @override
-  String get onboardingSkip => 'Skip';
-
-  @override
-  String get onboardingNext => 'Next';
-
-  @override
-  String get onboardingStart => 'Start';
-
-  @override
-  String get onboardingValueTitle => 'Understand your vehicle value';
-
-  @override
-  String get onboardingValueDescription =>
-      'Complete the vehicle details and photos to receive a clear indicative valuation.';
-
-  @override
-  String get onboardingTrackTitle => 'Track the appraisal';
-
-  @override
-  String get onboardingTrackDescription =>
-      'Follow the request from submission until an appraiser-reviewed result is ready.';
-
-  @override
-  String get onboardingUpgradeTitle => 'Plan the next step';
-
-  @override
-  String get onboardingUpgradeDescription =>
-      'Continue from the appraisal to financing, repairs, or the most suitable vehicle service.';
-
-  @override
   String get loginSubtitle =>
       'Use your registered account to access services and vehicle history.';
 

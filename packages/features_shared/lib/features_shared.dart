@@ -25,6 +25,7 @@ export 'src/auth/presentation/auth_state.dart';
 export 'src/auth/presentation/login_screen.dart';
 export 'src/auth/presentation/complete_profile_screen.dart';
 export 'src/auth/presentation/region_provider.dart';
+export 'src/auth/presentation/splash_screen.dart';
 
 // profile — domain
 export 'src/profile/domain/entities/profile.dart';
@@ -63,14 +64,5 @@ export 'src/settings/presentation/settings_providers.dart';
 export 'src/settings/presentation/theme_notifier.dart';
 export 'src/settings/presentation/locale_notifier.dart';
 
-// onboarding — domain
-export 'src/onboarding/domain/onboarding_repository.dart';
-
-// onboarding — data
-export 'src/onboarding/data/onboarding_repository_impl.dart';
-
-// onboarding — presentation
-export 'src/onboarding/presentation/onboarding_notifier.dart';
-export 'src/onboarding/presentation/splash_screen.dart';
-export 'src/onboarding/presentation/onboarding_screen.dart';
+// branding
 export 'src/branding/triva_logo.dart';

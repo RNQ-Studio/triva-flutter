@@ -11,7 +11,7 @@ apps/main        aplikasi TRIVA utama
 apps/variant     aplikasi varian/starter; jangan diasumsikan ikut rilis
 packages/core    config, network, storage, theme, l10n, database, services
 packages/features_shared
-                 auth, profile, notifications, onboarding, settings
+                 auth, profile, notifications, settings
 ```
 
 Baca `ARCHITECTURE.md` untuk aturan dependency dan

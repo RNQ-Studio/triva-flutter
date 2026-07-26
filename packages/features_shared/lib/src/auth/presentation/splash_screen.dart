@@ -6,7 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../branding/triva_logo.dart';
-import 'onboarding_notifier.dart';
+import 'auth_provider.dart';
+import 'auth_state.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -20,6 +21,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   late final AnimationController _controller;
   late final Animation<double> _opacity;
   Timer? _navigationTimer;
+  bool _minimumDurationElapsed = false;
 
   @override
   void initState() {
@@ -33,13 +35,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       curve: Easing.emphasizedDecelerate,
     );
     _controller.forward();
-    _navigationTimer = Timer(Durations.extralong4, _continue);
+    _navigationTimer = Timer(Durations.extralong4, () {
+      _minimumDurationElapsed = true;
+      _continueIfReady();
+    });
   }
 
-  Future<void> _continue() async {
-    if (!mounted) return;
-    final hasOnboarded = ref.read(onboardingProvider).asData?.value ?? false;
-    context.go(hasOnboarded ? '/' : '/onboarding');
+  void _continueIfReady() {
+    if (!mounted || !_minimumDurationElapsed) return;
+    final authState = ref.read(authProvider);
+    if (authState is AuthInitial || authState is AuthLoading) return;
+    context.go('/');
   }
 
   @override
@@ -51,6 +57,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AuthState>(authProvider, (_, __) => _continueIfReady());
+
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 

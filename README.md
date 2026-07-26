@@ -22,7 +22,7 @@ Turunan aset dan aturan regenerasinya berada di
 ```text
 apps/main                 aplikasi TRIVA
 packages/core             konfigurasi, network, storage, theme, l10n
-packages/features_shared  auth, onboarding, profil, notifikasi, settings
+packages/features_shared  auth, profil, notifikasi, settings
 ```
 
 Dependency internal bergerak satu arah:
@@ -60,6 +60,9 @@ Web production memakai Firebase project `triva-7138e`, Hosting site/target
 ```text
 https://triva.web.app/
 ```
+
+Pada browser desktop, seluruh Navigator dirender dalam viewport mobile selebar
+480 px yang terpusat. Browser mobile tetap memakai lebar perangkatnya.
 
 Build dan deploy dijalankan terpisah agar artifact yang akan dipublikasikan
 dapat diverifikasi terlebih dahulu:

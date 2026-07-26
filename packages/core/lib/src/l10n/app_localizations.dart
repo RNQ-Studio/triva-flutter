@@ -236,60 +236,6 @@ abstract class AppLocalizations {
   /// **'Upload, Appraise, Upgrade'**
   String get splashTagline;
 
-  /// No description provided for @onboardingSkip.
-  ///
-  /// In id, this message translates to:
-  /// **'Lewati'**
-  String get onboardingSkip;
-
-  /// No description provided for @onboardingNext.
-  ///
-  /// In id, this message translates to:
-  /// **'Selanjutnya'**
-  String get onboardingNext;
-
-  /// No description provided for @onboardingStart.
-  ///
-  /// In id, this message translates to:
-  /// **'Mulai'**
-  String get onboardingStart;
-
-  /// No description provided for @onboardingValueTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Kenali nilai kendaraan'**
-  String get onboardingValueTitle;
-
-  /// No description provided for @onboardingValueDescription.
-  ///
-  /// In id, this message translates to:
-  /// **'Lengkapi data dan foto kendaraan untuk memperoleh indikasi nilai yang mudah dipahami.'**
-  String get onboardingValueDescription;
-
-  /// No description provided for @onboardingTrackTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Pantau proses appraisal'**
-  String get onboardingTrackTitle;
-
-  /// No description provided for @onboardingTrackDescription.
-  ///
-  /// In id, this message translates to:
-  /// **'Ikuti perkembangan permintaan dari pengajuan hingga hasil yang telah ditinjau appraiser.'**
-  String get onboardingTrackDescription;
-
-  /// No description provided for @onboardingUpgradeTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Siapkan langkah berikutnya'**
-  String get onboardingUpgradeTitle;
-
-  /// No description provided for @onboardingUpgradeDescription.
-  ///
-  /// In id, this message translates to:
-  /// **'Lanjutkan hasil appraisal ke simulasi kredit, perbaikan, atau layanan kendaraan yang sesuai.'**
-  String get onboardingUpgradeDescription;
-
   /// No description provided for @loginSubtitle.
   ///
   /// In id, this message translates to:

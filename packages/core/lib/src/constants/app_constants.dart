@@ -27,6 +27,5 @@ abstract final class AppConstants {
   static const String keyUserId = 'user_id';
   static const String keyThemeMode = 'theme_mode';
   static const String keyLocale = 'locale';
-  static const String keyOnboardingCompleted = 'has_completed_onboarding';
   static const String keyBiometricEnabled = 'biometric_login_enabled';
 }

@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+### Removed
+- Removed the onboarding route, screens, persistence, and localization so splash continues directly to authentication or the signed-in destination.
+
 ### Changed
 - Migrated all state providers (Auth, Profile, Notifications, Settings) to Riverpod Generator (`@riverpod` and `@Riverpod(keepAlive: true)`).
 - Re-architected providers naming conventions (`authNotifierProvider` -> `authProvider`, etc.) to match generator standards.

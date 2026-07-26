@@ -17,8 +17,8 @@ String? authRedirect(BuildContext context, GoRouterState state) {
   // While auth check is in progress, don't redirect.
   if (authState is AuthInitial || authState is AuthLoading) return null;
 
-  // Let pre-auth routes render while splash/onboarding owns its own sequence.
-  if (location == '/splash' || location == '/onboarding') return null;
+  // Let the splash render while it owns the initial session-check sequence.
+  if (location == '/splash') return null;
 
   final isAuthenticated = authState is AuthAuthenticated;
   final isOnLoginPage = location == '/login';

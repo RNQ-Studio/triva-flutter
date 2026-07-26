@@ -11,7 +11,7 @@ packages/core
 ```
 
 `apps/main` menyusun route dan fitur khusus produk. `features_shared` memiliki
-fitur lintas surface seperti auth, onboarding, profil, notifikasi, dan settings.
+fitur lintas surface seperti auth, profil, notifikasi, dan settings.
 `core` memiliki infrastruktur tanpa ketergantungan ke layer di atasnya.
 
 ## Aturan dependency
@@ -34,6 +34,10 @@ memakai shared preferences, dan token memakai secure storage.
 - Token auth dibaca dari `data`.
 
 Kontrak lengkap dan target MVP berada di `../triva-docs`.
+
+Flutter web memakai `WebMobileViewport` di root aplikasi agar seluruh route
+tetap memiliki komposisi mobile pada browser desktop. `MediaQuery` di dalam
+Navigator dibatasi ke 480 px, sedangkan browser mobile memakai lebar aslinya.
 
 ## Identitas visual
 

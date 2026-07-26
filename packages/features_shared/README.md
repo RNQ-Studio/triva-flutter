@@ -4,7 +4,6 @@ Fitur bersama aplikasi TRIVA yang berada di atas `core`:
 
 - branding dan logo;
 - auth dan biometrik;
-- onboarding;
 - profil;
 - notifikasi;
 - pengaturan tema dan bahasa.

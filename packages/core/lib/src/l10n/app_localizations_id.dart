@@ -78,36 +78,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get splashTagline => 'Upload, Appraise, Upgrade';
 
   @override
-  String get onboardingSkip => 'Lewati';
-
-  @override
-  String get onboardingNext => 'Selanjutnya';
-
-  @override
-  String get onboardingStart => 'Mulai';
-
-  @override
-  String get onboardingValueTitle => 'Kenali nilai kendaraan';
-
-  @override
-  String get onboardingValueDescription =>
-      'Lengkapi data dan foto kendaraan untuk memperoleh indikasi nilai yang mudah dipahami.';
-
-  @override
-  String get onboardingTrackTitle => 'Pantau proses appraisal';
-
-  @override
-  String get onboardingTrackDescription =>
-      'Ikuti perkembangan permintaan dari pengajuan hingga hasil yang telah ditinjau appraiser.';
-
-  @override
-  String get onboardingUpgradeTitle => 'Siapkan langkah berikutnya';
-
-  @override
-  String get onboardingUpgradeDescription =>
-      'Lanjutkan hasil appraisal ke simulasi kredit, perbaikan, atau layanan kendaraan yang sesuai.';
-
-  @override
   String get loginSubtitle =>
       'Gunakan akun yang terdaftar untuk mengakses layanan dan riwayat kendaraan Anda.';
 

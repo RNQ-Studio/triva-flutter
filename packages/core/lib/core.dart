@@ -22,6 +22,7 @@ export 'src/network/connectivity_service.dart';
 
 // responsive
 export 'src/responsive/breakpoints.dart';
+export 'src/responsive/web_mobile_viewport.dart';
 export 'src/responsive/responsive_layout.dart';
 
 // router

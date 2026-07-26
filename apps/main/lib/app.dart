@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:core/core.dart';
@@ -56,6 +57,10 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: appRouter,
+      builder: (context, child) => WebMobileViewport(
+        enabled: kIsWeb,
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }
