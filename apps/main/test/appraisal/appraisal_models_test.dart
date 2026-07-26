@@ -5,6 +5,7 @@ void main() {
   test('draft round-trip keeps resume-critical identifiers and photos', () {
     const draft = AppraisalDraft(
       makeId: 1,
+      modelId: 10,
       make: 'Toyota',
       model: 'Avanza',
       variant: '1.5 G',
@@ -22,6 +23,7 @@ void main() {
       majorAccidentHistory: 'no',
       serviceHistory: 'complete',
       ownership: 'first',
+      conditionPercentage: 87,
       photoPaths: {'front': '/draft/front.jpg'},
       assetIds: {'front': 'asset-1'},
       vehicleId: 'vehicle-1',
@@ -33,11 +35,22 @@ void main() {
 
     expect(restored.vehicleId, 'vehicle-1');
     expect(restored.makeId, 1);
+    expect(restored.modelId, 10);
     expect(restored.provinceId, 35);
     expect(restored.cityId, 3578);
     expect(restored.appraisalId, 'appraisal-1');
     expect(restored.assetIds['front'], 'asset-1');
     expect(restored.idempotencyKey, draft.idempotencyKey);
+    expect(restored.conditionPercentage, 87);
+  });
+
+  test('legacy draft defaults condition percentage to 90', () {
+    final restored = AppraisalDraft.fromJson({
+      'make': 'Toyota',
+      'model': 'Avanza',
+    });
+
+    expect(restored.conditionPercentage, 90);
   });
 
   test('appraisal parser exposes result and rejected photo state', () {

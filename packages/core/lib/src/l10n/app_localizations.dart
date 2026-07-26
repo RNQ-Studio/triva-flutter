@@ -716,6 +716,48 @@ abstract class AppLocalizations {
   /// **'Model'**
   String get vehicleModel;
 
+  /// No description provided for @chooseVehicleModel.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih model mobil'**
+  String get chooseVehicleModel;
+
+  /// No description provided for @chooseVehicleModelFor.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih model {make}'**
+  String chooseVehicleModelFor(String make);
+
+  /// No description provided for @searchVehicleModel.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari model mobil'**
+  String get searchVehicleModel;
+
+  /// No description provided for @chooseVehicleMakeFirst.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih merek terlebih dahulu'**
+  String get chooseVehicleMakeFirst;
+
+  /// No description provided for @vehicleModelLoading.
+  ///
+  /// In id, this message translates to:
+  /// **'Memuat model mobil...'**
+  String get vehicleModelLoading;
+
+  /// No description provided for @vehicleModelLoadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Master model mobil belum dapat dimuat.'**
+  String get vehicleModelLoadError;
+
+  /// No description provided for @vehicleModelEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada model untuk merek ini.'**
+  String get vehicleModelEmpty;
+
   /// No description provided for @vehicleVariant.
   ///
   /// In id, this message translates to:
@@ -727,6 +769,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Tahun'**
   String get vehicleYear;
+
+  /// No description provided for @chooseVehicleYear.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih tahun kendaraan'**
+  String get chooseVehicleYear;
 
   /// No description provided for @vehicleDetailsTitle.
   ///
@@ -823,6 +871,24 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Jawab sesuai kondisi sebenarnya. Appraiser akan memvalidasinya dari foto.'**
   String get conditionDescription;
+
+  /// No description provided for @vehicleConditionPercentage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi kendaraan saat ini'**
+  String get vehicleConditionPercentage;
+
+  /// No description provided for @vehicleConditionPercentageDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Geser berdasarkan penilaian kondisi keseluruhan kendaraan.'**
+  String get vehicleConditionPercentageDescription;
+
+  /// No description provided for @conditionPercentageValue.
+  ///
+  /// In id, this message translates to:
+  /// **'{value}%'**
+  String conditionPercentageValue(int value);
 
   /// No description provided for @taxStatus.
   ///

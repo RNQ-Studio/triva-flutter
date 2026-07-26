@@ -349,10 +349,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get vehicleModel => 'Model';
 
   @override
+  String get chooseVehicleModel => 'Pilih model mobil';
+
+  @override
+  String chooseVehicleModelFor(String make) {
+    return 'Pilih model $make';
+  }
+
+  @override
+  String get searchVehicleModel => 'Cari model mobil';
+
+  @override
+  String get chooseVehicleMakeFirst => 'Pilih merek terlebih dahulu';
+
+  @override
+  String get vehicleModelLoading => 'Memuat model mobil...';
+
+  @override
+  String get vehicleModelLoadError => 'Master model mobil belum dapat dimuat.';
+
+  @override
+  String get vehicleModelEmpty => 'Belum ada model untuk merek ini.';
+
+  @override
   String get vehicleVariant => 'Varian';
 
   @override
   String get vehicleYear => 'Tahun';
+
+  @override
+  String get chooseVehicleYear => 'Pilih tahun kendaraan';
 
   @override
   String get vehicleDetailsTitle => 'Detail kendaraan';
@@ -403,6 +429,18 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get conditionDescription =>
       'Jawab sesuai kondisi sebenarnya. Appraiser akan memvalidasinya dari foto.';
+
+  @override
+  String get vehicleConditionPercentage => 'Kondisi kendaraan saat ini';
+
+  @override
+  String get vehicleConditionPercentageDescription =>
+      'Geser berdasarkan penilaian kondisi keseluruhan kendaraan.';
+
+  @override
+  String conditionPercentageValue(int value) {
+    return '$value%';
+  }
 
   @override
   String get taxStatus => 'Status pajak';

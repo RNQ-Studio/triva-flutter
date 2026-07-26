@@ -43,6 +43,18 @@ class AppraisalRepository {
         .toList(growable: false);
   }
 
+  Future<List<VehicleModelOption>> listVehicleModels(int makeId) async {
+    final response = await _dio.get<dynamic>(
+      'v1/vehicle-makes/$makeId/models',
+    );
+    final envelope = response.data as Map<String, dynamic>;
+    final items = envelope['data'] as List<dynamic>? ?? const [];
+    return items
+        .whereType<Map<String, dynamic>>()
+        .map(VehicleModelOption.fromJson)
+        .toList(growable: false);
+  }
+
   Future<VehicleData> createVehicle(VehicleData vehicle) async {
     final response = await _dio.post<dynamic>(
       'v1/vehicles',

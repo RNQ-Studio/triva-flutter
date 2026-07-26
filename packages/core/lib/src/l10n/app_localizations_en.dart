@@ -351,10 +351,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicleModel => 'Model';
 
   @override
+  String get chooseVehicleModel => 'Choose a vehicle model';
+
+  @override
+  String chooseVehicleModelFor(String make) {
+    return 'Choose a $make model';
+  }
+
+  @override
+  String get searchVehicleModel => 'Search vehicle models';
+
+  @override
+  String get chooseVehicleMakeFirst => 'Choose a make first';
+
+  @override
+  String get vehicleModelLoading => 'Loading vehicle models...';
+
+  @override
+  String get vehicleModelLoadError =>
+      'Vehicle model master data could not be loaded.';
+
+  @override
+  String get vehicleModelEmpty => 'No model is available for this make yet.';
+
+  @override
   String get vehicleVariant => 'Variant';
 
   @override
   String get vehicleYear => 'Year';
+
+  @override
+  String get chooseVehicleYear => 'Choose vehicle year';
 
   @override
   String get vehicleDetailsTitle => 'Vehicle details';
@@ -405,6 +432,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get conditionDescription =>
       'Answer truthfully. The appraiser will validate it from the photos.';
+
+  @override
+  String get vehicleConditionPercentage => 'Current vehicle condition';
+
+  @override
+  String get vehicleConditionPercentageDescription =>
+      'Move the slider to reflect the vehicle\'s overall condition.';
+
+  @override
+  String conditionPercentageValue(int value) {
+    return '$value%';
+  }
 
   @override
   String get taxStatus => 'Tax status';

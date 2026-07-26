@@ -28,10 +28,33 @@ class VehicleMakeOption {
       );
 }
 
+class VehicleModelOption {
+  const VehicleModelOption({
+    required this.id,
+    required this.makeId,
+    required this.slug,
+    required this.name,
+  });
+
+  final int id;
+  final int makeId;
+  final String slug;
+  final String name;
+
+  factory VehicleModelOption.fromJson(Map<String, dynamic> json) =>
+      VehicleModelOption(
+        id: (json['id'] as num).toInt(),
+        makeId: (json['make_id'] as num).toInt(),
+        slug: json['slug']?.toString() ?? '',
+        name: json['name']?.toString() ?? '',
+      );
+}
+
 class VehicleData {
   const VehicleData({
     this.id,
     this.makeId,
+    this.modelId,
     required this.make,
     required this.model,
     required this.variant,
@@ -48,6 +71,7 @@ class VehicleData {
 
   final String? id;
   final int? makeId;
+  final int? modelId;
   final String make;
   final String model;
   final String variant;
@@ -64,6 +88,7 @@ class VehicleData {
   factory VehicleData.fromJson(Map<String, dynamic> json) => VehicleData(
         id: json['id']?.toString(),
         makeId: (json['make_id'] as num?)?.toInt(),
+        modelId: (json['model_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -80,6 +105,7 @@ class VehicleData {
 
   Map<String, dynamic> toJson() => {
         if (makeId != null) 'make_id': makeId,
+        if (modelId != null) 'model_id': modelId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -260,6 +286,7 @@ class AppraisalData {
 class AppraisalDraft {
   const AppraisalDraft({
     this.makeId,
+    this.modelId,
     this.make = '',
     this.model = '',
     this.variant = '',
@@ -277,6 +304,7 @@ class AppraisalDraft {
     this.majorAccidentHistory = '',
     this.serviceHistory = '',
     this.ownership = '',
+    this.conditionPercentage = 90,
     this.photoPaths = const {},
     this.assetIds = const {},
     this.vehicleId,
@@ -286,6 +314,7 @@ class AppraisalDraft {
   });
 
   final int? makeId;
+  final int? modelId;
   final String make;
   final String model;
   final String variant;
@@ -303,6 +332,7 @@ class AppraisalDraft {
   final String majorAccidentHistory;
   final String serviceHistory;
   final String ownership;
+  final int conditionPercentage;
   final Map<String, String> photoPaths;
   final Map<String, String> assetIds;
   final String? vehicleId;
@@ -330,11 +360,14 @@ class AppraisalDraft {
       floodHistory.isNotEmpty &&
       majorAccidentHistory.isNotEmpty &&
       serviceHistory.isNotEmpty &&
-      ownership.isNotEmpty;
+      ownership.isNotEmpty &&
+      conditionPercentage >= 0 &&
+      conditionPercentage <= 100;
   bool get hasAllPhotos => appraisalPhotoAngles.every(photoPaths.containsKey);
 
   AppraisalDraft copyWith({
     int? makeId,
+    int? modelId,
     String? make,
     String? model,
     String? variant,
@@ -352,6 +385,7 @@ class AppraisalDraft {
     String? majorAccidentHistory,
     String? serviceHistory,
     String? ownership,
+    int? conditionPercentage,
     Map<String, String>? photoPaths,
     Map<String, String>? assetIds,
     String? vehicleId,
@@ -361,6 +395,7 @@ class AppraisalDraft {
   }) =>
       AppraisalDraft(
         makeId: makeId ?? this.makeId,
+        modelId: modelId ?? this.modelId,
         make: make ?? this.make,
         model: model ?? this.model,
         variant: variant ?? this.variant,
@@ -378,6 +413,7 @@ class AppraisalDraft {
         majorAccidentHistory: majorAccidentHistory ?? this.majorAccidentHistory,
         serviceHistory: serviceHistory ?? this.serviceHistory,
         ownership: ownership ?? this.ownership,
+        conditionPercentage: conditionPercentage ?? this.conditionPercentage,
         photoPaths: photoPaths ?? this.photoPaths,
         assetIds: assetIds ?? this.assetIds,
         vehicleId: vehicleId ?? this.vehicleId,
@@ -388,6 +424,7 @@ class AppraisalDraft {
 
   factory AppraisalDraft.fromJson(Map<String, dynamic> json) => AppraisalDraft(
         makeId: (json['make_id'] as num?)?.toInt(),
+        modelId: (json['model_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -405,6 +442,10 @@ class AppraisalDraft {
         majorAccidentHistory: json['major_accident_history']?.toString() ?? '',
         serviceHistory: json['service_history']?.toString() ?? '',
         ownership: json['ownership']?.toString() ?? '',
+        conditionPercentage:
+            ((json['condition_percentage'] as num?)?.toInt() ?? 90)
+                .clamp(0, 100)
+                .toInt(),
         photoPaths: Map<String, String>.from(
           json['photo_paths'] as Map<String, dynamic>? ?? const {},
         ),
@@ -419,6 +460,7 @@ class AppraisalDraft {
 
   Map<String, dynamic> toJson() => {
         'make_id': makeId,
+        'model_id': modelId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -436,6 +478,7 @@ class AppraisalDraft {
         'major_accident_history': majorAccidentHistory,
         'service_history': serviceHistory,
         'ownership': ownership,
+        'condition_percentage': conditionPercentage,
         'photo_paths': photoPaths,
         'asset_ids': assetIds,
         'vehicle_id': vehicleId,
@@ -447,6 +490,7 @@ class AppraisalDraft {
   VehicleData toVehicle() => VehicleData(
         id: vehicleId,
         makeId: makeId,
+        modelId: modelId,
         make: make,
         model: model,
         variant: variant,
@@ -467,5 +511,6 @@ class AppraisalDraft {
         'major_accident_history': majorAccidentHistory,
         'service_history': serviceHistory,
         'ownership': ownership,
+        'condition_percentage': conditionPercentage,
       };
 }

@@ -27,6 +27,11 @@ final vehicleMakesProvider = FutureProvider<List<VehicleMakeOption>>((ref) {
   return ref.watch(appraisalRepositoryProvider).listVehicleMakes();
 });
 
+final vehicleModelsProvider =
+    FutureProvider.family<List<VehicleModelOption>, int>((ref, makeId) {
+  return ref.watch(appraisalRepositoryProvider).listVehicleModels(makeId);
+});
+
 final appraisalDetailProvider =
     FutureProvider.family<AppraisalData, String>((ref, appraisalId) {
   return ref.watch(appraisalRepositoryProvider).getAppraisal(appraisalId);
@@ -79,6 +84,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
 
   Future<void> saveIdentity({
     required int makeId,
+    required int modelId,
     required String make,
     required String model,
     required String variant,
@@ -87,6 +93,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
       _updateDraft(
         (draft) => draft.copyWith(
           makeId: makeId,
+          modelId: modelId,
           make: make.trim(),
           model: model.trim(),
           variant: variant.trim(),
@@ -123,6 +130,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required String majorAccidentHistory,
     required String serviceHistory,
     required String ownership,
+    required int conditionPercentage,
   }) =>
       _updateDraft(
         (draft) => draft.copyWith(
@@ -131,6 +139,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
           majorAccidentHistory: majorAccidentHistory,
           serviceHistory: serviceHistory,
           ownership: ownership,
+          conditionPercentage: conditionPercentage,
         ),
       );
 

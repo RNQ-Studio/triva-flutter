@@ -75,7 +75,9 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
             icon: Icons.fact_check_outlined,
             title: l10n.reviewCondition,
             value: '${l10n.taxStatus}: $taxLabel\n'
-                '${l10n.serviceHistory}: $serviceLabel',
+                '${l10n.serviceHistory}: $serviceLabel\n'
+                '${l10n.vehicleConditionPercentage}: '
+                '${l10n.conditionPercentageValue(draft.conditionPercentage)}',
             onEdit: () => context.push(appraisalConditionPath),
           ),
           const SizedBox(height: AppSpacing.medium),
@@ -101,7 +103,7 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
                 ),
                 const SizedBox(height: AppSpacing.medium),
                 SizedBox(
-                  height: 72,
+                  height: AppSpacing.xLarge * 3,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: appraisalPhotoAngles.length,

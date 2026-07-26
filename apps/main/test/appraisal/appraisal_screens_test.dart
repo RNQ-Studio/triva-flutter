@@ -27,6 +27,7 @@ class _FakeFlowController extends AppraisalFlowController {
 
 const _draft = AppraisalDraft(
   makeId: 1,
+  modelId: 10,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -44,6 +45,7 @@ const _draft = AppraisalDraft(
   majorAccidentHistory: 'no',
   serviceHistory: 'complete',
   ownership: 'first',
+  conditionPercentage: 90,
   photoPaths: {
     'front': 'C:\\missing-front.jpg',
     'rear': 'C:\\missing-rear.jpg',
@@ -56,6 +58,7 @@ const _draft = AppraisalDraft(
 const _vehicle = VehicleData(
   id: 'vehicle-1',
   makeId: 1,
+  modelId: 10,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -74,6 +77,26 @@ const _vehicleMake = VehicleMakeOption(
   id: 1,
   slug: 'toyota',
   name: 'Toyota',
+);
+
+const _hondaMake = VehicleMakeOption(
+  id: 2,
+  slug: 'honda',
+  name: 'Honda',
+);
+
+const _vehicleModel = VehicleModelOption(
+  id: 10,
+  makeId: 1,
+  slug: 'avanza',
+  name: 'Avanza',
+);
+
+const _hondaModel = VehicleModelOption(
+  id: 20,
+  makeId: 2,
+  slug: 'brio',
+  name: 'Brio',
 );
 
 const _provinces = [
@@ -205,6 +228,65 @@ void main() {
     expect(find.text('Appraisal Toyota Avanza'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('identity uses model and year bottom sheets', (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+    );
+
+    await tester.tap(find.text('Avanza'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pilih model Toyota'), findsOneWidget);
+
+    await tester.tap(find.text('Avanza').last);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('2022'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('2022'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pilih tahun kendaraan'), findsOneWidget);
+
+    await tester.tap(find.text('2024'));
+    await tester.pumpAndSettle();
+    expect(find.text('2024'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('condition percentage defaults to 90 percent', (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleConditionScreen(),
+      brightness: Brightness.light,
+    );
+
+    final slider = tester.widget<Slider>(find.byType(Slider));
+    expect(slider.value, 90);
+    expect(find.text('90%'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('changing make resets model to the dependent master',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+    );
+
+    await tester.tap(find.text('Toyota'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Honda'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pilih model mobil'), findsOneWidget);
+    await tester.tap(find.text('Pilih model mobil'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pilih model Honda'), findsOneWidget);
+    expect(find.text('Brio'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }
 
 Future<void> _pump(
@@ -227,7 +309,13 @@ Future<void> _pump(
         appraisalsProvider.overrideWith(
           (ref) async => appraisalItems ?? [_appraisal],
         ),
-        vehicleMakesProvider.overrideWith((ref) async => [_vehicleMake]),
+        vehicleMakesProvider.overrideWith(
+          (ref) async => [_vehicleMake, _hondaMake],
+        ),
+        vehicleModelsProvider.overrideWith(
+          (ref, makeId) async =>
+              makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
+        ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
         appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
       ],
