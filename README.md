@@ -52,5 +52,26 @@ dart run melos run test
 dart run melos run build:android:main
 ```
 
+## Web production
+
+Web production memakai Firebase project `triva-7138e`, Hosting site/target
+`triva`, dan URL:
+
+```text
+https://triva.web.app/
+```
+
+Build dan deploy dijalankan terpisah agar artifact yang akan dipublikasikan
+dapat diverifikasi terlebih dahulu:
+
+```powershell
+dart run melos run build:web:main
+dart run melos run deploy:web:main
+```
+
+Firebase CLI harus sudah terautentikasi ke akun yang memiliki akses ke project
+tersebut. Konfigurasi target dan Hosting berada di
+`apps/main/.firebaserc` serta `apps/main/firebase.json`.
+
 Requirement produk, kontrak API, dan current state lintas stack berada di
 `../triva-docs`.

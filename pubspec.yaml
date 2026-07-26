@@ -71,6 +71,10 @@ melos:
       run: cd apps/main && flutter build web --dart-define=ENV=prod
       description: Build web output for the main app.
 
+    "deploy:web:main":
+      run: cd apps/main && firebase deploy --only hosting:triva --project triva-7138e
+      description: Deploy the current main-app web build to https://triva.web.app.
+
     test:
       run: cd packages/core && flutter test && cd ../features_shared && flutter test && cd ../../apps/main && flutter test
       description: Run tests for TRIVA and its shared packages.

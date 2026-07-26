@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "triva-7138e"
+  },
+  "targets": {
+    "triva-7138e": {
+      "hosting": {
+        "triva": [
+          "triva"
+        ]
+      }
+    }
+  }
+}
