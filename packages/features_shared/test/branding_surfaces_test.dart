@@ -71,7 +71,8 @@ void main() {
         );
         await tester.pump();
 
-        expect(find.text('Masuk ke TRIVA'), findsOneWidget);
+        expect(
+            find.text('Nilai kendaraan, tanpa tebak-tebakan'), findsOneWidget);
         expect(find.text('Lanjutkan dengan Google'), findsOneWidget);
         expect(find.byType(TextFormField), findsNothing);
         expect(tester.takeException(), isNull);

@@ -10,6 +10,13 @@ abstract class AuthRepository {
     required String password,
   });
   Future<User?> getCurrentUser();
-  Future<User> updateProfile({required String name, required String email});
+  Future<User> updateProfile({
+    required String name,
+    required String email,
+    String? phone,
+    String? city,
+    bool? serviceConsent,
+    bool? marketingConsent,
+  });
   Future<User> uploadAvatar(String filePath);
 }

@@ -6,7 +6,11 @@ class UserModel extends User {
     required super.name,
     required super.email,
     super.phone,
+    super.city,
     super.avatarUrl,
+    super.profileCompleted,
+    super.serviceConsentAt,
+    super.marketingConsent,
     super.roles,
     this.token,
     this.refreshToken,
@@ -20,7 +24,13 @@ class UserModel extends User {
         name: json['name'] as String,
         email: json['email'] as String,
         phone: json['phone'] as String?,
+        city: json['city'] as String?,
         avatarUrl: json['avatar_url'] as String?,
+        profileCompleted: json['profile_completed'] as bool? ?? false,
+        serviceConsentAt: json['service_consent_at'] == null
+            ? null
+            : DateTime.tryParse(json['service_consent_at'].toString()),
+        marketingConsent: json['marketing_consent'] as bool? ?? false,
         roles: (json['roles'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
@@ -34,7 +44,12 @@ class UserModel extends User {
         'name': name,
         'email': email,
         if (phone != null) 'phone': phone,
+        if (city != null) 'city': city,
         if (avatarUrl != null) 'avatar_url': avatarUrl,
+        'profile_completed': profileCompleted,
+        if (serviceConsentAt != null)
+          'service_consent_at': serviceConsentAt!.toIso8601String(),
+        'marketing_consent': marketingConsent,
         'roles': roles,
         if (token != null) 'token': token,
         if (refreshToken != null) 'refresh_token': refreshToken,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'auth_provider.dart';
+import 'auth_routes.dart';
 import 'auth_state.dart';
 
 /// Compatible with GoRouter's [redirect] callback: `redirect: authRedirect`.
@@ -16,14 +17,29 @@ String? authRedirect(BuildContext context, GoRouterState state) {
   // While auth check is in progress, don't redirect.
   if (authState is AuthInitial || authState is AuthLoading) return null;
 
-  // Let public routes (splash, onboarding) render without auth.
+  // Let pre-auth routes render while splash/onboarding owns its own sequence.
   if (location == '/splash' || location == '/onboarding') return null;
 
   final isAuthenticated = authState is AuthAuthenticated;
   final isOnLoginPage = location == '/login';
+  final isOnProfileSetup = location == completeProfilePath;
 
-  // If user is authenticated and on login page, go to home
-  if (isAuthenticated && isOnLoginPage) return '/';
+  if (!isAuthenticated) {
+    if (isOnLoginPage) return null;
+    final from = Uri.encodeComponent(state.uri.toString());
+    return '$authLoginPath?from=$from';
+  }
+
+  final user = authState.user;
+  if (!user.profileCompleted && !isOnProfileSetup) {
+    return completeProfilePath;
+  }
+  if (user.profileCompleted && (isOnLoginPage || isOnProfileSetup)) {
+    final destination = state.uri.queryParameters['from'];
+    return destination == null || destination.startsWith('/login')
+        ? '/'
+        : destination;
+  }
   return null;
 }
 

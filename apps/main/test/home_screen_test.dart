@@ -3,6 +3,7 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:triva_app/features/appraisal/presentation/appraisal_controller.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
 
 class _FakeAuthNotifier extends AuthNotifier {
@@ -32,6 +33,7 @@ void main() {
           authProvider.overrideWith(
             () => _FakeAuthNotifier(authState),
           ),
+          appraisalsProvider.overrideWith((ref) async => const []),
         ],
         child: MaterialApp(
           theme: theme,
@@ -64,8 +66,9 @@ void main() {
           authState: const AuthUnauthenticated(),
         );
 
-        expect(find.text('Kenali nilai kendaraan Anda'), findsOneWidget);
-        expect(find.text('Appraisal trade-in'), findsOneWidget);
+        expect(find.text('Apa kebutuhan kendaraan Anda hari ini?'),
+            findsOneWidget);
+        expect(find.text('Mulai appraisal'), findsWidgets);
         expect(tester.takeException(), isNull);
       },
     );
@@ -80,12 +83,13 @@ void main() {
           id: 'user-1',
           name: 'Ramadhan',
           email: 'ramadhan@example.com',
+          profileCompleted: true,
         ),
       ),
       textScale: 2,
     );
 
-    expect(find.text('Lihat profil saya'), findsOneWidget);
+    expect(find.text('Halo, Ramadhan'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

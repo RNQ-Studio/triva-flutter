@@ -235,4 +235,427 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get homeFooter =>
       'TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya';
+
+  @override
+  String get loginHeroTitle => 'Nilai kendaraan, tanpa tebak-tebakan';
+
+  @override
+  String get loginHeroDescription =>
+      'Appraisal transparan, ditinjau appraiser, dan dapat dipantau dari satu aplikasi.';
+
+  @override
+  String get profileSetupTitle => 'Lengkapi profil Anda';
+
+  @override
+  String get profileSetupDescription =>
+      'Data ini membantu kami menyiapkan appraisal dan menghubungi Anda bila ada informasi yang perlu dikonfirmasi.';
+
+  @override
+  String get phoneNumber => 'Nomor ponsel';
+
+  @override
+  String get city => 'Kota domisili';
+
+  @override
+  String get serviceConsentLabel =>
+      'Saya menyetujui pemrosesan data untuk layanan appraisal TRIVA.';
+
+  @override
+  String get marketingConsentLabel =>
+      'Saya bersedia menerima informasi promo dan layanan terkait.';
+
+  @override
+  String get consentRequired => 'Persetujuan layanan wajib diberikan.';
+
+  @override
+  String get fieldRequired => 'Kolom ini wajib diisi.';
+
+  @override
+  String get phoneInvalid => 'Gunakan 9–15 digit nomor ponsel.';
+
+  @override
+  String get saveAndContinue => 'Simpan dan lanjutkan';
+
+  @override
+  String get profileSetupError =>
+      'Profil belum dapat disimpan. Periksa data lalu coba lagi.';
+
+  @override
+  String get next => 'Lanjut';
+
+  @override
+  String get retry => 'Coba lagi';
+
+  @override
+  String get save => 'Simpan';
+
+  @override
+  String get cancel => 'Batal';
+
+  @override
+  String get activity => 'Aktivitas';
+
+  @override
+  String get notifications => 'Notifikasi';
+
+  @override
+  String homeGreeting(String name) {
+    return 'Halo, $name';
+  }
+
+  @override
+  String get homeGreetingSubtitle => 'Apa kebutuhan kendaraan Anda hari ini?';
+
+  @override
+  String get myVehicle => 'Kendaraan Saya';
+
+  @override
+  String get emptyVehicleTitle => 'Belum ada kendaraan';
+
+  @override
+  String get emptyVehicleDescription =>
+      'Mulai appraisal pertama Anda dan kendaraan akan tersimpan otomatis.';
+
+  @override
+  String get startAppraisal => 'Mulai appraisal';
+
+  @override
+  String get comingSoon => 'Layanan ini segera tersedia.';
+
+  @override
+  String appraisalStep(int current) {
+    return 'Langkah $current dari 4';
+  }
+
+  @override
+  String get vehicleIdentityTitle => 'Identitas kendaraan';
+
+  @override
+  String get vehicleIdentityDescription =>
+      'Masukkan identitas sesuai STNK agar pembanding lebih akurat.';
+
+  @override
+  String get vehicleMake => 'Merek';
+
+  @override
+  String get vehicleModel => 'Model';
+
+  @override
+  String get vehicleVariant => 'Varian';
+
+  @override
+  String get vehicleYear => 'Tahun';
+
+  @override
+  String get vehicleDetailsTitle => 'Detail kendaraan';
+
+  @override
+  String get vehicleDetailsDescription =>
+      'Lengkapi spesifikasi dan penggunaan kendaraan saat ini.';
+
+  @override
+  String get transmission => 'Transmisi';
+
+  @override
+  String get automatic => 'Otomatis';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get fuelType => 'Bahan bakar';
+
+  @override
+  String get gasoline => 'Bensin';
+
+  @override
+  String get diesel => 'Diesel';
+
+  @override
+  String get hybrid => 'Hybrid';
+
+  @override
+  String get electric => 'Listrik';
+
+  @override
+  String get mileage => 'Jarak tempuh';
+
+  @override
+  String get vehicleColor => 'Warna';
+
+  @override
+  String get licensePlate => 'Nomor polisi';
+
+  @override
+  String get vehicleCity => 'Kota kendaraan';
+
+  @override
+  String get conditionTitle => 'Kondisi kendaraan';
+
+  @override
+  String get conditionDescription =>
+      'Jawab sesuai kondisi sebenarnya. Appraiser akan memvalidasinya dari foto.';
+
+  @override
+  String get taxStatus => 'Status pajak';
+
+  @override
+  String get taxActive => 'Aktif';
+
+  @override
+  String get taxOverdue => 'Menunggak';
+
+  @override
+  String get unknown => 'Tidak tahu';
+
+  @override
+  String get floodHistory => 'Pernah terendam banjir?';
+
+  @override
+  String get majorAccidentHistory => 'Pernah kecelakaan berat?';
+
+  @override
+  String get answerYes => 'Ya';
+
+  @override
+  String get answerNo => 'Tidak';
+
+  @override
+  String get serviceHistory => 'Riwayat servis';
+
+  @override
+  String get serviceComplete => 'Lengkap';
+
+  @override
+  String get servicePartial => 'Sebagian';
+
+  @override
+  String get serviceNone => 'Tidak ada';
+
+  @override
+  String get ownership => 'Kepemilikan';
+
+  @override
+  String get ownershipFirst => 'Tangan pertama';
+
+  @override
+  String get ownershipSecond => 'Tangan kedua';
+
+  @override
+  String get ownershipMore => 'Lebih dari dua';
+
+  @override
+  String get photosTitle => 'Foto kendaraan';
+
+  @override
+  String get photosDescription =>
+      'Ambil lima foto terang, utuh, dan tanpa filter.';
+
+  @override
+  String get photoFront => 'Tampak depan';
+
+  @override
+  String get photoRear => 'Tampak belakang';
+
+  @override
+  String get photoLeft => 'Sisi kiri';
+
+  @override
+  String get photoRight => 'Sisi kanan';
+
+  @override
+  String get photoDashboard => 'Dashboard & odometer';
+
+  @override
+  String get photoAdd => 'Ambil foto';
+
+  @override
+  String get photoReplace => 'Ganti foto';
+
+  @override
+  String get photosComplete => 'Semua foto lengkap';
+
+  @override
+  String get reviewTitle => 'Tinjau pengajuan';
+
+  @override
+  String get reviewDescription =>
+      'Pastikan data berikut sudah sesuai sebelum dikirim.';
+
+  @override
+  String get reviewVehicle => 'Kendaraan';
+
+  @override
+  String get reviewCondition => 'Kondisi';
+
+  @override
+  String get reviewPhotos => 'Foto';
+
+  @override
+  String get reviewConsent =>
+      'Saya memahami hasil appraisal bersifat indikatif dan dapat memerlukan inspeksi fisik.';
+
+  @override
+  String get submitAppraisal => 'Kirim appraisal';
+
+  @override
+  String get submittingAppraisal => 'Mengirim appraisal';
+
+  @override
+  String get draftSaved => 'Draft tersimpan otomatis';
+
+  @override
+  String get submittedTitle => 'Appraisal berhasil dikirim';
+
+  @override
+  String get submittedDescription =>
+      'Kami sedang menyiapkan pembanding dan validasi appraiser.';
+
+  @override
+  String get referenceNumber => 'Nomor referensi';
+
+  @override
+  String get viewProgress => 'Lihat perkembangan';
+
+  @override
+  String get backToHome => 'Kembali ke beranda';
+
+  @override
+  String get activityTitle => 'Aktivitas Saya';
+
+  @override
+  String get activityEmpty => 'Belum ada aktivitas appraisal.';
+
+  @override
+  String get appraisalProgressTitle => 'Perkembangan appraisal';
+
+  @override
+  String get refresh => 'Perbarui';
+
+  @override
+  String get needsActionTitle => 'Foto perlu diperbaiki';
+
+  @override
+  String get needsActionDescription =>
+      'Ganti foto yang ditandai agar appraiser dapat melanjutkan penilaian.';
+
+  @override
+  String get sendReplacement => 'Kirim foto pengganti';
+
+  @override
+  String get underReviewTitle => 'Sedang dinilai appraiser';
+
+  @override
+  String get underReviewDescription =>
+      'Data kendaraan, kondisi, dan pembanding sedang divalidasi.';
+
+  @override
+  String get resultTitle => 'Hasil appraisal';
+
+  @override
+  String get tradeInEstimate => 'Estimasi trade-in';
+
+  @override
+  String get marketRange => 'Rentang harga pasar';
+
+  @override
+  String get confidence => 'Tingkat keyakinan';
+
+  @override
+  String comparableCount(int count) {
+    return '$count kendaraan pembanding';
+  }
+
+  @override
+  String validUntil(String date) {
+    return 'Berlaku hingga $date';
+  }
+
+  @override
+  String get acceptPrice => 'Terima harga';
+
+  @override
+  String get declinePrice => 'Belum cocok';
+
+  @override
+  String get decideLater => 'Putuskan nanti';
+
+  @override
+  String get scheduleInspection => 'Jadwalkan inspeksi';
+
+  @override
+  String get inspectionDate => 'Waktu inspeksi';
+
+  @override
+  String get inspectionNotes => 'Catatan (opsional)';
+
+  @override
+  String get decisionAcceptedTitle => 'Harga appraisal diterima';
+
+  @override
+  String get decisionAcceptedDescription =>
+      'Nilai trade-in siap digunakan untuk langkah pembelian kendaraan berikutnya.';
+
+  @override
+  String get decisionRejectedTitle => 'Keputusan tersimpan';
+
+  @override
+  String get decisionRejectedDescription =>
+      'Data kendaraan tetap tersimpan dan dapat dilanjutkan ke estimasi perbaikan.';
+
+  @override
+  String get decisionDeferredMessage =>
+      'Hasil tetap tersedia di Aktivitas Saya.';
+
+  @override
+  String get statusDraft => 'Draft';
+
+  @override
+  String get loadFailed => 'Data belum dapat dimuat.';
+
+  @override
+  String get photoGallery => 'Pilih dari galeri';
+
+  @override
+  String get photoPermissionError =>
+      'Kamera atau galeri tidak dapat dibuka. Periksa izin aplikasi.';
+
+  @override
+  String get uploadPreparingVehicle => 'Menyiapkan data kendaraan';
+
+  @override
+  String get uploadCreatingRequest => 'Membuat permintaan appraisal';
+
+  @override
+  String get uploadSavingCondition => 'Menyimpan checklist kondisi';
+
+  @override
+  String uploadingPhoto(int current) {
+    return 'Mengunggah foto $current dari 5';
+  }
+
+  @override
+  String get uploadSending => 'Mengirim appraisal';
+
+  @override
+  String get uploadSuccess => 'Appraisal berhasil dikirim';
+
+  @override
+  String get incompleteDraftError => 'Lengkapi seluruh data sebelum mengirim.';
+
+  @override
+  String get submissionNetworkError =>
+      'Koneksi terputus. Draft tersimpan; coba kirim kembali.';
+
+  @override
+  String get submissionAuthError =>
+      'Sesi Anda berakhir. Masuk kembali untuk melanjutkan.';
+
+  @override
+  String get submissionGeneralError =>
+      'Appraisal belum dapat dikirim. Draft Anda tetap tersimpan.';
+
+  @override
+  String get inspectionScheduledDescription =>
+      'Jadwal tersimpan. Tim TRIVA akan menghubungi Anda untuk konfirmasi inspeksi.';
 }

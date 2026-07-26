@@ -79,7 +79,11 @@ class AuthRepositoryImpl implements AuthRepository {
         name: fresh.name,
         email: fresh.email,
         phone: fresh.phone ?? cached.phone,
+        city: fresh.city ?? cached.city,
         avatarUrl: fresh.avatarUrl ?? cached.avatarUrl,
+        profileCompleted: fresh.profileCompleted,
+        serviceConsentAt: fresh.serviceConsentAt ?? cached.serviceConsentAt,
+        marketingConsent: fresh.marketingConsent,
         roles: fresh.roles.isNotEmpty ? fresh.roles : cached.roles,
         token: cached.token,
         refreshToken: cached.refreshToken,
@@ -96,8 +100,19 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<User> updateProfile({
     required String name,
     required String email,
+    String? phone,
+    String? city,
+    bool? serviceConsent,
+    bool? marketingConsent,
   }) async {
-    final updated = await _remote.updateProfile(name: name, email: email);
+    final updated = await _remote.updateProfile(
+      name: name,
+      email: email,
+      phone: phone,
+      city: city,
+      serviceConsent: serviceConsent,
+      marketingConsent: marketingConsent,
+    );
 
     // Retrieve current user to keep the auth token!
     final currentUser = await _local.getUser();
@@ -106,7 +121,12 @@ class AuthRepositoryImpl implements AuthRepository {
       name: updated.name,
       email: updated.email,
       phone: updated.phone ?? currentUser?.phone,
+      city: updated.city ?? currentUser?.city,
       avatarUrl: updated.avatarUrl ?? currentUser?.avatarUrl,
+      profileCompleted: updated.profileCompleted,
+      serviceConsentAt:
+          updated.serviceConsentAt ?? currentUser?.serviceConsentAt,
+      marketingConsent: updated.marketingConsent,
       roles: updated.roles.isNotEmpty
           ? updated.roles
           : (currentUser?.roles ?? const []),
@@ -129,7 +149,12 @@ class AuthRepositoryImpl implements AuthRepository {
       name: updated.name,
       email: updated.email,
       phone: updated.phone ?? currentUser?.phone,
+      city: updated.city ?? currentUser?.city,
       avatarUrl: updated.avatarUrl ?? currentUser?.avatarUrl,
+      profileCompleted: updated.profileCompleted,
+      serviceConsentAt:
+          updated.serviceConsentAt ?? currentUser?.serviceConsentAt,
+      marketingConsent: updated.marketingConsent,
       roles: updated.roles.isNotEmpty
           ? updated.roles
           : (currentUser?.roles ?? const []),

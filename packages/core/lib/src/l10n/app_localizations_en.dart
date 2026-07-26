@@ -235,4 +235,428 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeFooter =>
       'TRIVA · Trade-In Vehicle Appraisal · Auto2000 Kertajaya';
+
+  @override
+  String get loginHeroTitle => 'Know your vehicle\'s value with confidence';
+
+  @override
+  String get loginHeroDescription =>
+      'Transparent appraisal, reviewed by an appraiser, and tracked from one app.';
+
+  @override
+  String get profileSetupTitle => 'Complete your profile';
+
+  @override
+  String get profileSetupDescription =>
+      'This information helps us prepare your appraisal and contact you if anything needs confirmation.';
+
+  @override
+  String get phoneNumber => 'Mobile number';
+
+  @override
+  String get city => 'City of residence';
+
+  @override
+  String get serviceConsentLabel =>
+      'I consent to data processing for the TRIVA appraisal service.';
+
+  @override
+  String get marketingConsentLabel =>
+      'I would like to receive relevant service and promotion updates.';
+
+  @override
+  String get consentRequired => 'Service consent is required.';
+
+  @override
+  String get fieldRequired => 'This field is required.';
+
+  @override
+  String get phoneInvalid => 'Enter a 9–15 digit mobile number.';
+
+  @override
+  String get saveAndContinue => 'Save and continue';
+
+  @override
+  String get profileSetupError =>
+      'We could not save your profile. Check the details and try again.';
+
+  @override
+  String get next => 'Continue';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get activity => 'Activity';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String homeGreeting(String name) {
+    return 'Hello, $name';
+  }
+
+  @override
+  String get homeGreetingSubtitle => 'What does your vehicle need today?';
+
+  @override
+  String get myVehicle => 'My Vehicle';
+
+  @override
+  String get emptyVehicleTitle => 'No vehicle yet';
+
+  @override
+  String get emptyVehicleDescription =>
+      'Start your first appraisal and your vehicle will be saved automatically.';
+
+  @override
+  String get startAppraisal => 'Start appraisal';
+
+  @override
+  String get comingSoon => 'This service is coming soon.';
+
+  @override
+  String appraisalStep(int current) {
+    return 'Step $current of 4';
+  }
+
+  @override
+  String get vehicleIdentityTitle => 'Vehicle identity';
+
+  @override
+  String get vehicleIdentityDescription =>
+      'Enter the identity shown on the registration for better comparisons.';
+
+  @override
+  String get vehicleMake => 'Make';
+
+  @override
+  String get vehicleModel => 'Model';
+
+  @override
+  String get vehicleVariant => 'Variant';
+
+  @override
+  String get vehicleYear => 'Year';
+
+  @override
+  String get vehicleDetailsTitle => 'Vehicle details';
+
+  @override
+  String get vehicleDetailsDescription =>
+      'Complete the current specification and usage details.';
+
+  @override
+  String get transmission => 'Transmission';
+
+  @override
+  String get automatic => 'Automatic';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get fuelType => 'Fuel';
+
+  @override
+  String get gasoline => 'Gasoline';
+
+  @override
+  String get diesel => 'Diesel';
+
+  @override
+  String get hybrid => 'Hybrid';
+
+  @override
+  String get electric => 'Electric';
+
+  @override
+  String get mileage => 'Mileage';
+
+  @override
+  String get vehicleColor => 'Color';
+
+  @override
+  String get licensePlate => 'License plate';
+
+  @override
+  String get vehicleCity => 'Vehicle city';
+
+  @override
+  String get conditionTitle => 'Vehicle condition';
+
+  @override
+  String get conditionDescription =>
+      'Answer truthfully. The appraiser will validate it from the photos.';
+
+  @override
+  String get taxStatus => 'Tax status';
+
+  @override
+  String get taxActive => 'Active';
+
+  @override
+  String get taxOverdue => 'Overdue';
+
+  @override
+  String get unknown => 'Not sure';
+
+  @override
+  String get floodHistory => 'Has it been flooded?';
+
+  @override
+  String get majorAccidentHistory => 'Any major accident?';
+
+  @override
+  String get answerYes => 'Yes';
+
+  @override
+  String get answerNo => 'No';
+
+  @override
+  String get serviceHistory => 'Service history';
+
+  @override
+  String get serviceComplete => 'Complete';
+
+  @override
+  String get servicePartial => 'Partial';
+
+  @override
+  String get serviceNone => 'None';
+
+  @override
+  String get ownership => 'Ownership';
+
+  @override
+  String get ownershipFirst => 'First owner';
+
+  @override
+  String get ownershipSecond => 'Second owner';
+
+  @override
+  String get ownershipMore => 'More than two';
+
+  @override
+  String get photosTitle => 'Vehicle photos';
+
+  @override
+  String get photosDescription =>
+      'Take five bright, complete, unfiltered photos.';
+
+  @override
+  String get photoFront => 'Front view';
+
+  @override
+  String get photoRear => 'Rear view';
+
+  @override
+  String get photoLeft => 'Left side';
+
+  @override
+  String get photoRight => 'Right side';
+
+  @override
+  String get photoDashboard => 'Dashboard & odometer';
+
+  @override
+  String get photoAdd => 'Take photo';
+
+  @override
+  String get photoReplace => 'Replace photo';
+
+  @override
+  String get photosComplete => 'All photos complete';
+
+  @override
+  String get reviewTitle => 'Review submission';
+
+  @override
+  String get reviewDescription =>
+      'Make sure the following details are correct before submitting.';
+
+  @override
+  String get reviewVehicle => 'Vehicle';
+
+  @override
+  String get reviewCondition => 'Condition';
+
+  @override
+  String get reviewPhotos => 'Photos';
+
+  @override
+  String get reviewConsent =>
+      'I understand the appraisal is indicative and may require a physical inspection.';
+
+  @override
+  String get submitAppraisal => 'Submit appraisal';
+
+  @override
+  String get submittingAppraisal => 'Submitting appraisal';
+
+  @override
+  String get draftSaved => 'Draft saved automatically';
+
+  @override
+  String get submittedTitle => 'Appraisal submitted';
+
+  @override
+  String get submittedDescription =>
+      'We are preparing comparables and appraiser validation.';
+
+  @override
+  String get referenceNumber => 'Reference number';
+
+  @override
+  String get viewProgress => 'View progress';
+
+  @override
+  String get backToHome => 'Back to home';
+
+  @override
+  String get activityTitle => 'My Activity';
+
+  @override
+  String get activityEmpty => 'No appraisal activity yet.';
+
+  @override
+  String get appraisalProgressTitle => 'Appraisal progress';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get needsActionTitle => 'A photo needs correction';
+
+  @override
+  String get needsActionDescription =>
+      'Replace the marked photo so the appraiser can continue.';
+
+  @override
+  String get sendReplacement => 'Send replacement photo';
+
+  @override
+  String get underReviewTitle => 'Under appraiser review';
+
+  @override
+  String get underReviewDescription =>
+      'Vehicle, condition, and comparable data are being validated.';
+
+  @override
+  String get resultTitle => 'Appraisal result';
+
+  @override
+  String get tradeInEstimate => 'Trade-in estimate';
+
+  @override
+  String get marketRange => 'Market price range';
+
+  @override
+  String get confidence => 'Confidence';
+
+  @override
+  String comparableCount(int count) {
+    return '$count comparable vehicles';
+  }
+
+  @override
+  String validUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get acceptPrice => 'Accept price';
+
+  @override
+  String get declinePrice => 'Not a fit';
+
+  @override
+  String get decideLater => 'Decide later';
+
+  @override
+  String get scheduleInspection => 'Schedule inspection';
+
+  @override
+  String get inspectionDate => 'Inspection time';
+
+  @override
+  String get inspectionNotes => 'Notes (optional)';
+
+  @override
+  String get decisionAcceptedTitle => 'Appraisal price accepted';
+
+  @override
+  String get decisionAcceptedDescription =>
+      'The trade-in value is ready for your next vehicle purchase step.';
+
+  @override
+  String get decisionRejectedTitle => 'Decision saved';
+
+  @override
+  String get decisionRejectedDescription =>
+      'Your vehicle data stays available for a repair estimate.';
+
+  @override
+  String get decisionDeferredMessage =>
+      'The result remains available in My Activity.';
+
+  @override
+  String get statusDraft => 'Draft';
+
+  @override
+  String get loadFailed => 'We could not load the data.';
+
+  @override
+  String get photoGallery => 'Choose from gallery';
+
+  @override
+  String get photoPermissionError =>
+      'Camera or gallery could not be opened. Check the app permissions.';
+
+  @override
+  String get uploadPreparingVehicle => 'Preparing vehicle details';
+
+  @override
+  String get uploadCreatingRequest => 'Creating appraisal request';
+
+  @override
+  String get uploadSavingCondition => 'Saving condition checklist';
+
+  @override
+  String uploadingPhoto(int current) {
+    return 'Uploading photo $current of 5';
+  }
+
+  @override
+  String get uploadSending => 'Submitting appraisal';
+
+  @override
+  String get uploadSuccess => 'Appraisal submitted';
+
+  @override
+  String get incompleteDraftError =>
+      'Complete all required information before submitting.';
+
+  @override
+  String get submissionNetworkError =>
+      'Connection lost. Your draft is saved; try submitting again.';
+
+  @override
+  String get submissionAuthError =>
+      'Your session ended. Sign in again to continue.';
+
+  @override
+  String get submissionGeneralError =>
+      'The appraisal could not be submitted. Your draft remains saved.';
+
+  @override
+  String get inspectionScheduledDescription =>
+      'The schedule is saved. The TRIVA team will contact you to confirm the inspection.';
 }

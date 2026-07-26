@@ -4,185 +4,220 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../appraisal/domain/appraisal_models.dart';
+import '../../appraisal/presentation/appraisal_controller.dart';
+import '../../appraisal/presentation/appraisal_paths.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
-    final user = authState is AuthAuthenticated ? authState.user : null;
     final l10n = AppLocalizations.of(context)!;
+    final auth = ref.watch(authProvider);
+    final user = auth is AuthAuthenticated ? auth.user : null;
+    final appraisals = ref.watch(appraisalsProvider);
+    final draft = ref.watch(appraisalFlowProvider).value?.draft;
+    final startPath = appraisalResumePath(
+      draft ?? const AppraisalDraft(),
+    );
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 760),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.large,
-                      AppSpacing.medium,
-                      AppSpacing.large,
-                      AppSpacing.xxLarge,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _HomeHeader(
-                          userName: user?.name,
-                          onProfileTap: user == null
-                              ? null
-                              : () => context.push(AppRoutes.profile),
-                          onSettingsTap: () => context.push(AppRoutes.settings),
-                        ),
-                        const SizedBox(height: AppSpacing.xLarge),
-                        _HeroSection(
-                          isAuthenticated: user != null,
-                          onAction: () => context.push(
-                            user == null ? authLoginPath : AppRoutes.profile,
+        child: RefreshIndicator(
+          onRefresh: () async => ref.refresh(appraisalsProvider.future),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 760),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.large,
+                        AppSpacing.medium,
+                        AppSpacing.large,
+                        AppSpacing.xLarge,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _Header(
+                            onNotifications: () =>
+                                context.push('/notifications'),
                           ),
-                        ),
-                        const SizedBox(height: AppSpacing.xxLarge),
-                        Text(
-                          l10n.homeServicesTitle,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: AppSpacing.small),
-                        Text(
-                          l10n.homeServicesSubtitle,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                        ),
-                        const SizedBox(height: AppSpacing.large),
-                        const _ServicesList(),
-                        const SizedBox(height: AppSpacing.xxLarge),
-                        Text(
-                          l10n.homeProcessTitle,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: AppSpacing.large),
-                        const _ProcessList(),
-                        const SizedBox(height: AppSpacing.xxLarge),
-                        const Divider(),
-                        const SizedBox(height: AppSpacing.large),
-                        Text(
-                          l10n.homeFooter,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                        ),
-                      ],
+                          const SizedBox(height: AppSpacing.xLarge),
+                          Text(
+                            l10n.homeGreeting(
+                              user?.name.split(' ').first ?? 'TRIVA',
+                            ),
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: AppSpacing.xSmall),
+                          Text(
+                            l10n.homeGreetingSubtitle,
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                          ),
+                          const SizedBox(height: AppSpacing.xLarge),
+                          _AppraisalHero(
+                            onTap: () => context.push(startPath),
+                          ),
+                          const SizedBox(height: AppSpacing.xLarge),
+                          Text(
+                            l10n.homeServicesTitle,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: AppSpacing.medium),
+                          _ServiceGrid(
+                            onUnavailable: () => ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(content: Text(l10n.comingSoon)),
+                              ),
+                          ),
+                          const SizedBox(height: AppSpacing.xLarge),
+                          Text(
+                            l10n.myVehicle,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: AppSpacing.medium),
+                          appraisals.when(
+                            data: (items) => items.isEmpty
+                                ? _EmptyVehicle(
+                                    onStart: () => context.push(startPath),
+                                  )
+                                : _LatestVehicle(appraisal: items.first),
+                            loading: () => const LinearProgressIndicator(),
+                            error: (_, __) => _EmptyVehicle(
+                              onStart: () => context.push(startPath),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 0,
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home_rounded),
+            label: l10n.home,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.receipt_long_outlined),
+            label: l10n.activity,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.notifications_outlined),
+            label: l10n.notifications,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.person_outline_rounded),
+            label: l10n.profile,
+          ),
+        ],
+        onDestinationSelected: (index) {
+          switch (index) {
+            case 1:
+              context.push(appraisalActivityPath);
+            case 2:
+              context.push('/notifications');
+            case 3:
+              context.push(AppRoutes.profile);
+          }
+        },
       ),
     );
   }
 }
 
-class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({
-    required this.userName,
-    required this.onProfileTap,
-    required this.onSettingsTap,
-  });
+class _Header extends StatelessWidget {
+  const _Header({required this.onNotifications});
 
-  final String? userName;
-  final VoidCallback? onProfileTap;
-  final VoidCallback onSettingsTap;
+  final VoidCallback onNotifications;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Row(
       children: [
-        const TrivaLogo(width: 128),
+        const TrivaLogo(width: 122),
         const Spacer(),
-        if (userName != null)
-          IconButton(
-            onPressed: onProfileTap,
-            icon: const Icon(Icons.account_circle_outlined),
-            tooltip: l10n.profile,
-          ),
         IconButton(
-          onPressed: onSettingsTap,
-          icon: const Icon(Icons.settings_outlined),
-          tooltip: l10n.settings,
+          onPressed: onNotifications,
+          icon: const Icon(Icons.notifications_none_rounded),
+          tooltip: AppLocalizations.of(context)!.notifications,
         ),
       ],
     );
   }
 }
 
-class _HeroSection extends StatelessWidget {
-  const _HeroSection({
-    required this.isAuthenticated,
-    required this.onAction,
-  });
+class _AppraisalHero extends StatelessWidget {
+  const _AppraisalHero({required this.onTap});
 
-  final bool isAuthenticated;
-  final VoidCallback onAction;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
-
+    final colors = Theme.of(context).colorScheme;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
+        color: colors.primary,
         borderRadius: AppRadius.large,
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xLarge),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.price_check_rounded,
+                    color: colors.onPrimary,
+                    size: 32,
+                  ),
+                  const SizedBox(height: AppSpacing.medium),
+                  Text(
+                    l10n.serviceAppraisalTitle,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: colors.onPrimary,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.small),
+                  Text(
+                    l10n.serviceAppraisalDescription,
+                    style: TextStyle(
+                      color: colors.onPrimary.withValues(alpha: 0.82),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.large),
+                  FilledButton.tonal(
+                    onPressed: onTap,
+                    child: Text(l10n.startAppraisal),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSpacing.medium),
             Icon(
-              Icons.directions_car_filled_outlined,
-              color: colorScheme.onPrimaryContainer,
-            ),
-            const SizedBox(height: AppSpacing.medium),
-            Text(
-              l10n.homeHeroTitle,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: colorScheme.onPrimaryContainer,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.small),
-            Text(
-              l10n.homeHeroDescription,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: colorScheme.onPrimaryContainer,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xLarge),
-            FilledButton.icon(
-              onPressed: onAction,
-              icon: Icon(
-                isAuthenticated
-                    ? Icons.person_outline_rounded
-                    : Icons.login_rounded,
-              ),
-              label: Text(
-                isAuthenticated ? l10n.homeProfileAction : l10n.homeLoginAction,
-              ),
+              Icons.directions_car_filled_rounded,
+              size: 88,
+              color: colors.onPrimary.withValues(alpha: 0.22),
             ),
           ],
         ),
@@ -191,199 +226,132 @@ class _HeroSection extends StatelessWidget {
   }
 }
 
-class _ServiceDefinition {
-  const _ServiceDefinition({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
+class _ServiceGrid extends StatelessWidget {
+  const _ServiceGrid({required this.onUnavailable});
 
-  final IconData icon;
-  final String title;
-  final String description;
-}
-
-class _ServicesList extends StatelessWidget {
-  const _ServicesList();
+  final VoidCallback onUnavailable;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final services = [
-      _ServiceDefinition(
-        icon: Icons.car_crash_outlined,
-        title: l10n.serviceAppraisalTitle,
-        description: l10n.serviceAppraisalDescription,
-      ),
-      _ServiceDefinition(
-        icon: Icons.build_circle_outlined,
-        title: l10n.serviceToyotaTitle,
-        description: l10n.serviceToyotaDescription,
-      ),
-      _ServiceDefinition(
-        icon: Icons.handyman_outlined,
-        title: l10n.serviceOtoxpertTitle,
-        description: l10n.serviceOtoxpertDescription,
-      ),
-      _ServiceDefinition(
-        icon: Icons.calculate_outlined,
-        title: l10n.serviceCreditTitle,
-        description: l10n.serviceCreditDescription,
-      ),
-      _ServiceDefinition(
-        icon: Icons.auto_fix_high_outlined,
-        title: l10n.serviceBodyPaintTitle,
-        description: l10n.serviceBodyPaintDescription,
-      ),
+      (Icons.car_repair_outlined, l10n.serviceToyotaTitle),
+      (Icons.handyman_outlined, l10n.serviceOtoxpertTitle),
+      (Icons.calculate_outlined, l10n.serviceCreditTitle),
+      (Icons.format_paint_outlined, l10n.serviceBodyPaintTitle),
     ];
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outlineVariant,
-        ),
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: AppSpacing.medium,
+        mainAxisSpacing: AppSpacing.medium,
+        childAspectRatio: 1.15,
       ),
-      child: Column(
-        children: [
-          for (var index = 0; index < services.length; index++) ...[
-            _ServiceRow(service: services[index]),
-            if (index != services.length - 1) const Divider(indent: 72),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _ServiceRow extends StatelessWidget {
-  const _ServiceRow({required this.service});
-
-  final _ServiceDefinition service;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.medium),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: colorScheme.secondaryContainer,
-              borderRadius: AppRadius.small,
-            ),
+      itemCount: services.length,
+      itemBuilder: (context, index) {
+        final service = services[index];
+        return Card(
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onUnavailable,
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.medium),
-              child: Icon(
-                service.icon,
-                color: colorScheme.onSecondaryContainer,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(service.$1),
+                  Text(
+                    service.$2,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
               ),
             ),
           ),
-          const SizedBox(width: AppSpacing.medium),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  service.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: AppSpacing.xSmall),
-                Text(
-                  service.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class _ProcessList extends StatelessWidget {
-  const _ProcessList();
+class _EmptyVehicle extends StatelessWidget {
+  const _EmptyVehicle({required this.onStart});
+
+  final VoidCallback onStart;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
-    return Column(
-      children: [
-        _ProcessStep(
-          number: '1',
-          title: l10n.processVehicleTitle,
-          description: l10n.processVehicleDescription,
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.large),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 28,
+              backgroundColor: colors.surfaceContainerHighest,
+              child: const Icon(Icons.garage_outlined),
+            ),
+            const SizedBox(width: AppSpacing.medium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.emptyVehicleTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(l10n.emptyVehicleDescription),
+                  const SizedBox(height: AppSpacing.medium),
+                  TextButton(
+                    onPressed: onStart,
+                    child: Text(l10n.startAppraisal),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: AppSpacing.large),
-        _ProcessStep(
-          number: '2',
-          title: l10n.processReviewTitle,
-          description: l10n.processReviewDescription,
-        ),
-        const SizedBox(height: AppSpacing.large),
-        _ProcessStep(
-          number: '3',
-          title: l10n.processResultTitle,
-          description: l10n.processResultDescription,
-        ),
-      ],
+      ),
     );
   }
 }
 
-class _ProcessStep extends StatelessWidget {
-  const _ProcessStep({
-    required this.number,
-    required this.title,
-    required this.description,
-  });
+class _LatestVehicle extends StatelessWidget {
+  const _LatestVehicle({required this.appraisal});
 
-  final String number;
-  final String title;
-  final String description;
+  final AppraisalData appraisal;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
-          child: Text(number),
+    final vehicle = appraisal.vehicle;
+    if (vehicle == null) return const SizedBox.shrink();
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(AppSpacing.medium),
+        leading: const CircleAvatar(
+          child: Icon(Icons.directions_car_outlined),
         ),
-        const SizedBox(width: AppSpacing.medium),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: AppSpacing.xSmall),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
+        title: Text('${vehicle.make} ${vehicle.model} ${vehicle.year}'),
+        subtitle: Text(appraisal.statusLabel),
+        trailing: const Icon(Icons.chevron_right_rounded),
+        onTap: () => context.push(
+          appraisal.resultReady
+              ? appraisalResultPath(appraisal.id)
+              : appraisalDetailPath(appraisal.id),
         ),
-      ],
+      ),
     );
   }
 }

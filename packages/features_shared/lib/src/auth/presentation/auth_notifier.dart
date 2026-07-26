@@ -93,13 +93,23 @@ class AuthNotifier extends _$AuthNotifier {
   Future<void> updateUserProfile({
     required String name,
     required String email,
+    String? phone,
+    String? city,
+    bool? serviceConsent,
+    bool? marketingConsent,
   }) async {
     if (state is! AuthAuthenticated) return;
 
     final repository = ref.read(authRepositoryProvider);
     try {
-      final updatedUser =
-          await repository.updateProfile(name: name, email: email);
+      final updatedUser = await repository.updateProfile(
+        name: name,
+        email: email,
+        phone: phone,
+        city: city,
+        serviceConsent: serviceConsent,
+        marketingConsent: marketingConsent,
+      );
       state = AuthAuthenticated(updatedUser);
     } catch (e) {
       rethrow;

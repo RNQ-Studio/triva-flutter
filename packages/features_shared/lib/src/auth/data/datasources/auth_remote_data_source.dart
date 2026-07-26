@@ -37,19 +37,11 @@ class AuthRemoteDataSource {
       final profileData = profileResponse.data as Map<String, dynamic>;
       final userJson = profileData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(), // Safely convert integer ID to string
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            const [],
-        token: token,
-        refreshToken: refreshToken,
-      );
+      return UserModel.fromJson({
+        ...userJson,
+        'token': token,
+        'refresh_token': refreshToken,
+      });
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Login failed');
     }
@@ -76,19 +68,11 @@ class AuthRemoteDataSource {
       final profileData = profileResponse.data as Map<String, dynamic>;
       final userJson = profileData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(),
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((role) => role.toString())
-                .toList() ??
-            const [],
-        token: token,
-        refreshToken: refreshToken,
-      );
+      return UserModel.fromJson({
+        ...userJson,
+        'token': token,
+        'refresh_token': refreshToken,
+      });
     } on DioException catch (error) {
       throw error.error ??
           ServerException(error.message ?? 'Google sign-in failed');
@@ -125,19 +109,11 @@ class AuthRemoteDataSource {
       final profileData = profileResponse.data as Map<String, dynamic>;
       final userJson = profileData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(), // Safely convert integer ID to string
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            const [],
-        token: token,
-        refreshToken: refreshToken,
-      );
+      return UserModel.fromJson({
+        ...userJson,
+        'token': token,
+        'refresh_token': refreshToken,
+      });
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Register failed');
     }
@@ -149,18 +125,7 @@ class AuthRemoteDataSource {
       final responseData = response.data as Map<String, dynamic>;
       final userJson = responseData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(),
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            const [],
-        token: null, // Token will be merged in repository layer
-      );
+      return UserModel.fromJson(userJson);
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Failed to fetch profile');
     }
@@ -169,28 +134,28 @@ class AuthRemoteDataSource {
   Future<UserModel> updateProfile({
     required String name,
     required String email,
+    String? phone,
+    String? city,
+    bool? serviceConsent,
+    bool? marketingConsent,
   }) async {
     try {
       final response = await _dio.put(
         'v1/auth/me',
-        data: {'name': name, 'email': email},
+        data: {
+          'name': name,
+          'email': email,
+          if (phone != null) 'phone': phone,
+          if (city != null) 'city': city,
+          if (serviceConsent != null) 'service_consent': serviceConsent,
+          if (marketingConsent != null) 'marketing_consent': marketingConsent,
+        },
       );
 
       final responseData = response.data as Map<String, dynamic>;
       final userJson = responseData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(),
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            const [],
-        token: null, // Token will be merged in repository layer
-      );
+      return UserModel.fromJson(userJson);
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Update profile failed');
     }
@@ -211,18 +176,7 @@ class AuthRemoteDataSource {
       final responseData = response.data as Map<String, dynamic>;
       final userJson = responseData['data'] as Map<String, dynamic>;
 
-      return UserModel(
-        id: userJson['id'].toString(),
-        name: userJson['name'] as String,
-        email: userJson['email'] as String,
-        phone: userJson['phone'] as String?,
-        avatarUrl: userJson['avatar_url'] as String?,
-        roles: (userJson['roles'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            const [],
-        token: null, // Token will be merged in repository layer
-      );
+      return UserModel.fromJson(userJson);
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Upload avatar failed');
     }

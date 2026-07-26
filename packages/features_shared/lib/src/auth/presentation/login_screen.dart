@@ -26,63 +26,125 @@ class LoginScreen extends ConsumerWidget {
       }
     });
 
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xLarge),
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 440),
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(child: TrivaLogo(width: 200)),
-                  const SizedBox(height: AppSpacing.xxLarge),
-                  Text(
-                    l10n.signIn,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: AppSpacing.small),
-                  Text(
-                    l10n.googleLoginSubtitle,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  SizedBox(
+                    height: constraints.maxHeight < 700 ? 250 : 320,
+                    width: double.infinity,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.asset(
+                          'assets/branding/welcome_vehicle.jpg',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          errorBuilder: (_, __, ___) => ColoredBox(
+                            color: colors.primaryContainer,
+                            child: Icon(
+                              Icons.directions_car_filled_rounded,
+                              size: 84,
+                              color: colors.onPrimaryContainer,
+                            ),
+                          ),
                         ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: AppSpacing.xLarge),
-                  const _GoogleAccountNotice(),
-                  if (authState case AuthError(:final kind)) ...[
-                    const SizedBox(height: AppSpacing.large),
-                    _AuthErrorMessage(kind: kind),
-                  ],
-                  const SizedBox(height: AppSpacing.xLarge),
-                  OutlinedButton.icon(
-                    key: const ValueKey('google-sign-in-button'),
-                    onPressed: authState is AuthLoading
-                        ? null
-                        : () =>
-                            ref.read(authProvider.notifier).loginWithGoogle(),
-                    icon: authState is AuthLoading
-                        ? const SizedBox.square(
-                            dimension: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const _GoogleMark(),
-                    label: Text(
-                      authState is AuthLoading
-                          ? l10n.googleLoginLoading
-                          : l10n.googleLoginAction,
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(AppSpacing.large),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: colors.surface.withValues(alpha: 0.94),
+                                borderRadius: AppRadius.large,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.large,
+                                  vertical: AppSpacing.medium,
+                                ),
+                                child: TrivaLogo(width: 142),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.large),
-                  Text(
-                    l10n.googleLoginPrivacyNotice,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 480),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpacing.xLarge,
+                          AppSpacing.xLarge,
+                          AppSpacing.xLarge,
+                          AppSpacing.large,
                         ),
-                    textAlign: TextAlign.center,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              l10n.loginHeroTitle,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: AppSpacing.small),
+                            Text(
+                              l10n.loginHeroDescription,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(color: colors.onSurfaceVariant),
+                              textAlign: TextAlign.center,
+                            ),
+                            if (authState case AuthError(:final kind)) ...[
+                              const SizedBox(height: AppSpacing.large),
+                              _AuthErrorMessage(kind: kind),
+                            ],
+                            const SizedBox(height: AppSpacing.xLarge),
+                            OutlinedButton.icon(
+                              key: const ValueKey('google-sign-in-button'),
+                              onPressed: authState is AuthLoading
+                                  ? null
+                                  : () => ref
+                                      .read(authProvider.notifier)
+                                      .loginWithGoogle(),
+                              icon: authState is AuthLoading
+                                  ? const SizedBox.square(
+                                      dimension: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const _GoogleMark(),
+                              label: Text(
+                                authState is AuthLoading
+                                    ? l10n.googleLoginLoading
+                                    : l10n.googleLoginAction,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.medium),
+                            const _GoogleAccountNotice(),
+                            const SizedBox(height: AppSpacing.medium),
+                            Text(
+                              l10n.googleLoginPrivacyNotice,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: colors.onSurfaceVariant),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -21,6 +21,7 @@ export 'src/auth/presentation/auth_provider.dart';
 export 'src/auth/presentation/auth_routes.dart';
 export 'src/auth/presentation/auth_state.dart';
 export 'src/auth/presentation/login_screen.dart';
+export 'src/auth/presentation/complete_profile_screen.dart';
 
 // profile — domain
 export 'src/profile/domain/entities/profile.dart';

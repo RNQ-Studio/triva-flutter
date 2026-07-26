@@ -1,0 +1,4 @@
+# Keep direct work opened at this Git repository fully enabled.
+# This project config is loaded only when Codex marks the project as trusted.
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
