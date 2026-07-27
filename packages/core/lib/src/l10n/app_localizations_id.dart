@@ -1237,7 +1237,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get activityEmptyDescription =>
-      'Appraisal dan booking yang Anda kirim akan muncul di sini.';
+      'Appraisal, booking, dan simulasi kredit Anda akan muncul di sini.';
 
   @override
   String get activityAppraisalsLoadFailed =>
@@ -1583,4 +1583,212 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get loadingData => 'Menyiapkan data…';
+
+  @override
+  String get creditFlowTitle => 'Simulasi kredit';
+
+  @override
+  String get creditFlowSubtitle =>
+      'Bandingkan cicilan dari program yang berlaku. Hasil ini berupa estimasi, bukan persetujuan kredit.';
+
+  @override
+  String get creditProgramLabel => 'Program dan mobil target';
+
+  @override
+  String get creditProgramHelper =>
+      'Program menentukan harga OTR, tenor, bunga, dan biaya.';
+
+  @override
+  String get creditNoProgramsTitle => 'Program kredit belum tersedia';
+
+  @override
+  String get creditNoProgramsDescription =>
+      'Program aktif untuk kota dan kendaraan target belum dimasukkan. Coba lagi setelah tim memperbarui program.';
+
+  @override
+  String get creditTargetVehicle => 'Mobil target';
+
+  @override
+  String get creditOtrCity => 'Kota OTR';
+
+  @override
+  String get creditOtrPrice => 'Harga OTR';
+
+  @override
+  String get creditDownPaymentSection => 'Dana awal';
+
+  @override
+  String get creditCashDownPayment => 'DP tunai';
+
+  @override
+  String get creditTradeInManual => 'Nilai trade-in manual';
+
+  @override
+  String get creditTradeInFromAppraisal =>
+      'Nilai trade-in akan diambil dari hasil appraisal ini.';
+
+  @override
+  String get creditUseTradeInAsDp => 'Gunakan equity trade-in sebagai DP';
+
+  @override
+  String get creditOldVehiclePayoff => 'Sisa kewajiban kendaraan lama';
+
+  @override
+  String get creditTenor => 'Tenor';
+
+  @override
+  String get creditMonths => 'bulan';
+
+  @override
+  String get creditInvalidNumber => 'Masukkan angka Rupiah yang valid.';
+
+  @override
+  String get creditRatePerYear => 'Bunga flat per tahun';
+
+  @override
+  String get creditCalculate => 'Hitung simulasi';
+
+  @override
+  String get creditCalculating => 'Menghitung…';
+
+  @override
+  String get creditResultTitle => 'Ringkasan estimasi';
+
+  @override
+  String get creditMonthlyInstallment => 'Cicilan per bulan';
+
+  @override
+  String get creditInitialPayment => 'Dana awal dibayar';
+
+  @override
+  String get creditPrincipal => 'Pokok pembiayaan';
+
+  @override
+  String get creditTotalDownPayment => 'Total komposisi DP';
+
+  @override
+  String get creditTradeInEquity => 'Equity trade-in';
+
+  @override
+  String get creditApprovedDiscount => 'Diskon program';
+
+  @override
+  String get creditTotalInterest => 'Total bunga flat';
+
+  @override
+  String get creditAdministrationFee => 'Administrasi';
+
+  @override
+  String get creditProvisionFee => 'Provisi';
+
+  @override
+  String get creditInsuranceFee => 'Asuransi awal';
+
+  @override
+  String get creditFeeNotIncluded => 'Belum termasuk';
+
+  @override
+  String get creditOtherFee => 'Biaya lain';
+
+  @override
+  String get creditTotalPayment => 'Total pembayaran estimasi';
+
+  @override
+  String get creditValidUntil => 'Program berlaku sampai';
+
+  @override
+  String get creditAddComparison => 'Tambah ke perbandingan';
+
+  @override
+  String get creditComparisonTitle => 'Perbandingan skenario';
+
+  @override
+  String creditScenarioCount(int count) {
+    return '$count dari 3 skenario';
+  }
+
+  @override
+  String get creditScenarioLimit =>
+      'Maksimal tiga skenario dapat dibandingkan.';
+
+  @override
+  String get creditScenarioDuplicate =>
+      'Skenario ini sudah ada dalam perbandingan.';
+
+  @override
+  String get creditSave => 'Simpan simulasi';
+
+  @override
+  String get creditSaving => 'Menyimpan…';
+
+  @override
+  String get creditSavedTitle => 'Simulasi tersimpan';
+
+  @override
+  String get creditSavedDescription =>
+      'Snapshot program dan hasil perhitungan tersimpan di Aktivitas Saya.';
+
+  @override
+  String get creditRequestSales => 'Minta dihubungi sales';
+
+  @override
+  String get creditFollowUpConsentTitle => 'Teruskan ke tim sales?';
+
+  @override
+  String get creditFollowUpConsentDescription =>
+      'Saya setuju data kontak dan snapshot simulasi ini digunakan tim sales untuk menindaklanjuti permintaan.';
+
+  @override
+  String get creditContactChannel => 'Channel kontak';
+
+  @override
+  String get creditContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get creditContactPhone => 'Telepon';
+
+  @override
+  String get creditContactEmail => 'Email';
+
+  @override
+  String get creditFollowUpSuccess =>
+      'Permintaan follow-up sudah diteruskan ke tim sales.';
+
+  @override
+  String get creditEstimateDisclaimer =>
+      'Estimasi ini bukan persetujuan kredit. Nilai final mengikuti verifikasi sales dan partner pembiayaan.';
+
+  @override
+  String get creditExpiredAppraisalConsent =>
+      'Saya memahami hasil appraisal mungkin sudah kedaluwarsa dan perlu diverifikasi ulang.';
+
+  @override
+  String get creditDraftAppraisalNotice =>
+      'Hasil appraisal terpilih akan digunakan sebagai indikasi trade-in.';
+
+  @override
+  String get creditActivityLabel => 'Simulasi kredit';
+
+  @override
+  String get creditActivityLoadFailed =>
+      'Aktivitas simulasi kredit gagal dimuat. Aktivitas lain tetap ditampilkan.';
+
+  @override
+  String get creditProgramExpired =>
+      'Program pada snapshot ini sudah berakhir. Rincian lama tetap dapat dilihat.';
+
+  @override
+  String get creditLoadFailed => 'Data simulasi kredit belum dapat dimuat.';
+
+  @override
+  String get creditStartNew => 'Buat simulasi baru';
+
+  @override
+  String get creditViewSaved => 'Lihat simulasi tersimpan';
+
+  @override
+  String get creditShareSummary => 'Bagikan ringkasan';
+
+  @override
+  String get creditSource => 'Sumber program';
 }

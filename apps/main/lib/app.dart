@@ -11,6 +11,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'router/app_router.dart';
 import 'features/appraisal/presentation/appraisal_controller.dart';
+import 'features/credit/presentation/credit_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
 import 'features/otoxpert/presentation/otoxpert_controller.dart';
 
@@ -106,6 +107,9 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     ref.invalidate(otoxpertVehiclesProvider);
     ref.invalidate(otoxpertBookingsProvider);
     ref.invalidate(otoxpertFlowProvider);
+    ref.invalidate(creditProgramsProvider);
+    ref.invalidate(creditSimulationsProvider);
+    ref.invalidate(creditFlowProvider);
     ref.invalidate(notificationsListProvider);
     ref.invalidate(unreadNotificationCountProvider);
   }
@@ -136,15 +140,22 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
         (type == 'toyota_service_booking'
             ? message.data['booking_id']?.toString()
             : null);
-    final target = otoxpertId != null
-        ? '/otoxpert/bookings/$otoxpertId'
-        : toyotaId != null
-            ? '/toyota-service/bookings/$toyotaId'
-            : route != null &&
-                    (route.startsWith('/toyota-service/bookings/') ||
-                        route.startsWith('/otoxpert/bookings/'))
-                ? route
-                : null;
+    final creditId = message.data['credit_simulation_id']?.toString() ??
+        (type == 'credit_simulation'
+            ? message.data['simulation_id']?.toString()
+            : null);
+    final target = creditId != null
+        ? '/credit/simulations/$creditId'
+        : otoxpertId != null
+            ? '/otoxpert/bookings/$otoxpertId'
+            : toyotaId != null
+                ? '/toyota-service/bookings/$toyotaId'
+                : route != null &&
+                        (route.startsWith('/toyota-service/bookings/') ||
+                            route.startsWith('/otoxpert/bookings/') ||
+                            route.startsWith('/credit/simulations/'))
+                    ? route
+                    : null;
     if (target == null) return;
     if (ref.read(authProvider) is AuthAuthenticated) {
       appRouter.go(target);

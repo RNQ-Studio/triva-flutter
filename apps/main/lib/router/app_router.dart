@@ -14,6 +14,7 @@ import '../features/toyota_service/presentation/toyota_service_routes.dart';
 import '../features/toyota_service/presentation/toyota_service_paths.dart';
 import '../features/otoxpert/presentation/otoxpert_routes.dart';
 import '../features/otoxpert/presentation/otoxpert_paths.dart';
+import '../features/credit/presentation/credit_routes.dart';
 import 'customer_shell.dart';
 
 String? trivaAppRedirect(BuildContext context, GoRouterState state) {
@@ -46,6 +47,7 @@ final appRouter = GoRouter(
     ...appraisalRoutes,
     ...toyotaServiceRoutes,
     ...otoxpertRoutes,
+    ...creditRoutes,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => CustomerShell(
         navigationShell: navigationShell,

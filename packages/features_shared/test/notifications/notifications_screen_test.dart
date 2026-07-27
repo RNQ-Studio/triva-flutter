@@ -86,11 +86,22 @@ void main() {
       type: 'toyota_service_booking',
       data: const {'booking_id': 'ts-1'},
     );
+    final credit = AppNotification(
+      id: 'notification-credit',
+      title: 'Simulasi Kredit',
+      body: 'Follow-up diterima',
+      createdAt: DateTime(2026, 7, 27),
+      type: 'credit_simulation',
+      data: const {'simulation_id': 'sk-1'},
+    );
 
     expect(otoxpert.otoxpertBookingId, 'ox-1');
     expect(otoxpert.toyotaServiceBookingId, isNull);
     expect(toyota.toyotaServiceBookingId, 'ts-1');
     expect(toyota.otoxpertBookingId, isNull);
+    expect(credit.creditSimulationId, 'sk-1');
+    expect(credit.toyotaServiceBookingId, isNull);
+    expect(credit.otoxpertBookingId, isNull);
   });
 
   testWidgets('mark-all failure keeps unread inbox and shows retry feedback',

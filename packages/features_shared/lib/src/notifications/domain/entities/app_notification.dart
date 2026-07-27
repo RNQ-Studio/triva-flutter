@@ -38,4 +38,13 @@ class AppNotification {
         ? data['booking_id']?.toString()
         : null;
   }
+
+  String? get creditSimulationId {
+    final explicit = data['credit_simulation_id']?.toString();
+    if (explicit != null) return explicit;
+    return type == 'credit_simulation' ||
+            data['type']?.toString() == 'credit_simulation'
+        ? data['simulation_id']?.toString()
+        : null;
+  }
 }

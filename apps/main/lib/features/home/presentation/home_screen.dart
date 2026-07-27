@@ -11,6 +11,7 @@ import '../../toyota_service/presentation/toyota_service_controller.dart';
 import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
 import '../../otoxpert/presentation/otoxpert_paths.dart';
+import '../../credit/presentation/credit_paths.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -102,6 +103,7 @@ class HomeScreen extends ConsumerWidget {
                               );
                             },
                             onOtoxpert: () => context.push(otoxpertPath),
+                            onCredit: () => context.push(creditPath),
                             onUnavailable: () => ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
@@ -226,11 +228,13 @@ class _ServiceGrid extends StatelessWidget {
   const _ServiceGrid({
     required this.onToyotaService,
     required this.onOtoxpert,
+    required this.onCredit,
     required this.onUnavailable,
   });
 
   final VoidCallback onToyotaService;
   final VoidCallback onOtoxpert;
+  final VoidCallback onCredit;
   final VoidCallback onUnavailable;
 
   @override
@@ -286,6 +290,7 @@ class _ServiceGrid extends StatelessWidget {
                 onTap: switch (index) {
                   0 => onToyotaService,
                   1 => onOtoxpert,
+                  2 => onCredit,
                   _ => onUnavailable,
                 },
                 child: Padding(

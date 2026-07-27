@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../appraisal_paths.dart';
+import '../../../credit/presentation/credit_paths.dart';
 
 class AppraisalCompleteScreen extends StatelessWidget {
   const AppraisalCompleteScreen({
@@ -69,10 +70,19 @@ class AppraisalCompleteScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
+                      onPressed: () => context.go(
+                        accepted ? creditFromAppraisalPath(appraisalId) : '/',
+                      ),
+                      child: Text(
+                        accepted ? l10n.serviceCreditTitle : l10n.backToHome,
+                      ),
+                    ),
+                  ),
+                  if (accepted)
+                    TextButton(
                       onPressed: () => context.go('/'),
                       child: Text(l10n.backToHome),
                     ),
-                  ),
                   TextButton(
                     onPressed: () => context.go(appraisalActivityPath),
                     child: Text(l10n.activityTitle),

@@ -1242,7 +1242,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityEmptyDescription =>
-      'Appraisals and bookings you send will appear here.';
+      'Your appraisals, bookings, and credit simulations will appear here.';
 
   @override
   String get activityAppraisalsLoadFailed =>
@@ -1586,4 +1586,211 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadingData => 'Preparing data…';
+
+  @override
+  String get creditFlowTitle => 'Credit simulation';
+
+  @override
+  String get creditFlowSubtitle =>
+      'Compare installments from active programs. This result is an estimate, not a credit approval.';
+
+  @override
+  String get creditProgramLabel => 'Program and target vehicle';
+
+  @override
+  String get creditProgramHelper =>
+      'The program determines OTR price, term, rate, and fees.';
+
+  @override
+  String get creditNoProgramsTitle => 'No credit program available';
+
+  @override
+  String get creditNoProgramsDescription =>
+      'An active program for the target city and vehicle has not been entered yet. Try again after the team updates the program.';
+
+  @override
+  String get creditTargetVehicle => 'Target vehicle';
+
+  @override
+  String get creditOtrCity => 'OTR city';
+
+  @override
+  String get creditOtrPrice => 'OTR price';
+
+  @override
+  String get creditDownPaymentSection => 'Initial funds';
+
+  @override
+  String get creditCashDownPayment => 'Cash down payment';
+
+  @override
+  String get creditTradeInManual => 'Manual trade-in value';
+
+  @override
+  String get creditTradeInFromAppraisal =>
+      'The trade-in value will be taken from this appraisal result.';
+
+  @override
+  String get creditUseTradeInAsDp => 'Use trade-in equity as down payment';
+
+  @override
+  String get creditOldVehiclePayoff => 'Outstanding old vehicle payoff';
+
+  @override
+  String get creditTenor => 'Term';
+
+  @override
+  String get creditMonths => 'months';
+
+  @override
+  String get creditInvalidNumber => 'Enter a valid Rupiah amount.';
+
+  @override
+  String get creditRatePerYear => 'Annual flat rate';
+
+  @override
+  String get creditCalculate => 'Calculate estimate';
+
+  @override
+  String get creditCalculating => 'Calculating…';
+
+  @override
+  String get creditResultTitle => 'Estimate summary';
+
+  @override
+  String get creditMonthlyInstallment => 'Monthly installment';
+
+  @override
+  String get creditInitialPayment => 'Initial payment';
+
+  @override
+  String get creditPrincipal => 'Financed principal';
+
+  @override
+  String get creditTotalDownPayment => 'Total down payment composition';
+
+  @override
+  String get creditTradeInEquity => 'Trade-in equity';
+
+  @override
+  String get creditApprovedDiscount => 'Program discount';
+
+  @override
+  String get creditTotalInterest => 'Total flat interest';
+
+  @override
+  String get creditAdministrationFee => 'Administration';
+
+  @override
+  String get creditProvisionFee => 'Provision';
+
+  @override
+  String get creditInsuranceFee => 'Upfront insurance';
+
+  @override
+  String get creditFeeNotIncluded => 'Not included yet';
+
+  @override
+  String get creditOtherFee => 'Other fees';
+
+  @override
+  String get creditTotalPayment => 'Estimated total payment';
+
+  @override
+  String get creditValidUntil => 'Program valid until';
+
+  @override
+  String get creditAddComparison => 'Add to comparison';
+
+  @override
+  String get creditComparisonTitle => 'Scenario comparison';
+
+  @override
+  String creditScenarioCount(int count) {
+    return '$count of 3 scenarios';
+  }
+
+  @override
+  String get creditScenarioLimit => 'You can compare up to three scenarios.';
+
+  @override
+  String get creditScenarioDuplicate =>
+      'This scenario is already in the comparison.';
+
+  @override
+  String get creditSave => 'Save simulation';
+
+  @override
+  String get creditSaving => 'Saving…';
+
+  @override
+  String get creditSavedTitle => 'Simulation saved';
+
+  @override
+  String get creditSavedDescription =>
+      'The program snapshot and calculation are saved in My Activity.';
+
+  @override
+  String get creditRequestSales => 'Request a sales call';
+
+  @override
+  String get creditFollowUpConsentTitle => 'Send this to the sales team?';
+
+  @override
+  String get creditFollowUpConsentDescription =>
+      'I consent to the sales team using my contact details and this simulation snapshot to follow up.';
+
+  @override
+  String get creditContactChannel => 'Contact channel';
+
+  @override
+  String get creditContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get creditContactPhone => 'Phone';
+
+  @override
+  String get creditContactEmail => 'Email';
+
+  @override
+  String get creditFollowUpSuccess =>
+      'The follow-up request was sent to the sales team.';
+
+  @override
+  String get creditEstimateDisclaimer =>
+      'This estimate is not a credit approval. Final values are subject to sales and financing partner verification.';
+
+  @override
+  String get creditExpiredAppraisalConsent =>
+      'I understand the appraisal result may be expired and require reverification.';
+
+  @override
+  String get creditDraftAppraisalNotice =>
+      'The selected appraisal result will be used as the trade-in indication.';
+
+  @override
+  String get creditActivityLabel => 'Credit simulation';
+
+  @override
+  String get creditActivityLoadFailed =>
+      'Credit simulation activity could not be loaded. Other activity is still shown.';
+
+  @override
+  String get creditProgramExpired =>
+      'The program in this snapshot has ended. The saved details remain available.';
+
+  @override
+  String get creditLoadFailed => 'Credit simulation data could not be loaded.';
+
+  @override
+  String get creditStartNew => 'Create a new simulation';
+
+  @override
+  String get creditViewSaved => 'View saved simulation';
+
+  @override
+  String get creditShareSummary => 'Share summary';
+
+  @override
+  String get creditSource => 'Program source';
 }

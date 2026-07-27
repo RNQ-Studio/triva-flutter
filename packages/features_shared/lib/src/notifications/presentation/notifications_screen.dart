@@ -102,7 +102,10 @@ class NotificationsScreen extends ConsumerWidget {
     }
     final otoxpertId = notification.otoxpertBookingId;
     final toyotaId = notification.toyotaServiceBookingId;
-    if (otoxpertId != null && context.mounted) {
+    final creditId = notification.creditSimulationId;
+    if (creditId != null && context.mounted) {
+      context.push('/credit/simulations/$creditId');
+    } else if (otoxpertId != null && context.mounted) {
       context.push('/otoxpert/bookings/$otoxpertId');
     } else if (toyotaId != null && context.mounted) {
       context.push('/toyota-service/bookings/$toyotaId');
@@ -128,11 +131,13 @@ class _NotificationTile extends StatelessWidget {
                 ),
         child: ListTile(
           leading: Icon(
-            notification.otoxpertBookingId != null
-                ? Icons.handyman_outlined
-                : notification.toyotaServiceBookingId != null
-                    ? Icons.car_repair_outlined
-                    : Icons.notifications_outlined,
+            notification.creditSimulationId != null
+                ? Icons.calculate_outlined
+                : notification.otoxpertBookingId != null
+                    ? Icons.handyman_outlined
+                    : notification.toyotaServiceBookingId != null
+                        ? Icons.car_repair_outlined
+                        : Icons.notifications_outlined,
           ),
           title: Text(
             notification.title,

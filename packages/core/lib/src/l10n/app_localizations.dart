@@ -2351,7 +2351,7 @@ abstract class AppLocalizations {
   /// No description provided for @activityEmptyDescription.
   ///
   /// In id, this message translates to:
-  /// **'Appraisal dan booking yang Anda kirim akan muncul di sini.'**
+  /// **'Appraisal, booking, dan simulasi kredit Anda akan muncul di sini.'**
   String get activityEmptyDescription;
 
   /// No description provided for @activityAppraisalsLoadFailed.
@@ -2983,6 +2983,390 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Menyiapkan data…'**
   String get loadingData;
+
+  /// No description provided for @creditFlowTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi kredit'**
+  String get creditFlowTitle;
+
+  /// No description provided for @creditFlowSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Bandingkan cicilan dari program yang berlaku. Hasil ini berupa estimasi, bukan persetujuan kredit.'**
+  String get creditFlowSubtitle;
+
+  /// No description provided for @creditProgramLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Program dan mobil target'**
+  String get creditProgramLabel;
+
+  /// No description provided for @creditProgramHelper.
+  ///
+  /// In id, this message translates to:
+  /// **'Program menentukan harga OTR, tenor, bunga, dan biaya.'**
+  String get creditProgramHelper;
+
+  /// No description provided for @creditNoProgramsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Program kredit belum tersedia'**
+  String get creditNoProgramsTitle;
+
+  /// No description provided for @creditNoProgramsDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Program aktif untuk kota dan kendaraan target belum dimasukkan. Coba lagi setelah tim memperbarui program.'**
+  String get creditNoProgramsDescription;
+
+  /// No description provided for @creditTargetVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mobil target'**
+  String get creditTargetVehicle;
+
+  /// No description provided for @creditOtrCity.
+  ///
+  /// In id, this message translates to:
+  /// **'Kota OTR'**
+  String get creditOtrCity;
+
+  /// No description provided for @creditOtrPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga OTR'**
+  String get creditOtrPrice;
+
+  /// No description provided for @creditDownPaymentSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Dana awal'**
+  String get creditDownPaymentSection;
+
+  /// No description provided for @creditCashDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'DP tunai'**
+  String get creditCashDownPayment;
+
+  /// No description provided for @creditTradeInManual.
+  ///
+  /// In id, this message translates to:
+  /// **'Nilai trade-in manual'**
+  String get creditTradeInManual;
+
+  /// No description provided for @creditTradeInFromAppraisal.
+  ///
+  /// In id, this message translates to:
+  /// **'Nilai trade-in akan diambil dari hasil appraisal ini.'**
+  String get creditTradeInFromAppraisal;
+
+  /// No description provided for @creditUseTradeInAsDp.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan equity trade-in sebagai DP'**
+  String get creditUseTradeInAsDp;
+
+  /// No description provided for @creditOldVehiclePayoff.
+  ///
+  /// In id, this message translates to:
+  /// **'Sisa kewajiban kendaraan lama'**
+  String get creditOldVehiclePayoff;
+
+  /// No description provided for @creditTenor.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenor'**
+  String get creditTenor;
+
+  /// No description provided for @creditMonths.
+  ///
+  /// In id, this message translates to:
+  /// **'bulan'**
+  String get creditMonths;
+
+  /// No description provided for @creditInvalidNumber.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan angka Rupiah yang valid.'**
+  String get creditInvalidNumber;
+
+  /// No description provided for @creditRatePerYear.
+  ///
+  /// In id, this message translates to:
+  /// **'Bunga flat per tahun'**
+  String get creditRatePerYear;
+
+  /// No description provided for @creditCalculate.
+  ///
+  /// In id, this message translates to:
+  /// **'Hitung simulasi'**
+  String get creditCalculate;
+
+  /// No description provided for @creditCalculating.
+  ///
+  /// In id, this message translates to:
+  /// **'Menghitung…'**
+  String get creditCalculating;
+
+  /// No description provided for @creditResultTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Ringkasan estimasi'**
+  String get creditResultTitle;
+
+  /// No description provided for @creditMonthlyInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Cicilan per bulan'**
+  String get creditMonthlyInstallment;
+
+  /// No description provided for @creditInitialPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Dana awal dibayar'**
+  String get creditInitialPayment;
+
+  /// No description provided for @creditPrincipal.
+  ///
+  /// In id, this message translates to:
+  /// **'Pokok pembiayaan'**
+  String get creditPrincipal;
+
+  /// No description provided for @creditTotalDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Total komposisi DP'**
+  String get creditTotalDownPayment;
+
+  /// No description provided for @creditTradeInEquity.
+  ///
+  /// In id, this message translates to:
+  /// **'Equity trade-in'**
+  String get creditTradeInEquity;
+
+  /// No description provided for @creditApprovedDiscount.
+  ///
+  /// In id, this message translates to:
+  /// **'Diskon program'**
+  String get creditApprovedDiscount;
+
+  /// No description provided for @creditTotalInterest.
+  ///
+  /// In id, this message translates to:
+  /// **'Total bunga flat'**
+  String get creditTotalInterest;
+
+  /// No description provided for @creditAdministrationFee.
+  ///
+  /// In id, this message translates to:
+  /// **'Administrasi'**
+  String get creditAdministrationFee;
+
+  /// No description provided for @creditProvisionFee.
+  ///
+  /// In id, this message translates to:
+  /// **'Provisi'**
+  String get creditProvisionFee;
+
+  /// No description provided for @creditInsuranceFee.
+  ///
+  /// In id, this message translates to:
+  /// **'Asuransi awal'**
+  String get creditInsuranceFee;
+
+  /// No description provided for @creditFeeNotIncluded.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum termasuk'**
+  String get creditFeeNotIncluded;
+
+  /// No description provided for @creditOtherFee.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya lain'**
+  String get creditOtherFee;
+
+  /// No description provided for @creditTotalPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Total pembayaran estimasi'**
+  String get creditTotalPayment;
+
+  /// No description provided for @creditValidUntil.
+  ///
+  /// In id, this message translates to:
+  /// **'Program berlaku sampai'**
+  String get creditValidUntil;
+
+  /// No description provided for @creditAddComparison.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah ke perbandingan'**
+  String get creditAddComparison;
+
+  /// No description provided for @creditComparisonTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbandingan skenario'**
+  String get creditComparisonTitle;
+
+  /// No description provided for @creditScenarioCount.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} dari 3 skenario'**
+  String creditScenarioCount(int count);
+
+  /// No description provided for @creditScenarioLimit.
+  ///
+  /// In id, this message translates to:
+  /// **'Maksimal tiga skenario dapat dibandingkan.'**
+  String get creditScenarioLimit;
+
+  /// No description provided for @creditScenarioDuplicate.
+  ///
+  /// In id, this message translates to:
+  /// **'Skenario ini sudah ada dalam perbandingan.'**
+  String get creditScenarioDuplicate;
+
+  /// No description provided for @creditSave.
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan simulasi'**
+  String get creditSave;
+
+  /// No description provided for @creditSaving.
+  ///
+  /// In id, this message translates to:
+  /// **'Menyimpan…'**
+  String get creditSaving;
+
+  /// No description provided for @creditSavedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi tersimpan'**
+  String get creditSavedTitle;
+
+  /// No description provided for @creditSavedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Snapshot program dan hasil perhitungan tersimpan di Aktivitas Saya.'**
+  String get creditSavedDescription;
+
+  /// No description provided for @creditRequestSales.
+  ///
+  /// In id, this message translates to:
+  /// **'Minta dihubungi sales'**
+  String get creditRequestSales;
+
+  /// No description provided for @creditFollowUpConsentTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Teruskan ke tim sales?'**
+  String get creditFollowUpConsentTitle;
+
+  /// No description provided for @creditFollowUpConsentDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya setuju data kontak dan snapshot simulasi ini digunakan tim sales untuk menindaklanjuti permintaan.'**
+  String get creditFollowUpConsentDescription;
+
+  /// No description provided for @creditContactChannel.
+  ///
+  /// In id, this message translates to:
+  /// **'Channel kontak'**
+  String get creditContactChannel;
+
+  /// No description provided for @creditContactWhatsapp.
+  ///
+  /// In id, this message translates to:
+  /// **'WhatsApp'**
+  String get creditContactWhatsapp;
+
+  /// No description provided for @creditContactPhone.
+  ///
+  /// In id, this message translates to:
+  /// **'Telepon'**
+  String get creditContactPhone;
+
+  /// No description provided for @creditContactEmail.
+  ///
+  /// In id, this message translates to:
+  /// **'Email'**
+  String get creditContactEmail;
+
+  /// No description provided for @creditFollowUpSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan follow-up sudah diteruskan ke tim sales.'**
+  String get creditFollowUpSuccess;
+
+  /// No description provided for @creditEstimateDisclaimer.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi ini bukan persetujuan kredit. Nilai final mengikuti verifikasi sales dan partner pembiayaan.'**
+  String get creditEstimateDisclaimer;
+
+  /// No description provided for @creditExpiredAppraisalConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya memahami hasil appraisal mungkin sudah kedaluwarsa dan perlu diverifikasi ulang.'**
+  String get creditExpiredAppraisalConsent;
+
+  /// No description provided for @creditDraftAppraisalNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Hasil appraisal terpilih akan digunakan sebagai indikasi trade-in.'**
+  String get creditDraftAppraisalNotice;
+
+  /// No description provided for @creditActivityLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi kredit'**
+  String get creditActivityLabel;
+
+  /// No description provided for @creditActivityLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas simulasi kredit gagal dimuat. Aktivitas lain tetap ditampilkan.'**
+  String get creditActivityLoadFailed;
+
+  /// No description provided for @creditProgramExpired.
+  ///
+  /// In id, this message translates to:
+  /// **'Program pada snapshot ini sudah berakhir. Rincian lama tetap dapat dilihat.'**
+  String get creditProgramExpired;
+
+  /// No description provided for @creditLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Data simulasi kredit belum dapat dimuat.'**
+  String get creditLoadFailed;
+
+  /// No description provided for @creditStartNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Buat simulasi baru'**
+  String get creditStartNew;
+
+  /// No description provided for @creditViewSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat simulasi tersimpan'**
+  String get creditViewSaved;
+
+  /// No description provided for @creditShareSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Bagikan ringkasan'**
+  String get creditShareSummary;
+
+  /// No description provided for @creditSource.
+  ///
+  /// In id, this message translates to:
+  /// **'Sumber program'**
+  String get creditSource;
 }
 
 class _AppLocalizationsDelegate
