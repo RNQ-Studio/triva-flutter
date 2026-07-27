@@ -6,6 +6,10 @@ val keyPropsFile = rootProject.file("key.properties")
 val keyProps = Properties().apply {
     if (keyPropsFile.exists()) keyPropsFile.inputStream().use { load(it) }
 }
+val releaseStorePassword =
+    keyProps["storePassword"] as String? ?: System.getenv("TRIVA_ANDROID_STORE_PASSWORD") ?: ""
+val releaseKeyPassword =
+    keyProps["keyPassword"] as String? ?: System.getenv("TRIVA_ANDROID_KEY_PASSWORD") ?: ""
 
 plugins {
     id("com.android.application")
@@ -26,12 +30,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
     signingConfigs {
         create("release") {
             keyAlias = keyProps["keyAlias"] as String? ?: ""
-            keyPassword = keyProps["keyPassword"] as String? ?: ""
+            keyPassword = releaseKeyPassword
             storeFile = (keyProps["storeFile"] as String?)?.let { file(it) }
-            storePassword = keyProps["storePassword"] as String? ?: ""
+            storePassword = releaseStorePassword
         }
     }
 
