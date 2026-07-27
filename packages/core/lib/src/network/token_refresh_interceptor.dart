@@ -71,10 +71,21 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
   }
 
   Future<void> _forceLogout() async {
+    await _deleteToken(AppConstants.keyAuthToken);
+    await _deleteToken(AppConstants.keyRefreshToken);
+
     try {
       await onLogout?.call();
-    } catch (_) {
-      // Swallow errors during logout to avoid masking the original error.
+    } on Object {
+      debugPrint('Session expiry callback failed');
+    }
+  }
+
+  Future<void> _deleteToken(String key) async {
+    try {
+      await _storage.delete(key);
+    } on Object {
+      debugPrint('Failed to clear expired session token');
     }
   }
 }

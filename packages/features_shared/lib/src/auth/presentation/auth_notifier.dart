@@ -90,6 +90,11 @@ class AuthNotifier extends _$AuthNotifier {
     }
   }
 
+  Future<void> expireSession() async {
+    await ref.read(authRepositoryProvider).clearLocalSession();
+    state = const AuthUnauthenticated();
+  }
+
   Future<void> updateUserProfile({
     required String name,
     required String email,

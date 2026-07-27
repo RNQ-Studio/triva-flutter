@@ -1,3 +1,5 @@
+import 'package:core/core.dart';
+
 import '../../domain/entities/user.dart';
 import '../../domain/entities/region_option.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -54,6 +56,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> clearLocalSession() => _local.clearUser();
+
+  @override
   Future<User> register({
     required String name,
     required String email,
@@ -75,6 +80,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     try {
       final fresh = await _remote.getMe();
+      final currentSession = await _local.getUser() ?? cached;
       final merged = UserModel(
         id: fresh.id,
         name: fresh.name,
@@ -86,13 +92,16 @@ class AuthRepositoryImpl implements AuthRepository {
         serviceConsentAt: fresh.serviceConsentAt ?? cached.serviceConsentAt,
         marketingConsent: fresh.marketingConsent,
         roles: fresh.roles.isNotEmpty ? fresh.roles : cached.roles,
-        token: cached.token,
-        refreshToken: cached.refreshToken,
+        token: currentSession.token,
+        refreshToken: currentSession.refreshToken,
       );
       await _local.saveUser(merged);
       return merged;
-    } catch (_) {
-      // Gracefully fallback to cached user on connection failure/offline
+    } on UnauthorizedException {
+      await _local.clearUser();
+      return null;
+    } on NetworkException {
+      // Preserve the cached profile only while the server is unreachable.
       return cached;
     }
   }

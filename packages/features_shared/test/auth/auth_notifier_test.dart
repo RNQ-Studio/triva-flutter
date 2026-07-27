@@ -102,6 +102,16 @@ void main() {
     expect(container.read(authProvider), isA<AuthUnauthenticated>());
   });
 
+  test('expired session clears local auth and becomes unauthenticated',
+      () async {
+    when(() => mockRepo.clearLocalSession()).thenAnswer((_) async {});
+
+    await container.read(authProvider.notifier).expireSession();
+
+    verify(() => mockRepo.clearLocalSession()).called(1);
+    expect(container.read(authProvider), isA<AuthUnauthenticated>());
+  });
+
   test('checkCurrentUser with cached session → AuthAuthenticated', () async {
     when(() => mockRepo.getCurrentUser()).thenAnswer((_) async => tUser);
 
