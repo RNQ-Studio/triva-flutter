@@ -6,6 +6,9 @@ import 'package:go_router/go_router.dart';
 import '../../../toyota_service/domain/toyota_service_models.dart';
 import '../../../toyota_service/presentation/toyota_service_controller.dart';
 import '../../../toyota_service/presentation/toyota_service_paths.dart';
+import '../../../otoxpert/domain/otoxpert_models.dart';
+import '../../../otoxpert/presentation/otoxpert_controller.dart';
+import '../../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
@@ -18,22 +21,31 @@ class AppraisalActivityScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final appraisals = ref.watch(appraisalsProvider);
     final bookings = ref.watch(toyotaServiceBookingsProvider);
-    final hasAnyValue = appraisals.hasValue || bookings.hasValue;
+    final otoxpertBookings = ref.watch(otoxpertBookingsProvider);
+    final hasAnyValue =
+        appraisals.hasValue || bookings.hasValue || otoxpertBookings.hasValue;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.activityTitle)),
       body: SafeArea(
-        child: !hasAnyValue && appraisals.isLoading && bookings.isLoading
+        child: !hasAnyValue &&
+                appraisals.isLoading &&
+                bookings.isLoading &&
+                otoxpertBookings.isLoading
             ? const Center(child: CircularProgressIndicator())
             : _ActivityList(
                 appraisals: appraisals.value ?? const [],
                 bookings: bookings.value ?? const [],
+                otoxpertBookings: otoxpertBookings.value ?? const [],
                 appraisalsLoading: appraisals.isLoading,
                 bookingsLoading: bookings.isLoading,
+                otoxpertLoading: otoxpertBookings.isLoading,
                 appraisalsError: appraisals.hasError,
                 bookingsError: bookings.hasError,
+                otoxpertError: otoxpertBookings.hasError,
                 onRetryAppraisals: () => ref.invalidate(appraisalsProvider),
                 onRetryBookings: () =>
                     ref.invalidate(toyotaServiceBookingsProvider),
+                onRetryOtoxpert: () => ref.invalidate(otoxpertBookingsProvider),
                 onRefresh: () async {
                   await Future.wait<void>([
                     ref
@@ -42,6 +54,10 @@ class AppraisalActivityScreen extends ConsumerWidget {
                         .onError((_, __) {}),
                     ref
                         .refresh(toyotaServiceBookingsProvider.future)
+                        .then<void>((_) {})
+                        .onError((_, __) {}),
+                    ref
+                        .refresh(otoxpertBookingsProvider.future)
                         .then<void>((_) {})
                         .onError((_, __) {}),
                   ]);
@@ -56,32 +72,41 @@ class _ActivityList extends StatelessWidget {
   const _ActivityList({
     required this.appraisals,
     required this.bookings,
+    required this.otoxpertBookings,
     required this.appraisalsLoading,
     required this.bookingsLoading,
+    required this.otoxpertLoading,
     required this.appraisalsError,
     required this.bookingsError,
+    required this.otoxpertError,
     required this.onRetryAppraisals,
     required this.onRetryBookings,
+    required this.onRetryOtoxpert,
     required this.onRefresh,
   });
 
   final List<AppraisalData> appraisals;
   final List<ToyotaServiceBooking> bookings;
+  final List<OtoxpertBooking> otoxpertBookings;
   final bool appraisalsLoading;
   final bool bookingsLoading;
+  final bool otoxpertLoading;
   final bool appraisalsError;
   final bool bookingsError;
+  final bool otoxpertError;
   final VoidCallback onRetryAppraisals;
   final VoidCallback onRetryBookings;
+  final VoidCallback onRetryOtoxpert;
   final Future<void> Function() onRefresh;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final hasSourceNotice = appraisalsError || bookingsError;
-    final isLoading = appraisalsLoading || bookingsLoading;
+    final hasSourceNotice = appraisalsError || bookingsError || otoxpertError;
+    final isLoading = appraisalsLoading || bookingsLoading || otoxpertLoading;
     if (appraisals.isEmpty &&
         bookings.isEmpty &&
+        otoxpertBookings.isEmpty &&
         !hasSourceNotice &&
         !isLoading) {
       return RefreshIndicator(
@@ -109,6 +134,11 @@ class _ActivityList extends StatelessWidget {
               DateTime.fromMillisecondsSinceEpoch(0),
           tile: _BookingTile(item: item),
         ),
+      for (final item in otoxpertBookings)
+        (
+          at: item.updatedAt ?? item.submittedAt,
+          tile: _OtoxpertBookingTile(item: item),
+        ),
     ]..sort((a, b) => b.at.compareTo(a.at));
     final leading = <Widget>[
       if (appraisalsError)
@@ -122,6 +152,12 @@ class _ActivityList extends StatelessWidget {
           key: const ValueKey('activity-bookings-error'),
           message: l10n.activityBookingsLoadFailed,
           onRetry: onRetryBookings,
+        ),
+      if (otoxpertError)
+        _ActivitySourceError(
+          key: const ValueKey('activity-otoxpert-error'),
+          message: l10n.activityOtoxpertLoadFailed,
+          onRetry: onRetryOtoxpert,
         ),
       if (isLoading) const LinearProgressIndicator(),
       if (entries.isEmpty && hasSourceNotice)
@@ -226,6 +262,38 @@ class _BookingTile extends StatelessWidget {
           onTap: () => context.push(toyotaServiceBookingPath(item.id)),
         ),
       );
+}
+
+class _OtoxpertBookingTile extends StatelessWidget {
+  const _OtoxpertBookingTile({required this.item});
+
+  final OtoxpertBooking item;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Card(
+      key: ValueKey('activity-otoxpert-${item.id}'),
+      margin: EdgeInsets.zero,
+      child: ListTile(
+        leading: const CircleAvatar(
+          backgroundColor: AppColors.serviceVioletSoft,
+          child: Icon(
+            Icons.handyman_outlined,
+            color: AppColors.serviceViolet,
+          ),
+        ),
+        title: Text(
+          item.vehicle == null ? item.referenceNo : item.vehicle!.displayName,
+        ),
+        subtitle: Text(
+          '${l10n.activityOtoxpertBookingLabel} • ${item.statusLabel}',
+        ),
+        trailing: const Icon(Icons.chevron_right_rounded),
+        onTap: () => context.push(otoxpertBookingPath(item.id)),
+      ),
+    );
+  }
 }
 
 class _ActivityEmpty extends StatelessWidget {

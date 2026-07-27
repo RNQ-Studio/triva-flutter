@@ -7,6 +7,7 @@ import 'package:triva_app/features/appraisal/presentation/appraisal_controller.d
 import 'package:triva_app/features/appraisal/presentation/screens/appraisal_activity_screen.dart';
 import 'package:triva_app/features/toyota_service/domain/toyota_service_models.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
+import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
 
 void main() {
   testWidgets('keeps booking activity visible when appraisal source fails',
@@ -20,6 +21,7 @@ void main() {
           toyotaServiceBookingsProvider.overrideWith(
             (_) async => [_booking('booking-1', DateTime(2026, 7, 27))],
           ),
+          otoxpertBookingsProvider.overrideWith((_) async => const []),
         ],
         child: _testApp(),
       ),
@@ -52,6 +54,7 @@ void main() {
           toyotaServiceBookingsProvider.overrideWith(
             (_) async => [_booking('booking-middle', DateTime(2026, 7, 26))],
           ),
+          otoxpertBookingsProvider.overrideWith((_) async => const []),
         ],
         child: _testApp(),
       ),

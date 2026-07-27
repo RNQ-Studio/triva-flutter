@@ -2864,6 +2864,120 @@ abstract class AppLocalizations {
   /// **'Pilih ulang layanan'**
   String get chooseServiceLocationAgain;
 
+  /// No description provided for @otoxpertFlowTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking OtoXpert'**
+  String get otoxpertFlowTitle;
+
+  /// No description provided for @otoxpertSelectVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih kendaraan'**
+  String get otoxpertSelectVehicle;
+
+  /// No description provided for @otoxpertSelectVehicleDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih kendaraan tersimpan untuk menampilkan bengkel yang kompatibel.'**
+  String get otoxpertSelectVehicleDescription;
+
+  /// No description provided for @otoxpertChooseWorkshop.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih bengkel OtoXpert'**
+  String get otoxpertChooseWorkshop;
+
+  /// No description provided for @otoxpertWorkshopEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada bengkel yang kompatibel untuk kendaraan ini.'**
+  String get otoxpertWorkshopEmpty;
+
+  /// No description provided for @otoxpertChooseService.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih layanan bengkel'**
+  String get otoxpertChooseService;
+
+  /// No description provided for @otoxpertSymptoms.
+  ///
+  /// In id, this message translates to:
+  /// **'Gejala kendaraan'**
+  String get otoxpertSymptoms;
+
+  /// No description provided for @otoxpertLastServiceDate.
+  ///
+  /// In id, this message translates to:
+  /// **'Tanggal servis terakhir (opsional)'**
+  String get otoxpertLastServiceDate;
+
+  /// No description provided for @otoxpertPickupDelivery.
+  ///
+  /// In id, this message translates to:
+  /// **'Minta antar-jemput kendaraan'**
+  String get otoxpertPickupDelivery;
+
+  /// No description provided for @otoxpertPartnerConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya menyetujui detail kendaraan dan keluhan dibagikan kepada bengkel OtoXpert untuk memproses permintaan ini.'**
+  String get otoxpertPartnerConsent;
+
+  /// No description provided for @otoxpertIndicativePrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi indikatif'**
+  String get otoxpertIndicativePrice;
+
+  /// No description provided for @otoxpertPriceDisclaimer.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga final ditentukan bengkel setelah pemeriksaan kendaraan.'**
+  String get otoxpertPriceDisclaimer;
+
+  /// No description provided for @otoxpertRequestSubmitted.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan OtoXpert berhasil dikirim dan menunggu konfirmasi bengkel.'**
+  String get otoxpertRequestSubmitted;
+
+  /// No description provided for @otoxpertAdminQueue.
+  ///
+  /// In id, this message translates to:
+  /// **'Antrean Booking OtoXpert'**
+  String get otoxpertAdminQueue;
+
+  /// No description provided for @otoxpertAllStatuses.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua status'**
+  String get otoxpertAllStatuses;
+
+  /// No description provided for @otoxpertMaximumPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi maksimum'**
+  String get otoxpertMaximumPrice;
+
+  /// No description provided for @otoxpertFollowUpOutcome.
+  ///
+  /// In id, this message translates to:
+  /// **'Hasil tindak lanjut'**
+  String get otoxpertFollowUpOutcome;
+
+  /// No description provided for @activityOtoxpertBookingLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking OtoXpert'**
+  String get activityOtoxpertBookingLabel;
+
+  /// No description provided for @activityOtoxpertLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas OtoXpert gagal dimuat. Aktivitas lain tetap ditampilkan.'**
+  String get activityOtoxpertLoadFailed;
+
   /// No description provided for @loadingData.
   ///
   /// In id, this message translates to:

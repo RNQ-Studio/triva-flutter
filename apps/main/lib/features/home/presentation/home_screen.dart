@@ -10,6 +10,7 @@ import '../../appraisal/presentation/appraisal_paths.dart';
 import '../../toyota_service/presentation/toyota_service_controller.dart';
 import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
+import '../../otoxpert/presentation/otoxpert_paths.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -100,6 +101,7 @@ class HomeScreen extends ConsumerWidget {
                                       ),
                               );
                             },
+                            onOtoxpert: () => context.push(otoxpertPath),
                             onUnavailable: () => ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
@@ -223,10 +225,12 @@ class _AppraisalHero extends StatelessWidget {
 class _ServiceGrid extends StatelessWidget {
   const _ServiceGrid({
     required this.onToyotaService,
+    required this.onOtoxpert,
     required this.onUnavailable,
   });
 
   final VoidCallback onToyotaService;
+  final VoidCallback onOtoxpert;
   final VoidCallback onUnavailable;
 
   @override
@@ -279,7 +283,11 @@ class _ServiceGrid extends StatelessWidget {
               borderRadius: AppRadius.large,
               clipBehavior: Clip.antiAlias,
               child: InkWell(
-                onTap: index == 0 ? onToyotaService : onUnavailable,
+                onTap: switch (index) {
+                  0 => onToyotaService,
+                  1 => onOtoxpert,
+                  _ => onUnavailable,
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.large),
                   child: columns == 1

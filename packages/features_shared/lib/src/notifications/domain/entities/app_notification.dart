@@ -22,7 +22,20 @@ class AppNotification {
   final DateTime? sentAt;
 
   String? get toyotaServiceBookingId {
-    return data['booking_id']?.toString() ??
-        data['toyota_service_booking_id']?.toString();
+    final explicit = data['toyota_service_booking_id']?.toString();
+    if (explicit != null) return explicit;
+    return type == 'toyota_service_booking' ||
+            data['type']?.toString() == 'toyota_service_booking'
+        ? data['booking_id']?.toString()
+        : null;
+  }
+
+  String? get otoxpertBookingId {
+    final explicit = data['otoxpert_booking_id']?.toString();
+    if (explicit != null) return explicit;
+    return type == 'otoxpert_booking' ||
+            data['type']?.toString() == 'otoxpert_booking'
+        ? data['booking_id']?.toString()
+        : null;
   }
 }

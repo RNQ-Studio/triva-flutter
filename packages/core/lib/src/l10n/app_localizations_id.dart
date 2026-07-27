@@ -1519,5 +1519,68 @@ class AppLocalizationsId extends AppLocalizations {
   String get chooseServiceLocationAgain => 'Pilih ulang layanan';
 
   @override
+  String get otoxpertFlowTitle => 'Booking OtoXpert';
+
+  @override
+  String get otoxpertSelectVehicle => 'Pilih kendaraan';
+
+  @override
+  String get otoxpertSelectVehicleDescription =>
+      'Pilih kendaraan tersimpan untuk menampilkan bengkel yang kompatibel.';
+
+  @override
+  String get otoxpertChooseWorkshop => 'Pilih bengkel OtoXpert';
+
+  @override
+  String get otoxpertWorkshopEmpty =>
+      'Belum ada bengkel yang kompatibel untuk kendaraan ini.';
+
+  @override
+  String get otoxpertChooseService => 'Pilih layanan bengkel';
+
+  @override
+  String get otoxpertSymptoms => 'Gejala kendaraan';
+
+  @override
+  String get otoxpertLastServiceDate => 'Tanggal servis terakhir (opsional)';
+
+  @override
+  String get otoxpertPickupDelivery => 'Minta antar-jemput kendaraan';
+
+  @override
+  String get otoxpertPartnerConsent =>
+      'Saya menyetujui detail kendaraan dan keluhan dibagikan kepada bengkel OtoXpert untuk memproses permintaan ini.';
+
+  @override
+  String get otoxpertIndicativePrice => 'Estimasi indikatif';
+
+  @override
+  String get otoxpertPriceDisclaimer =>
+      'Harga final ditentukan bengkel setelah pemeriksaan kendaraan.';
+
+  @override
+  String get otoxpertRequestSubmitted =>
+      'Permintaan OtoXpert berhasil dikirim dan menunggu konfirmasi bengkel.';
+
+  @override
+  String get otoxpertAdminQueue => 'Antrean Booking OtoXpert';
+
+  @override
+  String get otoxpertAllStatuses => 'Semua status';
+
+  @override
+  String get otoxpertMaximumPrice => 'Estimasi maksimum';
+
+  @override
+  String get otoxpertFollowUpOutcome => 'Hasil tindak lanjut';
+
+  @override
+  String get activityOtoxpertBookingLabel => 'Booking OtoXpert';
+
+  @override
+  String get activityOtoxpertLoadFailed =>
+      'Aktivitas OtoXpert gagal dimuat. Aktivitas lain tetap ditampilkan.';
+
+  @override
   String get loadingData => 'Menyiapkan data…';
 }

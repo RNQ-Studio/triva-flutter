@@ -183,7 +183,7 @@ class ToyotaServiceNonToyotaScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.xLarge),
                   FilledButton.icon(
-                    onPressed: () => context.push(otoxpertUnavailablePath),
+                    onPressed: () => context.go(otoxpertPath),
                     icon: const Icon(Icons.handyman_outlined),
                     label: Text(l10n.continueOtoxpert),
                   ),
@@ -195,29 +195,6 @@ class ToyotaServiceNonToyotaScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class OtoxpertUnavailableScreen extends StatelessWidget {
-  const OtoxpertUnavailableScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.serviceOtoxpertTitle)),
-      body: SafeArea(
-        child: BookingEmptyState(
-          title: l10n.serviceOtoxpertTitle,
-          description: l10n.otoxpertUnavailableMessage,
-          action: FilledButton.icon(
-            onPressed: () => context.go('/'),
-            icon: const Icon(Icons.home_outlined),
-            label: Text(l10n.backToHome),
           ),
         ),
       ),

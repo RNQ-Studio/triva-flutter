@@ -22,36 +22,36 @@ class AdminPanelScreen extends ConsumerWidget {
       );
     }
     final entries =
-        <({IconData icon, String title, Color color, bool enabled})>[
+        <({IconData icon, String title, Color color, String? path})>[
       (
         icon: Icons.price_check_rounded,
         title: l10n.serviceAppraisalTitle,
         color: AppColors.appraisalBlue,
-        enabled: false,
+        path: null,
       ),
       (
         icon: Icons.car_repair_rounded,
         title: l10n.serviceToyotaTitle,
         color: AppColors.serviceOrange,
-        enabled: true,
+        path: adminToyotaServiceQueuePath,
       ),
       (
         icon: Icons.handyman_rounded,
         title: l10n.serviceOtoxpertTitle,
         color: AppColors.serviceViolet,
-        enabled: false,
+        path: adminOtoxpertQueuePath,
       ),
       (
         icon: Icons.calculate_rounded,
         title: l10n.serviceCreditTitle,
         color: AppColors.serviceGreen,
-        enabled: false,
+        path: null,
       ),
       (
         icon: Icons.format_paint_rounded,
         title: l10n.serviceBodyPaintTitle,
         color: AppColors.serviceRose,
-        enabled: false,
+        path: null,
       ),
     ];
     return Scaffold(
@@ -77,16 +77,15 @@ class AdminPanelScreen extends ConsumerWidget {
               ),
               title: Text(entry.title),
               subtitle: Text(
-                entry.enabled
+                entry.path != null
                     ? l10n.adminBookingQueueDescription
                     : l10n.comingSoon,
               ),
-              trailing: entry.enabled
+              trailing: entry.path != null
                   ? const Icon(Icons.chevron_right_rounded)
                   : const Icon(Icons.lock_clock_outlined),
-              onTap: entry.enabled
-                  ? () => context.push(adminToyotaServiceQueuePath)
-                  : null,
+              onTap:
+                  entry.path != null ? () => context.push(entry.path!) : null,
             ),
           );
         },

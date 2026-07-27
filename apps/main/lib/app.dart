@@ -12,6 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'router/app_router.dart';
 import 'features/appraisal/presentation/appraisal_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
+import 'features/otoxpert/presentation/otoxpert_controller.dart';
 
 Future<void> syncPushTokenSafely({
   required Future<String?> Function() getToken,
@@ -102,6 +103,9 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     ref.invalidate(toyotaServiceVehiclesProvider);
     ref.invalidate(toyotaServiceBookingsProvider);
     ref.invalidate(toyotaServiceFlowProvider);
+    ref.invalidate(otoxpertVehiclesProvider);
+    ref.invalidate(otoxpertBookingsProvider);
+    ref.invalidate(otoxpertFlowProvider);
     ref.invalidate(notificationsListProvider);
     ref.invalidate(unreadNotificationCountProvider);
   }
@@ -123,13 +127,24 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
 
   void _openNotification(RemoteMessage message) {
     final route = message.data['route']?.toString();
-    final bookingId = message.data['booking_id']?.toString() ??
-        message.data['toyota_service_booking_id']?.toString();
-    final target = bookingId != null
-        ? '/toyota-service/bookings/$bookingId'
-        : route != null && route.startsWith('/toyota-service/bookings/')
-            ? route
-            : null;
+    final type = message.data['type']?.toString();
+    final otoxpertId = message.data['otoxpert_booking_id']?.toString() ??
+        (type == 'otoxpert_booking'
+            ? message.data['booking_id']?.toString()
+            : null);
+    final toyotaId = message.data['toyota_service_booking_id']?.toString() ??
+        (type == 'toyota_service_booking'
+            ? message.data['booking_id']?.toString()
+            : null);
+    final target = otoxpertId != null
+        ? '/otoxpert/bookings/$otoxpertId'
+        : toyotaId != null
+            ? '/toyota-service/bookings/$toyotaId'
+            : route != null &&
+                    (route.startsWith('/toyota-service/bookings/') ||
+                        route.startsWith('/otoxpert/bookings/'))
+                ? route
+                : null;
     if (target == null) return;
     if (ref.read(authProvider) is AuthAuthenticated) {
       appRouter.go(target);

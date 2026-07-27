@@ -69,6 +69,30 @@ class _AccountRepository implements NotificationsRepository {
 }
 
 void main() {
+  test('routes generic booking IDs by notification type', () {
+    final otoxpert = AppNotification(
+      id: 'notification-otoxpert',
+      title: 'OtoXpert',
+      body: 'Updated',
+      createdAt: DateTime(2026, 7, 27),
+      type: 'otoxpert_booking',
+      data: const {'booking_id': 'ox-1'},
+    );
+    final toyota = AppNotification(
+      id: 'notification-toyota',
+      title: 'Toyota',
+      body: 'Updated',
+      createdAt: DateTime(2026, 7, 27),
+      type: 'toyota_service_booking',
+      data: const {'booking_id': 'ts-1'},
+    );
+
+    expect(otoxpert.otoxpertBookingId, 'ox-1');
+    expect(otoxpert.toyotaServiceBookingId, isNull);
+    expect(toyota.toyotaServiceBookingId, 'ts-1');
+    expect(toyota.otoxpertBookingId, isNull);
+  });
+
   testWidgets('mark-all failure keeps unread inbox and shows retry feedback',
       (tester) async {
     final repository = _FailingMarkAllRepository();

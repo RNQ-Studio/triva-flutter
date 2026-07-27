@@ -100,9 +100,12 @@ class NotificationsScreen extends ConsumerWidget {
         // Opening the source-of-truth detail must not depend on a read receipt.
       }
     }
-    final bookingId = notification.toyotaServiceBookingId;
-    if (bookingId != null && context.mounted) {
-      context.push('/toyota-service/bookings/$bookingId');
+    final otoxpertId = notification.otoxpertBookingId;
+    final toyotaId = notification.toyotaServiceBookingId;
+    if (otoxpertId != null && context.mounted) {
+      context.push('/otoxpert/bookings/$otoxpertId');
+    } else if (toyotaId != null && context.mounted) {
+      context.push('/toyota-service/bookings/$toyotaId');
     }
   }
 }
@@ -125,9 +128,11 @@ class _NotificationTile extends StatelessWidget {
                 ),
         child: ListTile(
           leading: Icon(
-            notification.toyotaServiceBookingId == null
-                ? Icons.notifications_outlined
-                : Icons.car_repair_outlined,
+            notification.otoxpertBookingId != null
+                ? Icons.handyman_outlined
+                : notification.toyotaServiceBookingId != null
+                    ? Icons.car_repair_outlined
+                    : Icons.notifications_outlined,
           ),
           title: Text(
             notification.title,

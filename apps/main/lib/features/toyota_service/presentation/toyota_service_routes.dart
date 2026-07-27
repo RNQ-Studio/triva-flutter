@@ -17,10 +17,6 @@ final toyotaServiceRoutes = <RouteBase>[
     builder: (_, __) => const ToyotaServiceNonToyotaScreen(),
   ),
   GoRoute(
-    path: otoxpertUnavailablePath,
-    builder: (_, __) => const OtoxpertUnavailableScreen(),
-  ),
-  GoRoute(
     path: toyotaServiceAddVehiclePath,
     builder: (_, __) => const ToyotaServiceAddVehicleScreen(),
   ),

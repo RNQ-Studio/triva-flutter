@@ -18,6 +18,7 @@ import 'package:triva_app/features/appraisal/presentation/screens/vehicle_detail
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_identity_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_photos_screen.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
+import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
 
 class _FakeFlowController extends AppraisalFlowController {
   _FakeFlowController(this.draft);
@@ -366,6 +367,7 @@ Future<void> _pump(
           (ref) async => appraisalItems ?? [_appraisal],
         ),
         toyotaServiceBookingsProvider.overrideWith((ref) async => const []),
+        otoxpertBookingsProvider.overrideWith((ref) async => const []),
         vehicleMakesProvider.overrideWith(
           (ref) async => [_vehicleMake, _hondaMake],
         ),

@@ -2,7 +2,6 @@ import '../domain/toyota_service_models.dart';
 
 const toyotaServiceVehiclePath = '/toyota-service/new/vehicle';
 const toyotaServiceNonToyotaPath = '/toyota-service/new/non-toyota';
-const otoxpertUnavailablePath = '/otoxpert';
 const toyotaServiceAddVehiclePath = '/toyota-service/new/add-vehicle';
 const toyotaServiceFulfillmentPath = '/toyota-service/new/fulfillment';
 const toyotaServiceTypePath = '/toyota-service/new/service';

@@ -1522,5 +1522,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseServiceLocationAgain => 'Choose service again';
 
   @override
+  String get otoxpertFlowTitle => 'OtoXpert Booking';
+
+  @override
+  String get otoxpertSelectVehicle => 'Select a vehicle';
+
+  @override
+  String get otoxpertSelectVehicleDescription =>
+      'Choose a saved vehicle to show compatible workshops.';
+
+  @override
+  String get otoxpertChooseWorkshop => 'Choose an OtoXpert workshop';
+
+  @override
+  String get otoxpertWorkshopEmpty =>
+      'No compatible workshop is currently available for this vehicle.';
+
+  @override
+  String get otoxpertChooseService => 'Choose a workshop service';
+
+  @override
+  String get otoxpertSymptoms => 'Vehicle symptoms';
+
+  @override
+  String get otoxpertLastServiceDate => 'Last service date (optional)';
+
+  @override
+  String get otoxpertPickupDelivery => 'Request vehicle pickup and delivery';
+
+  @override
+  String get otoxpertPartnerConsent =>
+      'I consent to sharing the vehicle and complaint details with the OtoXpert workshop to process this request.';
+
+  @override
+  String get otoxpertIndicativePrice => 'Indicative estimate';
+
+  @override
+  String get otoxpertPriceDisclaimer =>
+      'The workshop determines the final price after inspecting the vehicle.';
+
+  @override
+  String get otoxpertRequestSubmitted =>
+      'The OtoXpert request was submitted and is awaiting workshop confirmation.';
+
+  @override
+  String get otoxpertAdminQueue => 'OtoXpert Booking Queue';
+
+  @override
+  String get otoxpertAllStatuses => 'All statuses';
+
+  @override
+  String get otoxpertMaximumPrice => 'Maximum estimate';
+
+  @override
+  String get otoxpertFollowUpOutcome => 'Follow-up outcome';
+
+  @override
+  String get activityOtoxpertBookingLabel => 'OtoXpert Booking';
+
+  @override
+  String get activityOtoxpertLoadFailed =>
+      'OtoXpert activity could not be loaded. Other activity is still shown.';
+
+  @override
   String get loadingData => 'Preparing data…';
 }
