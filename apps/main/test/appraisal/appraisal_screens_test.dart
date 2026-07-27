@@ -3,8 +3,10 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:triva_app/features/appraisal/domain/appraisal_models.dart';
 import 'package:triva_app/features/appraisal/presentation/appraisal_controller.dart';
+import 'package:triva_app/features/appraisal/presentation/appraisal_paths.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/appraisal_activity_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/appraisal_complete_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/appraisal_detail_screen.dart';
@@ -285,6 +287,57 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Pilih model Honda'), findsOneWidget);
     expect(find.text('Brio'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('back from direct appraisal progress returns to home',
+      (tester) async {
+    final detailPath = appraisalDetailPath(_appraisal.id);
+    final router = GoRouter(
+      initialLocation: detailPath,
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (_, __) => const Scaffold(
+            body: Center(child: Text('Beranda test')),
+          ),
+        ),
+        GoRoute(
+          path: '/appraisals/:id',
+          builder: (_, state) => AppraisalDetailScreen(
+            appraisalId: state.pathParameters['id']!,
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Perkembangan appraisal'), findsWidgets);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Beranda test'), findsOneWidget);
+
+    router.go(detailPath);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('Beranda test'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

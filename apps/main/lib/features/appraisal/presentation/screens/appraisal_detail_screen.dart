@@ -22,6 +22,16 @@ class AppraisalDetailScreen extends ConsumerStatefulWidget {
 class _AppraisalDetailScreenState extends ConsumerState<AppraisalDetailScreen> {
   bool _busy = false;
 
+  void _goBack() {
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+      return;
+    }
+
+    context.go('/');
+  }
+
   Future<void> _replace(AppraisalPhoto photo) async {
     final l10n = AppLocalizations.of(context)!;
     final source = await showModalBottomSheet<ImageSource>(
@@ -97,33 +107,40 @@ class _AppraisalDetailScreenState extends ConsumerState<AppraisalDetailScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final async = ref.watch(appraisalDetailProvider(widget.appraisalId));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appraisalProgressTitle),
-        actions: [
-          IconButton(
-            onPressed: () =>
-                ref.invalidate(appraisalDetailProvider(widget.appraisalId)),
-            icon: const Icon(Icons.refresh_rounded),
-            tooltip: l10n.refresh,
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: async.when(
-          data: (appraisal) => _DetailContent(
-            appraisal: appraisal,
-            busy: _busy,
-            onReplace: _replace,
-            onResubmit: _resubmit,
-          ),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, __) => Center(
-            child: OutlinedButton(
-              onPressed: () => ref.invalidate(
-                appraisalDetailProvider(widget.appraisalId),
+    return PopScope(
+      canPop: Navigator.of(context).canPop(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && mounted) context.go('/');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(onPressed: _goBack),
+          title: Text(l10n.appraisalProgressTitle),
+          actions: [
+            IconButton(
+              onPressed: () =>
+                  ref.invalidate(appraisalDetailProvider(widget.appraisalId)),
+              icon: const Icon(Icons.refresh_rounded),
+              tooltip: l10n.refresh,
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: async.when(
+            data: (appraisal) => _DetailContent(
+              appraisal: appraisal,
+              busy: _busy,
+              onReplace: _replace,
+              onResubmit: _resubmit,
+            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => Center(
+              child: OutlinedButton(
+                onPressed: () => ref.invalidate(
+                  appraisalDetailProvider(widget.appraisalId),
+                ),
+                child: Text(l10n.retry),
               ),
-              child: Text(l10n.retry),
             ),
           ),
         ),
