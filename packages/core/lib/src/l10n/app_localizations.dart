@@ -1346,6 +1346,24 @@ abstract class AppLocalizations {
   /// **'{count} kendaraan pembanding'**
   String comparableCount(int count);
 
+  /// No description provided for @marketDataAsOf.
+  ///
+  /// In id, this message translates to:
+  /// **'Data pembanding per'**
+  String get marketDataAsOf;
+
+  /// No description provided for @marketDataSources.
+  ///
+  /// In id, this message translates to:
+  /// **'Sumber data'**
+  String get marketDataSources;
+
+  /// No description provided for @appraisalAdjustments.
+  ///
+  /// In id, this message translates to:
+  /// **'Faktor penyesuaian'**
+  String get appraisalAdjustments;
+
   /// No description provided for @validUntil.
   ///
   /// In id, this message translates to:

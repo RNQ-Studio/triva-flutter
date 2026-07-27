@@ -142,6 +142,20 @@ final _appraisal = AppraisalData(
     marketHigh: 192000000,
     confidence: 'medium',
     comparableCount: 6,
+    sources: const [
+      AppraisalResultSource(
+        code: 'olx_approved_html',
+        label: 'OLX (akses berizin)',
+        comparableCount: 6,
+      ),
+    ],
+    adjustments: const [
+      AppraisalAdjustment(
+        code: 'dealer_margin',
+        label: 'Margin dan biaya proses trade-in',
+      ),
+    ],
+    dataAsOf: DateTime(2026, 7, 28),
     validUntil: DateTime(2026, 8, 2),
     requiresPhysicalInspection: true,
     disclaimer: 'Hasil merupakan indikasi dan belum merupakan penawaran final.',

@@ -684,6 +684,15 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get marketDataAsOf => 'Data pembanding per';
+
+  @override
+  String get marketDataSources => 'Sumber data';
+
+  @override
+  String get appraisalAdjustments => 'Faktor penyesuaian';
+
+  @override
   String validUntil(String date) {
     return 'Berlaku hingga $date';
   }

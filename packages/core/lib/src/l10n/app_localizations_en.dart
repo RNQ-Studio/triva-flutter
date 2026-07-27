@@ -688,6 +688,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get marketDataAsOf => 'Comparable data as of';
+
+  @override
+  String get marketDataSources => 'Data sources';
+
+  @override
+  String get appraisalAdjustments => 'Adjustment factors';
+
+  @override
   String validUntil(String date) {
     return 'Valid until $date';
   }

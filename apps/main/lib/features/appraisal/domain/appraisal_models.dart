@@ -179,6 +179,9 @@ class AppraisalResultData {
     required this.marketHigh,
     required this.confidence,
     required this.comparableCount,
+    required this.sources,
+    required this.adjustments,
+    required this.dataAsOf,
     required this.validUntil,
     required this.requiresPhysicalInspection,
     required this.disclaimer,
@@ -191,6 +194,9 @@ class AppraisalResultData {
   final int marketHigh;
   final String confidence;
   final int comparableCount;
+  final List<AppraisalResultSource> sources;
+  final List<AppraisalAdjustment> adjustments;
+  final DateTime? dataAsOf;
   final DateTime? validUntil;
   final bool requiresPhysicalInspection;
   final String disclaimer;
@@ -207,12 +213,54 @@ class AppraisalResultData {
       marketHigh: (market['high'] as num?)?.toInt() ?? 0,
       confidence: json['confidence']?.toString() ?? 'low',
       comparableCount: (json['comparable_count'] as num?)?.toInt() ?? 0,
+      sources: (json['sources'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(AppraisalResultSource.fromJson)
+          .toList(growable: false),
+      adjustments: (json['adjustments'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(AppraisalAdjustment.fromJson)
+          .where((adjustment) => adjustment.label.isNotEmpty)
+          .toList(growable: false),
+      dataAsOf: DateTime.tryParse(json['data_as_of']?.toString() ?? ''),
       validUntil: DateTime.tryParse(json['valid_until']?.toString() ?? ''),
       requiresPhysicalInspection:
           json['requires_physical_inspection'] as bool? ?? true,
       disclaimer: json['disclaimer']?.toString() ?? '',
     );
   }
+}
+
+class AppraisalResultSource {
+  const AppraisalResultSource({
+    required this.code,
+    required this.label,
+    required this.comparableCount,
+  });
+
+  final String code;
+  final String label;
+  final int comparableCount;
+
+  factory AppraisalResultSource.fromJson(Map<String, dynamic> json) =>
+      AppraisalResultSource(
+        code: json['code']?.toString() ?? '',
+        label: json['label']?.toString() ?? '',
+        comparableCount: (json['comparable_count'] as num?)?.toInt() ?? 0,
+      );
+}
+
+class AppraisalAdjustment {
+  const AppraisalAdjustment({required this.code, required this.label});
+
+  final String code;
+  final String label;
+
+  factory AppraisalAdjustment.fromJson(Map<String, dynamic> json) =>
+      AppraisalAdjustment(
+        code: json['code']?.toString() ?? '',
+        label: json['label']?.toString() ?? '',
+      );
 }
 
 class AppraisalData {

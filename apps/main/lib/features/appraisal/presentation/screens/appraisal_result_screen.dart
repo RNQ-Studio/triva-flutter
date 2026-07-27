@@ -165,6 +165,9 @@ class _ResultContent extends StatelessWidget {
     final date = result.validUntil == null
         ? '-'
         : DateFormat('d MMMM yyyy', 'id_ID').format(result.validUntil!);
+    final dataAsOf = result.dataAsOf == null
+        ? '-'
+        : DateFormat('d MMMM yyyy', 'id_ID').format(result.dataAsOf!);
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.large),
@@ -237,10 +240,57 @@ class _ResultContent extends StatelessWidget {
                   label: l10n.comparableCount(result.comparableCount),
                   value: result.comparableCount.toString(),
                 ),
+                const Divider(height: AppSpacing.xLarge),
+                _ResultRow(
+                  label: l10n.marketDataAsOf,
+                  value: dataAsOf,
+                ),
+                if (result.sources.isNotEmpty) ...[
+                  const Divider(height: AppSpacing.xLarge),
+                  _ResultRow(
+                    label: l10n.marketDataSources,
+                    value:
+                        result.sources.map((source) => source.label).join(', '),
+                  ),
+                ],
               ],
             ),
           ),
         ),
+        if (result.adjustments.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.medium),
+          Card(
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.large),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.appraisalAdjustments,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.medium),
+                  Wrap(
+                    spacing: AppSpacing.small,
+                    runSpacing: AppSpacing.small,
+                    children: result.adjustments
+                        .map(
+                          (adjustment) => Chip(
+                            avatar: const Icon(
+                              Icons.tune,
+                              size: 16,
+                            ),
+                            label: Text(adjustment.label),
+                          ),
+                        )
+                        .toList(growable: false),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
         const SizedBox(height: AppSpacing.medium),
         Text(
           result.disclaimer,
