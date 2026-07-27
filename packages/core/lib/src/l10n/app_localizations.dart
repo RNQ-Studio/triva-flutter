@@ -1556,6 +1556,90 @@ abstract class AppLocalizations {
   /// **'Akun ini tidak memiliki izin untuk membuka modul operasional.'**
   String get adminAccessDeniedDescription;
 
+  /// No description provided for @adminUserAccessTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kelola akses admin'**
+  String get adminUserAccessTitle;
+
+  /// No description provided for @adminUserAccessDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari user existing dan berikan akses ke Admin Panel.'**
+  String get adminUserAccessDescription;
+
+  /// No description provided for @adminUserSearchHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari nama atau email user'**
+  String get adminUserSearchHint;
+
+  /// No description provided for @adminUserEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'User tidak ditemukan'**
+  String get adminUserEmptyTitle;
+
+  /// No description provided for @adminUserEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa kata pencarian atau coba nama dan email lain.'**
+  String get adminUserEmptyDescription;
+
+  /// No description provided for @adminUserAlreadyAdmin.
+  ///
+  /// In id, this message translates to:
+  /// **'Sudah memiliki akses admin'**
+  String get adminUserAlreadyAdmin;
+
+  /// No description provided for @adminUserInactive.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun tidak aktif'**
+  String get adminUserInactive;
+
+  /// No description provided for @adminUserGrantAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadikan admin'**
+  String get adminUserGrantAction;
+
+  /// No description provided for @adminUserGrantConfirmTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadikan {name} sebagai admin?'**
+  String adminUserGrantConfirmTitle(String name);
+
+  /// No description provided for @adminUserGrantConfirmDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'User akan memperoleh izin untuk mengakses dan mengelola modul operasional.'**
+  String get adminUserGrantConfirmDescription;
+
+  /// No description provided for @adminUserGrantSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Akses admin untuk {name} berhasil diberikan.'**
+  String adminUserGrantSuccess(String name);
+
+  /// No description provided for @adminUserGrantFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Akses admin belum dapat diberikan. Coba lagi.'**
+  String get adminUserGrantFailed;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In id, this message translates to:
+  /// **'Muat lainnya'**
+  String get loadMore;
+
+  /// No description provided for @clear.
+  ///
+  /// In id, this message translates to:
+  /// **'Bersihkan'**
+  String get clear;
+
   /// No description provided for @moduleActive.
   ///
   /// In id, this message translates to:

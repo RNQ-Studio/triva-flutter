@@ -12,6 +12,7 @@ import '../toyota_service_paths.dart';
 import '../widgets/toyota_service_widgets.dart';
 import '../../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../../body_paint/presentation/body_paint_paths.dart';
+import '../../../admin_users/presentation/admin_user_paths.dart';
 
 part 'toyota_service_booking_customer.dart';
 part 'toyota_service_booking_admin_queue.dart';

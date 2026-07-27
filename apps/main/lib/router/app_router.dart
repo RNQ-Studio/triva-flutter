@@ -17,6 +17,8 @@ import '../features/otoxpert/presentation/otoxpert_paths.dart';
 import '../features/credit/presentation/credit_routes.dart';
 import '../features/body_paint/presentation/body_paint_routes.dart';
 import '../features/body_paint/presentation/body_paint_paths.dart';
+import '../features/admin_users/presentation/admin_user_paths.dart';
+import '../features/admin_users/presentation/admin_user_routes.dart';
 import 'customer_shell.dart';
 
 String? trivaAppRedirect(BuildContext context, GoRouterState state) {
@@ -31,17 +33,19 @@ String? trivaAppRedirect(BuildContext context, GoRouterState state) {
 
   final canAccess = location == adminPanelPath
       ? authState.user.canAccessAdminPanel
-      : location == adminBodyPaintQueuePath
-          ? authState.user.canViewAnyBodyPaintEstimates
-          : location.startsWith('$adminBodyPaintQueuePath/')
-              ? authState.user.canViewBodyPaintEstimate
-              : location == adminToyotaServiceQueuePath ||
-                      location == adminOtoxpertQueuePath
-                  ? authState.user.canViewAnyServiceBookings
-                  : location.startsWith('$adminToyotaServiceQueuePath/') ||
-                          location.startsWith('$adminOtoxpertQueuePath/')
-                      ? authState.user.canViewServiceBooking
-                      : false;
+      : location == adminUsersPath
+          ? authState.user.canManageUsers
+          : location == adminBodyPaintQueuePath
+              ? authState.user.canViewAnyBodyPaintEstimates
+              : location.startsWith('$adminBodyPaintQueuePath/')
+                  ? authState.user.canViewBodyPaintEstimate
+                  : location == adminToyotaServiceQueuePath ||
+                          location == adminOtoxpertQueuePath
+                      ? authState.user.canViewAnyServiceBookings
+                      : location.startsWith('$adminToyotaServiceQueuePath/') ||
+                              location.startsWith('$adminOtoxpertQueuePath/')
+                          ? authState.user.canViewServiceBooking
+                          : false;
   return canAccess ? null : '/';
 }
 
@@ -56,6 +60,7 @@ final appRouter = GoRouter(
     ...otoxpertRoutes,
     ...creditRoutes,
     ...bodyPaintRoutes,
+    ...adminUserRoutes,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => CustomerShell(
         navigationShell: navigationShell,
@@ -86,14 +91,6 @@ final appRouter = GoRouter(
           ],
         ),
         StatefulShellBranch(routes: [profileRoute]),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: adminPanelPath,
-              builder: (context, state) => const AdminPanelScreen(),
-            ),
-          ],
-        ),
       ],
     ),
     settingsRoute,

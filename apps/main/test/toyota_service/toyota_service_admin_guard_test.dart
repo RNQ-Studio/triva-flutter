@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triva_app/features/toyota_service/presentation/toyota_service_routes.dart';
 import 'package:triva_app/router/app_router.dart';
 
 class _MutableAuthNotifier extends AuthNotifier {
@@ -28,6 +29,49 @@ class _MutableAuthNotifier extends AuthNotifier {
 }
 
 void main() {
+  testWidgets('Admin Panel exposes user access management to admins',
+      (tester) async {
+    tester.view
+      ..physicalSize = const Size(360, 690)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authProvider.overrideWith(
+            () => _MutableAuthNotifier(
+              _user(
+                const [
+                  'users.viewAny',
+                  'users.update',
+                  'service_bookings.viewAny',
+                ],
+              ),
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(1.3),
+            ),
+            child: child!,
+          ),
+          home: const AdminPanelScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kelola akses admin'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('direct admin routes redirect users without exact capability',
       (tester) async {
     final harness = _RouterHarness(
@@ -111,6 +155,30 @@ void main() {
     expect(find.text('HOME'), findsOneWidget);
     expect(find.text('QUEUE'), findsNothing);
   });
+
+  testWidgets('user management route requires both user permissions',
+      (tester) async {
+    final allowedHarness = _RouterHarness(
+      initialLocation: '/admin/users',
+      user: _user(const ['users.viewAny', 'users.update']),
+    );
+    addTearDown(allowedHarness.dispose);
+
+    await tester.pumpWidget(allowedHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('USERS'), findsOneWidget);
+
+    final deniedHarness = _RouterHarness(
+      initialLocation: '/admin/users',
+      user: _user(const ['users.viewAny']),
+    );
+    addTearDown(deniedHarness.dispose);
+
+    await tester.pumpWidget(deniedHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('HOME'), findsOneWidget);
+    expect(find.text('USERS'), findsNothing);
+  });
 }
 
 User _user(List<String> permissions) => User(
@@ -157,6 +225,10 @@ class _RouterHarness {
         GoRoute(
           path: '/admin/body-paint/estimates/:id',
           builder: (_, __) => const Text('BP_DETAIL'),
+        ),
+        GoRoute(
+          path: '/admin/users',
+          builder: (_, __) => const Text('USERS'),
         ),
       ],
     );

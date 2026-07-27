@@ -9,6 +9,10 @@ export 'screens/toyota_service_booking_screens.dart' show AdminPanelScreen;
 
 final toyotaServiceRoutes = <RouteBase>[
   GoRoute(
+    path: adminPanelPath,
+    builder: (_, __) => const AdminPanelScreen(),
+  ),
+  GoRoute(
     path: toyotaServiceVehiclePath,
     builder: (_, __) => const ToyotaServiceVehicleScreen(),
   ),

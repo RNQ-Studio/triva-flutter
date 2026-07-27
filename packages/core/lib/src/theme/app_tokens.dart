@@ -22,3 +22,7 @@ abstract final class AppIconSize {
   static const double service = 44;
   static const double hero = 88;
 }
+
+abstract final class AppListExtent {
+  static const double twoLine = 72;
+}

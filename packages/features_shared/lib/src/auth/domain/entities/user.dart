@@ -25,8 +25,21 @@ class User {
   final List<String> roles;
   final List<String> permissions;
 
+  bool get isAdmin => roles.any(
+        (role) =>
+            role.toLowerCase() == 'admin' ||
+            role.toLowerCase() == 'super-admin',
+      );
+
   bool get canAccessAdminPanel =>
-      canViewAnyServiceBookings || canViewAnyBodyPaintEstimates;
+      canViewAnyServiceBookings ||
+      canViewAnyBodyPaintEstimates ||
+      canManageUsers;
+
+  bool get canManageUsers =>
+      _isSuperAdmin ||
+      (permissions.contains('users.viewAny') &&
+          permissions.contains('users.update'));
 
   bool get canViewAnyServiceBookings =>
       _isSuperAdmin || permissions.contains('service_bookings.viewAny');

@@ -22,6 +22,13 @@ class AdminPanelScreen extends ConsumerWidget {
     }
     final entries =
         <({IconData icon, String title, Color color, String? path})>[
+      if (auth.user.canManageUsers)
+        (
+          icon: Icons.manage_accounts_outlined,
+          title: l10n.adminUserAccessTitle,
+          color: AppColors.brandTeal,
+          path: adminUsersPath,
+        ),
       (
         icon: Icons.price_check_rounded,
         title: l10n.serviceAppraisalTitle,
@@ -76,9 +83,11 @@ class AdminPanelScreen extends ConsumerWidget {
               ),
               title: Text(entry.title),
               subtitle: Text(
-                entry.path != null
-                    ? l10n.adminBookingQueueDescription
-                    : l10n.comingSoon,
+                entry.path == adminUsersPath
+                    ? l10n.adminUserAccessDescription
+                    : entry.path != null
+                        ? l10n.adminBookingQueueDescription
+                        : l10n.comingSoon,
               ),
               trailing: entry.path != null
                   ? const Icon(Icons.chevron_right_rounded)

@@ -803,6 +803,56 @@ class AppLocalizationsId extends AppLocalizations {
       'Akun ini tidak memiliki izin untuk membuka modul operasional.';
 
   @override
+  String get adminUserAccessTitle => 'Kelola akses admin';
+
+  @override
+  String get adminUserAccessDescription =>
+      'Cari user existing dan berikan akses ke Admin Panel.';
+
+  @override
+  String get adminUserSearchHint => 'Cari nama atau email user';
+
+  @override
+  String get adminUserEmptyTitle => 'User tidak ditemukan';
+
+  @override
+  String get adminUserEmptyDescription =>
+      'Periksa kata pencarian atau coba nama dan email lain.';
+
+  @override
+  String get adminUserAlreadyAdmin => 'Sudah memiliki akses admin';
+
+  @override
+  String get adminUserInactive => 'Akun tidak aktif';
+
+  @override
+  String get adminUserGrantAction => 'Jadikan admin';
+
+  @override
+  String adminUserGrantConfirmTitle(String name) {
+    return 'Jadikan $name sebagai admin?';
+  }
+
+  @override
+  String get adminUserGrantConfirmDescription =>
+      'User akan memperoleh izin untuk mengakses dan mengelola modul operasional.';
+
+  @override
+  String adminUserGrantSuccess(String name) {
+    return 'Akses admin untuk $name berhasil diberikan.';
+  }
+
+  @override
+  String get adminUserGrantFailed =>
+      'Akses admin belum dapat diberikan. Coba lagi.';
+
+  @override
+  String get loadMore => 'Muat lainnya';
+
+  @override
+  String get clear => 'Bersihkan';
+
+  @override
   String get moduleActive => 'Aktif';
 
   @override

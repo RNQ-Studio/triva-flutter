@@ -808,6 +808,56 @@ class AppLocalizationsEn extends AppLocalizations {
       'This account does not have permission to open operational modules.';
 
   @override
+  String get adminUserAccessTitle => 'Manage admin access';
+
+  @override
+  String get adminUserAccessDescription =>
+      'Find an existing user and grant access to the Admin Panel.';
+
+  @override
+  String get adminUserSearchHint => 'Search by user name or email';
+
+  @override
+  String get adminUserEmptyTitle => 'No users found';
+
+  @override
+  String get adminUserEmptyDescription =>
+      'Check the search term or try another name or email.';
+
+  @override
+  String get adminUserAlreadyAdmin => 'Already has admin access';
+
+  @override
+  String get adminUserInactive => 'Inactive account';
+
+  @override
+  String get adminUserGrantAction => 'Make admin';
+
+  @override
+  String adminUserGrantConfirmTitle(String name) {
+    return 'Make $name an admin?';
+  }
+
+  @override
+  String get adminUserGrantConfirmDescription =>
+      'The user will receive permission to access and manage operational modules.';
+
+  @override
+  String adminUserGrantSuccess(String name) {
+    return 'Admin access was granted to $name.';
+  }
+
+  @override
+  String get adminUserGrantFailed =>
+      'Admin access could not be granted. Try again.';
+
+  @override
+  String get loadMore => 'Load more';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
   String get moduleActive => 'Active';
 
   @override

@@ -8,7 +8,12 @@ import '../../auth/presentation/auth_provider.dart';
 import 'profile_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({
+    this.onOpenAdminPanel,
+    super.key,
+  });
+
+  final VoidCallback? onOpenAdminPanel;
 
   @override
   ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
@@ -111,13 +116,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     profile.name.isNotEmpty
                                         ? profile.name[0].toUpperCase()
                                         : '?',
-                                    style: TextStyle(
-                                      fontSize: 36,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   )
                                 : null,
                           ),
@@ -126,12 +133,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           Positioned.fill(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.4),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .scrim
+                                    .withValues(alpha: 0.4),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: CircularProgressIndicator(
-                                  color: Colors.white,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                               ),
                             ),
@@ -147,27 +158,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 border: Border.all(
                                   color:
                                       Theme.of(context).scaffoldBackgroundColor,
-                                  width: 2.5,
+                                  width: 2,
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.15),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
                               ),
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
                                   customBorder: const CircleBorder(),
                                   onTap: _pickAndUploadAvatar,
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
                                     child: Icon(
                                       Icons.camera_alt_rounded,
                                       size: 20,
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                     ),
                                   ),
                                 ),
@@ -182,7 +188,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     elevation: 0,
                     color: Theme.of(context).colorScheme.surfaceContainerLow,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.large,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -210,11 +216,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  if (widget.onOpenAdminPanel != null) ...[
+                    Card(
+                      elevation: 0,
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: AppRadius.large,
+                      ),
+                      child: ListTile(
+                        key: const ValueKey('profile-admin-panel-menu'),
+                        leading: Icon(
+                          Icons.admin_panel_settings_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: Text(l10n.adminPanel),
+                        subtitle: Text(l10n.adminPanelSubtitle),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: widget.onOpenAdminPanel,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   Card(
                     elevation: 0,
                     color: Theme.of(context).colorScheme.surfaceContainerLow,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.large,
                     ),
                     child: ListTile(
                       leading: Icon(

@@ -7,21 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CustomerShell extends ConsumerWidget {
   const CustomerShell({
     required this.navigationShell,
-    this.canAccessAdmin,
     this.unreadNotificationCount,
     super.key,
   });
 
   final StatefulNavigationShell navigationShell;
-  final bool? canAccessAdmin;
   final int? unreadNotificationCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final auth = canAccessAdmin == null ? ref.watch(authProvider) : null;
-    final canAdmin = canAccessAdmin ??
-        (auth is AuthAuthenticated && auth.user.canAccessAdminPanel);
     final unread = unreadNotificationCount ??
         ref.watch(visibleUnreadNotificationCountProvider).value ??
         0;
@@ -54,24 +49,12 @@ class CustomerShell extends ConsumerWidget {
         selectedIcon: const Icon(Icons.person_rounded),
         label: l10n.profile,
       ),
-      if (canAdmin)
-        NavigationDestination(
-          icon: const Icon(Icons.admin_panel_settings_outlined),
-          selectedIcon: const Icon(Icons.admin_panel_settings_rounded),
-          label: l10n.adminPanel,
-        ),
     ];
-    final branchAllowed = navigationShell.currentIndex < destinations.length;
-    if (!branchAllowed) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        navigationShell.goBranch(0, initialLocation: true);
-      });
-    }
     return Scaffold(
-      body: branchAllowed ? navigationShell : const SizedBox.shrink(),
+      body: navigationShell,
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        selectedIndex: branchAllowed ? navigationShell.currentIndex : 0,
+        selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
           navigationShell.goBranch(
             index,

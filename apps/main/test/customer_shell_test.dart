@@ -13,7 +13,6 @@ void main() {
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) => CustomerShell(
             navigationShell: navigationShell,
-            canAccessAdmin: false,
             unreadNotificationCount: 0,
           ),
           branches: [
@@ -57,29 +56,20 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
-  testWidgets('revoked admin tab returns to home without an invalid index',
-      (tester) async {
-    final canAccessAdmin = ValueNotifier(true);
-    addTearDown(canAccessAdmin.dispose);
+  testWidgets('bottom navigation never exposes Admin Panel', (tester) async {
     final router = GoRouter(
-      initialLocation: '/admin',
+      initialLocation: '/profile',
       routes: [
         StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) =>
-              ValueListenableBuilder<bool>(
-            valueListenable: canAccessAdmin,
-            builder: (_, allowed, __) => CustomerShell(
-              navigationShell: navigationShell,
-              canAccessAdmin: allowed,
-              unreadNotificationCount: 0,
-            ),
+          builder: (context, state, navigationShell) => CustomerShell(
+            navigationShell: navigationShell,
+            unreadNotificationCount: 0,
           ),
           branches: [
             _branch('/', 'Beranda aktif'),
             _branch('/activity', 'Aktivitas aktif'),
             _branch('/notifications', 'Notifikasi aktif'),
             _branch('/profile', 'Profil aktif'),
-            _branch('/admin', 'Admin aktif'),
           ],
         ),
       ],
@@ -96,14 +86,13 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Admin aktif'), findsOneWidget);
-    expect(find.text('Admin Panel'), findsOneWidget);
 
-    canAccessAdmin.value = false;
-    await tester.pumpAndSettle();
-
-    expect(find.text('Beranda aktif'), findsOneWidget);
+    expect(find.text('Profil aktif'), findsOneWidget);
     expect(find.text('Admin Panel'), findsNothing);
+    expect(
+      tester.widget<NavigationBar>(find.byType(NavigationBar)).destinations,
+      hasLength(4),
+    );
     expect(tester.takeException(), isNull);
   });
 }
