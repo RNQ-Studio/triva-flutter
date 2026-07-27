@@ -170,6 +170,42 @@ abstract class AppLocalizations {
   /// **'Versi'**
   String get version;
 
+  /// No description provided for @privacyAndAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Privasi dan akun'**
+  String get privacyAndAccount;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In id, this message translates to:
+  /// **'Kebijakan Privasi'**
+  String get privacyPolicy;
+
+  /// No description provided for @privacyPolicySubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelajari cara TRIVA mengelola dan melindungi data Anda'**
+  String get privacyPolicySubtitle;
+
+  /// No description provided for @accountDeletion.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus akun'**
+  String get accountDeletion;
+
+  /// No description provided for @accountDeletionSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Minta penghapusan akun dan data TRIVA Anda'**
+  String get accountDeletionSubtitle;
+
+  /// No description provided for @openLinkError.
+  ///
+  /// In id, this message translates to:
+  /// **'Halaman tidak dapat dibuka. Silakan coba lagi.'**
+  String get openLinkError;
+
   /// No description provided for @signIn.
   ///
   /// In id, this message translates to:

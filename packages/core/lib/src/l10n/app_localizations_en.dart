@@ -45,6 +45,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get version => 'Version';
 
   @override
+  String get privacyAndAccount => 'Privacy and account';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get privacyPolicySubtitle =>
+      'Learn how TRIVA handles and protects your data';
+
+  @override
+  String get accountDeletion => 'Delete account';
+
+  @override
+  String get accountDeletionSubtitle =>
+      'Request deletion of your TRIVA account and data';
+
+  @override
+  String get openLinkError => 'The page could not be opened. Please try again.';
+
+  @override
   String get signIn => 'Sign in to TRIVA';
 
   @override

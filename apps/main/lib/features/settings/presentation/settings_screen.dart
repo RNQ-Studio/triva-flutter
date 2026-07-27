@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:core/core.dart';
 
@@ -41,6 +42,20 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           const _SectionHeader('Keamanan'),
           const _BiometricToggleTile(),
+          const Divider(),
+          _SectionHeader(l10n.privacyAndAccount),
+          _ExternalLinkTile(
+            icon: Icons.privacy_tip_outlined,
+            title: l10n.privacyPolicy,
+            subtitle: l10n.privacyPolicySubtitle,
+            path: '/privacy-policy',
+          ),
+          _ExternalLinkTile(
+            icon: Icons.person_remove_outlined,
+            title: l10n.accountDeletion,
+            subtitle: l10n.accountDeletionSubtitle,
+            path: '/account-deletion',
+          ),
           const Divider(),
           const _AboutTile(),
         ],
@@ -118,6 +133,47 @@ class _LanguageTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _ExternalLinkTile extends StatelessWidget {
+  const _ExternalLinkTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.path,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String path;
+
+  @override
+  Widget build(BuildContext context) => ListTile(
+        leading: Icon(icon),
+        title: Text(title),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.open_in_new_rounded, size: 20),
+        onTap: () => _open(context),
+      );
+
+  Future<void> _open(BuildContext context) async {
+    final apiBase = Uri.parse(AppConfig.instance.baseUrl);
+    final destination = apiBase.replace(
+      path: path,
+      query: null,
+      fragment: null,
+    );
+    final opened = await launchUrl(
+      destination,
+      mode: LaunchMode.externalApplication,
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.openLinkError)),
+      );
+    }
   }
 }
 

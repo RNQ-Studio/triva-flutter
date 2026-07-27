@@ -45,6 +45,26 @@ class AppLocalizationsId extends AppLocalizations {
   String get version => 'Versi';
 
   @override
+  String get privacyAndAccount => 'Privasi dan akun';
+
+  @override
+  String get privacyPolicy => 'Kebijakan Privasi';
+
+  @override
+  String get privacyPolicySubtitle =>
+      'Pelajari cara TRIVA mengelola dan melindungi data Anda';
+
+  @override
+  String get accountDeletion => 'Hapus akun';
+
+  @override
+  String get accountDeletionSubtitle =>
+      'Minta penghapusan akun dan data TRIVA Anda';
+
+  @override
+  String get openLinkError => 'Halaman tidak dapat dibuka. Silakan coba lagi.';
+
+  @override
   String get signIn => 'Masuk ke TRIVA';
 
   @override

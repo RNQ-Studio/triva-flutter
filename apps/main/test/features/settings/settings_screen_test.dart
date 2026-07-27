@@ -25,6 +25,13 @@ void main() {
     await tester.pump();
     expect(find.text('Appearance'), findsOneWidget);
     expect(find.text('Language'), findsOneWidget);
+    expect(find.text('Privacy and account'), findsOneWidget);
+    expect(find.text('Privacy Policy'), findsOneWidget);
+
+    await tester.drag(find.byType(ListView), const Offset(0, -240));
+    await tester.pump();
+
+    expect(find.text('Delete account'), findsOneWidget);
   });
 
   testWidgets('shows all three theme options', (tester) async {
