@@ -12,6 +12,7 @@ import '../data/appraisal_repository.dart';
 import '../domain/appraisal_models.dart';
 
 final appraisalRepositoryProvider = Provider<AppraisalRepository>((ref) {
+  ref.watch(authProvider);
   final storage = ref.watch(storageServiceProvider);
   return AppraisalRepository(
     dio: DioClient(

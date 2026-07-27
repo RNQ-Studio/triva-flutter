@@ -10,6 +10,7 @@ class User {
     this.serviceConsentAt,
     this.marketingConsent = false,
     this.roles = const [],
+    this.permissions = const [],
   });
 
   final String id;
@@ -22,4 +23,22 @@ class User {
   final DateTime? serviceConsentAt;
   final bool marketingConsent;
   final List<String> roles;
+  final List<String> permissions;
+
+  bool get canAccessAdminPanel => canViewAnyServiceBookings;
+
+  bool get canViewAnyServiceBookings =>
+      _isSuperAdmin || permissions.contains('service_bookings.viewAny');
+
+  bool get canViewServiceBooking =>
+      _isSuperAdmin || permissions.contains('service_bookings.view');
+
+  bool get canManageServiceBookings {
+    return _isSuperAdmin || permissions.contains('service_bookings.update');
+  }
+
+  bool get _isSuperAdmin =>
+      roles.any((role) => role.toLowerCase() == 'super-admin');
+
+  bool hasPermission(String permission) => permissions.contains(permission);
 }

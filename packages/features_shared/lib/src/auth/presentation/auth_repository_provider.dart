@@ -42,5 +42,6 @@ AuthRepository authRepository(Ref ref) {
     remote: ref.watch(_authRemoteDataSourceProvider),
     local: ref.watch(_authLocalDataSourceProvider),
     googleSignInClient: ref.watch(_googleSignInClientProvider),
+    storage: ref.watch(storageServiceProvider),
   );
 }

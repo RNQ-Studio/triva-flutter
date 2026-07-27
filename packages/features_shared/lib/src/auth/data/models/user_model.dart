@@ -12,6 +12,7 @@ class UserModel extends User {
     super.serviceConsentAt,
     super.marketingConsent,
     super.roles,
+    super.permissions,
     this.token,
     this.refreshToken,
   });
@@ -35,6 +36,10 @@ class UserModel extends User {
                 ?.map((e) => e.toString())
                 .toList() ??
             const [],
+        permissions: (json['permissions'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            const [],
         token: json['token'] as String?,
         refreshToken: json['refresh_token'] as String?,
       );
@@ -51,6 +56,7 @@ class UserModel extends User {
           'service_consent_at': serviceConsentAt!.toIso8601String(),
         'marketing_consent': marketingConsent,
         'roles': roles,
+        'permissions': permissions,
         if (token != null) 'token': token,
         if (refreshToken != null) 'refresh_token': refreshToken,
       };

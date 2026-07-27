@@ -13,6 +13,8 @@ void main() {
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) => CustomerShell(
             navigationShell: navigationShell,
+            canAccessAdmin: false,
+            unreadNotificationCount: 0,
           ),
           branches: [
             _branch('/', 'Beranda aktif'),
@@ -53,6 +55,56 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Profil aktif'), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
+  });
+
+  testWidgets('revoked admin tab returns to home without an invalid index',
+      (tester) async {
+    final canAccessAdmin = ValueNotifier(true);
+    addTearDown(canAccessAdmin.dispose);
+    final router = GoRouter(
+      initialLocation: '/admin',
+      routes: [
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) =>
+              ValueListenableBuilder<bool>(
+            valueListenable: canAccessAdmin,
+            builder: (_, allowed, __) => CustomerShell(
+              navigationShell: navigationShell,
+              canAccessAdmin: allowed,
+              unreadNotificationCount: 0,
+            ),
+          ),
+          branches: [
+            _branch('/', 'Beranda aktif'),
+            _branch('/activity', 'Aktivitas aktif'),
+            _branch('/notifications', 'Notifikasi aktif'),
+            _branch('/profile', 'Profil aktif'),
+            _branch('/admin', 'Admin aktif'),
+          ],
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp.router(
+        theme: AppTheme.light,
+        locale: const Locale('id'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Admin aktif'), findsOneWidget);
+    expect(find.text('Admin Panel'), findsOneWidget);
+
+    canAccessAdmin.value = false;
+    await tester.pumpAndSettle();
+
+    expect(find.text('Beranda aktif'), findsOneWidget);
+    expect(find.text('Admin Panel'), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 }
 

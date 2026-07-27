@@ -242,7 +242,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get chooseProvinceFirst => 'Pilih provinsi terlebih dahulu';
 
   @override
-  String get regionLoading => 'Menyiapkan pilihan wilayahâ€¦';
+  String get regionLoading => 'Menyiapkan pilihan wilayah…';
 
   @override
   String get regionLoadError =>
@@ -570,7 +570,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get activityTitle => 'Aktivitas Saya';
 
   @override
-  String get activityEmpty => 'Belum ada aktivitas appraisal.';
+  String get activityEmpty => 'Belum ada aktivitas.';
 
   @override
   String get demoActivityNotice =>
@@ -755,4 +755,769 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get inspectionScheduledDescription =>
       'Jadwal tersimpan. Tim TRIVA akan menghubungi Anda untuk konfirmasi inspeksi.';
+
+  @override
+  String get adminPanel => 'Admin Panel';
+
+  @override
+  String get adminPanelTitle => 'Pusat operasional';
+
+  @override
+  String get adminPanelSubtitle =>
+      'Kelola layanan sesuai akses yang diberikan kepada akun Anda.';
+
+  @override
+  String get adminAccessDenied => 'Akses admin tidak tersedia';
+
+  @override
+  String get adminAccessDeniedDescription =>
+      'Akun ini tidak memiliki izin untuk membuka modul operasional.';
+
+  @override
+  String get moduleActive => 'Aktif';
+
+  @override
+  String get moduleUnavailable => 'Belum diaktifkan';
+
+  @override
+  String get adminBookingQueue => 'Booking Toyota';
+
+  @override
+  String get adminBookingQueueDescription =>
+      'Antrean konfirmasi, jadwal, dan progres servis.';
+
+  @override
+  String get adminNoBookings => 'Antrean booking kosong';
+
+  @override
+  String get adminNoBookingsDescription =>
+      'Permintaan Booking Toyota akan muncul di sini.';
+
+  @override
+  String get adminNoValidSlots =>
+      'Tidak ada slot mendatang yang valid untuk tindakan ini.';
+
+  @override
+  String get sortUpdatedDesc => 'Terakhir diperbarui';
+
+  @override
+  String get sortDueAsc => 'Tenggat SLA terdekat';
+
+  @override
+  String get sortSlotAsc => 'Preferensi jadwal terdekat';
+
+  @override
+  String get searchBookings => 'Cari referensi, pelanggan, atau kendaraan';
+
+  @override
+  String get bookingToyotaTitle => 'Booking Toyota';
+
+  @override
+  String get bookingStepVehicle => 'Kendaraan';
+
+  @override
+  String get bookingStepService => 'Layanan';
+
+  @override
+  String get bookingStepSchedule => 'Jadwal';
+
+  @override
+  String get bookingStepReview => 'Tinjau';
+
+  @override
+  String get bookingSelectVehicleTitle => 'Pilih kendaraan Toyota';
+
+  @override
+  String get bookingSelectVehicleDescription =>
+      'Gunakan kendaraan tersimpan agar detail servis tidak perlu diisi ulang.';
+
+  @override
+  String get bookingNoVehicles => 'Belum ada kendaraan tersimpan';
+
+  @override
+  String get bookingNoVehiclesDescription =>
+      'Tambahkan kendaraan terlebih dahulu, lalu kembali ke Booking Toyota.';
+
+  @override
+  String get addVehicle => 'Tambah kendaraan';
+
+  @override
+  String get bookingAddVehicleTitle => 'Tambah kendaraan untuk booking';
+
+  @override
+  String get bookingAddVehicleDescription =>
+      'Lengkapi data kendaraan sekali agar dapat dipakai kembali di seluruh layanan TRIVA.';
+
+  @override
+  String get useThisVehicle => 'Gunakan kendaraan ini';
+
+  @override
+  String get chooseAnotherVehicle => 'Pilih kendaraan lain';
+
+  @override
+  String get nonToyotaTitle => 'Kendaraan ini bukan Toyota';
+
+  @override
+  String get nonToyotaDescription =>
+      'Booking Toyota hanya tersedia untuk kendaraan Toyota. Anda tetap dapat melanjutkan servis melalui jaringan OtoXpert.';
+
+  @override
+  String get continueOtoxpert => 'Lanjut ke Booking OtoXpert';
+
+  @override
+  String get otoxpertUnavailableMessage =>
+      'Booking OtoXpert belum diaktifkan. Kendaraan Anda tetap tersimpan.';
+
+  @override
+  String get serviceWhereTitle => 'Servis di mana?';
+
+  @override
+  String get serviceWhereDescription => 'Pilih cara servis yang paling sesuai.';
+
+  @override
+  String get workshopService => 'Workshop Auto2000';
+
+  @override
+  String get workshopServiceDescription =>
+      'Datang ke workshop pada jadwal yang telah dikonfirmasi.';
+
+  @override
+  String get thsService => 'Toyota Home Service (THS)';
+
+  @override
+  String get thsServiceDescription =>
+      'Teknisi datang ke alamat dalam area layanan.';
+
+  @override
+  String get scheduleNeedsConfirmation =>
+      'Jadwal yang dipilih masih perlu dikonfirmasi petugas.';
+
+  @override
+  String get chooseServiceType => 'Pilih jenis layanan';
+
+  @override
+  String get serviceTypeTitle => 'Apa yang dibutuhkan?';
+
+  @override
+  String get serviceTypeDescription =>
+      'Pilih satu layanan untuk kendaraan Toyota Anda.';
+
+  @override
+  String get serviceTypesEmpty => 'Jenis layanan belum tersedia';
+
+  @override
+  String get serviceTypesEmptyDescription =>
+      'Admin belum mengaktifkan layanan untuk pilihan ini.';
+
+  @override
+  String get serviceAdvisorConfirmation =>
+      'Rekomendasi akhir akan dikonfirmasi Service Advisor.';
+
+  @override
+  String get continueServiceDetails => 'Lanjut ke detail servis';
+
+  @override
+  String get serviceDetailsTitle => 'Detail servis';
+
+  @override
+  String get serviceDetailsDescription =>
+      'Lengkapi kilometer dan keluhan agar petugas dapat menyiapkan layanan.';
+
+  @override
+  String get currentMileage => 'Kilometer saat ini';
+
+  @override
+  String get complaint => 'Keluhan atau catatan';
+
+  @override
+  String get complaintHint => 'Jelaskan gejala atau kebutuhan servis';
+
+  @override
+  String get supportingPhotoOptional => 'Foto pendukung (opsional)';
+
+  @override
+  String get addSupportingPhoto => 'Tambah foto';
+
+  @override
+  String get removeSupportingPhoto => 'Hapus foto';
+
+  @override
+  String get supportingPhotoPrivacy =>
+      'Foto hanya dapat dilihat petugas berwenang.';
+
+  @override
+  String get chooseSchedule => 'Pilih jadwal';
+
+  @override
+  String get schedulePreferenceTitle => 'Kapan Anda ingin servis?';
+
+  @override
+  String get schedulePreferenceDescription =>
+      'Pilih dua waktu berbeda sebagai preferensi utama dan alternatif.';
+
+  @override
+  String get primaryPreference => 'Jadwal utama';
+
+  @override
+  String get alternativePreference => 'Jadwal alternatif';
+
+  @override
+  String get preferenceNotSlot =>
+      'Waktu ini adalah preferensi dan belum mengunci slot.';
+
+  @override
+  String bookingLeadTimeNotice(int days) {
+    return 'Ajukan minimal $days hari sebelum tanggal yang dipilih.';
+  }
+
+  @override
+  String get availabilityEmpty => 'Belum ada waktu yang dapat diminta';
+
+  @override
+  String get availabilityEmptyDescription =>
+      'Ubah lokasi atau layanan, lalu periksa kembali jadwal.';
+
+  @override
+  String get availabilityLoadFailed =>
+      'Jadwal belum dapat dimuat. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get reviewBooking => 'Tinjau booking';
+
+  @override
+  String get thsAddressTitle => 'Lokasi kunjungan THS';
+
+  @override
+  String get thsAddressDescription =>
+      'Alamat dan pin wajib agar petugas dapat memeriksa cakupan layanan.';
+
+  @override
+  String get fullAddress => 'Alamat lengkap';
+
+  @override
+  String get locationNotes => 'Catatan lokasi';
+
+  @override
+  String get latitude => 'Latitude';
+
+  @override
+  String get longitude => 'Longitude';
+
+  @override
+  String get setManualPin => 'Atur pin manual';
+
+  @override
+  String get pinLocationSet => 'Pin lokasi sudah diatur';
+
+  @override
+  String get thsAddressPinRequired =>
+      'Alamat, kota, dan pin lokasi wajib untuk THS.';
+
+  @override
+  String get thsCoverageAvailable => 'Area layanan tersedia';
+
+  @override
+  String get thsCoverageUnavailable => 'Alamat belum termasuk area layanan THS';
+
+  @override
+  String get manualPinTitle => 'Atur koordinat lokasi';
+
+  @override
+  String get manualPinDescription =>
+      'Masukkan koordinat dari peta perangkat bila izin lokasi tidak tersedia.';
+
+  @override
+  String get savePin => 'Simpan pin';
+
+  @override
+  String get reviewServiceRequestTitle => 'Tinjau permintaan servis';
+
+  @override
+  String get reviewServiceRequestDescription =>
+      'Periksa kembali detail sebelum permintaan dikirim.';
+
+  @override
+  String get location => 'Lokasi';
+
+  @override
+  String get service => 'Layanan';
+
+  @override
+  String get primarySchedule => 'Jadwal utama';
+
+  @override
+  String get alternativeSchedule => 'Alternatif';
+
+  @override
+  String get contactChannel => 'Channel konfirmasi';
+
+  @override
+  String get requestToConfirmNotice =>
+      'Jadwal pilihan adalah preferensi dan belum dikonfirmasi.';
+
+  @override
+  String get serviceBookingConsent =>
+      'Saya menyetujui pemrosesan data untuk permintaan servis ini.';
+
+  @override
+  String get submitServiceRequest => 'Kirim permintaan servis';
+
+  @override
+  String get serviceRequestSubmittedTitle =>
+      'Permintaan servis berhasil dikirim';
+
+  @override
+  String get serviceRequestSubmittedDescription =>
+      'Jadwal Anda belum dikonfirmasi.';
+
+  @override
+  String get awaitingStaffConfirmation => 'Menunggu konfirmasi petugas';
+
+  @override
+  String get viewBookingDetail => 'Lihat detail booking';
+
+  @override
+  String get bookingDetailTitle => 'Detail booking';
+
+  @override
+  String get bookingTimelineTitle => 'Perkembangan booking';
+
+  @override
+  String get alternativeProposedTitle => 'Jadwal alternatif diajukan';
+
+  @override
+  String get originalScheduleUnavailable => 'Jadwal utama belum tersedia';
+
+  @override
+  String get advisorProposal => 'Usulan Service Advisor';
+
+  @override
+  String get proposalDeadline => 'Batas waktu tanggapan';
+
+  @override
+  String get noScheduleConfirmed => 'Belum ada jadwal yang dikonfirmasi.';
+
+  @override
+  String get acceptAlternative => 'Terima jadwal alternatif';
+
+  @override
+  String get rejectAlternative => 'Tolak dan pilih jadwal lain';
+
+  @override
+  String get chooseReplacementSchedule => 'Pilih jadwal pengganti';
+
+  @override
+  String get rejectionReasonOptional => 'Alasan perubahan (opsional)';
+
+  @override
+  String get bookingRejectedTitle => 'Layanan belum dapat dijadwalkan';
+
+  @override
+  String get rejectionReason => 'Alasan penolakan';
+
+  @override
+  String get createNewRequest => 'Buat permintaan baru';
+
+  @override
+  String get backToActivity => 'Kembali ke aktivitas';
+
+  @override
+  String get bookingConfirmedTitle => 'Booking dikonfirmasi';
+
+  @override
+  String get confirmedSchedule => 'Jadwal servis Anda';
+
+  @override
+  String get serviceAdvisor => 'PIC (Service Advisor)';
+
+  @override
+  String get partnerBookingNumber => 'Nomor booking partner';
+
+  @override
+  String get arrivalInstructions => 'Instruksi kedatangan';
+
+  @override
+  String get openDirections => 'Buka petunjuk lokasi';
+
+  @override
+  String get requestReschedule => 'Minta jadwal ulang';
+
+  @override
+  String get cancelBooking => 'Batalkan booking';
+
+  @override
+  String get rescheduleTitle => 'Minta jadwal ulang';
+
+  @override
+  String get currentConfirmedSchedule => 'Jadwal saat ini (terkonfirmasi)';
+
+  @override
+  String get newPrimarySchedule => 'Pilihan utama baru';
+
+  @override
+  String get newAlternativeSchedule => 'Pilihan alternatif baru';
+
+  @override
+  String get changeReason => 'Alasan perubahan';
+
+  @override
+  String get oldScheduleRemains =>
+      'Jadwal lama tetap berlaku sampai perubahan dikonfirmasi petugas.';
+
+  @override
+  String get submitReschedule => 'Kirim permintaan ulang';
+
+  @override
+  String get serviceInProgressTitle => 'Sedang dikerjakan';
+
+  @override
+  String get vehicleBeingServiced => 'Kendaraan Anda sedang ditangani';
+
+  @override
+  String get contactServiceAdvisor => 'Hubungi Service Advisor';
+
+  @override
+  String get viewServiceDetails => 'Lihat detail layanan';
+
+  @override
+  String get serviceCompletedTitle => 'Servis selesai';
+
+  @override
+  String get serviceCompletedDescription =>
+      'Kendaraan Anda sudah selesai ditangani.';
+
+  @override
+  String get workshopFinalDetailsNotice =>
+      'Rincian pekerjaan dan biaya final mengikuti dokumen workshop.';
+
+  @override
+  String get viewInActivity => 'Lihat di Aktivitas';
+
+  @override
+  String get leaveServiceFeedback => 'Beri masukan layanan';
+
+  @override
+  String get bookingCancelledTitle => 'Booking dibatalkan';
+
+  @override
+  String get bookingExpiredTitle => 'Permintaan telah kedaluwarsa';
+
+  @override
+  String get bookingNoShowTitle => 'Kunjungan tidak tercatat';
+
+  @override
+  String get bookingGenericDescription =>
+      'Periksa timeline untuk pembaruan terbaru dari petugas.';
+
+  @override
+  String get cancelReason => 'Alasan pembatalan';
+
+  @override
+  String get confirmCancellation => 'Batalkan booking ini?';
+
+  @override
+  String get confirmCancellationDescription =>
+      'Riwayat booking tetap tersimpan di Aktivitas Saya.';
+
+  @override
+  String get bookingMutationFailed =>
+      'Perubahan belum dapat disimpan. Coba lagi.';
+
+  @override
+  String get bookingOfflineError =>
+      'Anda sedang offline. Draft tetap tersimpan; sambungkan internet lalu coba lagi.';
+
+  @override
+  String get bookingDuplicateError =>
+      'Booking aktif dengan kendaraan dan jadwal yang sama sudah tersedia.';
+
+  @override
+  String get bookingIncompleteError =>
+      'Lengkapi seluruh data wajib sebelum mengirim.';
+
+  @override
+  String get activityEmptyDescription =>
+      'Appraisal dan booking yang Anda kirim akan muncul di sini.';
+
+  @override
+  String get activityAppraisalsLoadFailed =>
+      'Aktivitas appraisal gagal dimuat. Booking servis Anda tetap ditampilkan.';
+
+  @override
+  String get activityBookingsLoadFailed =>
+      'Aktivitas booking servis gagal dimuat. Appraisal Anda tetap ditampilkan.';
+
+  @override
+  String get activityAppraisalLabel => 'Trade-in appraisal';
+
+  @override
+  String get activityToyotaBookingLabel => 'Booking Toyota';
+
+  @override
+  String get notificationsMarkAllRead => 'Tandai semua dibaca';
+
+  @override
+  String get notificationsMarkAllReadError =>
+      'Notifikasi gagal ditandai dibaca. Silakan coba lagi.';
+
+  @override
+  String get notificationsLoadError => 'Notifikasi belum dapat dimuat.';
+
+  @override
+  String get notificationsOfflineError =>
+      'Notifikasi tidak dapat diperbarui saat offline.';
+
+  @override
+  String get notificationOpenAction => 'Buka detail';
+
+  @override
+  String get adminConfirmBooking => 'Konfirmasi booking';
+
+  @override
+  String get adminProposeAlternative => 'Ajukan jadwal alternatif';
+
+  @override
+  String get adminRejectBooking => 'Tolak permintaan';
+
+  @override
+  String get adminApproveReschedule => 'Setujui jadwal ulang';
+
+  @override
+  String get adminRejectReschedule => 'Tolak jadwal ulang';
+
+  @override
+  String get adminCheckIn => 'Catat check-in';
+
+  @override
+  String get adminStartService => 'Mulai servis';
+
+  @override
+  String get adminCompleteService => 'Selesaikan servis';
+
+  @override
+  String get adminMarkNoShow => 'Tandai no-show';
+
+  @override
+  String get adminActionReason => 'Alasan atau catatan';
+
+  @override
+  String get advisorName => 'Nama Service Advisor';
+
+  @override
+  String get advisorPhone => 'Nomor Service Advisor';
+
+  @override
+  String get externalBookingNumber => 'Nomor booking partner';
+
+  @override
+  String get internalNote => 'Catatan internal';
+
+  @override
+  String get proposalExpiryInvalid =>
+      'Batas respons harus setelah waktu sekarang dan sebelum slot usulan maupun jadwal terkonfirmasi yang masih aktif.';
+
+  @override
+  String get proposedPicName => 'PIC jadwal usulan';
+
+  @override
+  String get proposedArrivalInstructions => 'Petunjuk kedatangan usulan';
+
+  @override
+  String timelineActor(String name, String type) {
+    return 'Oleh $name ($type)';
+  }
+
+  @override
+  String get assignedAdvisor => 'Advisor admin yang ditugaskan';
+
+  @override
+  String get instructions => 'Instruksi untuk pelanggan';
+
+  @override
+  String get sendAdminAction => 'Simpan tindakan';
+
+  @override
+  String get adminActionSuccess => 'Status booking berhasil diperbarui.';
+
+  @override
+  String get customer => 'Pelanggan';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get fulfillment => 'Cara servis';
+
+  @override
+  String get updatedAt => 'Diperbarui';
+
+  @override
+  String get copyReference => 'Salin nomor referensi';
+
+  @override
+  String get referenceCopied => 'Nomor referensi disalin.';
+
+  @override
+  String get useCurrentLocation => 'Gunakan lokasi saat ini';
+
+  @override
+  String get locationServicesDisabled =>
+      'Layanan lokasi perangkat belum aktif.';
+
+  @override
+  String get locationPermissionDenied => 'Izin lokasi tidak diberikan.';
+
+  @override
+  String get locationMapFallback =>
+      'Pilih titik secara manual langsung pada peta.';
+
+  @override
+  String get photoUploadFailed =>
+      'Foto gagal diunggah. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get photoTooLarge => 'Ukuran foto maksimal 10 MB.';
+
+  @override
+  String get photoInvalidType =>
+      'Gunakan foto JPG, JPEG, PNG, HEIC, atau HEIF.';
+
+  @override
+  String get benefitVehicleTitle => 'Benefit kendaraan';
+
+  @override
+  String get supportingPhotosTitle => 'Foto pendukung';
+
+  @override
+  String get preferencePrimary => 'Preferensi utama';
+
+  @override
+  String get preferenceAlternative => 'Preferensi alternatif';
+
+  @override
+  String get proposedScheduleLabel => 'Jadwal usulan petugas';
+
+  @override
+  String get confirmedScheduleLabel => 'Jadwal terkonfirmasi';
+
+  @override
+  String get reschedulePrimaryLabel => 'Permintaan jadwal utama baru';
+
+  @override
+  String get rescheduleAlternativeLabel => 'Permintaan jadwal alternatif baru';
+
+  @override
+  String get proposalReasonLabel => 'Alasan usulan';
+
+  @override
+  String get proposalContextLabel => 'Konteks usulan';
+
+  @override
+  String get rescheduleReasonLabel => 'Alasan perubahan';
+
+  @override
+  String get responseDeadline => 'Batas respons';
+
+  @override
+  String get completedAtLabel => 'Selesai pada';
+
+  @override
+  String get slaOverdueLabel => 'SLA terlambat';
+
+  @override
+  String get dateIsoLabel => 'Tanggal (YYYY-MM-DD)';
+
+  @override
+  String get timeWindowLabel => 'Rentang waktu';
+
+  @override
+  String get picNameLabel => 'Nama PIC';
+
+  @override
+  String get arrivalInstructionsLabel => 'Instruksi kedatangan';
+
+  @override
+  String get alternativeReasonLabel => 'Alasan alternatif';
+
+  @override
+  String get responseDeadlineIsoLabel => 'Batas respons (ISO 8601)';
+
+  @override
+  String get reasonCodeLabel => 'Kode alasan';
+
+  @override
+  String get benefitTypeLabel => 'Jenis benefit';
+
+  @override
+  String get benefitStatusLabel => 'Status benefit';
+
+  @override
+  String get verificationSourceLabel => 'Sumber verifikasi';
+
+  @override
+  String get benefitNotesLabel => 'Catatan benefit';
+
+  @override
+  String get confirmActionPrompt => 'Lanjutkan aksi ini?';
+
+  @override
+  String get pendingVerificationLabel => 'Akan diverifikasi petugas';
+
+  @override
+  String get bookingAwaitingNotice =>
+      'Permintaan belum terkonfirmasi. Petugas akan memeriksa ketersediaan kedua preferensi jadwal.';
+
+  @override
+  String get bookingAlternativeNotice =>
+      'Jadwal utama tidak tersedia. Tinjau jadwal alternatif yang diajukan sebelum batas respons.';
+
+  @override
+  String get bookingRescheduleNotice =>
+      'Permintaan perubahan sedang ditinjau. Jadwal lama tetap berlaku sampai perubahan dikonfirmasi.';
+
+  @override
+  String get bookingCheckedInNotice =>
+      'Kendaraan sudah check-in dan menunggu proses servis.';
+
+  @override
+  String get bookingInServiceNotice =>
+      'Kendaraan sedang dikerjakan oleh tim servis.';
+
+  @override
+  String get bookingCompletedNotice =>
+      'Servis selesai. Rincian pekerjaan dan biaya final mengikuti dokumen dari bengkel.';
+
+  @override
+  String get bookingTerminalNotice =>
+      'Booking tidak dapat dilanjutkan. Anda dapat membuat permintaan baru.';
+
+  @override
+  String get profilePhoneRequired =>
+      'Tambahkan nomor ponsel profil sebelum mengirim booking.';
+
+  @override
+  String get thsOperationalVerification =>
+      'Area akan diverifikasi oleh petugas sebelum konfirmasi.';
+
+  @override
+  String get thsTemporarilyUnavailable =>
+      'Toyota Home Service belum tersedia karena area operasional masih menunggu verifikasi.';
+
+  @override
+  String get serviceFulfillmentUnavailableTitle =>
+      'Lokasi servis belum tersedia';
+
+  @override
+  String get serviceFulfillmentUnavailableDescription =>
+      'Belum ada lokasi bengkel atau Toyota Home Service yang beroperasi saat ini. Silakan coba lagi nanti.';
+
+  @override
+  String get serviceSelectionChanged =>
+      'Pilihan servis tersimpan ini sudah tidak beroperasi. Pilih kembali lokasi dan layanan sebelum mengirim.';
+
+  @override
+  String get chooseServiceLocationAgain => 'Pilih ulang layanan';
+
+  @override
+  String get loadingData => 'Menyiapkan data…';
 }

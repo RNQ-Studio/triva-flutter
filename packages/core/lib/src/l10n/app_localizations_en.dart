@@ -242,7 +242,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseProvinceFirst => 'Choose a province first';
 
   @override
-  String get regionLoading => 'Preparing region optionsâ€¦';
+  String get regionLoading => 'Preparing region options…';
 
   @override
   String get regionLoadError =>
@@ -573,7 +573,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activityTitle => 'My Activity';
 
   @override
-  String get activityEmpty => 'No appraisal activity yet.';
+  String get activityEmpty => 'No activity yet.';
 
   @override
   String get demoActivityNotice =>
@@ -760,4 +760,767 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get inspectionScheduledDescription =>
       'The schedule is saved. The TRIVA team will contact you to confirm the inspection.';
+
+  @override
+  String get adminPanel => 'Admin Panel';
+
+  @override
+  String get adminPanelTitle => 'Operations center';
+
+  @override
+  String get adminPanelSubtitle =>
+      'Manage services according to the access granted to your account.';
+
+  @override
+  String get adminAccessDenied => 'Admin access is unavailable';
+
+  @override
+  String get adminAccessDeniedDescription =>
+      'This account does not have permission to open operational modules.';
+
+  @override
+  String get moduleActive => 'Active';
+
+  @override
+  String get moduleUnavailable => 'Not enabled';
+
+  @override
+  String get adminBookingQueue => 'Toyota Booking';
+
+  @override
+  String get adminBookingQueueDescription =>
+      'Confirmation queue, schedules, and service progress.';
+
+  @override
+  String get adminNoBookings => 'The booking queue is empty';
+
+  @override
+  String get adminNoBookingsDescription =>
+      'Toyota Booking requests will appear here.';
+
+  @override
+  String get adminNoValidSlots =>
+      'No valid future slot is available for this action.';
+
+  @override
+  String get sortUpdatedDesc => 'Recently updated';
+
+  @override
+  String get sortDueAsc => 'Nearest SLA due';
+
+  @override
+  String get sortSlotAsc => 'Nearest requested slot';
+
+  @override
+  String get searchBookings => 'Search reference, customer, or vehicle';
+
+  @override
+  String get bookingToyotaTitle => 'Toyota Booking';
+
+  @override
+  String get bookingStepVehicle => 'Vehicle';
+
+  @override
+  String get bookingStepService => 'Service';
+
+  @override
+  String get bookingStepSchedule => 'Schedule';
+
+  @override
+  String get bookingStepReview => 'Review';
+
+  @override
+  String get bookingSelectVehicleTitle => 'Choose a Toyota vehicle';
+
+  @override
+  String get bookingSelectVehicleDescription =>
+      'Use a saved vehicle so you do not need to re-enter service details.';
+
+  @override
+  String get bookingNoVehicles => 'No saved vehicles yet';
+
+  @override
+  String get bookingNoVehiclesDescription =>
+      'Add a vehicle first, then return to Toyota Booking.';
+
+  @override
+  String get addVehicle => 'Add vehicle';
+
+  @override
+  String get bookingAddVehicleTitle => 'Add a vehicle for booking';
+
+  @override
+  String get bookingAddVehicleDescription =>
+      'Complete the vehicle details once so it can be reused across TRIVA services.';
+
+  @override
+  String get useThisVehicle => 'Use this vehicle';
+
+  @override
+  String get chooseAnotherVehicle => 'Choose another vehicle';
+
+  @override
+  String get nonToyotaTitle => 'This vehicle is not a Toyota';
+
+  @override
+  String get nonToyotaDescription =>
+      'Toyota Booking is only available for Toyota vehicles. You can still continue through the OtoXpert network.';
+
+  @override
+  String get continueOtoxpert => 'Continue to OtoXpert Booking';
+
+  @override
+  String get otoxpertUnavailableMessage =>
+      'OtoXpert Booking is not enabled yet. Your vehicle remains saved.';
+
+  @override
+  String get serviceWhereTitle => 'Where should we service it?';
+
+  @override
+  String get serviceWhereDescription =>
+      'Choose the service method that suits you.';
+
+  @override
+  String get workshopService => 'Auto2000 Workshop';
+
+  @override
+  String get workshopServiceDescription =>
+      'Visit the workshop at the confirmed schedule.';
+
+  @override
+  String get thsService => 'Toyota Home Service (THS)';
+
+  @override
+  String get thsServiceDescription =>
+      'A technician visits an address within the service area.';
+
+  @override
+  String get scheduleNeedsConfirmation =>
+      'Your selected schedule still needs staff confirmation.';
+
+  @override
+  String get chooseServiceType => 'Choose service type';
+
+  @override
+  String get serviceTypeTitle => 'What do you need?';
+
+  @override
+  String get serviceTypeDescription => 'Choose one service for your Toyota.';
+
+  @override
+  String get serviceTypesEmpty => 'No service types are available';
+
+  @override
+  String get serviceTypesEmptyDescription =>
+      'An admin has not enabled a service for this option.';
+
+  @override
+  String get serviceAdvisorConfirmation =>
+      'The final recommendation will be confirmed by a Service Advisor.';
+
+  @override
+  String get continueServiceDetails => 'Continue to service details';
+
+  @override
+  String get serviceDetailsTitle => 'Service details';
+
+  @override
+  String get serviceDetailsDescription =>
+      'Add mileage and the concern so staff can prepare the service.';
+
+  @override
+  String get currentMileage => 'Current mileage';
+
+  @override
+  String get complaint => 'Concern or notes';
+
+  @override
+  String get complaintHint => 'Describe the symptom or service need';
+
+  @override
+  String get supportingPhotoOptional => 'Supporting photo (optional)';
+
+  @override
+  String get addSupportingPhoto => 'Add photo';
+
+  @override
+  String get removeSupportingPhoto => 'Remove photo';
+
+  @override
+  String get supportingPhotoPrivacy =>
+      'Only authorized staff can view this photo.';
+
+  @override
+  String get chooseSchedule => 'Choose schedule';
+
+  @override
+  String get schedulePreferenceTitle => 'When would you like service?';
+
+  @override
+  String get schedulePreferenceDescription =>
+      'Choose two different times as your primary and alternate preferences.';
+
+  @override
+  String get primaryPreference => 'Primary schedule';
+
+  @override
+  String get alternativePreference => 'Alternate schedule';
+
+  @override
+  String get preferenceNotSlot =>
+      'This time is a preference and does not reserve a slot.';
+
+  @override
+  String bookingLeadTimeNotice(int days) {
+    return 'Request at least $days days before the selected date.';
+  }
+
+  @override
+  String get availabilityEmpty => 'No requestable times yet';
+
+  @override
+  String get availabilityEmptyDescription =>
+      'Change the location or service, then check the schedule again.';
+
+  @override
+  String get availabilityLoadFailed =>
+      'The schedule could not be loaded. Check your connection and try again.';
+
+  @override
+  String get reviewBooking => 'Review booking';
+
+  @override
+  String get thsAddressTitle => 'THS visit location';
+
+  @override
+  String get thsAddressDescription =>
+      'An address and pin are required so staff can check service coverage.';
+
+  @override
+  String get fullAddress => 'Full address';
+
+  @override
+  String get locationNotes => 'Location notes';
+
+  @override
+  String get latitude => 'Latitude';
+
+  @override
+  String get longitude => 'Longitude';
+
+  @override
+  String get setManualPin => 'Set pin manually';
+
+  @override
+  String get pinLocationSet => 'Location pin is set';
+
+  @override
+  String get thsAddressPinRequired =>
+      'Address, city, and location pin are required for THS.';
+
+  @override
+  String get thsCoverageAvailable => 'Service area available';
+
+  @override
+  String get thsCoverageUnavailable =>
+      'This address is not yet within the THS service area';
+
+  @override
+  String get manualPinTitle => 'Set location coordinates';
+
+  @override
+  String get manualPinDescription =>
+      'Enter coordinates from your device map if location permission is unavailable.';
+
+  @override
+  String get savePin => 'Save pin';
+
+  @override
+  String get reviewServiceRequestTitle => 'Review service request';
+
+  @override
+  String get reviewServiceRequestDescription =>
+      'Check the details before sending your request.';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get primarySchedule => 'Primary schedule';
+
+  @override
+  String get alternativeSchedule => 'Alternate';
+
+  @override
+  String get contactChannel => 'Confirmation channel';
+
+  @override
+  String get requestToConfirmNotice =>
+      'Your schedule is a preference and is not yet confirmed.';
+
+  @override
+  String get serviceBookingConsent =>
+      'I agree to data processing for this service request.';
+
+  @override
+  String get submitServiceRequest => 'Send service request';
+
+  @override
+  String get serviceRequestSubmittedTitle => 'Service request sent';
+
+  @override
+  String get serviceRequestSubmittedDescription =>
+      'Your schedule is not yet confirmed.';
+
+  @override
+  String get awaitingStaffConfirmation => 'Awaiting staff confirmation';
+
+  @override
+  String get viewBookingDetail => 'View booking details';
+
+  @override
+  String get bookingDetailTitle => 'Booking details';
+
+  @override
+  String get bookingTimelineTitle => 'Booking progress';
+
+  @override
+  String get alternativeProposedTitle => 'Alternate schedule proposed';
+
+  @override
+  String get originalScheduleUnavailable =>
+      'The primary schedule is unavailable';
+
+  @override
+  String get advisorProposal => 'Service Advisor proposal';
+
+  @override
+  String get proposalDeadline => 'Response deadline';
+
+  @override
+  String get noScheduleConfirmed => 'No schedule has been confirmed.';
+
+  @override
+  String get acceptAlternative => 'Accept alternate schedule';
+
+  @override
+  String get rejectAlternative => 'Reject and choose another schedule';
+
+  @override
+  String get chooseReplacementSchedule => 'Choose replacement schedule';
+
+  @override
+  String get rejectionReasonOptional => 'Reason for change (optional)';
+
+  @override
+  String get bookingRejectedTitle => 'Service could not be scheduled';
+
+  @override
+  String get rejectionReason => 'Rejection reason';
+
+  @override
+  String get createNewRequest => 'Create a new request';
+
+  @override
+  String get backToActivity => 'Back to activity';
+
+  @override
+  String get bookingConfirmedTitle => 'Booking confirmed';
+
+  @override
+  String get confirmedSchedule => 'Your service schedule';
+
+  @override
+  String get serviceAdvisor => 'PIC (Service Advisor)';
+
+  @override
+  String get partnerBookingNumber => 'Partner booking number';
+
+  @override
+  String get arrivalInstructions => 'Arrival instructions';
+
+  @override
+  String get openDirections => 'Open directions';
+
+  @override
+  String get requestReschedule => 'Request reschedule';
+
+  @override
+  String get cancelBooking => 'Cancel booking';
+
+  @override
+  String get rescheduleTitle => 'Request reschedule';
+
+  @override
+  String get currentConfirmedSchedule => 'Current schedule (confirmed)';
+
+  @override
+  String get newPrimarySchedule => 'New primary choice';
+
+  @override
+  String get newAlternativeSchedule => 'New alternate choice';
+
+  @override
+  String get changeReason => 'Reason for change';
+
+  @override
+  String get oldScheduleRemains =>
+      'The old schedule remains valid until staff confirms the change.';
+
+  @override
+  String get submitReschedule => 'Send reschedule request';
+
+  @override
+  String get serviceInProgressTitle => 'Service in progress';
+
+  @override
+  String get vehicleBeingServiced => 'Your vehicle is being serviced';
+
+  @override
+  String get contactServiceAdvisor => 'Contact Service Advisor';
+
+  @override
+  String get viewServiceDetails => 'View service details';
+
+  @override
+  String get serviceCompletedTitle => 'Service completed';
+
+  @override
+  String get serviceCompletedDescription => 'Your vehicle service is complete.';
+
+  @override
+  String get workshopFinalDetailsNotice =>
+      'Final work and cost details follow the workshop document.';
+
+  @override
+  String get viewInActivity => 'View in Activity';
+
+  @override
+  String get leaveServiceFeedback => 'Leave service feedback';
+
+  @override
+  String get bookingCancelledTitle => 'Booking cancelled';
+
+  @override
+  String get bookingExpiredTitle => 'Request expired';
+
+  @override
+  String get bookingNoShowTitle => 'Visit not recorded';
+
+  @override
+  String get bookingGenericDescription =>
+      'Check the timeline for the latest staff update.';
+
+  @override
+  String get cancelReason => 'Cancellation reason';
+
+  @override
+  String get confirmCancellation => 'Cancel this booking?';
+
+  @override
+  String get confirmCancellationDescription =>
+      'The booking history remains in My Activity.';
+
+  @override
+  String get bookingMutationFailed =>
+      'The change could not be saved. Try again.';
+
+  @override
+  String get bookingOfflineError =>
+      'You are offline. Your draft is saved; connect to the internet and try again.';
+
+  @override
+  String get bookingDuplicateError =>
+      'An active booking with the same vehicle and schedule already exists.';
+
+  @override
+  String get bookingIncompleteError =>
+      'Complete all required information before submitting.';
+
+  @override
+  String get activityEmptyDescription =>
+      'Appraisals and bookings you send will appear here.';
+
+  @override
+  String get activityAppraisalsLoadFailed =>
+      'Appraisal activity could not be loaded. Your service bookings are still shown.';
+
+  @override
+  String get activityBookingsLoadFailed =>
+      'Service booking activity could not be loaded. Your appraisals are still shown.';
+
+  @override
+  String get activityAppraisalLabel => 'Trade-in appraisal';
+
+  @override
+  String get activityToyotaBookingLabel => 'Toyota Booking';
+
+  @override
+  String get notificationsMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsMarkAllReadError =>
+      'Could not mark notifications as read. Please try again.';
+
+  @override
+  String get notificationsLoadError => 'Notifications could not be loaded.';
+
+  @override
+  String get notificationsOfflineError =>
+      'Notifications cannot be refreshed while offline.';
+
+  @override
+  String get notificationOpenAction => 'Open details';
+
+  @override
+  String get adminConfirmBooking => 'Confirm booking';
+
+  @override
+  String get adminProposeAlternative => 'Propose alternate schedule';
+
+  @override
+  String get adminRejectBooking => 'Reject request';
+
+  @override
+  String get adminApproveReschedule => 'Approve reschedule';
+
+  @override
+  String get adminRejectReschedule => 'Reject reschedule';
+
+  @override
+  String get adminCheckIn => 'Record check-in';
+
+  @override
+  String get adminStartService => 'Start service';
+
+  @override
+  String get adminCompleteService => 'Complete service';
+
+  @override
+  String get adminMarkNoShow => 'Mark no-show';
+
+  @override
+  String get adminActionReason => 'Reason or notes';
+
+  @override
+  String get advisorName => 'Service Advisor name';
+
+  @override
+  String get advisorPhone => 'Service Advisor phone';
+
+  @override
+  String get externalBookingNumber => 'Partner booking number';
+
+  @override
+  String get internalNote => 'Internal note';
+
+  @override
+  String get proposalExpiryInvalid =>
+      'The response deadline must be after now and before both the proposed slot and the still-active confirmed appointment.';
+
+  @override
+  String get proposedPicName => 'Proposed appointment PIC';
+
+  @override
+  String get proposedArrivalInstructions => 'Proposed arrival instructions';
+
+  @override
+  String timelineActor(String name, String type) {
+    return 'By $name ($type)';
+  }
+
+  @override
+  String get assignedAdvisor => 'Assigned admin advisor';
+
+  @override
+  String get instructions => 'Instructions for customer';
+
+  @override
+  String get sendAdminAction => 'Save action';
+
+  @override
+  String get adminActionSuccess => 'Booking status updated.';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get fulfillment => 'Service method';
+
+  @override
+  String get updatedAt => 'Updated';
+
+  @override
+  String get copyReference => 'Copy reference number';
+
+  @override
+  String get referenceCopied => 'Reference number copied.';
+
+  @override
+  String get useCurrentLocation => 'Use current location';
+
+  @override
+  String get locationServicesDisabled =>
+      'Device location services are disabled.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission was not granted.';
+
+  @override
+  String get locationMapFallback => 'Choose the point manually on the map.';
+
+  @override
+  String get photoUploadFailed =>
+      'The photo could not be uploaded. Check your connection and try again.';
+
+  @override
+  String get photoTooLarge => 'Photo size must not exceed 10 MB.';
+
+  @override
+  String get photoInvalidType => 'Use a JPG, JPEG, PNG, HEIC, or HEIF photo.';
+
+  @override
+  String get benefitVehicleTitle => 'Vehicle benefits';
+
+  @override
+  String get supportingPhotosTitle => 'Supporting photos';
+
+  @override
+  String get preferencePrimary => 'Primary preference';
+
+  @override
+  String get preferenceAlternative => 'Alternative preference';
+
+  @override
+  String get proposedScheduleLabel => 'Advisor-proposed schedule';
+
+  @override
+  String get confirmedScheduleLabel => 'Confirmed schedule';
+
+  @override
+  String get reschedulePrimaryLabel => 'New primary schedule request';
+
+  @override
+  String get rescheduleAlternativeLabel => 'New alternative schedule request';
+
+  @override
+  String get proposalReasonLabel => 'Proposal reason';
+
+  @override
+  String get proposalContextLabel => 'Proposal context';
+
+  @override
+  String get rescheduleReasonLabel => 'Reschedule reason';
+
+  @override
+  String get responseDeadline => 'Response deadline';
+
+  @override
+  String get completedAtLabel => 'Completed at';
+
+  @override
+  String get slaOverdueLabel => 'SLA overdue';
+
+  @override
+  String get dateIsoLabel => 'Date (YYYY-MM-DD)';
+
+  @override
+  String get timeWindowLabel => 'Time window';
+
+  @override
+  String get picNameLabel => 'PIC name';
+
+  @override
+  String get arrivalInstructionsLabel => 'Arrival instructions';
+
+  @override
+  String get alternativeReasonLabel => 'Alternative reason';
+
+  @override
+  String get responseDeadlineIsoLabel => 'Response deadline (ISO 8601)';
+
+  @override
+  String get reasonCodeLabel => 'Reason code';
+
+  @override
+  String get benefitTypeLabel => 'Benefit type';
+
+  @override
+  String get benefitStatusLabel => 'Benefit status';
+
+  @override
+  String get verificationSourceLabel => 'Verification source';
+
+  @override
+  String get benefitNotesLabel => 'Benefit notes';
+
+  @override
+  String get confirmActionPrompt => 'Continue with this action?';
+
+  @override
+  String get pendingVerificationLabel => 'Will be verified by an advisor';
+
+  @override
+  String get bookingAwaitingNotice =>
+      'The request is not confirmed yet. An advisor will check both schedule preferences.';
+
+  @override
+  String get bookingAlternativeNotice =>
+      'The primary schedule is unavailable. Review the proposed alternative before the response deadline.';
+
+  @override
+  String get bookingRescheduleNotice =>
+      'The reschedule request is under review. The previous schedule remains valid until the change is confirmed.';
+
+  @override
+  String get bookingCheckedInNotice =>
+      'The vehicle has checked in and is waiting for service.';
+
+  @override
+  String get bookingInServiceNotice =>
+      'The vehicle is currently being serviced.';
+
+  @override
+  String get bookingCompletedNotice =>
+      'Service is complete. Final work and pricing follow the workshop document.';
+
+  @override
+  String get bookingTerminalNotice =>
+      'This booking cannot continue. You can create a new request.';
+
+  @override
+  String get profilePhoneRequired =>
+      'Add a phone number to your profile before submitting the booking.';
+
+  @override
+  String get thsOperationalVerification =>
+      'An advisor will verify this area before confirmation.';
+
+  @override
+  String get thsTemporarilyUnavailable =>
+      'Toyota Home Service is not available while the operational coverage area is being verified.';
+
+  @override
+  String get serviceFulfillmentUnavailableTitle =>
+      'Service location unavailable';
+
+  @override
+  String get serviceFulfillmentUnavailableDescription =>
+      'No operational workshop or Toyota Home Service location is available right now. Please try again later.';
+
+  @override
+  String get serviceSelectionChanged =>
+      'This saved service selection is no longer operational. Choose the location and service again before submitting.';
+
+  @override
+  String get chooseServiceLocationAgain => 'Choose service again';
+
+  @override
+  String get loadingData => 'Preparing data…';
 }

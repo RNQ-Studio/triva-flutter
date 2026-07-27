@@ -88,4 +88,27 @@ void main() {
     expect(user, same(cached));
     verifyNever(() => local.clearUser());
   });
+
+  test('offline restore strips cached admin capabilities', () async {
+    const cachedAdmin = UserModel(
+      id: '2',
+      name: 'Cached Admin',
+      email: 'admin@example.com',
+      token: 'access',
+      refreshToken: 'refresh',
+      roles: ['admin'],
+      permissions: [
+        'service_bookings.viewAny',
+        'service_bookings.update',
+      ],
+    );
+    when(() => local.getUser()).thenAnswer((_) async => cachedAdmin);
+    when(() => remote.getMe()).thenThrow(const NetworkException('offline'));
+
+    final user = await repository.getCurrentUser();
+
+    expect(user?.roles, isEmpty);
+    expect(user?.permissions, isEmpty);
+    expect(user?.canAccessAdminPanel, isFalse);
+  });
 }

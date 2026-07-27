@@ -13,12 +13,15 @@ class AuthRepositoryImpl implements AuthRepository {
     required AuthRemoteDataSource remote,
     required AuthLocalDataSource local,
     required GoogleSignInClient googleSignInClient,
+    StorageService? storage,
   })  : _remote = remote,
         _local = local,
+        _storage = storage,
         _googleSignInClient = googleSignInClient;
 
   final AuthRemoteDataSource _remote;
   final AuthLocalDataSource _local;
+  final StorageService? _storage;
   final GoogleSignInClient _googleSignInClient;
 
   @override
@@ -42,7 +45,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> logout() async {
     try {
-      await _remote.logout();
+      final deviceId = await _storage?.read('triva.device_id');
+      if (deviceId == null) {
+        await _remote.logout();
+      } else {
+        await _remote.logout(deviceId);
+      }
     } catch (_) {
       // Fail-safe: even if backend logout fails (e.g. offline),
       // we must still clear the local user session.
@@ -91,7 +99,8 @@ class AuthRepositoryImpl implements AuthRepository {
         profileCompleted: fresh.profileCompleted,
         serviceConsentAt: fresh.serviceConsentAt ?? cached.serviceConsentAt,
         marketingConsent: fresh.marketingConsent,
-        roles: fresh.roles.isNotEmpty ? fresh.roles : cached.roles,
+        roles: fresh.roles,
+        permissions: fresh.permissions,
         token: currentSession.token,
         refreshToken: currentSession.refreshToken,
       );
@@ -101,8 +110,23 @@ class AuthRepositoryImpl implements AuthRepository {
       await _local.clearUser();
       return null;
     } on NetworkException {
-      // Preserve the cached profile only while the server is unreachable.
-      return cached;
+      // An offline profile may restore customer UX, but cached capabilities
+      // must never unlock admin surfaces after a possible server-side revoke.
+      if (cached.roles.isEmpty && cached.permissions.isEmpty) return cached;
+      final offline = UserModel(
+        id: cached.id,
+        name: cached.name,
+        email: cached.email,
+        phone: cached.phone,
+        city: cached.city,
+        avatarUrl: cached.avatarUrl,
+        profileCompleted: cached.profileCompleted,
+        serviceConsentAt: cached.serviceConsentAt,
+        marketingConsent: cached.marketingConsent,
+        token: cached.token,
+        refreshToken: cached.refreshToken,
+      );
+      return offline;
     }
   }
 
@@ -146,9 +170,8 @@ class AuthRepositoryImpl implements AuthRepository {
       serviceConsentAt:
           updated.serviceConsentAt ?? currentUser?.serviceConsentAt,
       marketingConsent: updated.marketingConsent,
-      roles: updated.roles.isNotEmpty
-          ? updated.roles
-          : (currentUser?.roles ?? const []),
+      roles: updated.roles,
+      permissions: updated.permissions,
       token: currentUser?.token,
       refreshToken: currentUser?.refreshToken,
     );
@@ -174,9 +197,8 @@ class AuthRepositoryImpl implements AuthRepository {
       serviceConsentAt:
           updated.serviceConsentAt ?? currentUser?.serviceConsentAt,
       marketingConsent: updated.marketingConsent,
-      roles: updated.roles.isNotEmpty
-          ? updated.roles
-          : (currentUser?.roles ?? const []),
+      roles: updated.roles,
+      permissions: updated.permissions,
       token: currentUser?.token,
       refreshToken: currentUser?.refreshToken,
     );

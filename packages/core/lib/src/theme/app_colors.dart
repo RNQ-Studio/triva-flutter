@@ -33,3 +33,85 @@ abstract final class AppColors {
   static const Color inkMutedDark = Color(0xFFB6C2D2);
   static const Color outlineDark = Color(0xFF425167);
 }
+
+@immutable
+class AppServiceColors extends ThemeExtension<AppServiceColors> {
+  const AppServiceColors({
+    required this.booking,
+    required this.onBooking,
+    required this.bookingContainer,
+    required this.onBookingContainer,
+    required this.confirmed,
+    required this.confirmedContainer,
+    required this.onConfirmedContainer,
+  });
+
+  final Color booking;
+  final Color onBooking;
+  final Color bookingContainer;
+  final Color onBookingContainer;
+  final Color confirmed;
+  final Color confirmedContainer;
+  final Color onConfirmedContainer;
+
+  static const light = AppServiceColors(
+    booking: AppColors.serviceOrange,
+    onBooking: AppColors.surfaceLight,
+    bookingContainer: AppColors.serviceOrangeSoft,
+    onBookingContainer: AppColors.inkLight,
+    confirmed: AppColors.brandTeal,
+    confirmedContainer: AppColors.brandTealLight,
+    onConfirmedContainer: AppColors.brandNavyDark,
+  );
+
+  static const dark = AppServiceColors(
+    booking: Color(0xFFFFB77A),
+    onBooking: Color(0xFF4F2500),
+    bookingContainer: Color(0xFF512400),
+    onBookingContainer: Color(0xFFFFDCC2),
+    confirmed: Color(0xFF72D8CE),
+    confirmedContainer: Color(0xFF00504B),
+    onConfirmedContainer: Color(0xFF9CF1E7),
+  );
+
+  @override
+  AppServiceColors copyWith({
+    Color? booking,
+    Color? onBooking,
+    Color? bookingContainer,
+    Color? onBookingContainer,
+    Color? confirmed,
+    Color? confirmedContainer,
+    Color? onConfirmedContainer,
+  }) =>
+      AppServiceColors(
+        booking: booking ?? this.booking,
+        onBooking: onBooking ?? this.onBooking,
+        bookingContainer: bookingContainer ?? this.bookingContainer,
+        onBookingContainer: onBookingContainer ?? this.onBookingContainer,
+        confirmed: confirmed ?? this.confirmed,
+        confirmedContainer: confirmedContainer ?? this.confirmedContainer,
+        onConfirmedContainer: onConfirmedContainer ?? this.onConfirmedContainer,
+      );
+
+  @override
+  AppServiceColors lerp(
+    covariant ThemeExtension<AppServiceColors>? other,
+    double t,
+  ) {
+    if (other is! AppServiceColors) return this;
+    return AppServiceColors(
+      booking: Color.lerp(booking, other.booking, t)!,
+      onBooking: Color.lerp(onBooking, other.onBooking, t)!,
+      bookingContainer:
+          Color.lerp(bookingContainer, other.bookingContainer, t)!,
+      onBookingContainer:
+          Color.lerp(onBookingContainer, other.onBookingContainer, t)!,
+      confirmed: Color.lerp(confirmed, other.confirmed, t)!,
+      confirmedContainer:
+          Color.lerp(confirmedContainer, other.confirmedContainer, t)!,
+      onConfirmedContainer:
+          Color.lerp(onConfirmedContainer, other.onConfirmedContainer, t)!,
+    );
+  }
+}

@@ -7,6 +7,9 @@ import 'package:go_router/go_router.dart';
 import '../../appraisal/domain/appraisal_models.dart';
 import '../../appraisal/presentation/appraisal_controller.dart';
 import '../../appraisal/presentation/appraisal_paths.dart';
+import '../../toyota_service/presentation/toyota_service_controller.dart';
+import '../../toyota_service/presentation/toyota_service_paths.dart';
+import '../../toyota_service/domain/toyota_service_models.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -21,6 +24,8 @@ class HomeScreen extends ConsumerWidget {
     final startPath = appraisalResumePath(
       draft ?? const AppraisalDraft(),
     );
+    final serviceDraft = ref.watch(toyotaServiceFlowProvider).value?.draft;
+    ref.watch(toyotaServiceOptionsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -73,6 +78,28 @@ class HomeScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: AppSpacing.medium),
                           _ServiceGrid(
+                            onToyotaService: () async {
+                              final activeDraft =
+                                  serviceDraft ?? const ToyotaServiceDraft();
+                              ToyotaServiceOptions? options;
+                              try {
+                                options = await ref.read(
+                                  toyotaServiceOptionsProvider.future,
+                                );
+                              } on Object {
+                                // A stale persisted draft may not bypass the
+                                // operational selection step while offline.
+                              }
+                              if (!context.mounted) return;
+                              context.push(
+                                options == null && activeDraft.hasFulfillment
+                                    ? toyotaServiceFulfillmentPath
+                                    : toyotaServiceResumePath(
+                                        activeDraft,
+                                        options: options,
+                                      ),
+                              );
+                            },
                             onUnavailable: () => ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
@@ -194,8 +221,12 @@ class _AppraisalHero extends StatelessWidget {
 }
 
 class _ServiceGrid extends StatelessWidget {
-  const _ServiceGrid({required this.onUnavailable});
+  const _ServiceGrid({
+    required this.onToyotaService,
+    required this.onUnavailable,
+  });
 
+  final VoidCallback onToyotaService;
   final VoidCallback onUnavailable;
 
   @override
@@ -248,7 +279,7 @@ class _ServiceGrid extends StatelessWidget {
               borderRadius: AppRadius.large,
               clipBehavior: Clip.antiAlias,
               child: InkWell(
-                onTap: onUnavailable,
+                onTap: index == 0 ? onToyotaService : onUnavailable,
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.large),
                   child: columns == 1

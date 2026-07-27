@@ -527,7 +527,7 @@ abstract class AppLocalizations {
   /// No description provided for @regionLoading.
   ///
   /// In id, this message translates to:
-  /// **'Menyiapkan pilihan wilayahâ€¦'**
+  /// **'Menyiapkan pilihan wilayah…'**
   String get regionLoading;
 
   /// No description provided for @regionLoadError.
@@ -1139,7 +1139,7 @@ abstract class AppLocalizations {
   /// No description provided for @activityEmpty.
   ///
   /// In id, this message translates to:
-  /// **'Belum ada aktivitas appraisal.'**
+  /// **'Belum ada aktivitas.'**
   String get activityEmpty;
 
   /// No description provided for @demoActivityNotice.
@@ -1471,6 +1471,1404 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Jadwal tersimpan. Tim TRIVA akan menghubungi Anda untuk konfirmasi inspeksi.'**
   String get inspectionScheduledDescription;
+
+  /// No description provided for @adminPanel.
+  ///
+  /// In id, this message translates to:
+  /// **'Admin Panel'**
+  String get adminPanel;
+
+  /// No description provided for @adminPanelTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pusat operasional'**
+  String get adminPanelTitle;
+
+  /// No description provided for @adminPanelSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kelola layanan sesuai akses yang diberikan kepada akun Anda.'**
+  String get adminPanelSubtitle;
+
+  /// No description provided for @adminAccessDenied.
+  ///
+  /// In id, this message translates to:
+  /// **'Akses admin tidak tersedia'**
+  String get adminAccessDenied;
+
+  /// No description provided for @adminAccessDeniedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun ini tidak memiliki izin untuk membuka modul operasional.'**
+  String get adminAccessDeniedDescription;
+
+  /// No description provided for @moduleActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get moduleActive;
+
+  /// No description provided for @moduleUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum diaktifkan'**
+  String get moduleUnavailable;
+
+  /// No description provided for @adminBookingQueue.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking Toyota'**
+  String get adminBookingQueue;
+
+  /// No description provided for @adminBookingQueueDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Antrean konfirmasi, jadwal, dan progres servis.'**
+  String get adminBookingQueueDescription;
+
+  /// No description provided for @adminNoBookings.
+  ///
+  /// In id, this message translates to:
+  /// **'Antrean booking kosong'**
+  String get adminNoBookings;
+
+  /// No description provided for @adminNoBookingsDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan Booking Toyota akan muncul di sini.'**
+  String get adminNoBookingsDescription;
+
+  /// No description provided for @adminNoValidSlots.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada slot mendatang yang valid untuk tindakan ini.'**
+  String get adminNoValidSlots;
+
+  /// No description provided for @sortUpdatedDesc.
+  ///
+  /// In id, this message translates to:
+  /// **'Terakhir diperbarui'**
+  String get sortUpdatedDesc;
+
+  /// No description provided for @sortDueAsc.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenggat SLA terdekat'**
+  String get sortDueAsc;
+
+  /// No description provided for @sortSlotAsc.
+  ///
+  /// In id, this message translates to:
+  /// **'Preferensi jadwal terdekat'**
+  String get sortSlotAsc;
+
+  /// No description provided for @searchBookings.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari referensi, pelanggan, atau kendaraan'**
+  String get searchBookings;
+
+  /// No description provided for @bookingToyotaTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking Toyota'**
+  String get bookingToyotaTitle;
+
+  /// No description provided for @bookingStepVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan'**
+  String get bookingStepVehicle;
+
+  /// No description provided for @bookingStepService.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan'**
+  String get bookingStepService;
+
+  /// No description provided for @bookingStepSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal'**
+  String get bookingStepSchedule;
+
+  /// No description provided for @bookingStepReview.
+  ///
+  /// In id, this message translates to:
+  /// **'Tinjau'**
+  String get bookingStepReview;
+
+  /// No description provided for @bookingSelectVehicleTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih kendaraan Toyota'**
+  String get bookingSelectVehicleTitle;
+
+  /// No description provided for @bookingSelectVehicleDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan kendaraan tersimpan agar detail servis tidak perlu diisi ulang.'**
+  String get bookingSelectVehicleDescription;
+
+  /// No description provided for @bookingNoVehicles.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada kendaraan tersimpan'**
+  String get bookingNoVehicles;
+
+  /// No description provided for @bookingNoVehiclesDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahkan kendaraan terlebih dahulu, lalu kembali ke Booking Toyota.'**
+  String get bookingNoVehiclesDescription;
+
+  /// No description provided for @addVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah kendaraan'**
+  String get addVehicle;
+
+  /// No description provided for @bookingAddVehicleTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah kendaraan untuk booking'**
+  String get bookingAddVehicleTitle;
+
+  /// No description provided for @bookingAddVehicleDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Lengkapi data kendaraan sekali agar dapat dipakai kembali di seluruh layanan TRIVA.'**
+  String get bookingAddVehicleDescription;
+
+  /// No description provided for @useThisVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan kendaraan ini'**
+  String get useThisVehicle;
+
+  /// No description provided for @chooseAnotherVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih kendaraan lain'**
+  String get chooseAnotherVehicle;
+
+  /// No description provided for @nonToyotaTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan ini bukan Toyota'**
+  String get nonToyotaTitle;
+
+  /// No description provided for @nonToyotaDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking Toyota hanya tersedia untuk kendaraan Toyota. Anda tetap dapat melanjutkan servis melalui jaringan OtoXpert.'**
+  String get nonToyotaDescription;
+
+  /// No description provided for @continueOtoxpert.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjut ke Booking OtoXpert'**
+  String get continueOtoxpert;
+
+  /// No description provided for @otoxpertUnavailableMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking OtoXpert belum diaktifkan. Kendaraan Anda tetap tersimpan.'**
+  String get otoxpertUnavailableMessage;
+
+  /// No description provided for @serviceWhereTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Servis di mana?'**
+  String get serviceWhereTitle;
+
+  /// No description provided for @serviceWhereDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih cara servis yang paling sesuai.'**
+  String get serviceWhereDescription;
+
+  /// No description provided for @workshopService.
+  ///
+  /// In id, this message translates to:
+  /// **'Workshop Auto2000'**
+  String get workshopService;
+
+  /// No description provided for @workshopServiceDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Datang ke workshop pada jadwal yang telah dikonfirmasi.'**
+  String get workshopServiceDescription;
+
+  /// No description provided for @thsService.
+  ///
+  /// In id, this message translates to:
+  /// **'Toyota Home Service (THS)'**
+  String get thsService;
+
+  /// No description provided for @thsServiceDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Teknisi datang ke alamat dalam area layanan.'**
+  String get thsServiceDescription;
+
+  /// No description provided for @scheduleNeedsConfirmation.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal yang dipilih masih perlu dikonfirmasi petugas.'**
+  String get scheduleNeedsConfirmation;
+
+  /// No description provided for @chooseServiceType.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jenis layanan'**
+  String get chooseServiceType;
+
+  /// No description provided for @serviceTypeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Apa yang dibutuhkan?'**
+  String get serviceTypeTitle;
+
+  /// No description provided for @serviceTypeDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih satu layanan untuk kendaraan Toyota Anda.'**
+  String get serviceTypeDescription;
+
+  /// No description provided for @serviceTypesEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis layanan belum tersedia'**
+  String get serviceTypesEmpty;
+
+  /// No description provided for @serviceTypesEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Admin belum mengaktifkan layanan untuk pilihan ini.'**
+  String get serviceTypesEmptyDescription;
+
+  /// No description provided for @serviceAdvisorConfirmation.
+  ///
+  /// In id, this message translates to:
+  /// **'Rekomendasi akhir akan dikonfirmasi Service Advisor.'**
+  String get serviceAdvisorConfirmation;
+
+  /// No description provided for @continueServiceDetails.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjut ke detail servis'**
+  String get continueServiceDetails;
+
+  /// No description provided for @serviceDetailsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail servis'**
+  String get serviceDetailsTitle;
+
+  /// No description provided for @serviceDetailsDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Lengkapi kilometer dan keluhan agar petugas dapat menyiapkan layanan.'**
+  String get serviceDetailsDescription;
+
+  /// No description provided for @currentMileage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kilometer saat ini'**
+  String get currentMileage;
+
+  /// No description provided for @complaint.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluhan atau catatan'**
+  String get complaint;
+
+  /// No description provided for @complaintHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Jelaskan gejala atau kebutuhan servis'**
+  String get complaintHint;
+
+  /// No description provided for @supportingPhotoOptional.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto pendukung (opsional)'**
+  String get supportingPhotoOptional;
+
+  /// No description provided for @addSupportingPhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah foto'**
+  String get addSupportingPhoto;
+
+  /// No description provided for @removeSupportingPhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus foto'**
+  String get removeSupportingPhoto;
+
+  /// No description provided for @supportingPhotoPrivacy.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto hanya dapat dilihat petugas berwenang.'**
+  String get supportingPhotoPrivacy;
+
+  /// No description provided for @chooseSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jadwal'**
+  String get chooseSchedule;
+
+  /// No description provided for @schedulePreferenceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kapan Anda ingin servis?'**
+  String get schedulePreferenceTitle;
+
+  /// No description provided for @schedulePreferenceDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih dua waktu berbeda sebagai preferensi utama dan alternatif.'**
+  String get schedulePreferenceDescription;
+
+  /// No description provided for @primaryPreference.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal utama'**
+  String get primaryPreference;
+
+  /// No description provided for @alternativePreference.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal alternatif'**
+  String get alternativePreference;
+
+  /// No description provided for @preferenceNotSlot.
+  ///
+  /// In id, this message translates to:
+  /// **'Waktu ini adalah preferensi dan belum mengunci slot.'**
+  String get preferenceNotSlot;
+
+  /// No description provided for @bookingLeadTimeNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Ajukan minimal {days} hari sebelum tanggal yang dipilih.'**
+  String bookingLeadTimeNotice(int days);
+
+  /// No description provided for @availabilityEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada waktu yang dapat diminta'**
+  String get availabilityEmpty;
+
+  /// No description provided for @availabilityEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah lokasi atau layanan, lalu periksa kembali jadwal.'**
+  String get availabilityEmptyDescription;
+
+  /// No description provided for @availabilityLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal belum dapat dimuat. Periksa koneksi lalu coba lagi.'**
+  String get availabilityLoadFailed;
+
+  /// No description provided for @reviewBooking.
+  ///
+  /// In id, this message translates to:
+  /// **'Tinjau booking'**
+  String get reviewBooking;
+
+  /// No description provided for @thsAddressTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi kunjungan THS'**
+  String get thsAddressTitle;
+
+  /// No description provided for @thsAddressDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Alamat dan pin wajib agar petugas dapat memeriksa cakupan layanan.'**
+  String get thsAddressDescription;
+
+  /// No description provided for @fullAddress.
+  ///
+  /// In id, this message translates to:
+  /// **'Alamat lengkap'**
+  String get fullAddress;
+
+  /// No description provided for @locationNotes.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan lokasi'**
+  String get locationNotes;
+
+  /// No description provided for @latitude.
+  ///
+  /// In id, this message translates to:
+  /// **'Latitude'**
+  String get latitude;
+
+  /// No description provided for @longitude.
+  ///
+  /// In id, this message translates to:
+  /// **'Longitude'**
+  String get longitude;
+
+  /// No description provided for @setManualPin.
+  ///
+  /// In id, this message translates to:
+  /// **'Atur pin manual'**
+  String get setManualPin;
+
+  /// No description provided for @pinLocationSet.
+  ///
+  /// In id, this message translates to:
+  /// **'Pin lokasi sudah diatur'**
+  String get pinLocationSet;
+
+  /// No description provided for @thsAddressPinRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Alamat, kota, dan pin lokasi wajib untuk THS.'**
+  String get thsAddressPinRequired;
+
+  /// No description provided for @thsCoverageAvailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Area layanan tersedia'**
+  String get thsCoverageAvailable;
+
+  /// No description provided for @thsCoverageUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Alamat belum termasuk area layanan THS'**
+  String get thsCoverageUnavailable;
+
+  /// No description provided for @manualPinTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Atur koordinat lokasi'**
+  String get manualPinTitle;
+
+  /// No description provided for @manualPinDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan koordinat dari peta perangkat bila izin lokasi tidak tersedia.'**
+  String get manualPinDescription;
+
+  /// No description provided for @savePin.
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan pin'**
+  String get savePin;
+
+  /// No description provided for @reviewServiceRequestTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tinjau permintaan servis'**
+  String get reviewServiceRequestTitle;
+
+  /// No description provided for @reviewServiceRequestDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa kembali detail sebelum permintaan dikirim.'**
+  String get reviewServiceRequestDescription;
+
+  /// No description provided for @location.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi'**
+  String get location;
+
+  /// No description provided for @service.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan'**
+  String get service;
+
+  /// No description provided for @primarySchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal utama'**
+  String get primarySchedule;
+
+  /// No description provided for @alternativeSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Alternatif'**
+  String get alternativeSchedule;
+
+  /// No description provided for @contactChannel.
+  ///
+  /// In id, this message translates to:
+  /// **'Channel konfirmasi'**
+  String get contactChannel;
+
+  /// No description provided for @requestToConfirmNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal pilihan adalah preferensi dan belum dikonfirmasi.'**
+  String get requestToConfirmNotice;
+
+  /// No description provided for @serviceBookingConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya menyetujui pemrosesan data untuk permintaan servis ini.'**
+  String get serviceBookingConsent;
+
+  /// No description provided for @submitServiceRequest.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim permintaan servis'**
+  String get submitServiceRequest;
+
+  /// No description provided for @serviceRequestSubmittedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan servis berhasil dikirim'**
+  String get serviceRequestSubmittedTitle;
+
+  /// No description provided for @serviceRequestSubmittedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal Anda belum dikonfirmasi.'**
+  String get serviceRequestSubmittedDescription;
+
+  /// No description provided for @awaitingStaffConfirmation.
+  ///
+  /// In id, this message translates to:
+  /// **'Menunggu konfirmasi petugas'**
+  String get awaitingStaffConfirmation;
+
+  /// No description provided for @viewBookingDetail.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat detail booking'**
+  String get viewBookingDetail;
+
+  /// No description provided for @bookingDetailTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail booking'**
+  String get bookingDetailTitle;
+
+  /// No description provided for @bookingTimelineTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkembangan booking'**
+  String get bookingTimelineTitle;
+
+  /// No description provided for @alternativeProposedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal alternatif diajukan'**
+  String get alternativeProposedTitle;
+
+  /// No description provided for @originalScheduleUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal utama belum tersedia'**
+  String get originalScheduleUnavailable;
+
+  /// No description provided for @advisorProposal.
+  ///
+  /// In id, this message translates to:
+  /// **'Usulan Service Advisor'**
+  String get advisorProposal;
+
+  /// No description provided for @proposalDeadline.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas waktu tanggapan'**
+  String get proposalDeadline;
+
+  /// No description provided for @noScheduleConfirmed.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada jadwal yang dikonfirmasi.'**
+  String get noScheduleConfirmed;
+
+  /// No description provided for @acceptAlternative.
+  ///
+  /// In id, this message translates to:
+  /// **'Terima jadwal alternatif'**
+  String get acceptAlternative;
+
+  /// No description provided for @rejectAlternative.
+  ///
+  /// In id, this message translates to:
+  /// **'Tolak dan pilih jadwal lain'**
+  String get rejectAlternative;
+
+  /// No description provided for @chooseReplacementSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jadwal pengganti'**
+  String get chooseReplacementSchedule;
+
+  /// No description provided for @rejectionReasonOptional.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan perubahan (opsional)'**
+  String get rejectionReasonOptional;
+
+  /// No description provided for @bookingRejectedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan belum dapat dijadwalkan'**
+  String get bookingRejectedTitle;
+
+  /// No description provided for @rejectionReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan penolakan'**
+  String get rejectionReason;
+
+  /// No description provided for @createNewRequest.
+  ///
+  /// In id, this message translates to:
+  /// **'Buat permintaan baru'**
+  String get createNewRequest;
+
+  /// No description provided for @backToActivity.
+  ///
+  /// In id, this message translates to:
+  /// **'Kembali ke aktivitas'**
+  String get backToActivity;
+
+  /// No description provided for @bookingConfirmedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking dikonfirmasi'**
+  String get bookingConfirmedTitle;
+
+  /// No description provided for @confirmedSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal servis Anda'**
+  String get confirmedSchedule;
+
+  /// No description provided for @serviceAdvisor.
+  ///
+  /// In id, this message translates to:
+  /// **'PIC (Service Advisor)'**
+  String get serviceAdvisor;
+
+  /// No description provided for @partnerBookingNumber.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor booking partner'**
+  String get partnerBookingNumber;
+
+  /// No description provided for @arrivalInstructions.
+  ///
+  /// In id, this message translates to:
+  /// **'Instruksi kedatangan'**
+  String get arrivalInstructions;
+
+  /// No description provided for @openDirections.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka petunjuk lokasi'**
+  String get openDirections;
+
+  /// No description provided for @requestReschedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Minta jadwal ulang'**
+  String get requestReschedule;
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In id, this message translates to:
+  /// **'Batalkan booking'**
+  String get cancelBooking;
+
+  /// No description provided for @rescheduleTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Minta jadwal ulang'**
+  String get rescheduleTitle;
+
+  /// No description provided for @currentConfirmedSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal saat ini (terkonfirmasi)'**
+  String get currentConfirmedSchedule;
+
+  /// No description provided for @newPrimarySchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilihan utama baru'**
+  String get newPrimarySchedule;
+
+  /// No description provided for @newAlternativeSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilihan alternatif baru'**
+  String get newAlternativeSchedule;
+
+  /// No description provided for @changeReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan perubahan'**
+  String get changeReason;
+
+  /// No description provided for @oldScheduleRemains.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal lama tetap berlaku sampai perubahan dikonfirmasi petugas.'**
+  String get oldScheduleRemains;
+
+  /// No description provided for @submitReschedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim permintaan ulang'**
+  String get submitReschedule;
+
+  /// No description provided for @serviceInProgressTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Sedang dikerjakan'**
+  String get serviceInProgressTitle;
+
+  /// No description provided for @vehicleBeingServiced.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan Anda sedang ditangani'**
+  String get vehicleBeingServiced;
+
+  /// No description provided for @contactServiceAdvisor.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi Service Advisor'**
+  String get contactServiceAdvisor;
+
+  /// No description provided for @viewServiceDetails.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat detail layanan'**
+  String get viewServiceDetails;
+
+  /// No description provided for @serviceCompletedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Servis selesai'**
+  String get serviceCompletedTitle;
+
+  /// No description provided for @serviceCompletedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan Anda sudah selesai ditangani.'**
+  String get serviceCompletedDescription;
+
+  /// No description provided for @workshopFinalDetailsNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Rincian pekerjaan dan biaya final mengikuti dokumen workshop.'**
+  String get workshopFinalDetailsNotice;
+
+  /// No description provided for @viewInActivity.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat di Aktivitas'**
+  String get viewInActivity;
+
+  /// No description provided for @leaveServiceFeedback.
+  ///
+  /// In id, this message translates to:
+  /// **'Beri masukan layanan'**
+  String get leaveServiceFeedback;
+
+  /// No description provided for @bookingCancelledTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking dibatalkan'**
+  String get bookingCancelledTitle;
+
+  /// No description provided for @bookingExpiredTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan telah kedaluwarsa'**
+  String get bookingExpiredTitle;
+
+  /// No description provided for @bookingNoShowTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kunjungan tidak tercatat'**
+  String get bookingNoShowTitle;
+
+  /// No description provided for @bookingGenericDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa timeline untuk pembaruan terbaru dari petugas.'**
+  String get bookingGenericDescription;
+
+  /// No description provided for @cancelReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan pembatalan'**
+  String get cancelReason;
+
+  /// No description provided for @confirmCancellation.
+  ///
+  /// In id, this message translates to:
+  /// **'Batalkan booking ini?'**
+  String get confirmCancellation;
+
+  /// No description provided for @confirmCancellationDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat booking tetap tersimpan di Aktivitas Saya.'**
+  String get confirmCancellationDescription;
+
+  /// No description provided for @bookingMutationFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Perubahan belum dapat disimpan. Coba lagi.'**
+  String get bookingMutationFailed;
+
+  /// No description provided for @bookingOfflineError.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sedang offline. Draft tetap tersimpan; sambungkan internet lalu coba lagi.'**
+  String get bookingOfflineError;
+
+  /// No description provided for @bookingDuplicateError.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking aktif dengan kendaraan dan jadwal yang sama sudah tersedia.'**
+  String get bookingDuplicateError;
+
+  /// No description provided for @bookingIncompleteError.
+  ///
+  /// In id, this message translates to:
+  /// **'Lengkapi seluruh data wajib sebelum mengirim.'**
+  String get bookingIncompleteError;
+
+  /// No description provided for @activityEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Appraisal dan booking yang Anda kirim akan muncul di sini.'**
+  String get activityEmptyDescription;
+
+  /// No description provided for @activityAppraisalsLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas appraisal gagal dimuat. Booking servis Anda tetap ditampilkan.'**
+  String get activityAppraisalsLoadFailed;
+
+  /// No description provided for @activityBookingsLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas booking servis gagal dimuat. Appraisal Anda tetap ditampilkan.'**
+  String get activityBookingsLoadFailed;
+
+  /// No description provided for @activityAppraisalLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Trade-in appraisal'**
+  String get activityAppraisalLabel;
+
+  /// No description provided for @activityToyotaBookingLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking Toyota'**
+  String get activityToyotaBookingLabel;
+
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In id, this message translates to:
+  /// **'Tandai semua dibaca'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsMarkAllReadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi gagal ditandai dibaca. Silakan coba lagi.'**
+  String get notificationsMarkAllReadError;
+
+  /// No description provided for @notificationsLoadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi belum dapat dimuat.'**
+  String get notificationsLoadError;
+
+  /// No description provided for @notificationsOfflineError.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi tidak dapat diperbarui saat offline.'**
+  String get notificationsOfflineError;
+
+  /// No description provided for @notificationOpenAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka detail'**
+  String get notificationOpenAction;
+
+  /// No description provided for @adminConfirmBooking.
+  ///
+  /// In id, this message translates to:
+  /// **'Konfirmasi booking'**
+  String get adminConfirmBooking;
+
+  /// No description provided for @adminProposeAlternative.
+  ///
+  /// In id, this message translates to:
+  /// **'Ajukan jadwal alternatif'**
+  String get adminProposeAlternative;
+
+  /// No description provided for @adminRejectBooking.
+  ///
+  /// In id, this message translates to:
+  /// **'Tolak permintaan'**
+  String get adminRejectBooking;
+
+  /// No description provided for @adminApproveReschedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Setujui jadwal ulang'**
+  String get adminApproveReschedule;
+
+  /// No description provided for @adminRejectReschedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Tolak jadwal ulang'**
+  String get adminRejectReschedule;
+
+  /// No description provided for @adminCheckIn.
+  ///
+  /// In id, this message translates to:
+  /// **'Catat check-in'**
+  String get adminCheckIn;
+
+  /// No description provided for @adminStartService.
+  ///
+  /// In id, this message translates to:
+  /// **'Mulai servis'**
+  String get adminStartService;
+
+  /// No description provided for @adminCompleteService.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesaikan servis'**
+  String get adminCompleteService;
+
+  /// No description provided for @adminMarkNoShow.
+  ///
+  /// In id, this message translates to:
+  /// **'Tandai no-show'**
+  String get adminMarkNoShow;
+
+  /// No description provided for @adminActionReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan atau catatan'**
+  String get adminActionReason;
+
+  /// No description provided for @advisorName.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama Service Advisor'**
+  String get advisorName;
+
+  /// No description provided for @advisorPhone.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor Service Advisor'**
+  String get advisorPhone;
+
+  /// No description provided for @externalBookingNumber.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor booking partner'**
+  String get externalBookingNumber;
+
+  /// No description provided for @internalNote.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan internal'**
+  String get internalNote;
+
+  /// No description provided for @proposalExpiryInvalid.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas respons harus setelah waktu sekarang dan sebelum slot usulan maupun jadwal terkonfirmasi yang masih aktif.'**
+  String get proposalExpiryInvalid;
+
+  /// No description provided for @proposedPicName.
+  ///
+  /// In id, this message translates to:
+  /// **'PIC jadwal usulan'**
+  String get proposedPicName;
+
+  /// No description provided for @proposedArrivalInstructions.
+  ///
+  /// In id, this message translates to:
+  /// **'Petunjuk kedatangan usulan'**
+  String get proposedArrivalInstructions;
+
+  /// No description provided for @timelineActor.
+  ///
+  /// In id, this message translates to:
+  /// **'Oleh {name} ({type})'**
+  String timelineActor(String name, String type);
+
+  /// No description provided for @assignedAdvisor.
+  ///
+  /// In id, this message translates to:
+  /// **'Advisor admin yang ditugaskan'**
+  String get assignedAdvisor;
+
+  /// No description provided for @instructions.
+  ///
+  /// In id, this message translates to:
+  /// **'Instruksi untuk pelanggan'**
+  String get instructions;
+
+  /// No description provided for @sendAdminAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan tindakan'**
+  String get sendAdminAction;
+
+  /// No description provided for @adminActionSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Status booking berhasil diperbarui.'**
+  String get adminActionSuccess;
+
+  /// No description provided for @customer.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan'**
+  String get customer;
+
+  /// No description provided for @status.
+  ///
+  /// In id, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @fulfillment.
+  ///
+  /// In id, this message translates to:
+  /// **'Cara servis'**
+  String get fulfillment;
+
+  /// No description provided for @updatedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Diperbarui'**
+  String get updatedAt;
+
+  /// No description provided for @copyReference.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin nomor referensi'**
+  String get copyReference;
+
+  /// No description provided for @referenceCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor referensi disalin.'**
+  String get referenceCopied;
+
+  /// No description provided for @useCurrentLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan lokasi saat ini'**
+  String get useCurrentLocation;
+
+  /// No description provided for @locationServicesDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan lokasi perangkat belum aktif.'**
+  String get locationServicesDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In id, this message translates to:
+  /// **'Izin lokasi tidak diberikan.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationMapFallback.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih titik secara manual langsung pada peta.'**
+  String get locationMapFallback;
+
+  /// No description provided for @photoUploadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto gagal diunggah. Periksa koneksi lalu coba lagi.'**
+  String get photoUploadFailed;
+
+  /// No description provided for @photoTooLarge.
+  ///
+  /// In id, this message translates to:
+  /// **'Ukuran foto maksimal 10 MB.'**
+  String get photoTooLarge;
+
+  /// No description provided for @photoInvalidType.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan foto JPG, JPEG, PNG, HEIC, atau HEIF.'**
+  String get photoInvalidType;
+
+  /// No description provided for @benefitVehicleTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Benefit kendaraan'**
+  String get benefitVehicleTitle;
+
+  /// No description provided for @supportingPhotosTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto pendukung'**
+  String get supportingPhotosTitle;
+
+  /// No description provided for @preferencePrimary.
+  ///
+  /// In id, this message translates to:
+  /// **'Preferensi utama'**
+  String get preferencePrimary;
+
+  /// No description provided for @preferenceAlternative.
+  ///
+  /// In id, this message translates to:
+  /// **'Preferensi alternatif'**
+  String get preferenceAlternative;
+
+  /// No description provided for @proposedScheduleLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal usulan petugas'**
+  String get proposedScheduleLabel;
+
+  /// No description provided for @confirmedScheduleLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal terkonfirmasi'**
+  String get confirmedScheduleLabel;
+
+  /// No description provided for @reschedulePrimaryLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan jadwal utama baru'**
+  String get reschedulePrimaryLabel;
+
+  /// No description provided for @rescheduleAlternativeLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan jadwal alternatif baru'**
+  String get rescheduleAlternativeLabel;
+
+  /// No description provided for @proposalReasonLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan usulan'**
+  String get proposalReasonLabel;
+
+  /// No description provided for @proposalContextLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Konteks usulan'**
+  String get proposalContextLabel;
+
+  /// No description provided for @rescheduleReasonLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan perubahan'**
+  String get rescheduleReasonLabel;
+
+  /// No description provided for @responseDeadline.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas respons'**
+  String get responseDeadline;
+
+  /// No description provided for @completedAtLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesai pada'**
+  String get completedAtLabel;
+
+  /// No description provided for @slaOverdueLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'SLA terlambat'**
+  String get slaOverdueLabel;
+
+  /// No description provided for @dateIsoLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Tanggal (YYYY-MM-DD)'**
+  String get dateIsoLabel;
+
+  /// No description provided for @timeWindowLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Rentang waktu'**
+  String get timeWindowLabel;
+
+  /// No description provided for @picNameLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama PIC'**
+  String get picNameLabel;
+
+  /// No description provided for @arrivalInstructionsLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Instruksi kedatangan'**
+  String get arrivalInstructionsLabel;
+
+  /// No description provided for @alternativeReasonLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan alternatif'**
+  String get alternativeReasonLabel;
+
+  /// No description provided for @responseDeadlineIsoLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas respons (ISO 8601)'**
+  String get responseDeadlineIsoLabel;
+
+  /// No description provided for @reasonCodeLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Kode alasan'**
+  String get reasonCodeLabel;
+
+  /// No description provided for @benefitTypeLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis benefit'**
+  String get benefitTypeLabel;
+
+  /// No description provided for @benefitStatusLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Status benefit'**
+  String get benefitStatusLabel;
+
+  /// No description provided for @verificationSourceLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Sumber verifikasi'**
+  String get verificationSourceLabel;
+
+  /// No description provided for @benefitNotesLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan benefit'**
+  String get benefitNotesLabel;
+
+  /// No description provided for @confirmActionPrompt.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjutkan aksi ini?'**
+  String get confirmActionPrompt;
+
+  /// No description provided for @pendingVerificationLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Akan diverifikasi petugas'**
+  String get pendingVerificationLabel;
+
+  /// No description provided for @bookingAwaitingNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan belum terkonfirmasi. Petugas akan memeriksa ketersediaan kedua preferensi jadwal.'**
+  String get bookingAwaitingNotice;
+
+  /// No description provided for @bookingAlternativeNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal utama tidak tersedia. Tinjau jadwal alternatif yang diajukan sebelum batas respons.'**
+  String get bookingAlternativeNotice;
+
+  /// No description provided for @bookingRescheduleNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan perubahan sedang ditinjau. Jadwal lama tetap berlaku sampai perubahan dikonfirmasi.'**
+  String get bookingRescheduleNotice;
+
+  /// No description provided for @bookingCheckedInNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan sudah check-in dan menunggu proses servis.'**
+  String get bookingCheckedInNotice;
+
+  /// No description provided for @bookingInServiceNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan sedang dikerjakan oleh tim servis.'**
+  String get bookingInServiceNotice;
+
+  /// No description provided for @bookingCompletedNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Servis selesai. Rincian pekerjaan dan biaya final mengikuti dokumen dari bengkel.'**
+  String get bookingCompletedNotice;
+
+  /// No description provided for @bookingTerminalNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking tidak dapat dilanjutkan. Anda dapat membuat permintaan baru.'**
+  String get bookingTerminalNotice;
+
+  /// No description provided for @profilePhoneRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahkan nomor ponsel profil sebelum mengirim booking.'**
+  String get profilePhoneRequired;
+
+  /// No description provided for @thsOperationalVerification.
+  ///
+  /// In id, this message translates to:
+  /// **'Area akan diverifikasi oleh petugas sebelum konfirmasi.'**
+  String get thsOperationalVerification;
+
+  /// No description provided for @thsTemporarilyUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Toyota Home Service belum tersedia karena area operasional masih menunggu verifikasi.'**
+  String get thsTemporarilyUnavailable;
+
+  /// No description provided for @serviceFulfillmentUnavailableTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi servis belum tersedia'**
+  String get serviceFulfillmentUnavailableTitle;
+
+  /// No description provided for @serviceFulfillmentUnavailableDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada lokasi bengkel atau Toyota Home Service yang beroperasi saat ini. Silakan coba lagi nanti.'**
+  String get serviceFulfillmentUnavailableDescription;
+
+  /// No description provided for @serviceSelectionChanged.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilihan servis tersimpan ini sudah tidak beroperasi. Pilih kembali lokasi dan layanan sebelum mengirim.'**
+  String get serviceSelectionChanged;
+
+  /// No description provided for @chooseServiceLocationAgain.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih ulang layanan'**
+  String get chooseServiceLocationAgain;
+
+  /// No description provided for @loadingData.
+  ///
+  /// In id, this message translates to:
+  /// **'Menyiapkan data…'**
+  String get loadingData;
 }
 
 class _AppLocalizationsDelegate

@@ -16,7 +16,16 @@ final class UnauthorizedException extends AppException {
 }
 
 final class ServerException extends AppException {
-  const ServerException(super.message);
+  const ServerException(
+    super.message, {
+    this.code,
+    this.statusCode,
+    this.validationErrors = const {},
+  });
+
+  final String? code;
+  final int? statusCode;
+  final Map<String, List<String>> validationErrors;
 }
 
 final class CacheException extends AppException {

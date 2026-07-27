@@ -48,6 +48,7 @@ export 'src/notifications/domain/usecases/get_notifications_use_case.dart';
 
 // notifications — data
 export 'src/notifications/data/repositories/notifications_repository_impl.dart';
+export 'src/notifications/data/models/app_notification_model.dart';
 
 // notifications — presentation
 export 'src/notifications/presentation/notifications_provider.dart';

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
+<dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>TRIVA menggunakan lokasi Anda untuk menentukan titik layanan Toyota Home Service.</string>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
@@ -67,9 +69,9 @@
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Aplikasi memerlukan akses galeri foto untuk mengubah foto profil (avatar) Anda.</string>
+		<string>TRIVA menggunakan foto yang Anda pilih untuk foto profil serta lampiran foto kendaraan atau kebutuhan servis.</string>
 		<key>NSCameraUsageDescription</key>
-		<string>Aplikasi memerlukan akses kamera untuk mengambil foto profil (avatar) Anda.</string>
+		<string>TRIVA menggunakan kamera untuk mengambil foto profil serta lampiran foto kendaraan atau kebutuhan servis yang Anda pilih.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

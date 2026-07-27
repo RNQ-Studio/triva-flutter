@@ -138,6 +138,11 @@ abstract final class AppTheme {
           borderRadius: AppRadius.medium,
         ),
       ),
+      extensions: [
+        brightness == Brightness.light
+            ? AppServiceColors.light
+            : AppServiceColors.dark,
+      ],
     );
   }
 

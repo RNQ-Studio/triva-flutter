@@ -17,6 +17,7 @@ import 'package:triva_app/features/appraisal/presentation/screens/vehicle_condit
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_details_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_identity_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_photos_screen.dart';
+import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 
 class _FakeFlowController extends AppraisalFlowController {
   _FakeFlowController(this.draft);
@@ -214,8 +215,7 @@ void main() {
     }
   }
 
-  testWidgets('shows a clearly labelled dummy activity list when empty',
-      (tester) async {
+  testWidgets('shows an honest combined activity empty state', (tester) async {
     await _pump(
       tester,
       widget: const AppraisalActivityScreen(),
@@ -223,11 +223,14 @@ void main() {
       appraisalItems: const [],
     );
 
+    expect(find.text('Belum ada aktivitas.'), findsOneWidget);
     expect(
-      find.textContaining('contoh tampilan aktivitas'),
+      find.text(
+        'Appraisal dan booking yang Anda kirim akan muncul di sini.',
+      ),
       findsOneWidget,
     );
-    expect(find.text('Appraisal Toyota Avanza'), findsOneWidget);
+    expect(find.text('Appraisal Toyota Avanza'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
@@ -362,6 +365,7 @@ Future<void> _pump(
         appraisalsProvider.overrideWith(
           (ref) async => appraisalItems ?? [_appraisal],
         ),
+        toyotaServiceBookingsProvider.overrideWith((ref) async => const []),
         vehicleMakesProvider.overrideWith(
           (ref) async => [_vehicleMake, _hondaMake],
         ),
