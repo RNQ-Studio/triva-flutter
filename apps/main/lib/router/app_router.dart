@@ -15,6 +15,8 @@ import '../features/toyota_service/presentation/toyota_service_paths.dart';
 import '../features/otoxpert/presentation/otoxpert_routes.dart';
 import '../features/otoxpert/presentation/otoxpert_paths.dart';
 import '../features/credit/presentation/credit_routes.dart';
+import '../features/body_paint/presentation/body_paint_routes.dart';
+import '../features/body_paint/presentation/body_paint_paths.dart';
 import 'customer_shell.dart';
 
 String? trivaAppRedirect(BuildContext context, GoRouterState state) {
@@ -27,14 +29,19 @@ String? trivaAppRedirect(BuildContext context, GoRouterState state) {
   final authState = ProviderScope.containerOf(context).read(authProvider);
   if (authState is! AuthAuthenticated) return null;
 
-  final canAccess = location == adminPanelPath ||
-          location == adminToyotaServiceQueuePath ||
-          location == adminOtoxpertQueuePath
-      ? authState.user.canViewAnyServiceBookings
-      : location.startsWith('$adminToyotaServiceQueuePath/') ||
-              location.startsWith('$adminOtoxpertQueuePath/')
-          ? authState.user.canViewServiceBooking
-          : false;
+  final canAccess = location == adminPanelPath
+      ? authState.user.canAccessAdminPanel
+      : location == adminBodyPaintQueuePath
+          ? authState.user.canViewAnyBodyPaintEstimates
+          : location.startsWith('$adminBodyPaintQueuePath/')
+              ? authState.user.canViewBodyPaintEstimate
+              : location == adminToyotaServiceQueuePath ||
+                      location == adminOtoxpertQueuePath
+                  ? authState.user.canViewAnyServiceBookings
+                  : location.startsWith('$adminToyotaServiceQueuePath/') ||
+                          location.startsWith('$adminOtoxpertQueuePath/')
+                      ? authState.user.canViewServiceBooking
+                      : false;
   return canAccess ? null : '/';
 }
 
@@ -48,6 +55,7 @@ final appRouter = GoRouter(
     ...toyotaServiceRoutes,
     ...otoxpertRoutes,
     ...creditRoutes,
+    ...bodyPaintRoutes,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => CustomerShell(
         navigationShell: navigationShell,

@@ -12,6 +12,7 @@ import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
 import '../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../credit/presentation/credit_paths.dart';
+import '../../body_paint/presentation/body_paint_paths.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -104,11 +105,7 @@ class HomeScreen extends ConsumerWidget {
                             },
                             onOtoxpert: () => context.push(otoxpertPath),
                             onCredit: () => context.push(creditPath),
-                            onUnavailable: () => ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(
-                                SnackBar(content: Text(l10n.comingSoon)),
-                              ),
+                            onBodyPaint: () => context.push(bodyPaintPath),
                           ),
                           const SizedBox(height: AppSpacing.xLarge),
                           Text(
@@ -229,13 +226,13 @@ class _ServiceGrid extends StatelessWidget {
     required this.onToyotaService,
     required this.onOtoxpert,
     required this.onCredit,
-    required this.onUnavailable,
+    required this.onBodyPaint,
   });
 
   final VoidCallback onToyotaService;
   final VoidCallback onOtoxpert;
   final VoidCallback onCredit;
-  final VoidCallback onUnavailable;
+  final VoidCallback onBodyPaint;
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +288,7 @@ class _ServiceGrid extends StatelessWidget {
                   0 => onToyotaService,
                   1 => onOtoxpert,
                   2 => onCredit,
-                  _ => onUnavailable,
+                  _ => onBodyPaint,
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.large),

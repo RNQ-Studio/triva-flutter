@@ -47,4 +47,13 @@ class AppNotification {
         ? data['simulation_id']?.toString()
         : null;
   }
+
+  String? get bodyPaintEstimateId {
+    final explicit = data['body_paint_estimate_id']?.toString();
+    if (explicit != null) return explicit;
+    return type == 'body_paint_estimate' ||
+            data['type']?.toString() == 'body_paint_estimate'
+        ? data['estimate_id']?.toString()
+        : null;
+  }
 }

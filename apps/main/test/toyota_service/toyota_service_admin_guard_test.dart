@@ -87,6 +87,30 @@ void main() {
     expect(find.text('ADMIN'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('Body Paint capabilities do not grant Toyota queue access',
+      (tester) async {
+    final bodyPaintHarness = _RouterHarness(
+      initialLocation: '/admin/body-paint/estimates',
+      user: _user(const ['bp_estimates.viewAny']),
+    );
+    addTearDown(bodyPaintHarness.dispose);
+
+    await tester.pumpWidget(bodyPaintHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('BP_QUEUE'), findsOneWidget);
+
+    final toyotaHarness = _RouterHarness(
+      initialLocation: '/admin/toyota-service/bookings',
+      user: _user(const ['bp_estimates.viewAny']),
+    );
+    addTearDown(toyotaHarness.dispose);
+
+    await tester.pumpWidget(toyotaHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('HOME'), findsOneWidget);
+    expect(find.text('QUEUE'), findsNothing);
+  });
 }
 
 User _user(List<String> permissions) => User(
@@ -125,6 +149,14 @@ class _RouterHarness {
         GoRoute(
           path: '/admin/toyota-service/bookings/:id',
           builder: (_, __) => const Text('DETAIL'),
+        ),
+        GoRoute(
+          path: '/admin/body-paint/estimates',
+          builder: (_, __) => const Text('BP_QUEUE'),
+        ),
+        GoRoute(
+          path: '/admin/body-paint/estimates/:id',
+          builder: (_, __) => const Text('BP_DETAIL'),
         ),
       ],
     );

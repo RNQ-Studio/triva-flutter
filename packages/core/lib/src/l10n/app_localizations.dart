@@ -2351,7 +2351,7 @@ abstract class AppLocalizations {
   /// No description provided for @activityEmptyDescription.
   ///
   /// In id, this message translates to:
-  /// **'Appraisal, booking, dan simulasi kredit Anda akan muncul di sini.'**
+  /// **'Appraisal, booking, estimasi Body & Paint, dan simulasi kredit Anda akan muncul di sini.'**
   String get activityEmptyDescription;
 
   /// No description provided for @activityAppraisalsLoadFailed.
@@ -3367,6 +3367,516 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Sumber program'**
   String get creditSource;
+
+  /// No description provided for @bodyPaintFlowTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi Body & Paint'**
+  String get bodyPaintFlowTitle;
+
+  /// No description provided for @bodyPaintFlowSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih panel yang rusak dan unggah foto untuk menerima rentang estimasi dari estimator.'**
+  String get bodyPaintFlowSubtitle;
+
+  /// No description provided for @bodyPaintVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan'**
+  String get bodyPaintVehicle;
+
+  /// No description provided for @bodyPaintLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi inspeksi atau perbaikan'**
+  String get bodyPaintLocation;
+
+  /// No description provided for @bodyPaintDamage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kerusakan'**
+  String get bodyPaintDamage;
+
+  /// No description provided for @bodyPaintAddDamage.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah panel rusak'**
+  String get bodyPaintAddDamage;
+
+  /// No description provided for @bodyPaintPanel.
+  ///
+  /// In id, this message translates to:
+  /// **'Panel kendaraan'**
+  String get bodyPaintPanel;
+
+  /// No description provided for @bodyPaintDamageType.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis kerusakan'**
+  String get bodyPaintDamageType;
+
+  /// No description provided for @bodyPaintSeverity.
+  ///
+  /// In id, this message translates to:
+  /// **'Tingkat kerusakan'**
+  String get bodyPaintSeverity;
+
+  /// No description provided for @bodyPaintDamageNote.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan kerusakan (opsional)'**
+  String get bodyPaintDamageNote;
+
+  /// No description provided for @bodyPaintClosePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto dekat kerusakan'**
+  String get bodyPaintClosePhoto;
+
+  /// No description provided for @bodyPaintContextPhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto konteks kendaraan'**
+  String get bodyPaintContextPhoto;
+
+  /// No description provided for @bodyPaintChoosePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih foto'**
+  String get bodyPaintChoosePhoto;
+
+  /// No description provided for @bodyPaintReplacePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Ganti foto'**
+  String get bodyPaintReplacePhoto;
+
+  /// No description provided for @bodyPaintPhotoReady.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto siap dikirim'**
+  String get bodyPaintPhotoReady;
+
+  /// No description provided for @bodyPaintNotes.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan untuk estimator (opsional)'**
+  String get bodyPaintNotes;
+
+  /// No description provided for @bodyPaintConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya menyetujui foto dan data kendaraan digunakan untuk proses estimasi serta memahami hasilnya bersifat indikatif sampai inspeksi fisik.'**
+  String get bodyPaintConsent;
+
+  /// No description provided for @bodyPaintSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim permintaan estimasi'**
+  String get bodyPaintSubmit;
+
+  /// No description provided for @bodyPaintSubmitting.
+  ///
+  /// In id, this message translates to:
+  /// **'Mengirim estimasiâ€¦'**
+  String get bodyPaintSubmitting;
+
+  /// No description provided for @bodyPaintRequirementNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Setiap panel membutuhkan satu foto dekat dan seluruh permintaan membutuhkan satu foto konteks.'**
+  String get bodyPaintRequirementNotice;
+
+  /// No description provided for @bodyPaintSubmittedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan estimasi terkirim'**
+  String get bodyPaintSubmittedTitle;
+
+  /// No description provided for @bodyPaintSubmittedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimator akan memeriksa foto sebelum hasil ditampilkan. Pantau progresnya di Aktivitas Saya.'**
+  String get bodyPaintSubmittedDescription;
+
+  /// No description provided for @bodyPaintViewEstimate.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat progres estimasi'**
+  String get bodyPaintViewEstimate;
+
+  /// No description provided for @bodyPaintActivityLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi Body & Paint'**
+  String get bodyPaintActivityLabel;
+
+  /// No description provided for @bodyPaintActivityLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas Body & Paint gagal dimuat. Aktivitas lain tetap ditampilkan.'**
+  String get bodyPaintActivityLoadFailed;
+
+  /// No description provided for @bodyPaintNoEstimates.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada estimasi Body & Paint.'**
+  String get bodyPaintNoEstimates;
+
+  /// No description provided for @bodyPaintEstimateResult.
+  ///
+  /// In id, this message translates to:
+  /// **'Rentang estimasi'**
+  String get bodyPaintEstimateResult;
+
+  /// No description provided for @bodyPaintVersion.
+  ///
+  /// In id, this message translates to:
+  /// **'Versi estimasi'**
+  String get bodyPaintVersion;
+
+  /// No description provided for @bodyPaintDuration.
+  ///
+  /// In id, this message translates to:
+  /// **'Durasi pengerjaan'**
+  String get bodyPaintDuration;
+
+  /// No description provided for @bodyPaintDays.
+  ///
+  /// In id, this message translates to:
+  /// **'hari'**
+  String get bodyPaintDays;
+
+  /// No description provided for @bodyPaintValidUntil.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlaku sampai'**
+  String get bodyPaintValidUntil;
+
+  /// No description provided for @bodyPaintPhysicalInspection.
+  ///
+  /// In id, this message translates to:
+  /// **'Nilai final tetap memerlukan inspeksi fisik kendaraan.'**
+  String get bodyPaintPhysicalInspection;
+
+  /// No description provided for @bodyPaintAssumptions.
+  ///
+  /// In id, this message translates to:
+  /// **'Asumsi estimator'**
+  String get bodyPaintAssumptions;
+
+  /// No description provided for @bodyPaintTimeline.
+  ///
+  /// In id, this message translates to:
+  /// **'Perjalanan estimasi'**
+  String get bodyPaintTimeline;
+
+  /// No description provided for @bodyPaintAccept.
+  ///
+  /// In id, this message translates to:
+  /// **'Terima estimasi'**
+  String get bodyPaintAccept;
+
+  /// No description provided for @bodyPaintDecline.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak lanjut'**
+  String get bodyPaintDecline;
+
+  /// No description provided for @bodyPaintDeclineReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan tidak melanjutkan (opsional)'**
+  String get bodyPaintDeclineReason;
+
+  /// No description provided for @bodyPaintRequestBooking.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjut booking Body & Paint'**
+  String get bodyPaintRequestBooking;
+
+  /// No description provided for @bodyPaintBookingTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jadwal booking'**
+  String get bodyPaintBookingTitle;
+
+  /// No description provided for @bodyPaintPrimarySlot.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal utama'**
+  String get bodyPaintPrimarySlot;
+
+  /// No description provided for @bodyPaintAlternativeSlot.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal alternatif'**
+  String get bodyPaintAlternativeSlot;
+
+  /// No description provided for @bodyPaintComplaint.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan untuk bengkel'**
+  String get bodyPaintComplaint;
+
+  /// No description provided for @bodyPaintMileage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kilometer saat ini'**
+  String get bodyPaintMileage;
+
+  /// No description provided for @bodyPaintBookingConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya menyetujui data estimasi diteruskan untuk permintaan booking.'**
+  String get bodyPaintBookingConsent;
+
+  /// No description provided for @bodyPaintRequestPhotos.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimator meminta perbaikan foto'**
+  String get bodyPaintRequestPhotos;
+
+  /// No description provided for @bodyPaintResubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim ulang foto'**
+  String get bodyPaintResubmit;
+
+  /// No description provided for @bodyPaintAdminQueue.
+  ///
+  /// In id, this message translates to:
+  /// **'Antrean Estimasi Body & Paint'**
+  String get bodyPaintAdminQueue;
+
+  /// No description provided for @bodyPaintAdminEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada estimasi di antrean.'**
+  String get bodyPaintAdminEmpty;
+
+  /// No description provided for @bodyPaintCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan'**
+  String get bodyPaintCustomer;
+
+  /// No description provided for @bodyPaintEstimator.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimator'**
+  String get bodyPaintEstimator;
+
+  /// No description provided for @bodyPaintEngineEstimate.
+  ///
+  /// In id, this message translates to:
+  /// **'Saran mesin'**
+  String get bodyPaintEngineEstimate;
+
+  /// No description provided for @bodyPaintStartReview.
+  ///
+  /// In id, this message translates to:
+  /// **'Mulai review'**
+  String get bodyPaintStartReview;
+
+  /// No description provided for @bodyPaintAssignSelf.
+  ///
+  /// In id, this message translates to:
+  /// **'Ambil estimasi ini'**
+  String get bodyPaintAssignSelf;
+
+  /// No description provided for @bodyPaintPublish.
+  ///
+  /// In id, this message translates to:
+  /// **'Terbitkan estimasi'**
+  String get bodyPaintPublish;
+
+  /// No description provided for @bodyPaintPublishDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa biaya per panel. Perubahan dari saran mesin wajib disertai alasan.'**
+  String get bodyPaintPublishDescription;
+
+  /// No description provided for @bodyPaintWorkType.
+  ///
+  /// In id, this message translates to:
+  /// **'Tindakan'**
+  String get bodyPaintWorkType;
+
+  /// No description provided for @bodyPaintLowCost.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya minimum'**
+  String get bodyPaintLowCost;
+
+  /// No description provided for @bodyPaintHighCost.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya maksimum'**
+  String get bodyPaintHighCost;
+
+  /// No description provided for @bodyPaintMinHours.
+  ///
+  /// In id, this message translates to:
+  /// **'Durasi minimum (jam)'**
+  String get bodyPaintMinHours;
+
+  /// No description provided for @bodyPaintMaxHours.
+  ///
+  /// In id, this message translates to:
+  /// **'Durasi maksimum (jam)'**
+  String get bodyPaintMaxHours;
+
+  /// No description provided for @bodyPaintRecommendation.
+  ///
+  /// In id, this message translates to:
+  /// **'Rekomendasi (opsional)'**
+  String get bodyPaintRecommendation;
+
+  /// No description provided for @bodyPaintAssumption.
+  ///
+  /// In id, this message translates to:
+  /// **'Asumsi, pisahkan tiap baris'**
+  String get bodyPaintAssumption;
+
+  /// No description provided for @bodyPaintDisclaimer.
+  ///
+  /// In id, this message translates to:
+  /// **'Disclaimer'**
+  String get bodyPaintDisclaimer;
+
+  /// No description provided for @bodyPaintValidDays.
+  ///
+  /// In id, this message translates to:
+  /// **'Masa berlaku (hari)'**
+  String get bodyPaintValidDays;
+
+  /// No description provided for @bodyPaintOverrideReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan koreksi atau override'**
+  String get bodyPaintOverrideReason;
+
+  /// No description provided for @bodyPaintAdminActionSuccess.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi berhasil diperbarui.'**
+  String get bodyPaintAdminActionSuccess;
+
+  /// No description provided for @bodyPaintCompleteFields.
+  ///
+  /// In id, this message translates to:
+  /// **'Lengkapi seluruh data, foto, dan persetujuan terlebih dahulu.'**
+  String get bodyPaintCompleteFields;
+
+  /// No description provided for @bodyPaintLoadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Data Estimasi Body & Paint belum dapat dimuat.'**
+  String get bodyPaintLoadFailed;
+
+  /// No description provided for @bodyPaintRequestPhotoReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Jelaskan foto yang perlu diperbaiki'**
+  String get bodyPaintRequestPhotoReason;
+
+  /// No description provided for @bodyPaintLabor.
+  ///
+  /// In id, this message translates to:
+  /// **'Jasa'**
+  String get bodyPaintLabor;
+
+  /// No description provided for @bodyPaintMaterial.
+  ///
+  /// In id, this message translates to:
+  /// **'Material'**
+  String get bodyPaintMaterial;
+
+  /// No description provided for @bodyPaintParts.
+  ///
+  /// In id, this message translates to:
+  /// **'Suku cadang'**
+  String get bodyPaintParts;
+
+  /// No description provided for @bodyPaintOther.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya lain'**
+  String get bodyPaintOther;
+
+  /// No description provided for @bodyPaintRepair.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbaikan panel'**
+  String get bodyPaintRepair;
+
+  /// No description provided for @bodyPaintPaint.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengecatan'**
+  String get bodyPaintPaint;
+
+  /// No description provided for @bodyPaintReplace.
+  ///
+  /// In id, this message translates to:
+  /// **'Penggantian'**
+  String get bodyPaintReplace;
+
+  /// No description provided for @bodyPaintPolish.
+  ///
+  /// In id, this message translates to:
+  /// **'Poles'**
+  String get bodyPaintPolish;
+
+  /// No description provided for @bodyPaintPublishAssumptionDefault.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi dibuat dari kondisi yang terlihat pada foto.'**
+  String get bodyPaintPublishAssumptionDefault;
+
+  /// No description provided for @bodyPaintPublishDisclaimerDefault.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi bersifat indikatif dan nilai final ditentukan setelah inspeksi fisik kendaraan.'**
+  String get bodyPaintPublishDisclaimerDefault;
+
+  /// No description provided for @bodyPaintSearch.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari referensi, pelanggan, atau kendaraan'**
+  String get bodyPaintSearch;
+
+  /// No description provided for @bodyPaintAllStatuses.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua status'**
+  String get bodyPaintAllStatuses;
+
+  /// No description provided for @bodyPaintLight.
+  ///
+  /// In id, this message translates to:
+  /// **'Ringan'**
+  String get bodyPaintLight;
+
+  /// No description provided for @bodyPaintMedium.
+  ///
+  /// In id, this message translates to:
+  /// **'Sedang'**
+  String get bodyPaintMedium;
+
+  /// No description provided for @bodyPaintHeavy.
+  ///
+  /// In id, this message translates to:
+  /// **'Berat'**
+  String get bodyPaintHeavy;
+
+  /// No description provided for @bodyPaintInspect.
+  ///
+  /// In id, this message translates to:
+  /// **'Inspeksi'**
+  String get bodyPaintInspect;
 }
 
 class _AppLocalizationsDelegate

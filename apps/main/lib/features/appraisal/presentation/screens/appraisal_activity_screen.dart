@@ -12,6 +12,9 @@ import '../../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../../credit/domain/credit_models.dart';
 import '../../../credit/presentation/credit_controller.dart';
 import '../../../credit/presentation/credit_paths.dart';
+import '../../../body_paint/domain/body_paint_models.dart';
+import '../../../body_paint/presentation/body_paint_controller.dart';
+import '../../../body_paint/presentation/body_paint_paths.dart';
 import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
@@ -26,10 +29,12 @@ class AppraisalActivityScreen extends ConsumerWidget {
     final bookings = ref.watch(toyotaServiceBookingsProvider);
     final otoxpertBookings = ref.watch(otoxpertBookingsProvider);
     final creditSimulations = ref.watch(creditSimulationsProvider);
+    final bodyPaintEstimates = ref.watch(bodyPaintEstimatesProvider);
     final hasAnyValue = appraisals.hasValue ||
         bookings.hasValue ||
         otoxpertBookings.hasValue ||
-        creditSimulations.hasValue;
+        creditSimulations.hasValue ||
+        bodyPaintEstimates.hasValue;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.activityTitle)),
       body: SafeArea(
@@ -37,26 +42,32 @@ class AppraisalActivityScreen extends ConsumerWidget {
                 appraisals.isLoading &&
                 bookings.isLoading &&
                 otoxpertBookings.isLoading &&
-                creditSimulations.isLoading
+                creditSimulations.isLoading &&
+                bodyPaintEstimates.isLoading
             ? const Center(child: CircularProgressIndicator())
             : _ActivityList(
                 appraisals: appraisals.value ?? const [],
                 bookings: bookings.value ?? const [],
                 otoxpertBookings: otoxpertBookings.value ?? const [],
                 creditSimulations: creditSimulations.value ?? const [],
+                bodyPaintEstimates: bodyPaintEstimates.value ?? const [],
                 appraisalsLoading: appraisals.isLoading,
                 bookingsLoading: bookings.isLoading,
                 otoxpertLoading: otoxpertBookings.isLoading,
                 creditLoading: creditSimulations.isLoading,
+                bodyPaintLoading: bodyPaintEstimates.isLoading,
                 appraisalsError: appraisals.hasError,
                 bookingsError: bookings.hasError,
                 otoxpertError: otoxpertBookings.hasError,
                 creditError: creditSimulations.hasError,
+                bodyPaintError: bodyPaintEstimates.hasError,
                 onRetryAppraisals: () => ref.invalidate(appraisalsProvider),
                 onRetryBookings: () =>
                     ref.invalidate(toyotaServiceBookingsProvider),
                 onRetryOtoxpert: () => ref.invalidate(otoxpertBookingsProvider),
                 onRetryCredit: () => ref.invalidate(creditSimulationsProvider),
+                onRetryBodyPaint: () =>
+                    ref.invalidate(bodyPaintEstimatesProvider),
                 onRefresh: () async {
                   await Future.wait<void>([
                     ref
@@ -75,6 +86,10 @@ class AppraisalActivityScreen extends ConsumerWidget {
                         .refresh(creditSimulationsProvider.future)
                         .then<void>((_) {})
                         .onError((_, __) {}),
+                    ref
+                        .refresh(bodyPaintEstimatesProvider.future)
+                        .then<void>((_) {})
+                        .onError((_, __) {}),
                   ]);
                 },
               ),
@@ -89,18 +104,22 @@ class _ActivityList extends StatelessWidget {
     required this.bookings,
     required this.otoxpertBookings,
     required this.creditSimulations,
+    required this.bodyPaintEstimates,
     required this.appraisalsLoading,
     required this.bookingsLoading,
     required this.otoxpertLoading,
     required this.creditLoading,
+    required this.bodyPaintLoading,
     required this.appraisalsError,
     required this.bookingsError,
     required this.otoxpertError,
     required this.creditError,
+    required this.bodyPaintError,
     required this.onRetryAppraisals,
     required this.onRetryBookings,
     required this.onRetryOtoxpert,
     required this.onRetryCredit,
+    required this.onRetryBodyPaint,
     required this.onRefresh,
   });
 
@@ -108,33 +127,42 @@ class _ActivityList extends StatelessWidget {
   final List<ToyotaServiceBooking> bookings;
   final List<OtoxpertBooking> otoxpertBookings;
   final List<CreditSimulation> creditSimulations;
+  final List<BodyPaintEstimate> bodyPaintEstimates;
   final bool appraisalsLoading;
   final bool bookingsLoading;
   final bool otoxpertLoading;
   final bool creditLoading;
+  final bool bodyPaintLoading;
   final bool appraisalsError;
   final bool bookingsError;
   final bool otoxpertError;
   final bool creditError;
+  final bool bodyPaintError;
   final VoidCallback onRetryAppraisals;
   final VoidCallback onRetryBookings;
   final VoidCallback onRetryOtoxpert;
   final VoidCallback onRetryCredit;
+  final VoidCallback onRetryBodyPaint;
   final Future<void> Function() onRefresh;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final hasSourceNotice =
-        appraisalsError || bookingsError || otoxpertError || creditError;
+    final hasSourceNotice = appraisalsError ||
+        bookingsError ||
+        otoxpertError ||
+        creditError ||
+        bodyPaintError;
     final isLoading = appraisalsLoading ||
         bookingsLoading ||
         otoxpertLoading ||
-        creditLoading;
+        creditLoading ||
+        bodyPaintLoading;
     if (appraisals.isEmpty &&
         bookings.isEmpty &&
         otoxpertBookings.isEmpty &&
         creditSimulations.isEmpty &&
+        bodyPaintEstimates.isEmpty &&
         !hasSourceNotice &&
         !isLoading) {
       return RefreshIndicator(
@@ -172,6 +200,13 @@ class _ActivityList extends StatelessWidget {
           at: item.updatedAt ?? item.savedAt,
           tile: _CreditSimulationTile(item: item),
         ),
+      for (final item in bodyPaintEstimates)
+        (
+          at: item.updatedAt ??
+              item.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0),
+          tile: _BodyPaintEstimateTile(item: item),
+        ),
     ]..sort((a, b) => b.at.compareTo(a.at));
     final leading = <Widget>[
       if (appraisalsError)
@@ -197,6 +232,12 @@ class _ActivityList extends StatelessWidget {
           key: const ValueKey('activity-credit-error'),
           message: l10n.creditActivityLoadFailed,
           onRetry: onRetryCredit,
+        ),
+      if (bodyPaintError)
+        _ActivitySourceError(
+          key: const ValueKey('activity-body-paint-error'),
+          message: l10n.bodyPaintActivityLoadFailed,
+          onRetry: onRetryBodyPaint,
         ),
       if (isLoading) const LinearProgressIndicator(),
       if (entries.isEmpty && hasSourceNotice)
@@ -362,6 +403,38 @@ class _CreditSimulationTile extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right_rounded),
         onTap: () => context.push(creditSimulationPath(item.id)),
+      ),
+    );
+  }
+}
+
+class _BodyPaintEstimateTile extends StatelessWidget {
+  const _BodyPaintEstimateTile({required this.item});
+
+  final BodyPaintEstimate item;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Card(
+      key: ValueKey('activity-body-paint-${item.id}'),
+      margin: EdgeInsets.zero,
+      child: ListTile(
+        leading: const CircleAvatar(
+          backgroundColor: AppColors.serviceRoseSoft,
+          child: Icon(
+            Icons.format_paint_outlined,
+            color: AppColors.serviceRose,
+          ),
+        ),
+        title: Text(
+          item.vehicle?.displayName ?? item.referenceNo,
+        ),
+        subtitle: Text(
+          '${l10n.bodyPaintActivityLabel} â€¢ ${item.statusLabel}',
+        ),
+        trailing: const Icon(Icons.chevron_right_rounded),
+        onTap: () => context.push(bodyPaintEstimatePath(item.id)),
       ),
     );
   }

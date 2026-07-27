@@ -18,6 +18,7 @@ import 'package:triva_app/features/appraisal/presentation/screens/vehicle_detail
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_identity_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_photos_screen.dart';
 import 'package:triva_app/features/credit/presentation/credit_controller.dart';
+import 'package:triva_app/features/body_paint/presentation/body_paint_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
 
@@ -228,7 +229,7 @@ void main() {
     expect(find.text('Belum ada aktivitas.'), findsOneWidget);
     expect(
       find.text(
-        'Appraisal, booking, dan simulasi kredit Anda akan muncul di sini.',
+        'Appraisal, booking, estimasi Body & Paint, dan simulasi kredit Anda akan muncul di sini.',
       ),
       findsOneWidget,
     );
@@ -370,6 +371,7 @@ Future<void> _pump(
         toyotaServiceBookingsProvider.overrideWith((ref) async => const []),
         otoxpertBookingsProvider.overrideWith((ref) async => const []),
         creditSimulationsProvider.overrideWith((ref) async => const []),
+        bodyPaintEstimatesProvider.overrideWith((ref) async => const []),
         vehicleMakesProvider.overrideWith(
           (ref) async => [_vehicleMake, _hondaMake],
         ),

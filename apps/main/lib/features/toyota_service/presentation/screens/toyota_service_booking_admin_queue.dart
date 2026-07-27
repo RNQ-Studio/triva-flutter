@@ -7,8 +7,7 @@ class AdminPanelScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final auth = ref.watch(authProvider);
-    final allowed =
-        auth is AuthAuthenticated && auth.user.canViewAnyServiceBookings;
+    final allowed = auth is AuthAuthenticated && auth.user.canAccessAdminPanel;
     if (!allowed) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (context.mounted) context.go('/');
@@ -51,7 +50,7 @@ class AdminPanelScreen extends ConsumerWidget {
         icon: Icons.format_paint_rounded,
         title: l10n.serviceBodyPaintTitle,
         color: AppColors.serviceRose,
-        path: null,
+        path: adminBodyPaintQueuePath,
       ),
     ];
     return Scaffold(

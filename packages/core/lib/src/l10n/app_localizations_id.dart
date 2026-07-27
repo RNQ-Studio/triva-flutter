@@ -1237,7 +1237,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get activityEmptyDescription =>
-      'Appraisal, booking, dan simulasi kredit Anda akan muncul di sini.';
+      'Appraisal, booking, estimasi Body & Paint, dan simulasi kredit Anda akan muncul di sini.';
 
   @override
   String get activityAppraisalsLoadFailed =>
@@ -1791,4 +1791,272 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get creditSource => 'Sumber program';
+
+  @override
+  String get bodyPaintFlowTitle => 'Estimasi Body & Paint';
+
+  @override
+  String get bodyPaintFlowSubtitle =>
+      'Pilih panel yang rusak dan unggah foto untuk menerima rentang estimasi dari estimator.';
+
+  @override
+  String get bodyPaintVehicle => 'Kendaraan';
+
+  @override
+  String get bodyPaintLocation => 'Lokasi inspeksi atau perbaikan';
+
+  @override
+  String get bodyPaintDamage => 'Kerusakan';
+
+  @override
+  String get bodyPaintAddDamage => 'Tambah panel rusak';
+
+  @override
+  String get bodyPaintPanel => 'Panel kendaraan';
+
+  @override
+  String get bodyPaintDamageType => 'Jenis kerusakan';
+
+  @override
+  String get bodyPaintSeverity => 'Tingkat kerusakan';
+
+  @override
+  String get bodyPaintDamageNote => 'Catatan kerusakan (opsional)';
+
+  @override
+  String get bodyPaintClosePhoto => 'Foto dekat kerusakan';
+
+  @override
+  String get bodyPaintContextPhoto => 'Foto konteks kendaraan';
+
+  @override
+  String get bodyPaintChoosePhoto => 'Pilih foto';
+
+  @override
+  String get bodyPaintReplacePhoto => 'Ganti foto';
+
+  @override
+  String get bodyPaintPhotoReady => 'Foto siap dikirim';
+
+  @override
+  String get bodyPaintNotes => 'Catatan untuk estimator (opsional)';
+
+  @override
+  String get bodyPaintConsent =>
+      'Saya menyetujui foto dan data kendaraan digunakan untuk proses estimasi serta memahami hasilnya bersifat indikatif sampai inspeksi fisik.';
+
+  @override
+  String get bodyPaintSubmit => 'Kirim permintaan estimasi';
+
+  @override
+  String get bodyPaintSubmitting => 'Mengirim estimasiâ€¦';
+
+  @override
+  String get bodyPaintRequirementNotice =>
+      'Setiap panel membutuhkan satu foto dekat dan seluruh permintaan membutuhkan satu foto konteks.';
+
+  @override
+  String get bodyPaintSubmittedTitle => 'Permintaan estimasi terkirim';
+
+  @override
+  String get bodyPaintSubmittedDescription =>
+      'Estimator akan memeriksa foto sebelum hasil ditampilkan. Pantau progresnya di Aktivitas Saya.';
+
+  @override
+  String get bodyPaintViewEstimate => 'Lihat progres estimasi';
+
+  @override
+  String get bodyPaintActivityLabel => 'Estimasi Body & Paint';
+
+  @override
+  String get bodyPaintActivityLoadFailed =>
+      'Aktivitas Body & Paint gagal dimuat. Aktivitas lain tetap ditampilkan.';
+
+  @override
+  String get bodyPaintNoEstimates => 'Belum ada estimasi Body & Paint.';
+
+  @override
+  String get bodyPaintEstimateResult => 'Rentang estimasi';
+
+  @override
+  String get bodyPaintVersion => 'Versi estimasi';
+
+  @override
+  String get bodyPaintDuration => 'Durasi pengerjaan';
+
+  @override
+  String get bodyPaintDays => 'hari';
+
+  @override
+  String get bodyPaintValidUntil => 'Berlaku sampai';
+
+  @override
+  String get bodyPaintPhysicalInspection =>
+      'Nilai final tetap memerlukan inspeksi fisik kendaraan.';
+
+  @override
+  String get bodyPaintAssumptions => 'Asumsi estimator';
+
+  @override
+  String get bodyPaintTimeline => 'Perjalanan estimasi';
+
+  @override
+  String get bodyPaintAccept => 'Terima estimasi';
+
+  @override
+  String get bodyPaintDecline => 'Tidak lanjut';
+
+  @override
+  String get bodyPaintDeclineReason => 'Alasan tidak melanjutkan (opsional)';
+
+  @override
+  String get bodyPaintRequestBooking => 'Lanjut booking Body & Paint';
+
+  @override
+  String get bodyPaintBookingTitle => 'Pilih jadwal booking';
+
+  @override
+  String get bodyPaintPrimarySlot => 'Jadwal utama';
+
+  @override
+  String get bodyPaintAlternativeSlot => 'Jadwal alternatif';
+
+  @override
+  String get bodyPaintComplaint => 'Catatan untuk bengkel';
+
+  @override
+  String get bodyPaintMileage => 'Kilometer saat ini';
+
+  @override
+  String get bodyPaintBookingConsent =>
+      'Saya menyetujui data estimasi diteruskan untuk permintaan booking.';
+
+  @override
+  String get bodyPaintRequestPhotos => 'Estimator meminta perbaikan foto';
+
+  @override
+  String get bodyPaintResubmit => 'Kirim ulang foto';
+
+  @override
+  String get bodyPaintAdminQueue => 'Antrean Estimasi Body & Paint';
+
+  @override
+  String get bodyPaintAdminEmpty => 'Tidak ada estimasi di antrean.';
+
+  @override
+  String get bodyPaintCustomer => 'Pelanggan';
+
+  @override
+  String get bodyPaintEstimator => 'Estimator';
+
+  @override
+  String get bodyPaintEngineEstimate => 'Saran mesin';
+
+  @override
+  String get bodyPaintStartReview => 'Mulai review';
+
+  @override
+  String get bodyPaintAssignSelf => 'Ambil estimasi ini';
+
+  @override
+  String get bodyPaintPublish => 'Terbitkan estimasi';
+
+  @override
+  String get bodyPaintPublishDescription =>
+      'Periksa biaya per panel. Perubahan dari saran mesin wajib disertai alasan.';
+
+  @override
+  String get bodyPaintWorkType => 'Tindakan';
+
+  @override
+  String get bodyPaintLowCost => 'Biaya minimum';
+
+  @override
+  String get bodyPaintHighCost => 'Biaya maksimum';
+
+  @override
+  String get bodyPaintMinHours => 'Durasi minimum (jam)';
+
+  @override
+  String get bodyPaintMaxHours => 'Durasi maksimum (jam)';
+
+  @override
+  String get bodyPaintRecommendation => 'Rekomendasi (opsional)';
+
+  @override
+  String get bodyPaintAssumption => 'Asumsi, pisahkan tiap baris';
+
+  @override
+  String get bodyPaintDisclaimer => 'Disclaimer';
+
+  @override
+  String get bodyPaintValidDays => 'Masa berlaku (hari)';
+
+  @override
+  String get bodyPaintOverrideReason => 'Alasan koreksi atau override';
+
+  @override
+  String get bodyPaintAdminActionSuccess => 'Estimasi berhasil diperbarui.';
+
+  @override
+  String get bodyPaintCompleteFields =>
+      'Lengkapi seluruh data, foto, dan persetujuan terlebih dahulu.';
+
+  @override
+  String get bodyPaintLoadFailed =>
+      'Data Estimasi Body & Paint belum dapat dimuat.';
+
+  @override
+  String get bodyPaintRequestPhotoReason =>
+      'Jelaskan foto yang perlu diperbaiki';
+
+  @override
+  String get bodyPaintLabor => 'Jasa';
+
+  @override
+  String get bodyPaintMaterial => 'Material';
+
+  @override
+  String get bodyPaintParts => 'Suku cadang';
+
+  @override
+  String get bodyPaintOther => 'Biaya lain';
+
+  @override
+  String get bodyPaintRepair => 'Perbaikan panel';
+
+  @override
+  String get bodyPaintPaint => 'Pengecatan';
+
+  @override
+  String get bodyPaintReplace => 'Penggantian';
+
+  @override
+  String get bodyPaintPolish => 'Poles';
+
+  @override
+  String get bodyPaintPublishAssumptionDefault =>
+      'Estimasi dibuat dari kondisi yang terlihat pada foto.';
+
+  @override
+  String get bodyPaintPublishDisclaimerDefault =>
+      'Estimasi bersifat indikatif dan nilai final ditentukan setelah inspeksi fisik kendaraan.';
+
+  @override
+  String get bodyPaintSearch => 'Cari referensi, pelanggan, atau kendaraan';
+
+  @override
+  String get bodyPaintAllStatuses => 'Semua status';
+
+  @override
+  String get bodyPaintLight => 'Ringan';
+
+  @override
+  String get bodyPaintMedium => 'Sedang';
+
+  @override
+  String get bodyPaintHeavy => 'Berat';
+
+  @override
+  String get bodyPaintInspect => 'Inspeksi';
 }

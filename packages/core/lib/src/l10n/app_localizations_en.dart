@@ -1242,7 +1242,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityEmptyDescription =>
-      'Your appraisals, bookings, and credit simulations will appear here.';
+      'Your appraisals, bookings, Body & Paint estimates, and credit simulations will appear here.';
 
   @override
   String get activityAppraisalsLoadFailed =>
@@ -1793,4 +1793,272 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creditSource => 'Program source';
+
+  @override
+  String get bodyPaintFlowTitle => 'Body & Paint Estimate';
+
+  @override
+  String get bodyPaintFlowSubtitle =>
+      'Select damaged panels and upload photos to receive an estimate range from an estimator.';
+
+  @override
+  String get bodyPaintVehicle => 'Vehicle';
+
+  @override
+  String get bodyPaintLocation => 'Inspection or repair location';
+
+  @override
+  String get bodyPaintDamage => 'Damage';
+
+  @override
+  String get bodyPaintAddDamage => 'Add damaged panel';
+
+  @override
+  String get bodyPaintPanel => 'Vehicle panel';
+
+  @override
+  String get bodyPaintDamageType => 'Damage type';
+
+  @override
+  String get bodyPaintSeverity => 'Damage severity';
+
+  @override
+  String get bodyPaintDamageNote => 'Damage note (optional)';
+
+  @override
+  String get bodyPaintClosePhoto => 'Close-up damage photo';
+
+  @override
+  String get bodyPaintContextPhoto => 'Vehicle context photo';
+
+  @override
+  String get bodyPaintChoosePhoto => 'Choose photo';
+
+  @override
+  String get bodyPaintReplacePhoto => 'Replace photo';
+
+  @override
+  String get bodyPaintPhotoReady => 'Photo ready to send';
+
+  @override
+  String get bodyPaintNotes => 'Note for estimator (optional)';
+
+  @override
+  String get bodyPaintConsent =>
+      'I consent to my vehicle photos and data being used for the estimate and understand the result is indicative until a physical inspection.';
+
+  @override
+  String get bodyPaintSubmit => 'Submit estimate request';
+
+  @override
+  String get bodyPaintSubmitting => 'Submitting estimateâ€¦';
+
+  @override
+  String get bodyPaintRequirementNotice =>
+      'Each panel needs one close-up photo and every request needs one vehicle context photo.';
+
+  @override
+  String get bodyPaintSubmittedTitle => 'Estimate request submitted';
+
+  @override
+  String get bodyPaintSubmittedDescription =>
+      'An estimator will review the photos before the result is displayed. Track progress in My Activity.';
+
+  @override
+  String get bodyPaintViewEstimate => 'View estimate progress';
+
+  @override
+  String get bodyPaintActivityLabel => 'Body & Paint estimate';
+
+  @override
+  String get bodyPaintActivityLoadFailed =>
+      'Body & Paint activity could not be loaded. Other activity is still shown.';
+
+  @override
+  String get bodyPaintNoEstimates => 'No Body & Paint estimates yet.';
+
+  @override
+  String get bodyPaintEstimateResult => 'Estimate range';
+
+  @override
+  String get bodyPaintVersion => 'Estimate version';
+
+  @override
+  String get bodyPaintDuration => 'Work duration';
+
+  @override
+  String get bodyPaintDays => 'days';
+
+  @override
+  String get bodyPaintValidUntil => 'Valid until';
+
+  @override
+  String get bodyPaintPhysicalInspection =>
+      'The final amount still requires a physical vehicle inspection.';
+
+  @override
+  String get bodyPaintAssumptions => 'Estimator assumptions';
+
+  @override
+  String get bodyPaintTimeline => 'Estimate timeline';
+
+  @override
+  String get bodyPaintAccept => 'Accept estimate';
+
+  @override
+  String get bodyPaintDecline => 'Do not continue';
+
+  @override
+  String get bodyPaintDeclineReason => 'Reason for not continuing (optional)';
+
+  @override
+  String get bodyPaintRequestBooking => 'Continue to Body & Paint booking';
+
+  @override
+  String get bodyPaintBookingTitle => 'Choose booking schedule';
+
+  @override
+  String get bodyPaintPrimarySlot => 'Primary schedule';
+
+  @override
+  String get bodyPaintAlternativeSlot => 'Alternative schedule';
+
+  @override
+  String get bodyPaintComplaint => 'Note for workshop';
+
+  @override
+  String get bodyPaintMileage => 'Current mileage';
+
+  @override
+  String get bodyPaintBookingConsent =>
+      'I consent to forwarding this estimate data for the booking request.';
+
+  @override
+  String get bodyPaintRequestPhotos => 'The estimator requested updated photos';
+
+  @override
+  String get bodyPaintResubmit => 'Resubmit photos';
+
+  @override
+  String get bodyPaintAdminQueue => 'Body & Paint Estimate Queue';
+
+  @override
+  String get bodyPaintAdminEmpty => 'There are no estimates in the queue.';
+
+  @override
+  String get bodyPaintCustomer => 'Customer';
+
+  @override
+  String get bodyPaintEstimator => 'Estimator';
+
+  @override
+  String get bodyPaintEngineEstimate => 'Engine suggestion';
+
+  @override
+  String get bodyPaintStartReview => 'Start review';
+
+  @override
+  String get bodyPaintAssignSelf => 'Take this estimate';
+
+  @override
+  String get bodyPaintPublish => 'Publish estimate';
+
+  @override
+  String get bodyPaintPublishDescription =>
+      'Review the cost for each panel. Changes from the engine suggestion require a reason.';
+
+  @override
+  String get bodyPaintWorkType => 'Work type';
+
+  @override
+  String get bodyPaintLowCost => 'Minimum cost';
+
+  @override
+  String get bodyPaintHighCost => 'Maximum cost';
+
+  @override
+  String get bodyPaintMinHours => 'Minimum duration (hours)';
+
+  @override
+  String get bodyPaintMaxHours => 'Maximum duration (hours)';
+
+  @override
+  String get bodyPaintRecommendation => 'Recommendation (optional)';
+
+  @override
+  String get bodyPaintAssumption => 'Assumptions, one per line';
+
+  @override
+  String get bodyPaintDisclaimer => 'Disclaimer';
+
+  @override
+  String get bodyPaintValidDays => 'Validity (days)';
+
+  @override
+  String get bodyPaintOverrideReason => 'Correction or override reason';
+
+  @override
+  String get bodyPaintAdminActionSuccess => 'Estimate updated successfully.';
+
+  @override
+  String get bodyPaintCompleteFields =>
+      'Complete all data, photos, and consent first.';
+
+  @override
+  String get bodyPaintLoadFailed =>
+      'Body & Paint estimate data could not be loaded.';
+
+  @override
+  String get bodyPaintRequestPhotoReason =>
+      'Explain which photos need to be updated';
+
+  @override
+  String get bodyPaintLabor => 'Labor';
+
+  @override
+  String get bodyPaintMaterial => 'Material';
+
+  @override
+  String get bodyPaintParts => 'Parts';
+
+  @override
+  String get bodyPaintOther => 'Other costs';
+
+  @override
+  String get bodyPaintRepair => 'Panel repair';
+
+  @override
+  String get bodyPaintPaint => 'Painting';
+
+  @override
+  String get bodyPaintReplace => 'Replacement';
+
+  @override
+  String get bodyPaintPolish => 'Polish';
+
+  @override
+  String get bodyPaintPublishAssumptionDefault =>
+      'The estimate is based on the visible condition in the submitted photos.';
+
+  @override
+  String get bodyPaintPublishDisclaimerDefault =>
+      'This estimate is indicative and the final amount is determined after a physical vehicle inspection.';
+
+  @override
+  String get bodyPaintSearch => 'Search reference, customer, or vehicle';
+
+  @override
+  String get bodyPaintAllStatuses => 'All statuses';
+
+  @override
+  String get bodyPaintLight => 'Light';
+
+  @override
+  String get bodyPaintMedium => 'Medium';
+
+  @override
+  String get bodyPaintHeavy => 'Heavy';
+
+  @override
+  String get bodyPaintInspect => 'Inspection';
 }

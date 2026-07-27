@@ -25,7 +25,8 @@ class User {
   final List<String> roles;
   final List<String> permissions;
 
-  bool get canAccessAdminPanel => canViewAnyServiceBookings;
+  bool get canAccessAdminPanel =>
+      canViewAnyServiceBookings || canViewAnyBodyPaintEstimates;
 
   bool get canViewAnyServiceBookings =>
       _isSuperAdmin || permissions.contains('service_bookings.viewAny');
@@ -36,6 +37,15 @@ class User {
   bool get canManageServiceBookings {
     return _isSuperAdmin || permissions.contains('service_bookings.update');
   }
+
+  bool get canViewAnyBodyPaintEstimates =>
+      _isSuperAdmin || permissions.contains('bp_estimates.viewAny');
+
+  bool get canViewBodyPaintEstimate =>
+      _isSuperAdmin || permissions.contains('bp_estimates.view');
+
+  bool get canManageBodyPaintEstimates =>
+      _isSuperAdmin || permissions.contains('bp_estimates.update');
 
   bool get _isSuperAdmin =>
       roles.any((role) => role.toLowerCase() == 'super-admin');
