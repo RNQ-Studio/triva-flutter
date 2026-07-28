@@ -168,7 +168,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get serviceAppraisalDescription =>
-      'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang ditinjau appraiser.';
+      'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang diproses otomatis.';
 
   @override
   String get serviceToyotaTitle => 'Booking servis Toyota';
@@ -209,11 +209,11 @@ class AppLocalizationsId extends AppLocalizations {
       'Isi identitas kendaraan dan unggah foto kondisi yang diminta.';
 
   @override
-  String get processReviewTitle => 'Appraiser meninjau';
+  String get processReviewTitle => 'Analisis otomatis';
 
   @override
   String get processReviewDescription =>
-      'Data pembanding dan kondisi kendaraan diperiksa sebelum hasil diterbitkan.';
+      'TRIVA mencari pembanding OLX dan memakai OpenAI sebagai fallback sebelum engine menghitung hasil.';
 
   @override
   String get processResultTitle => 'Terima hasil dan lanjutkan';
@@ -231,7 +231,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get loginHeroDescription =>
-      'Appraisal transparan, ditinjau appraiser, dan dapat dipantau dari satu aplikasi.';
+      'Appraisal transparan, diproses otomatis, dan dapat dipantau dari satu aplikasi.';
 
   @override
   String get profileSetupTitle => 'Lengkapi profil Anda';
@@ -490,7 +490,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get conditionDescription =>
-      'Jawab sesuai kondisi sebenarnya. Appraiser akan memvalidasinya dari foto.';
+      'Jawab sesuai kondisi sebenarnya agar engine dapat menyesuaikan indikasi nilai.';
 
   @override
   String get vehicleConditionPercentage => 'Kondisi kendaraan saat ini';
@@ -617,7 +617,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get submittedDescription =>
-      'Kami sedang menyiapkan pembanding dan validasi appraiser.';
+      'Kami sedang mencari pembanding OLX dan akan memakai OpenAI bila diperlukan.';
 
   @override
   String get referenceNumber => 'Nomor referensi';
@@ -696,17 +696,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get needsActionDescription =>
-      'Ganti foto yang ditandai agar appraiser dapat melanjutkan penilaian.';
+      'Ganti foto yang ditandai agar pemrosesan otomatis dapat dilanjutkan.';
 
   @override
   String get sendReplacement => 'Kirim foto pengganti';
 
   @override
-  String get underReviewTitle => 'Sedang dinilai appraiser';
+  String get underReviewTitle => 'Memproses data pembanding';
 
   @override
   String get underReviewDescription =>
-      'Data kendaraan, kondisi, dan pembanding sedang divalidasi.';
+      'TRIVA menelusuri OLX dan memakai OpenAI sebagai fallback bila pembanding belum cukup.';
+
+  @override
+  String get processingFailedTitle => 'Pemrosesan belum berhasil';
+
+  @override
+  String get processingFailedDescription =>
+      'OLX dan fallback OpenAI belum menghasilkan pembanding yang memadai. Data Anda tetap tersimpan.';
 
   @override
   String get resultTitle => 'Hasil appraisal';

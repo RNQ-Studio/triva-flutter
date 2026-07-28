@@ -170,14 +170,17 @@ class _DetailContent extends StatelessWidget {
         .where((photo) => photo.reviewStatus == 'rejected')
         .toList(growable: false);
     final needsAction = appraisal.needsAction;
+    final processingFailed = appraisal.processingFailed;
+    final resultReady = appraisal.resultReady;
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.large),
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            color:
-                needsAction ? colors.errorContainer : colors.primaryContainer,
+            color: needsAction || processingFailed
+                ? colors.errorContainer
+                : colors.primaryContainer,
             borderRadius: AppRadius.large,
           ),
           child: Padding(
@@ -188,19 +191,33 @@ class _DetailContent extends StatelessWidget {
                 Icon(
                   needsAction
                       ? Icons.camera_alt_outlined
-                      : Icons.manage_search_outlined,
+                      : processingFailed
+                          ? Icons.error_outline_rounded
+                          : resultReady
+                              ? Icons.check_circle_outline_rounded
+                              : Icons.manage_search_outlined,
                   size: 36,
                 ),
                 const SizedBox(height: AppSpacing.medium),
                 Text(
-                  needsAction ? l10n.needsActionTitle : l10n.underReviewTitle,
+                  needsAction
+                      ? l10n.needsActionTitle
+                      : processingFailed
+                          ? l10n.processingFailedTitle
+                          : resultReady
+                              ? l10n.resultTitle
+                              : l10n.underReviewTitle,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: AppSpacing.small),
                 Text(
                   needsAction
                       ? l10n.needsActionDescription
-                      : l10n.underReviewDescription,
+                      : processingFailed
+                          ? l10n.processingFailedDescription
+                          : resultReady
+                              ? l10n.processResultDescription
+                              : l10n.underReviewDescription,
                 ),
               ],
             ),

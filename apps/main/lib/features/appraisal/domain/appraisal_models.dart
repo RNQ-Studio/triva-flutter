@@ -323,6 +323,8 @@ class AppraisalData {
 
   bool get needsAction => status == 'needs_customer_action';
   bool get resultReady => status == 'result_ready';
+  bool get processingFailed =>
+      status == 'failed' || status == 'insufficient_comparables';
   bool get isComplete => const {
         'accepted_by_customer',
         'rejected_by_customer',

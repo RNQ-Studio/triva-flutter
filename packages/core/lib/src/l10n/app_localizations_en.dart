@@ -168,7 +168,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serviceAppraisalDescription =>
-      'Submit vehicle details and photos for an indicative value reviewed by an appraiser.';
+      'Submit vehicle details and photos for an automatically processed indicative value.';
 
   @override
   String get serviceToyotaTitle => 'Toyota service booking';
@@ -209,11 +209,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Provide the vehicle identity and upload the requested condition photos.';
 
   @override
-  String get processReviewTitle => 'Appraiser review';
+  String get processReviewTitle => 'Automatic analysis';
 
   @override
   String get processReviewDescription =>
-      'Comparable data and vehicle condition are checked before publishing the result.';
+      'TRIVA searches OLX comparables and uses OpenAI as fallback before the engine calculates the result.';
 
   @override
   String get processResultTitle => 'Receive and continue';
@@ -231,7 +231,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginHeroDescription =>
-      'Transparent appraisal, reviewed by an appraiser, and tracked from one app.';
+      'Transparent, automatically processed appraisal tracked from one app.';
 
   @override
   String get profileSetupTitle => 'Complete your profile';
@@ -494,7 +494,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get conditionDescription =>
-      'Answer truthfully. The appraiser will validate it from the photos.';
+      'Answer truthfully so the engine can adjust the indicative value.';
 
   @override
   String get vehicleConditionPercentage => 'Current vehicle condition';
@@ -621,7 +621,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submittedDescription =>
-      'We are preparing comparables and appraiser validation.';
+      'We are searching OLX comparables and will use OpenAI when needed.';
 
   @override
   String get referenceNumber => 'Reference number';
@@ -701,17 +701,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get needsActionDescription =>
-      'Replace the marked photo so the appraiser can continue.';
+      'Replace the marked photo so automatic processing can continue.';
 
   @override
   String get sendReplacement => 'Send replacement photo';
 
   @override
-  String get underReviewTitle => 'Under appraiser review';
+  String get underReviewTitle => 'Processing market comparables';
 
   @override
   String get underReviewDescription =>
-      'Vehicle, condition, and comparable data are being validated.';
+      'TRIVA searches OLX and uses OpenAI as fallback when comparables are insufficient.';
+
+  @override
+  String get processingFailedTitle => 'Processing was not completed';
+
+  @override
+  String get processingFailedDescription =>
+      'OLX and the OpenAI fallback did not provide enough comparables. Your data remains saved.';
 
   @override
   String get resultTitle => 'Appraisal result';

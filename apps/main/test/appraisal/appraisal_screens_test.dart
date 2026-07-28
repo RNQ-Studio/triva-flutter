@@ -177,9 +177,9 @@ final _appraisal = AppraisalData(
       description: 'Data kendaraan dan lima foto berhasil dikirim.',
     ),
     const AppraisalTimelineItem(
-      status: 'under_appraiser_review',
-      title: 'Sedang dinilai',
-      description: 'Appraiser memvalidasi data.',
+      status: 'collecting_market_data',
+      title: 'Memproses data pembanding',
+      description: 'TRIVA mencari data OLX dan menyiapkan fallback OpenAI.',
     ),
   ],
   result: AppraisalResultData(
@@ -246,7 +246,7 @@ void main() {
       (
         'detail',
         const AppraisalDetailScreen(appraisalId: 'appraisal-1'),
-        'Sedang dinilai appraiser',
+        'Gunakan hasil appraisal untuk memilih kredit, perbaikan, atau booking layanan.',
       ),
       (
         'result',
@@ -296,6 +296,67 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Appraisal Toyota Avanza'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('failed automatic appraisal never promises a manual review',
+      (tester) async {
+    final failedAppraisal = AppraisalData(
+      id: _appraisal.id,
+      referenceNo: _appraisal.referenceNo,
+      status: 'failed',
+      statusLabel: 'Pemrosesan belum berhasil',
+      vehicle: _vehicle,
+      timeline: const [
+        AppraisalTimelineItem(
+          status: 'failed',
+          title: 'Pemrosesan data pasar belum berhasil',
+          description:
+              'OLX dan fallback OpenAI belum menyediakan data yang memadai.',
+        ),
+      ],
+    );
+
+    await _pump(
+      tester,
+      widget: const AppraisalDetailScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      detailData: failedAppraisal,
+    );
+
+    expect(find.text('Pemrosesan belum berhasil'), findsOneWidget);
+    expect(find.textContaining('fallback OpenAI'), findsWidgets);
+    expect(find.textContaining('appraiser'), findsNothing);
+    expect(find.textContaining('manual'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('legacy review status is rendered as automatic processing',
+      (tester) async {
+    final processingAppraisal = AppraisalData(
+      id: _appraisal.id,
+      referenceNo: _appraisal.referenceNo,
+      status: 'under_appraiser_review',
+      statusLabel: 'Pemrosesan otomatis dilanjutkan',
+      vehicle: _vehicle,
+      timeline: const [
+        AppraisalTimelineItem(
+          status: 'collecting_market_data',
+          title: 'Mencari data pembanding',
+        ),
+      ],
+    );
+
+    await _pump(
+      tester,
+      widget: const AppraisalDetailScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      detailData: processingAppraisal,
+    );
+
+    expect(find.text('Memproses data pembanding'), findsOneWidget);
+    expect(find.textContaining('appraiser'), findsNothing);
+    expect(find.textContaining('manual'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
@@ -561,6 +622,7 @@ Future<void> _pump(
   required Widget widget,
   required Brightness brightness,
   List<AppraisalData>? appraisalItems,
+  AppraisalData? detailData,
   AppraisalDraft draft = _draft,
 }) async {
   tester.view
@@ -597,7 +659,9 @@ Future<void> _pump(
           },
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
-        appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
+        appraisalDetailProvider.overrideWith(
+          (ref, id) async => detailData ?? _appraisal,
+        ),
       ],
       child: MaterialApp(
         theme: brightness == Brightness.light ? AppTheme.light : AppTheme.dark,

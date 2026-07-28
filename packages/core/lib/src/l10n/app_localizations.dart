@@ -395,7 +395,7 @@ abstract class AppLocalizations {
   /// No description provided for @serviceAppraisalDescription.
   ///
   /// In id, this message translates to:
-  /// **'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang ditinjau appraiser.'**
+  /// **'Kirim data dan foto kendaraan untuk memperoleh indikasi nilai yang diproses otomatis.'**
   String get serviceAppraisalDescription;
 
   /// No description provided for @serviceToyotaTitle.
@@ -467,13 +467,13 @@ abstract class AppLocalizations {
   /// No description provided for @processReviewTitle.
   ///
   /// In id, this message translates to:
-  /// **'Appraiser meninjau'**
+  /// **'Analisis otomatis'**
   String get processReviewTitle;
 
   /// No description provided for @processReviewDescription.
   ///
   /// In id, this message translates to:
-  /// **'Data pembanding dan kondisi kendaraan diperiksa sebelum hasil diterbitkan.'**
+  /// **'TRIVA mencari pembanding OLX dan memakai OpenAI sebagai fallback sebelum engine menghitung hasil.'**
   String get processReviewDescription;
 
   /// No description provided for @processResultTitle.
@@ -503,7 +503,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginHeroDescription.
   ///
   /// In id, this message translates to:
-  /// **'Appraisal transparan, ditinjau appraiser, dan dapat dipantau dari satu aplikasi.'**
+  /// **'Appraisal transparan, diproses otomatis, dan dapat dipantau dari satu aplikasi.'**
   String get loginHeroDescription;
 
   /// No description provided for @profileSetupTitle.
@@ -977,7 +977,7 @@ abstract class AppLocalizations {
   /// No description provided for @conditionDescription.
   ///
   /// In id, this message translates to:
-  /// **'Jawab sesuai kondisi sebenarnya. Appraiser akan memvalidasinya dari foto.'**
+  /// **'Jawab sesuai kondisi sebenarnya agar engine dapat menyesuaikan indikasi nilai.'**
   String get conditionDescription;
 
   /// No description provided for @vehicleConditionPercentage.
@@ -1217,7 +1217,7 @@ abstract class AppLocalizations {
   /// No description provided for @submittedDescription.
   ///
   /// In id, this message translates to:
-  /// **'Kami sedang menyiapkan pembanding dan validasi appraiser.'**
+  /// **'Kami sedang mencari pembanding OLX dan akan memakai OpenAI bila diperlukan.'**
   String get submittedDescription;
 
   /// No description provided for @referenceNumber.
@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @needsActionDescription.
   ///
   /// In id, this message translates to:
-  /// **'Ganti foto yang ditandai agar appraiser dapat melanjutkan penilaian.'**
+  /// **'Ganti foto yang ditandai agar pemrosesan otomatis dapat dilanjutkan.'**
   String get needsActionDescription;
 
   /// No description provided for @sendReplacement.
@@ -1379,14 +1379,26 @@ abstract class AppLocalizations {
   /// No description provided for @underReviewTitle.
   ///
   /// In id, this message translates to:
-  /// **'Sedang dinilai appraiser'**
+  /// **'Memproses data pembanding'**
   String get underReviewTitle;
 
   /// No description provided for @underReviewDescription.
   ///
   /// In id, this message translates to:
-  /// **'Data kendaraan, kondisi, dan pembanding sedang divalidasi.'**
+  /// **'TRIVA menelusuri OLX dan memakai OpenAI sebagai fallback bila pembanding belum cukup.'**
   String get underReviewDescription;
+
+  /// No description provided for @processingFailedTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pemrosesan belum berhasil'**
+  String get processingFailedTitle;
+
+  /// No description provided for @processingFailedDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'OLX dan fallback OpenAI belum menghasilkan pembanding yang memadai. Data Anda tetap tersimpan.'**
+  String get processingFailedDescription;
 
   /// No description provided for @resultTitle.
   ///
