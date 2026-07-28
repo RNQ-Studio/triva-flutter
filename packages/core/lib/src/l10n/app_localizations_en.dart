@@ -401,15 +401,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseVehicleVariant => 'Choose a vehicle variant';
 
   @override
-  String chooseVehicleVariantFor(String model, int year) {
-    return 'Choose a $model variant for $year';
+  String chooseVehicleVariantFor(String model) {
+    return 'Choose a $model variant';
   }
 
   @override
   String get searchVehicleVariant => 'Search vehicle variants';
 
   @override
-  String get chooseVehicleModelAndYearFirst => 'Choose a model and year first';
+  String get chooseVehicleModelFirst => 'Choose a model first';
 
   @override
   String get vehicleVariantLoading => 'Loading vehicle variants...';
@@ -420,7 +420,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vehicleVariantEmpty =>
-      'No master variant is available for this model and year.';
+      'No master variant is available for this model.';
 
   @override
   String get vehicleVariantNotFound => 'Variant not found? Enter it manually';

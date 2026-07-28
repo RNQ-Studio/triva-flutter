@@ -36,12 +36,11 @@ final vehicleModelsProvider =
   return ref.watch(appraisalRepositoryProvider).listVehicleModels(makeId);
 });
 
-final vehicleVariantsProvider = FutureProvider.family<
-    List<VehicleVariantOption>, ({int modelId, int year})>((ref, selection) {
-  return ref.watch(appraisalRepositoryProvider).listVehicleVariants(
-        modelId: selection.modelId,
-        year: selection.year,
-      );
+final vehicleVariantsProvider =
+    FutureProvider.family<List<VehicleVariantOption>, int>((ref, modelId) {
+  return ref
+      .watch(appraisalRepositoryProvider)
+      .listVehicleVariants(modelId: modelId);
 }, retry: (_, __) => null);
 
 final appraisalDetailProvider =

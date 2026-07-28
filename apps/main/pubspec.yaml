@@ -1,7 +1,7 @@
 name: triva_app
 description: "TRIVA — Trade-In Vehicle Appraisal."
 publish_to: none
-version: 1.0.5+6
+version: 1.0.6+7
 
 environment:
   sdk: ">=3.5.0 <4.0.0"

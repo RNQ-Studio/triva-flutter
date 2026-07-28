@@ -55,8 +55,6 @@ class VehicleVariantOption {
     required this.id,
     required this.modelId,
     required this.name,
-    required this.yearFrom,
-    this.yearTo,
     this.transmission,
     this.fuelType,
   });
@@ -64,8 +62,6 @@ class VehicleVariantOption {
   final int id;
   final int modelId;
   final String name;
-  final int yearFrom;
-  final int? yearTo;
   final String? transmission;
   final String? fuelType;
 
@@ -74,8 +70,6 @@ class VehicleVariantOption {
         id: (json['id'] as num).toInt(),
         modelId: (json['model_id'] as num).toInt(),
         name: json['name']?.toString() ?? '',
-        yearFrom: (json['year_from'] as num).toInt(),
-        yearTo: (json['year_to'] as num?)?.toInt(),
         transmission: json['transmission']?.toString(),
         fuelType: json['fuel_type']?.toString(),
       );

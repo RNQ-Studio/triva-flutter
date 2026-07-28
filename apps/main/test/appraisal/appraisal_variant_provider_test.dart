@@ -15,7 +15,6 @@ class _FailingVariantRepository extends AppraisalRepository {
   @override
   Future<List<VehicleVariantOption>> listVehicleVariants({
     required int modelId,
-    required int year,
   }) async {
     attempts++;
     throw Exception('variant endpoint failed');
@@ -50,7 +49,7 @@ void main() {
     );
     addTearDown(container.dispose);
 
-    final provider = vehicleVariantsProvider((modelId: 289, year: 2026));
+    final provider = vehicleVariantsProvider(289);
     final subscription = container.listen(
       provider,
       (_, __) {},

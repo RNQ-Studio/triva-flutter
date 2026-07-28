@@ -398,16 +398,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get chooseVehicleVariant => 'Pilih varian kendaraan';
 
   @override
-  String chooseVehicleVariantFor(String model, int year) {
-    return 'Pilih varian $model tahun $year';
+  String chooseVehicleVariantFor(String model) {
+    return 'Pilih varian $model';
   }
 
   @override
   String get searchVehicleVariant => 'Cari varian kendaraan';
 
   @override
-  String get chooseVehicleModelAndYearFirst =>
-      'Pilih model dan tahun terlebih dahulu';
+  String get chooseVehicleModelFirst => 'Pilih model terlebih dahulu';
 
   @override
   String get vehicleVariantLoading => 'Memuat varian kendaraan...';
@@ -417,8 +416,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Master varian kendaraan belum dapat dimuat.';
 
   @override
-  String get vehicleVariantEmpty =>
-      'Belum ada master varian untuk model dan tahun ini.';
+  String get vehicleVariantEmpty => 'Belum ada master varian untuk model ini.';
 
   @override
   String get vehicleVariantNotFound => 'Varian tidak ditemukan? Isi manual';

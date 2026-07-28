@@ -105,12 +105,8 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
     });
 
     final model = _selectedModel;
-    final year = _selectedYear;
-    final variantSelection =
-        model == null || year == null ? null : (modelId: model.id, year: year);
-    final variants = variantSelection == null
-        ? null
-        : ref.watch(vehicleVariantsProvider(variantSelection));
+    final variants =
+        model == null ? null : ref.watch(vehicleVariantsProvider(model.id));
     variants?.whenData((items) {
       if (!_restoreVariantFromDraft) return;
       _restoreVariantFromDraft = false;
@@ -156,7 +152,6 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                         _selectedMake = selected;
                         _selectedModel = null;
                         _selectedVariant = null;
-                        _selectedYear = null;
                         _manualVariant = false;
                         _restoreVariantFromDraft = false;
                         _variant.clear();
@@ -181,7 +176,6 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                   setState(() {
                     _selectedModel = selected;
                     _selectedVariant = null;
-                    _selectedYear = null;
                     _manualVariant = false;
                     _restoreVariantFromDraft = false;
                     _variant.clear();
@@ -192,23 +186,8 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                     : () => ref.invalidate(vehicleModelsProvider(make.id)),
               ),
               const SizedBox(height: AppSpacing.medium),
-              _VehicleYearField(
-                value: _selectedYear,
-                onChanged: (selected) {
-                  if (selected == _selectedYear) return;
-                  setState(() {
-                    _selectedYear = selected;
-                    _selectedVariant = null;
-                    _manualVariant = false;
-                    _restoreVariantFromDraft = false;
-                    _variant.clear();
-                  });
-                },
-              ),
-              const SizedBox(height: AppSpacing.medium),
               _VehicleVariantField(
                 model: model,
-                year: year,
                 variants: variants,
                 value: _selectedVariant,
                 manual: _manualVariant,
@@ -234,11 +213,17 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                     _variant.clear();
                   });
                 },
-                onRetry: variantSelection == null
+                onRetry: model == null
                     ? null
-                    : () => ref.invalidate(
-                          vehicleVariantsProvider(variantSelection),
-                        ),
+                    : () => ref.invalidate(vehicleVariantsProvider(model.id)),
+              ),
+              const SizedBox(height: AppSpacing.medium),
+              _VehicleYearField(
+                value: _selectedYear,
+                onChanged: (selected) {
+                  if (selected == _selectedYear) return;
+                  setState(() => _selectedYear = selected);
+                },
               ),
             ],
           ),
@@ -410,7 +395,6 @@ class _VehicleModelField extends StatelessWidget {
 class _VehicleVariantField extends StatelessWidget {
   const _VehicleVariantField({
     required this.model,
-    required this.year,
     required this.variants,
     required this.value,
     required this.manual,
@@ -422,7 +406,6 @@ class _VehicleVariantField extends StatelessWidget {
   });
 
   final VehicleModelOption? model;
-  final int? year;
   final AsyncValue<List<VehicleVariantOption>>? variants;
   final VehicleVariantOption? value;
   final bool manual;
@@ -452,7 +435,7 @@ class _VehicleVariantField extends StatelessWidget {
             validator: (text) =>
                 text == null || text.trim().isEmpty ? l10n.fieldRequired : null,
           ),
-          if (model != null && year != null)
+          if (model != null)
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(
@@ -469,23 +452,20 @@ class _VehicleVariantField extends StatelessWidget {
     final isLoading = variants?.isLoading ?? false;
     final hasError = variants?.hasError ?? false;
     final isEnabled = model != null &&
-        year != null &&
         !isLoading &&
         !hasError &&
         items != null &&
         items.isNotEmpty;
-    final hint = switch ((model, year, isLoading, hasError, items?.isEmpty)) {
-      (null, _, _, _, _) ||
-      (_, null, _, _, _) =>
-        l10n.chooseVehicleModelAndYearFirst,
-      (_, _, true, _, _) => l10n.vehicleVariantLoading,
-      (_, _, _, true, _) => l10n.vehicleVariantLoadError,
-      (_, _, _, _, true) => l10n.vehicleVariantEmpty,
+    final hint = switch ((model, isLoading, hasError, items?.isEmpty)) {
+      (null, _, _, _) => l10n.chooseVehicleModelFirst,
+      (_, true, _, _) => l10n.vehicleVariantLoading,
+      (_, _, true, _) => l10n.vehicleVariantLoadError,
+      (_, _, _, true) => l10n.vehicleVariantEmpty,
       _ => l10n.chooseVehicleVariant,
     };
 
     return FormField<VehicleVariantOption>(
-      key: ValueKey((model?.id, year, value?.id)),
+      key: ValueKey((model?.id, value?.id)),
       initialValue: value,
       validator: (selection) => selection == null ? l10n.fieldRequired : null,
       builder: (field) => Column(
@@ -504,7 +484,6 @@ class _VehicleVariantField extends StatelessWidget {
                         items: items,
                         selectedId: value?.id,
                         modelName: model!.name,
-                        year: year!,
                       ),
                     );
                     if (selected == null || !context.mounted) return;
@@ -556,7 +535,7 @@ class _VehicleVariantField extends StatelessWidget {
                 label: Text(l10n.retry),
               ),
             ),
-          if (model != null && year != null)
+          if (model != null)
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(
@@ -864,13 +843,11 @@ class _VehicleVariantPicker extends StatefulWidget {
     required this.items,
     required this.selectedId,
     required this.modelName,
-    required this.year,
   });
 
   final List<VehicleVariantOption> items;
   final int? selectedId;
   final String modelName;
-  final int year;
 
   @override
   State<_VehicleVariantPicker> createState() => _VehicleVariantPickerState();
@@ -908,7 +885,7 @@ class _VehicleVariantPickerState extends State<_VehicleVariantPicker> {
               AppSpacing.small,
             ),
             child: Text(
-              l10n.chooseVehicleVariantFor(widget.modelName, widget.year),
+              l10n.chooseVehicleVariantFor(widget.modelName),
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),

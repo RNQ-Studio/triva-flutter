@@ -111,8 +111,6 @@ const _vehicleVariant = VehicleVariantOption(
   id: 100,
   modelId: 10,
   name: '1.5 G',
-  yearFrom: 2021,
-  yearTo: 2025,
   transmission: 'automatic',
   fuelType: 'gasoline',
 );
@@ -291,6 +289,31 @@ void main() {
     await tester.tap(find.text('2024'));
     await tester.pumpAndSettle();
     expect(find.text('2024'), findsOneWidget);
+    expect(find.text('1.5 G'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('variant master is available after model without selecting year',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+      draft: const AppraisalDraft(
+        makeId: 1,
+        modelId: 10,
+        make: 'Toyota',
+        model: 'Avanza',
+      ),
+    );
+
+    final variantField = find.byKey(const ValueKey('vehicle-variant-field'));
+    await tester.ensureVisible(variantField);
+    await tester.tap(variantField);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pilih varian Avanza'), findsOneWidget);
+    expect(find.text('1.5 G'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -308,7 +331,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('vehicle-variant-field')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pilih varian Avanza tahun 2022'), findsOneWidget);
+    expect(find.text('Pilih varian Avanza'), findsOneWidget);
     expect(find.text('Otomatis · Bensin'), findsWidgets);
     await tester.tap(find.text('1.5 G').last);
     await tester.pumpAndSettle();
@@ -469,6 +492,7 @@ Future<void> _pump(
   required Widget widget,
   required Brightness brightness,
   List<AppraisalData>? appraisalItems,
+  AppraisalDraft draft = _draft,
 }) async {
   tester.view
     ..physicalSize = const Size(360, 690)
@@ -479,7 +503,7 @@ Future<void> _pump(
     ProviderScope(
       overrides: [
         appraisalFlowProvider.overrideWith(
-          () => _FakeFlowController(_draft),
+          () => _FakeFlowController(draft),
         ),
         appraisalsProvider.overrideWith(
           (ref) async => appraisalItems ?? [_appraisal],
@@ -496,9 +520,8 @@ Future<void> _pump(
               makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
         ),
         vehicleVariantsProvider.overrideWith(
-          (ref, selection) async => selection.modelId == _vehicleModel.id
-              ? [_vehicleVariant]
-              : const [],
+          (ref, modelId) async =>
+              modelId == _vehicleModel.id ? [_vehicleVariant] : const [],
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
         appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
@@ -544,9 +567,8 @@ Future<void> _pumpRouter(
               makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
         ),
         vehicleVariantsProvider.overrideWith(
-          (ref, selection) async => selection.modelId == _vehicleModel.id
-              ? [_vehicleVariant]
-              : const [],
+          (ref, modelId) async =>
+              modelId == _vehicleModel.id ? [_vehicleVariant] : const [],
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
       ],

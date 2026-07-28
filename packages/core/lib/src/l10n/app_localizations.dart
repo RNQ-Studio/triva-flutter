@@ -809,8 +809,8 @@ abstract class AppLocalizations {
   /// No description provided for @chooseVehicleVariantFor.
   ///
   /// In id, this message translates to:
-  /// **'Pilih varian {model} tahun {year}'**
-  String chooseVehicleVariantFor(String model, int year);
+  /// **'Pilih varian {model}'**
+  String chooseVehicleVariantFor(String model);
 
   /// No description provided for @searchVehicleVariant.
   ///
@@ -818,11 +818,11 @@ abstract class AppLocalizations {
   /// **'Cari varian kendaraan'**
   String get searchVehicleVariant;
 
-  /// No description provided for @chooseVehicleModelAndYearFirst.
+  /// No description provided for @chooseVehicleModelFirst.
   ///
   /// In id, this message translates to:
-  /// **'Pilih model dan tahun terlebih dahulu'**
-  String get chooseVehicleModelAndYearFirst;
+  /// **'Pilih model terlebih dahulu'**
+  String get chooseVehicleModelFirst;
 
   /// No description provided for @vehicleVariantLoading.
   ///
@@ -839,7 +839,7 @@ abstract class AppLocalizations {
   /// No description provided for @vehicleVariantEmpty.
   ///
   /// In id, this message translates to:
-  /// **'Belum ada master varian untuk model dan tahun ini.'**
+  /// **'Belum ada master varian untuk model ini.'**
   String get vehicleVariantEmpty;
 
   /// No description provided for @vehicleVariantNotFound.
