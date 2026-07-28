@@ -57,6 +57,8 @@ firebase_options.dart
 *.keystore
 key.properties
 upload-keystore.jks
+!apps/main/android/app/triva-upload.jks
+!apps/main/android/key.properties
 
 # FlutterFire CLI generated
 firebase_app_id_file.json
