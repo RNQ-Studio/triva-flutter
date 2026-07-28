@@ -408,6 +408,9 @@ class AppLocalizationsId extends AppLocalizations {
       'Lengkapi spesifikasi dan penggunaan kendaraan saat ini.';
 
   @override
+  String get editVehicleIdentity => 'Ubah identitas';
+
+  @override
   String get transmission => 'Transmisi';
 
   @override

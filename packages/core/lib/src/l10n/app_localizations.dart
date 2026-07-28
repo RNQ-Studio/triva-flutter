@@ -824,6 +824,12 @@ abstract class AppLocalizations {
   /// **'Lengkapi spesifikasi dan penggunaan kendaraan saat ini.'**
   String get vehicleDetailsDescription;
 
+  /// No description provided for @editVehicleIdentity.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah identitas'**
+  String get editVehicleIdentity;
+
   /// No description provided for @transmission.
   ///
   /// In id, this message translates to:

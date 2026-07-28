@@ -207,20 +207,22 @@ class _VehicleMakeField extends StatelessWidget {
         },
         borderRadius: AppRadius.small,
         child: InputDecorator(
+          key: const ValueKey('vehicle-make-field'),
+          isEmpty: value == null,
           decoration: InputDecoration(
             labelText: l10n.vehicleMake,
+            hintText: l10n.chooseVehicleMake,
             errorText: field.errorText,
             prefixIcon: _MakeLogo(make: value),
             suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
           ),
-          child: Text(
-            value?.name ?? l10n.chooseVehicleMake,
-            style: value == null
-                ? Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    )
-                : null,
-          ),
+          child: value == null
+              ? null
+              : Text(
+                  value!.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
         ),
       ),
     );
@@ -290,10 +292,12 @@ class _VehicleModelField extends StatelessWidget {
                   },
             borderRadius: AppRadius.small,
             child: InputDecorator(
+              key: const ValueKey('vehicle-model-field'),
               isEmpty: value == null,
               decoration: InputDecoration(
-                enabled: make != null,
+                enabled: isEnabled,
                 labelText: l10n.vehicleModel,
+                hintText: hint,
                 errorText: field.errorText,
                 prefixIcon: const Icon(Icons.directions_car_outlined),
                 suffixIcon: isLoading
@@ -303,14 +307,13 @@ class _VehicleModelField extends StatelessWidget {
                       )
                     : const Icon(Icons.keyboard_arrow_down_rounded),
               ),
-              child: Text(
-                value?.name ?? hint,
-                style: value == null
-                    ? Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        )
-                    : null,
-              ),
+              child: value == null
+                  ? null
+                  : Text(
+                      value!.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
             ),
           ),
           if ((hasError || items?.isEmpty == true) && onRetry != null)
@@ -358,21 +361,16 @@ class _VehicleYearField extends StatelessWidget {
         },
         borderRadius: AppRadius.small,
         child: InputDecorator(
+          key: const ValueKey('vehicle-year-field'),
           isEmpty: value == null,
           decoration: InputDecoration(
             labelText: l10n.vehicleYear,
+            hintText: l10n.chooseVehicleYear,
             errorText: field.errorText,
             prefixIcon: const Icon(Icons.calendar_today_outlined),
             suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
           ),
-          child: Text(
-            value?.toString() ?? l10n.chooseVehicleYear,
-            style: value == null
-                ? Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    )
-                : null,
-          ),
+          child: value == null ? null : Text(value.toString()),
         ),
       ),
     );

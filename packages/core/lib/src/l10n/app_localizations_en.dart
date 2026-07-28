@@ -411,6 +411,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Complete the current specification and usage details.';
 
   @override
+  String get editVehicleIdentity => 'Edit identity';
+
+  @override
   String get transmission => 'Transmission';
 
   @override

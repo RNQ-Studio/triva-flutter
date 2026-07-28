@@ -268,11 +268,39 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('2022'));
     await tester.pumpAndSettle();
-    expect(find.text('Pilih tahun kendaraan'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(DraggableScrollableSheet),
+        matching: find.text('Pilih tahun kendaraan'),
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('2024'));
     await tester.pumpAndSettle();
     expect(find.text('2024'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('empty picker hint is owned by the input decoration',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+    );
+
+    await tester.tap(find.text('Toyota'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Honda'));
+    await tester.pumpAndSettle();
+
+    final modelField = tester.widget<InputDecorator>(
+      find.byKey(const ValueKey('vehicle-model-field')),
+    );
+    expect(modelField.isEmpty, isTrue);
+    expect(modelField.child, isNull);
+    expect(modelField.decoration.hintText, 'Pilih model mobil');
     expect(tester.takeException(), isNull);
   });
 
@@ -286,6 +314,35 @@ void main() {
     final slider = tester.widget<Slider>(find.byType(Slider));
     expect(slider.value, 90);
     expect(find.text('90%'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('vehicle details can edit identity while preserving the draft',
+      (tester) async {
+    final router = GoRouter(
+      initialLocation: appraisalDetailsPath,
+      routes: [
+        GoRoute(
+          path: appraisalIdentityPath,
+          builder: (_, __) => const VehicleIdentityScreen(),
+        ),
+        GoRoute(
+          path: appraisalDetailsPath,
+          builder: (_, __) => const VehicleDetailsScreen(),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await _pumpRouter(tester, router: router);
+
+    expect(find.text('Toyota Avanza'), findsOneWidget);
+    await tester.tap(find.text('Ubah identitas'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Identitas kendaraan'), findsOneWidget);
+    expect(find.text('Toyota'), findsOneWidget);
+    expect(find.text('Avanza'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -303,7 +360,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Pilih model mobil'), findsOneWidget);
-    await tester.tap(find.text('Pilih model mobil'));
+    final modelField = find.byKey(const ValueKey('vehicle-model-field'));
+    await tester.ensureVisible(modelField);
+    await tester.pumpAndSettle();
+    await tester.tap(modelField);
     await tester.pumpAndSettle();
     expect(find.text('Pilih model Honda'), findsOneWidget);
     expect(find.text('Brio'), findsOneWidget);
@@ -408,6 +468,48 @@ Future<void> _pump(
           child: child!,
         ),
         home: widget,
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _pumpRouter(
+  WidgetTester tester, {
+  required GoRouter router,
+}) async {
+  tester.view
+    ..physicalSize = const Size(360, 690)
+    ..devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        appraisalFlowProvider.overrideWith(
+          () => _FakeFlowController(_draft),
+        ),
+        vehicleMakesProvider.overrideWith(
+          (ref) async => [_vehicleMake, _hondaMake],
+        ),
+        vehicleModelsProvider.overrideWith(
+          (ref, makeId) async =>
+              makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
+        ),
+        provinceOptionsProvider.overrideWith((ref) async => _provinces),
+      ],
+      child: MaterialApp.router(
+        theme: AppTheme.light,
+        locale: const Locale('id'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: router,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1.3),
+          ),
+          child: child!,
+        ),
       ),
     ),
   );

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
 import '../widgets/appraisal_flow_scaffold.dart';
@@ -99,6 +100,13 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
           key: _formKey,
           child: Column(
             children: [
+              _VehicleIdentitySummary(
+                draft: value.draft,
+                onEdit: () => context.go(appraisalIdentityPath),
+              ),
+              const SizedBox(height: AppSpacing.medium),
+              const Divider(),
+              const SizedBox(height: AppSpacing.medium),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 initialValue: _transmission,
@@ -284,6 +292,73 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
     return number == null || number < 0 || number > 2000000
         ? AppLocalizations.of(context)!.fieldRequired
         : null;
+  }
+}
+
+class _VehicleIdentitySummary extends StatelessWidget {
+  const _VehicleIdentitySummary({
+    required this.draft,
+    required this.onEdit,
+  });
+
+  final AppraisalDraft draft;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.directions_car_outlined),
+            const SizedBox(width: AppSpacing.medium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.vehicleIdentityTitle,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(
+                    '${draft.make} ${draft.model}',
+                    style: textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(
+                    '${draft.variant} · ${draft.year}',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.small),
+        Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: TextButton.icon(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(48, 48),
+            ),
+            onPressed: onEdit,
+            icon: const Icon(Icons.edit_outlined),
+            label: Text(l10n.editVehicleIdentity),
+          ),
+        ),
+      ],
+    );
   }
 }
 

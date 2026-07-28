@@ -124,6 +124,7 @@
   "chooseVehicleYear": "Choose vehicle year",
   "vehicleDetailsTitle": "Vehicle details",
   "vehicleDetailsDescription": "Complete the current specification and usage details.",
+  "editVehicleIdentity": "Edit identity",
   "transmission": "Transmission",
   "automatic": "Automatic",
   "manual": "Manual",

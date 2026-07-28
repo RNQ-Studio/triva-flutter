@@ -124,6 +124,7 @@
   "chooseVehicleYear": "Pilih tahun kendaraan",
   "vehicleDetailsTitle": "Detail kendaraan",
   "vehicleDetailsDescription": "Lengkapi spesifikasi dan penggunaan kendaraan saat ini.",
+  "editVehicleIdentity": "Ubah identitas",
   "transmission": "Transmisi",
   "automatic": "Otomatis",
   "manual": "Manual",
