@@ -456,12 +456,12 @@ class _VehicleVariantField extends StatelessWidget {
         !hasError &&
         items != null &&
         items.isNotEmpty;
-    final hint = switch ((model, isLoading, hasError, items?.isEmpty)) {
+    final statusText = switch ((model, isLoading, hasError, items?.isEmpty)) {
       (null, _, _, _) => l10n.chooseVehicleModelFirst,
       (_, true, _, _) => l10n.vehicleVariantLoading,
       (_, _, true, _) => l10n.vehicleVariantLoadError,
       (_, _, _, true) => l10n.vehicleVariantEmpty,
-      _ => l10n.chooseVehicleVariant,
+      _ => l10n.vehicleVariantAvailable(items!.length),
     };
 
     return FormField<VehicleVariantOption>(
@@ -493,11 +493,10 @@ class _VehicleVariantField extends StatelessWidget {
             borderRadius: AppRadius.small,
             child: InputDecorator(
               key: const ValueKey('vehicle-variant-field'),
-              isEmpty: value == null,
+              isEmpty: false,
               decoration: InputDecoration(
                 enabled: isEnabled,
                 labelText: l10n.vehicleVariant,
-                hintText: hint,
                 errorText: field.errorText,
                 prefixIcon: const Icon(Icons.tune_rounded),
                 suffixIcon: isLoading
@@ -508,7 +507,13 @@ class _VehicleVariantField extends StatelessWidget {
                     : const Icon(Icons.keyboard_arrow_down_rounded),
               ),
               child: value == null
-                  ? null
+                  ? Text(
+                      statusText,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -423,6 +423,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'No master variant is available for this model.';
 
   @override
+  String vehicleVariantAvailable(int count) {
+    return '$count variants available. Tap to choose.';
+  }
+
+  @override
   String get vehicleVariantNotFound => 'Variant not found? Enter it manually';
 
   @override

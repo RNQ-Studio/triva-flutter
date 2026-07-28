@@ -100,6 +100,13 @@ const _vehicleModel = VehicleModelOption(
   name: 'Avanza',
 );
 
+const _calyaModel = VehicleModelOption(
+  id: 289,
+  makeId: 1,
+  slug: 'calya',
+  name: 'Calya',
+);
+
 const _hondaModel = VehicleModelOption(
   id: 20,
   makeId: 2,
@@ -114,6 +121,37 @@ const _vehicleVariant = VehicleVariantOption(
   transmission: 'automatic',
   fuelType: 'gasoline',
 );
+
+const _calyaVariants = [
+  VehicleVariantOption(
+    id: 1,
+    modelId: 289,
+    name: '1.2 E MT STD',
+    transmission: 'manual',
+    fuelType: 'gasoline',
+  ),
+  VehicleVariantOption(
+    id: 2,
+    modelId: 289,
+    name: '1.2 E MT',
+    transmission: 'manual',
+    fuelType: 'gasoline',
+  ),
+  VehicleVariantOption(
+    id: 3,
+    modelId: 289,
+    name: '1.2 G MT',
+    transmission: 'manual',
+    fuelType: 'gasoline',
+  ),
+  VehicleVariantOption(
+    id: 4,
+    modelId: 289,
+    name: '1.2 G AT',
+    transmission: 'automatic',
+    fuelType: 'gasoline',
+  ),
+];
 
 const _provinces = [
   ProvinceOption(
@@ -317,6 +355,37 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('Calya field exposes four master variants before year selection',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+      draft: const AppraisalDraft(
+        makeId: 1,
+        modelId: 289,
+        make: 'Toyota',
+        model: 'Calya',
+      ),
+    );
+
+    expect(
+      find.text('4 varian tersedia. Ketuk untuk memilih.'),
+      findsOneWidget,
+    );
+
+    final variantField = find.byKey(const ValueKey('vehicle-variant-field'));
+    await tester.ensureVisible(variantField);
+    await tester.tap(variantField);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pilih varian Calya'), findsOneWidget);
+    for (final variant in _calyaVariants) {
+      expect(find.text(variant.name), findsOneWidget);
+    }
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('identity supports variant master and manual fallback',
       (tester) async {
     await _pump(
@@ -516,12 +585,16 @@ Future<void> _pump(
           (ref) async => [_vehicleMake, _hondaMake],
         ),
         vehicleModelsProvider.overrideWith(
-          (ref, makeId) async =>
-              makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
+          (ref, makeId) async => makeId == _vehicleMake.id
+              ? [_vehicleModel, _calyaModel]
+              : [_hondaModel],
         ),
         vehicleVariantsProvider.overrideWith(
-          (ref, modelId) async =>
-              modelId == _vehicleModel.id ? [_vehicleVariant] : const [],
+          (ref, modelId) async => switch (modelId) {
+            10 => [_vehicleVariant],
+            289 => _calyaVariants,
+            _ => const [],
+          },
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
         appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
@@ -563,12 +636,16 @@ Future<void> _pumpRouter(
           (ref) async => [_vehicleMake, _hondaMake],
         ),
         vehicleModelsProvider.overrideWith(
-          (ref, makeId) async =>
-              makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
+          (ref, makeId) async => makeId == _vehicleMake.id
+              ? [_vehicleModel, _calyaModel]
+              : [_hondaModel],
         ),
         vehicleVariantsProvider.overrideWith(
-          (ref, modelId) async =>
-              modelId == _vehicleModel.id ? [_vehicleVariant] : const [],
+          (ref, modelId) async => switch (modelId) {
+            10 => [_vehicleVariant],
+            289 => _calyaVariants,
+            _ => const [],
+          },
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
       ],

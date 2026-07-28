@@ -128,6 +128,8 @@
   "vehicleVariantLoading": "Memuat varian kendaraan...",
   "vehicleVariantLoadError": "Master varian kendaraan belum dapat dimuat.",
   "vehicleVariantEmpty": "Belum ada master varian untuk model ini.",
+  "vehicleVariantAvailable": "{count} varian tersedia. Ketuk untuk memilih.",
+  "@vehicleVariantAvailable": {"placeholders": {"count": {"type": "int"}}},
   "vehicleVariantNotFound": "Varian tidak ditemukan? Isi manual",
   "vehicleVariantManualHelper": "Gunakan nama varian yang tercantum di STNK atau dokumen kendaraan.",
   "chooseFromVariantMaster": "Pilih dari master varian",

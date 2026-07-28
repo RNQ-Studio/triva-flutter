@@ -419,6 +419,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get vehicleVariantEmpty => 'Belum ada master varian untuk model ini.';
 
   @override
+  String vehicleVariantAvailable(int count) {
+    return '$count varian tersedia. Ketuk untuk memilih.';
+  }
+
+  @override
   String get vehicleVariantNotFound => 'Varian tidak ditemukan? Isi manual';
 
   @override

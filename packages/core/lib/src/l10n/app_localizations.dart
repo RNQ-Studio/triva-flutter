@@ -842,6 +842,12 @@ abstract class AppLocalizations {
   /// **'Belum ada master varian untuk model ini.'**
   String get vehicleVariantEmpty;
 
+  /// No description provided for @vehicleVariantAvailable.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} varian tersedia. Ketuk untuk memilih.'**
+  String vehicleVariantAvailable(int count);
+
   /// No description provided for @vehicleVariantNotFound.
   ///
   /// In id, this message translates to:

@@ -128,6 +128,8 @@
   "vehicleVariantLoading": "Loading vehicle variants...",
   "vehicleVariantLoadError": "Vehicle variant master data could not be loaded.",
   "vehicleVariantEmpty": "No master variant is available for this model.",
+  "vehicleVariantAvailable": "{count} variants available. Tap to choose.",
+  "@vehicleVariantAvailable": {"placeholders": {"count": {"type": "int"}}},
   "vehicleVariantNotFound": "Variant not found? Enter it manually",
   "vehicleVariantManualHelper": "Use the variant name shown on the registration or vehicle document.",
   "chooseFromVariantMaster": "Choose from variant master",
