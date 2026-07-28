@@ -42,7 +42,7 @@ final vehicleVariantsProvider = FutureProvider.family<
         modelId: selection.modelId,
         year: selection.year,
       );
-});
+}, retry: (_, __) => null);
 
 final appraisalDetailProvider =
     FutureProvider.family<AppraisalData, String>((ref, appraisalId) {
