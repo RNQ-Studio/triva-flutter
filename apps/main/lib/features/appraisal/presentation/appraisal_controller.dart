@@ -36,6 +36,14 @@ final vehicleModelsProvider =
   return ref.watch(appraisalRepositoryProvider).listVehicleModels(makeId);
 });
 
+final vehicleVariantsProvider = FutureProvider.family<
+    List<VehicleVariantOption>, ({int modelId, int year})>((ref, selection) {
+  return ref.watch(appraisalRepositoryProvider).listVehicleVariants(
+        modelId: selection.modelId,
+        year: selection.year,
+      );
+});
+
 final appraisalDetailProvider =
     FutureProvider.family<AppraisalData, String>((ref, appraisalId) {
   return ref.watch(appraisalRepositoryProvider).getAppraisal(appraisalId);
@@ -91,8 +99,11 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required int modelId,
     required String make,
     required String model,
+    required int? variantId,
     required String variant,
     required int year,
+    String? variantTransmission,
+    String? variantFuelType,
   }) =>
       _updateDraft(
         (draft) => draft.copyWith(
@@ -100,8 +111,12 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
           modelId: modelId,
           make: make.trim(),
           model: model.trim(),
+          variantId: variantId,
+          clearVariantId: variantId == null,
           variant: variant.trim(),
           year: year,
+          transmission: variantTransmission,
+          fuelType: variantFuelType,
         ),
       );
 

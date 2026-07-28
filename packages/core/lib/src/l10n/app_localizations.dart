@@ -800,6 +800,66 @@ abstract class AppLocalizations {
   /// **'Varian'**
   String get vehicleVariant;
 
+  /// No description provided for @chooseVehicleVariant.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih varian kendaraan'**
+  String get chooseVehicleVariant;
+
+  /// No description provided for @chooseVehicleVariantFor.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih varian {model} tahun {year}'**
+  String chooseVehicleVariantFor(String model, int year);
+
+  /// No description provided for @searchVehicleVariant.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari varian kendaraan'**
+  String get searchVehicleVariant;
+
+  /// No description provided for @chooseVehicleModelAndYearFirst.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih model dan tahun terlebih dahulu'**
+  String get chooseVehicleModelAndYearFirst;
+
+  /// No description provided for @vehicleVariantLoading.
+  ///
+  /// In id, this message translates to:
+  /// **'Memuat varian kendaraan...'**
+  String get vehicleVariantLoading;
+
+  /// No description provided for @vehicleVariantLoadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Master varian kendaraan belum dapat dimuat.'**
+  String get vehicleVariantLoadError;
+
+  /// No description provided for @vehicleVariantEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada master varian untuk model dan tahun ini.'**
+  String get vehicleVariantEmpty;
+
+  /// No description provided for @vehicleVariantNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Varian tidak ditemukan? Isi manual'**
+  String get vehicleVariantNotFound;
+
+  /// No description provided for @vehicleVariantManualHelper.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan nama varian yang tercantum di STNK atau dokumen kendaraan.'**
+  String get vehicleVariantManualHelper;
+
+  /// No description provided for @chooseFromVariantMaster.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih dari master varian'**
+  String get chooseFromVariantMaster;
+
   /// No description provided for @vehicleYear.
   ///
   /// In id, this message translates to:

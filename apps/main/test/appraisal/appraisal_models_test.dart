@@ -6,6 +6,7 @@ void main() {
     const draft = AppraisalDraft(
       makeId: 1,
       modelId: 10,
+      variantId: 100,
       make: 'Toyota',
       model: 'Avanza',
       variant: '1.5 G',
@@ -36,6 +37,7 @@ void main() {
     expect(restored.vehicleId, 'vehicle-1');
     expect(restored.makeId, 1);
     expect(restored.modelId, 10);
+    expect(restored.variantId, 100);
     expect(restored.provinceId, 35);
     expect(restored.cityId, 3578);
     expect(restored.appraisalId, 'appraisal-1');
@@ -51,6 +53,26 @@ void main() {
     });
 
     expect(restored.conditionPercentage, 90);
+    expect(restored.variantId, isNull);
+  });
+
+  test('vehicle variant option parses year range and drivetrain metadata', () {
+    final variant = VehicleVariantOption.fromJson({
+      'id': 100,
+      'model_id': 10,
+      'name': '1.5 G CVT',
+      'year_from': 2021,
+      'year_to': 2025,
+      'transmission': 'automatic',
+      'fuel_type': 'gasoline',
+    });
+
+    expect(variant.id, 100);
+    expect(variant.modelId, 10);
+    expect(variant.yearFrom, 2021);
+    expect(variant.yearTo, 2025);
+    expect(variant.transmission, 'automatic');
+    expect(variant.fuelType, 'gasoline');
   });
 
   test('appraisal parser exposes result and rejected photo state', () {

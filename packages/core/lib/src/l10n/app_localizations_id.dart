@@ -395,6 +395,42 @@ class AppLocalizationsId extends AppLocalizations {
   String get vehicleVariant => 'Varian';
 
   @override
+  String get chooseVehicleVariant => 'Pilih varian kendaraan';
+
+  @override
+  String chooseVehicleVariantFor(String model, int year) {
+    return 'Pilih varian $model tahun $year';
+  }
+
+  @override
+  String get searchVehicleVariant => 'Cari varian kendaraan';
+
+  @override
+  String get chooseVehicleModelAndYearFirst =>
+      'Pilih model dan tahun terlebih dahulu';
+
+  @override
+  String get vehicleVariantLoading => 'Memuat varian kendaraan...';
+
+  @override
+  String get vehicleVariantLoadError =>
+      'Master varian kendaraan belum dapat dimuat.';
+
+  @override
+  String get vehicleVariantEmpty =>
+      'Belum ada master varian untuk model dan tahun ini.';
+
+  @override
+  String get vehicleVariantNotFound => 'Varian tidak ditemukan? Isi manual';
+
+  @override
+  String get vehicleVariantManualHelper =>
+      'Gunakan nama varian yang tercantum di STNK atau dokumen kendaraan.';
+
+  @override
+  String get chooseFromVariantMaster => 'Pilih dari master varian';
+
+  @override
   String get vehicleYear => 'Tahun';
 
   @override

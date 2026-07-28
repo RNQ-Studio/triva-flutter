@@ -398,6 +398,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicleVariant => 'Variant';
 
   @override
+  String get chooseVehicleVariant => 'Choose a vehicle variant';
+
+  @override
+  String chooseVehicleVariantFor(String model, int year) {
+    return 'Choose a $model variant for $year';
+  }
+
+  @override
+  String get searchVehicleVariant => 'Search vehicle variants';
+
+  @override
+  String get chooseVehicleModelAndYearFirst => 'Choose a model and year first';
+
+  @override
+  String get vehicleVariantLoading => 'Loading vehicle variants...';
+
+  @override
+  String get vehicleVariantLoadError =>
+      'Vehicle variant master data could not be loaded.';
+
+  @override
+  String get vehicleVariantEmpty =>
+      'No master variant is available for this model and year.';
+
+  @override
+  String get vehicleVariantNotFound => 'Variant not found? Enter it manually';
+
+  @override
+  String get vehicleVariantManualHelper =>
+      'Use the variant name shown on the registration or vehicle document.';
+
+  @override
+  String get chooseFromVariantMaster => 'Choose from variant master';
+
+  @override
   String get vehicleYear => 'Year';
 
   @override

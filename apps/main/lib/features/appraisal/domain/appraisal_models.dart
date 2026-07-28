@@ -50,11 +50,43 @@ class VehicleModelOption {
       );
 }
 
+class VehicleVariantOption {
+  const VehicleVariantOption({
+    required this.id,
+    required this.modelId,
+    required this.name,
+    required this.yearFrom,
+    this.yearTo,
+    this.transmission,
+    this.fuelType,
+  });
+
+  final int id;
+  final int modelId;
+  final String name;
+  final int yearFrom;
+  final int? yearTo;
+  final String? transmission;
+  final String? fuelType;
+
+  factory VehicleVariantOption.fromJson(Map<String, dynamic> json) =>
+      VehicleVariantOption(
+        id: (json['id'] as num).toInt(),
+        modelId: (json['model_id'] as num).toInt(),
+        name: json['name']?.toString() ?? '',
+        yearFrom: (json['year_from'] as num).toInt(),
+        yearTo: (json['year_to'] as num?)?.toInt(),
+        transmission: json['transmission']?.toString(),
+        fuelType: json['fuel_type']?.toString(),
+      );
+}
+
 class VehicleData {
   const VehicleData({
     this.id,
     this.makeId,
     this.modelId,
+    this.variantId,
     required this.make,
     required this.model,
     required this.variant,
@@ -72,6 +104,7 @@ class VehicleData {
   final String? id;
   final int? makeId;
   final int? modelId;
+  final int? variantId;
   final String make;
   final String model;
   final String variant;
@@ -89,6 +122,7 @@ class VehicleData {
         id: json['id']?.toString(),
         makeId: (json['make_id'] as num?)?.toInt(),
         modelId: (json['model_id'] as num?)?.toInt(),
+        variantId: (json['variant_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -106,6 +140,7 @@ class VehicleData {
   Map<String, dynamic> toJson() => {
         if (makeId != null) 'make_id': makeId,
         if (modelId != null) 'model_id': modelId,
+        if (variantId != null) 'variant_id': variantId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -335,6 +370,7 @@ class AppraisalDraft {
   const AppraisalDraft({
     this.makeId,
     this.modelId,
+    this.variantId,
     this.make = '',
     this.model = '',
     this.variant = '',
@@ -363,6 +399,7 @@ class AppraisalDraft {
 
   final int? makeId;
   final int? modelId;
+  final int? variantId;
   final String make;
   final String model;
   final String variant;
@@ -416,6 +453,8 @@ class AppraisalDraft {
   AppraisalDraft copyWith({
     int? makeId,
     int? modelId,
+    int? variantId,
+    bool clearVariantId = false,
     String? make,
     String? model,
     String? variant,
@@ -444,6 +483,7 @@ class AppraisalDraft {
       AppraisalDraft(
         makeId: makeId ?? this.makeId,
         modelId: modelId ?? this.modelId,
+        variantId: clearVariantId ? null : variantId ?? this.variantId,
         make: make ?? this.make,
         model: model ?? this.model,
         variant: variant ?? this.variant,
@@ -473,6 +513,7 @@ class AppraisalDraft {
   factory AppraisalDraft.fromJson(Map<String, dynamic> json) => AppraisalDraft(
         makeId: (json['make_id'] as num?)?.toInt(),
         modelId: (json['model_id'] as num?)?.toInt(),
+        variantId: (json['variant_id'] as num?)?.toInt(),
         make: json['make']?.toString() ?? '',
         model: json['model']?.toString() ?? '',
         variant: json['variant']?.toString() ?? '',
@@ -509,6 +550,7 @@ class AppraisalDraft {
   Map<String, dynamic> toJson() => {
         'make_id': makeId,
         'model_id': modelId,
+        'variant_id': variantId,
         'make': make,
         'model': model,
         'variant': variant,
@@ -539,6 +581,7 @@ class AppraisalDraft {
         id: vehicleId,
         makeId: makeId,
         modelId: modelId,
+        variantId: variantId,
         make: make,
         model: model,
         variant: variant,

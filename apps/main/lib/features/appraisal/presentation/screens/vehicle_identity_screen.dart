@@ -21,7 +21,10 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
   final _variant = TextEditingController();
   VehicleMakeOption? _selectedMake;
   VehicleModelOption? _selectedModel;
+  VehicleVariantOption? _selectedVariant;
   int? _selectedYear;
+  bool _manualVariant = false;
+  bool _restoreVariantFromDraft = false;
   bool _initialized = false;
   bool _saving = false;
 
@@ -35,8 +38,11 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
     if (!_formKey.currentState!.validate()) return;
     final make = _selectedMake;
     final model = _selectedModel;
+    final selectedVariant = _selectedVariant;
     final year = _selectedYear;
     if (make == null || model == null || year == null) return;
+    final variant = selectedVariant?.name ?? _variant.text.trim();
+    if (variant.isEmpty) return;
 
     setState(() => _saving = true);
     await ref.read(appraisalFlowProvider.notifier).saveIdentity(
@@ -44,8 +50,11 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
           modelId: model.id,
           make: make.name,
           model: model.name,
-          variant: _variant.text,
+          variantId: selectedVariant?.id,
+          variant: variant,
           year: year,
+          variantTransmission: selectedVariant?.transmission,
+          variantFuelType: selectedVariant?.fuelType,
         );
     if (mounted) context.push(appraisalDetailsPath);
     if (mounted) setState(() => _saving = false);
@@ -62,6 +71,9 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
       _initialized = true;
       _variant.text = value.draft.variant;
       _selectedYear = value.draft.year;
+      _manualVariant =
+          value.draft.variantId == null && value.draft.variant.isNotEmpty;
+      _restoreVariantFromDraft = value.draft.variantId != null;
     }
 
     final makes = ref.watch(vehicleMakesProvider);
@@ -89,6 +101,28 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
           _selectedModel = item;
           break;
         }
+      }
+    });
+
+    final model = _selectedModel;
+    final year = _selectedYear;
+    final variantSelection =
+        model == null || year == null ? null : (modelId: model.id, year: year);
+    final variants = variantSelection == null
+        ? null
+        : ref.watch(vehicleVariantsProvider(variantSelection));
+    variants?.whenData((items) {
+      if (!_restoreVariantFromDraft) return;
+      _restoreVariantFromDraft = false;
+      for (final item in items) {
+        if (item.id == value.draft.variantId) {
+          _selectedVariant = item;
+          _variant.text = item.name;
+          return;
+        }
+      }
+      if (value.draft.variant.isNotEmpty) {
+        _manualVariant = true;
       }
     });
 
@@ -121,6 +155,11 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                       setState(() {
                         _selectedMake = selected;
                         _selectedModel = null;
+                        _selectedVariant = null;
+                        _selectedYear = null;
+                        _manualVariant = false;
+                        _restoreVariantFromDraft = false;
+                        _variant.clear();
                       });
                     },
                   );
@@ -138,31 +177,68 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
                 models: models,
                 value: _selectedModel,
                 onChanged: (selected) {
-                  setState(() => _selectedModel = selected);
+                  if (selected.id == _selectedModel?.id) return;
+                  setState(() {
+                    _selectedModel = selected;
+                    _selectedVariant = null;
+                    _selectedYear = null;
+                    _manualVariant = false;
+                    _restoreVariantFromDraft = false;
+                    _variant.clear();
+                  });
                 },
                 onRetry: make == null
                     ? null
                     : () => ref.invalidate(vehicleModelsProvider(make.id)),
               ),
               const SizedBox(height: AppSpacing.medium),
-              TextFormField(
-                controller: _variant,
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: l10n.vehicleVariant,
-                  prefixIcon: const Icon(Icons.tune_rounded),
-                ),
-                validator: (text) => text == null || text.trim().isEmpty
-                    ? l10n.fieldRequired
-                    : null,
-              ),
-              const SizedBox(height: AppSpacing.medium),
               _VehicleYearField(
                 value: _selectedYear,
                 onChanged: (selected) {
-                  setState(() => _selectedYear = selected);
+                  if (selected == _selectedYear) return;
+                  setState(() {
+                    _selectedYear = selected;
+                    _selectedVariant = null;
+                    _manualVariant = false;
+                    _restoreVariantFromDraft = false;
+                    _variant.clear();
+                  });
                 },
+              ),
+              const SizedBox(height: AppSpacing.medium),
+              _VehicleVariantField(
+                model: model,
+                year: year,
+                variants: variants,
+                value: _selectedVariant,
+                manual: _manualVariant,
+                manualController: _variant,
+                onChanged: (selected) {
+                  setState(() {
+                    _selectedVariant = selected;
+                    _manualVariant = false;
+                    _variant.text = selected.name;
+                  });
+                },
+                onManual: () {
+                  setState(() {
+                    _selectedVariant = null;
+                    _manualVariant = true;
+                    _variant.clear();
+                  });
+                },
+                onMaster: () {
+                  setState(() {
+                    _selectedVariant = null;
+                    _manualVariant = false;
+                    _variant.clear();
+                  });
+                },
+                onRetry: variantSelection == null
+                    ? null
+                    : () => ref.invalidate(
+                          vehicleVariantsProvider(variantSelection),
+                        ),
               ),
             ],
           ),
@@ -323,6 +399,170 @@ class _VehicleModelField extends StatelessWidget {
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded),
                 label: Text(l10n.retry),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _VehicleVariantField extends StatelessWidget {
+  const _VehicleVariantField({
+    required this.model,
+    required this.year,
+    required this.variants,
+    required this.value,
+    required this.manual,
+    required this.manualController,
+    required this.onChanged,
+    required this.onManual,
+    required this.onMaster,
+    required this.onRetry,
+  });
+
+  final VehicleModelOption? model;
+  final int? year;
+  final AsyncValue<List<VehicleVariantOption>>? variants;
+  final VehicleVariantOption? value;
+  final bool manual;
+  final TextEditingController manualController;
+  final ValueChanged<VehicleVariantOption> onChanged;
+  final VoidCallback onManual;
+  final VoidCallback onMaster;
+  final VoidCallback? onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    if (manual) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            key: const ValueKey('vehicle-variant-manual-field'),
+            controller: manualController,
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: l10n.vehicleVariant,
+              helperText: l10n.vehicleVariantManualHelper,
+              prefixIcon: const Icon(Icons.edit_outlined),
+            ),
+            validator: (text) =>
+                text == null || text.trim().isEmpty ? l10n.fieldRequired : null,
+          ),
+          if (model != null && year != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: onMaster,
+                icon: const Icon(Icons.list_alt_rounded),
+                label: Text(l10n.chooseFromVariantMaster),
+              ),
+            ),
+        ],
+      );
+    }
+
+    final items = variants?.value;
+    final isLoading = variants?.isLoading ?? false;
+    final hasError = variants?.hasError ?? false;
+    final isEnabled = model != null &&
+        year != null &&
+        !isLoading &&
+        !hasError &&
+        items != null &&
+        items.isNotEmpty;
+    final hint = switch ((model, year, isLoading, hasError, items?.isEmpty)) {
+      (null, _, _, _, _) ||
+      (_, null, _, _, _) =>
+        l10n.chooseVehicleModelAndYearFirst,
+      (_, _, true, _, _) => l10n.vehicleVariantLoading,
+      (_, _, _, true, _) => l10n.vehicleVariantLoadError,
+      (_, _, _, _, true) => l10n.vehicleVariantEmpty,
+      _ => l10n.chooseVehicleVariant,
+    };
+
+    return FormField<VehicleVariantOption>(
+      key: ValueKey((model?.id, year, value?.id)),
+      initialValue: value,
+      validator: (selection) => selection == null ? l10n.fieldRequired : null,
+      builder: (field) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          InkWell(
+            onTap: !isEnabled
+                ? null
+                : () async {
+                    final selected =
+                        await showModalBottomSheet<VehicleVariantOption>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (context) => _VehicleVariantPicker(
+                        items: items,
+                        selectedId: value?.id,
+                        modelName: model!.name,
+                        year: year!,
+                      ),
+                    );
+                    if (selected == null || !context.mounted) return;
+                    field.didChange(selected);
+                    onChanged(selected);
+                  },
+            borderRadius: AppRadius.small,
+            child: InputDecorator(
+              key: const ValueKey('vehicle-variant-field'),
+              isEmpty: value == null,
+              decoration: InputDecoration(
+                enabled: isEnabled,
+                labelText: l10n.vehicleVariant,
+                hintText: hint,
+                errorText: field.errorText,
+                prefixIcon: const Icon(Icons.tune_rounded),
+                suffixIcon: isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.all(AppSpacing.medium),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.keyboard_arrow_down_rounded),
+              ),
+              child: value == null
+                  ? null
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          value!.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (_variantMetadata(context, value!).isNotEmpty)
+                          Text(
+                            _variantMetadata(context, value!),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                      ],
+                    ),
+            ),
+          ),
+          if ((hasError || items?.isEmpty == true) && onRetry != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh_rounded),
+                label: Text(l10n.retry),
+              ),
+            ),
+          if (model != null && year != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: onManual,
+                icon: const Icon(Icons.edit_outlined),
+                label: Text(l10n.vehicleVariantNotFound),
               ),
             ),
         ],
@@ -617,6 +857,130 @@ class _VehicleModelPickerState extends State<_VehicleModelPicker> {
       ),
     );
   }
+}
+
+class _VehicleVariantPicker extends StatefulWidget {
+  const _VehicleVariantPicker({
+    required this.items,
+    required this.selectedId,
+    required this.modelName,
+    required this.year,
+  });
+
+  final List<VehicleVariantOption> items;
+  final int? selectedId;
+  final String modelName;
+  final int year;
+
+  @override
+  State<_VehicleVariantPicker> createState() => _VehicleVariantPickerState();
+}
+
+class _VehicleVariantPickerState extends State<_VehicleVariantPicker> {
+  final _search = TextEditingController();
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final query = _search.text.trim().toLowerCase();
+    final filtered = widget.items
+        .where((item) => item.name.toLowerCase().contains(query))
+        .toList(growable: false);
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.82,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      builder: (context, scrollController) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.large,
+              AppSpacing.large,
+              AppSpacing.large,
+              AppSpacing.small,
+            ),
+            child: Text(
+              l10n.chooseVehicleVariantFor(widget.modelName, widget.year),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.large,
+              vertical: AppSpacing.small,
+            ),
+            child: TextField(
+              controller: _search,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: l10n.searchVehicleVariant,
+                prefixIcon: const Icon(Icons.search_rounded),
+              ),
+              onChanged: (_) => setState(() {}),
+            ),
+          ),
+          Expanded(
+            child: filtered.isEmpty
+                ? Center(child: Text(l10n.vehicleVariantEmpty))
+                : ListView.separated(
+                    controller: scrollController,
+                    itemCount: filtered.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      final variant = filtered[index];
+                      final metadata = _variantMetadata(context, variant);
+                      return ListTile(
+                        minTileHeight: 56,
+                        leading: const Icon(Icons.tune_rounded),
+                        title: Text(variant.name),
+                        subtitle: metadata.isEmpty ? null : Text(metadata),
+                        trailing: variant.id == widget.selectedId
+                            ? Icon(
+                                Icons.check_circle_rounded,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : null,
+                        onTap: () => Navigator.of(context).pop(variant),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+String _variantMetadata(
+  BuildContext context,
+  VehicleVariantOption variant,
+) {
+  final l10n = AppLocalizations.of(context)!;
+  final labels = <String>[
+    switch (variant.transmission) {
+      'automatic' => l10n.automatic,
+      'manual' => l10n.manual,
+      final value? => value,
+      null => '',
+    },
+    switch (variant.fuelType) {
+      'gasoline' => l10n.gasoline,
+      'diesel' => l10n.diesel,
+      'hybrid' => l10n.hybrid,
+      'electric' => l10n.electric,
+      final value? => value,
+      null => '',
+    },
+  ]..removeWhere((label) => label.isEmpty);
+  return labels.join(' · ');
 }
 
 class _VehicleYearPicker extends StatelessWidget {

@@ -34,6 +34,7 @@ class _FakeFlowController extends AppraisalFlowController {
 const _draft = AppraisalDraft(
   makeId: 1,
   modelId: 10,
+  variantId: 100,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -65,6 +66,7 @@ const _vehicle = VehicleData(
   id: 'vehicle-1',
   makeId: 1,
   modelId: 10,
+  variantId: 100,
   make: 'Toyota',
   model: 'Avanza',
   variant: '1.5 G',
@@ -103,6 +105,16 @@ const _hondaModel = VehicleModelOption(
   makeId: 2,
   slug: 'brio',
   name: 'Brio',
+);
+
+const _vehicleVariant = VehicleVariantOption(
+  id: 100,
+  modelId: 10,
+  name: '1.5 G',
+  yearFrom: 2021,
+  yearTo: 2025,
+  transmission: 'automatic',
+  fuelType: 'gasoline',
 );
 
 const _provinces = [
@@ -282,6 +294,36 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('identity supports variant master and manual fallback',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleIdentityScreen(),
+      brightness: Brightness.light,
+    );
+
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('vehicle-variant-field')),
+    );
+    await tester.tap(find.byKey(const ValueKey('vehicle-variant-field')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pilih varian Avanza tahun 2022'), findsOneWidget);
+    expect(find.text('Otomatis · Bensin'), findsWidgets);
+    await tester.tap(find.text('1.5 G').last);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Varian tidak ditemukan? Isi manual'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey('vehicle-variant-manual-field')),
+      findsOneWidget,
+    );
+    expect(find.text('Pilih dari master varian'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('empty picker hint is owned by the input decoration',
       (tester) async {
     await _pump(
@@ -453,6 +495,11 @@ Future<void> _pump(
           (ref, makeId) async =>
               makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
         ),
+        vehicleVariantsProvider.overrideWith(
+          (ref, selection) async => selection.modelId == _vehicleModel.id
+              ? [_vehicleVariant]
+              : const [],
+        ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
         appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
       ],
@@ -495,6 +542,11 @@ Future<void> _pumpRouter(
         vehicleModelsProvider.overrideWith(
           (ref, makeId) async =>
               makeId == _vehicleMake.id ? [_vehicleModel] : [_hondaModel],
+        ),
+        vehicleVariantsProvider.overrideWith(
+          (ref, selection) async => selection.modelId == _vehicleModel.id
+              ? [_vehicleVariant]
+              : const [],
         ),
         provinceOptionsProvider.overrideWith((ref) async => _provinces),
       ],
