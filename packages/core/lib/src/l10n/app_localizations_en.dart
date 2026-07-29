@@ -621,7 +621,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submittedDescription =>
-      'We are searching OLX comparables and will use OpenAI when needed.';
+      'Processing continues in the background. We search OLX comparables and ask OpenAI for a price decision when needed. You will be notified when it finishes.';
 
   @override
   String get referenceNumber => 'Reference number';
@@ -711,7 +711,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get underReviewDescription =>
-      'TRIVA searches OLX and uses OpenAI as fallback when comparables are insufficient.';
+      'TRIVA searches OLX and asks OpenAI for a price decision from the submitted specifications when comparables are insufficient.';
 
   @override
   String get processingFailedTitle => 'Processing was not completed';

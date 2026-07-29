@@ -617,7 +617,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get submittedDescription =>
-      'Kami sedang mencari pembanding OLX dan akan memakai OpenAI bila diperlukan.';
+      'Proses berjalan di latar belakang. Kami mencari pembanding OLX dan meminta keputusan harga OpenAI bila diperlukan. Notifikasi akan muncul saat selesai.';
 
   @override
   String get referenceNumber => 'Nomor referensi';
@@ -706,7 +706,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get underReviewDescription =>
-      'TRIVA menelusuri OLX dan memakai OpenAI sebagai fallback bila pembanding belum cukup.';
+      'TRIVA menelusuri OLX dan meminta keputusan harga OpenAI dari spesifikasi yang dikirim bila pembanding belum cukup.';
 
   @override
   String get processingFailedTitle => 'Pemrosesan belum berhasil';

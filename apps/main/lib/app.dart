@@ -15,6 +15,49 @@ import 'features/credit/presentation/credit_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
 import 'features/otoxpert/presentation/otoxpert_controller.dart';
 
+String? notificationTarget(Map<String, dynamic> data) {
+  String? safeId(String key) {
+    final value = data[key]?.toString();
+    return value != null && RegExp(r'^[A-Za-z0-9-]+$').hasMatch(value)
+        ? value
+        : null;
+  }
+
+  final route = data['route']?.toString();
+  final type = data['type']?.toString();
+  final appraisalId = safeId('appraisal_id');
+  final bodyPaintId = safeId('body_paint_estimate_id') ??
+      (type == 'body_paint_estimate' ? safeId('estimate_id') : null);
+  final otoxpertId = safeId('otoxpert_booking_id') ??
+      (type == 'otoxpert_booking' ? safeId('booking_id') : null);
+  final toyotaId = safeId('toyota_service_booking_id') ??
+      (type == 'toyota_service_booking' ? safeId('booking_id') : null);
+  final creditId = safeId('credit_simulation_id') ??
+      (type == 'credit_simulation' ? safeId('simulation_id') : null);
+
+  if (appraisalId != null) {
+    return type == 'appraisal_result_ready' ||
+            route == '/appraisals/$appraisalId/result'
+        ? '/appraisals/$appraisalId/result'
+        : '/appraisals/$appraisalId';
+  }
+  if (bodyPaintId != null) return '/body-paint/estimates/$bodyPaintId';
+  if (creditId != null) return '/credit/simulations/$creditId';
+  if (otoxpertId != null) return '/otoxpert/bookings/$otoxpertId';
+  if (toyotaId != null) return '/toyota-service/bookings/$toyotaId';
+  if (route == null) return null;
+
+  return [
+    RegExp(r'^/appraisals/[A-Za-z0-9-]+(?:/result)?$'),
+    RegExp(r'^/body-paint/estimates/[A-Za-z0-9-]+$'),
+    RegExp(r'^/toyota-service/bookings/[A-Za-z0-9-]+$'),
+    RegExp(r'^/otoxpert/bookings/[A-Za-z0-9-]+$'),
+    RegExp(r'^/credit/simulations/[A-Za-z0-9-]+$'),
+  ].any((pattern) => pattern.hasMatch(route))
+      ? route
+      : null;
+}
+
 Future<void> syncPushTokenSafely({
   required Future<String?> Function() getToken,
   required Future<void> Function(String token) register,
@@ -54,6 +97,7 @@ class _AppRouter extends ConsumerStatefulWidget {
 
 class _AppRouterState extends ConsumerState<_AppRouter> {
   final _fcm = FCMNotificationService();
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   String? _pendingNotificationRoute;
   String? _authenticatedUserId;
   String? _registeredPushIdentity;
@@ -117,10 +161,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
   Future<void> _initializeNotifications() async {
     try {
       await _fcm.init(
-        onForegroundMessage: (_) {
-          ref.invalidate(notificationsListProvider);
-          ref.invalidate(unreadNotificationCountProvider);
-        },
+        onForegroundMessage: _handleForegroundNotification,
         onMessageOpenedApp: _openNotification,
         onTokenChanged: _registerDevice,
       );
@@ -129,33 +170,48 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     }
   }
 
+  void _handleForegroundNotification(RemoteMessage message) {
+    ref.invalidate(notificationsListProvider);
+    ref.invalidate(unreadNotificationCountProvider);
+    final appraisalId = message.data['appraisal_id']?.toString();
+    if (appraisalId != null) {
+      ref.invalidate(appraisalsProvider);
+      ref.invalidate(appraisalDetailProvider(appraisalId));
+    }
+
+    final notification = message.notification;
+    if (notification == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final messenger = _scaffoldMessengerKey.currentState;
+      final messengerContext = messenger?.context;
+      if (messenger == null || messengerContext == null) return;
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 8),
+            content: Text(
+              [
+                if (notification.title?.isNotEmpty == true) notification.title!,
+                if (notification.body?.isNotEmpty == true) notification.body!,
+              ].join('\n'),
+            ),
+            action: notificationTarget(message.data) == null
+                ? null
+                : SnackBarAction(
+                    label: AppLocalizations.of(messengerContext)!
+                        .notificationOpenAction,
+                    onPressed: () => _openNotification(message),
+                  ),
+          ),
+        );
+    });
+  }
+
   void _openNotification(RemoteMessage message) {
-    final route = message.data['route']?.toString();
-    final type = message.data['type']?.toString();
-    final otoxpertId = message.data['otoxpert_booking_id']?.toString() ??
-        (type == 'otoxpert_booking'
-            ? message.data['booking_id']?.toString()
-            : null);
-    final toyotaId = message.data['toyota_service_booking_id']?.toString() ??
-        (type == 'toyota_service_booking'
-            ? message.data['booking_id']?.toString()
-            : null);
-    final creditId = message.data['credit_simulation_id']?.toString() ??
-        (type == 'credit_simulation'
-            ? message.data['simulation_id']?.toString()
-            : null);
-    final target = creditId != null
-        ? '/credit/simulations/$creditId'
-        : otoxpertId != null
-            ? '/otoxpert/bookings/$otoxpertId'
-            : toyotaId != null
-                ? '/toyota-service/bookings/$toyotaId'
-                : route != null &&
-                        (route.startsWith('/toyota-service/bookings/') ||
-                            route.startsWith('/otoxpert/bookings/') ||
-                            route.startsWith('/credit/simulations/'))
-                    ? route
-                    : null;
+    final target = notificationTarget(message.data);
     if (target == null) return;
     if (ref.read(authProvider) is AuthAuthenticated) {
       appRouter.go(target);
@@ -228,6 +284,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
 
     return MaterialApp.router(
       title: 'TRIVA',
+      scaffoldMessengerKey: _scaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,

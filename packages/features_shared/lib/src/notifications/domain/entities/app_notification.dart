@@ -56,4 +56,24 @@ class AppNotification {
         ? data['estimate_id']?.toString()
         : null;
   }
+
+  String? get appraisalId {
+    final explicit = data['appraisal_id']?.toString();
+    if (explicit != null) return explicit;
+    return type == 'appraisal_result_ready' ||
+            type == 'appraisal_processing_failed' ||
+            data['type']?.toString() == 'appraisal_result_ready' ||
+            data['type']?.toString() == 'appraisal_processing_failed'
+        ? data['id']?.toString()
+        : null;
+  }
+
+  String? get appraisalRoute {
+    final id = appraisalId;
+    if (id == null) return null;
+    return type == 'appraisal_result_ready' ||
+            data['type']?.toString() == 'appraisal_result_ready'
+        ? '/appraisals/$id/result'
+        : '/appraisals/$id';
+  }
 }

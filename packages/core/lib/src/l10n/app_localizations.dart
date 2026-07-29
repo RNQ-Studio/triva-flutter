@@ -1217,7 +1217,7 @@ abstract class AppLocalizations {
   /// No description provided for @submittedDescription.
   ///
   /// In id, this message translates to:
-  /// **'Kami sedang mencari pembanding OLX dan akan memakai OpenAI bila diperlukan.'**
+  /// **'Proses berjalan di latar belakang. Kami mencari pembanding OLX dan meminta keputusan harga OpenAI bila diperlukan. Notifikasi akan muncul saat selesai.'**
   String get submittedDescription;
 
   /// No description provided for @referenceNumber.
@@ -1385,7 +1385,7 @@ abstract class AppLocalizations {
   /// No description provided for @underReviewDescription.
   ///
   /// In id, this message translates to:
-  /// **'TRIVA menelusuri OLX dan memakai OpenAI sebagai fallback bila pembanding belum cukup.'**
+  /// **'TRIVA menelusuri OLX dan meminta keputusan harga OpenAI dari spesifikasi yang dikirim bila pembanding belum cukup.'**
   String get underReviewDescription;
 
   /// No description provided for @processingFailedTitle.
