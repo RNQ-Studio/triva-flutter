@@ -171,7 +171,7 @@ class _DetailContent extends StatelessWidget {
         .toList(growable: false);
     final needsAction = appraisal.needsAction;
     final processingFailed = appraisal.processingFailed;
-    final resultReady = appraisal.resultReady;
+    final resultAvailable = appraisal.result != null;
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.large),
@@ -193,7 +193,7 @@ class _DetailContent extends StatelessWidget {
                       ? Icons.camera_alt_outlined
                       : processingFailed
                           ? Icons.error_outline_rounded
-                          : resultReady
+                          : resultAvailable
                               ? Icons.check_circle_outline_rounded
                               : Icons.manage_search_outlined,
                   size: 36,
@@ -204,7 +204,7 @@ class _DetailContent extends StatelessWidget {
                       ? l10n.needsActionTitle
                       : processingFailed
                           ? l10n.processingFailedTitle
-                          : resultReady
+                          : resultAvailable
                               ? l10n.resultTitle
                               : l10n.underReviewTitle,
                   style: Theme.of(context).textTheme.titleLarge,
@@ -215,7 +215,7 @@ class _DetailContent extends StatelessWidget {
                       ? l10n.needsActionDescription
                       : processingFailed
                           ? l10n.processingFailedDescription
-                          : resultReady
+                          : resultAvailable
                               ? l10n.processResultDescription
                               : l10n.underReviewDescription,
                 ),
@@ -253,7 +253,7 @@ class _DetailContent extends StatelessWidget {
               label: Text(l10n.sendReplacement),
             ),
         ],
-        if (appraisal.resultReady) ...[
+        if (resultAvailable) ...[
           const SizedBox(height: AppSpacing.large),
           FilledButton(
             onPressed: () => context.push(appraisalResultPath(appraisal.id)),

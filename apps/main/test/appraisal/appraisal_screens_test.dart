@@ -210,6 +210,17 @@ final _appraisal = AppraisalData(
   ),
 );
 
+final _acceptedAppraisal = AppraisalData(
+  id: _appraisal.id,
+  referenceNo: _appraisal.referenceNo,
+  status: 'accepted_by_customer',
+  statusLabel: 'Harga diterima',
+  vehicle: _appraisal.vehicle,
+  timeline: _appraisal.timeline,
+  result: _appraisal.result,
+  customerDecision: 'accepted',
+);
+
 void main() {
   final flowScreens = <(String, Widget, String)>[
     ('identity', const VehicleIdentityScreen(), 'Identitas kendaraan'),
@@ -357,6 +368,66 @@ void main() {
     expect(find.text('Memproses data pembanding'), findsOneWidget);
     expect(find.textContaining('appraiser'), findsNothing);
     expect(find.textContaining('manual'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('accepted appraisal detail keeps the result menu available',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalDetailScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      detailData: _acceptedAppraisal,
+    );
+
+    expect(
+      find.widgetWithText(FilledButton, 'Hasil appraisal'),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('accepted appraisal result is displayed without decision actions',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      detailData: _acceptedAppraisal,
+    );
+
+    expect(find.text('Estimasi trade-in'), findsOneWidget);
+    expect(find.text('Terima harga'), findsNothing);
+    expect(find.text('Belum cocok'), findsNothing);
+    expect(find.text('Putuskan nanti'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('result labels and values share the same left alignment',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+    );
+
+    final alignedTexts = [
+      find.text('Rentang harga pasar'),
+      find.textContaining('178.000.000'),
+      find.text('Tingkat keyakinan'),
+      find.text('MEDIUM'),
+      find.text('6 kendaraan pembanding'),
+      find.text('6'),
+      find.text('Data pembanding per'),
+      find.text('28 Juli 2026'),
+      find.text('Sumber data'),
+      find.text('OLX (akses berizin)'),
+    ];
+    final expectedLeft = tester.getTopLeft(alignedTexts.first).dx;
+
+    for (final text in alignedTexts) {
+      expect(tester.getTopLeft(text).dx, closeTo(expectedLeft, 0.01));
+    }
     expect(tester.takeException(), isNull);
   });
 
@@ -609,6 +680,57 @@ void main() {
     expect(find.text('Beranda test'), findsOneWidget);
 
     router.go(detailPath);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('Beranda test'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('back from direct appraisal result returns to home',
+      (tester) async {
+    final resultPath = appraisalResultPath(_appraisal.id);
+    final router = GoRouter(
+      initialLocation: resultPath,
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (_, __) => const Scaffold(
+            body: Center(child: Text('Beranda test')),
+          ),
+        ),
+        GoRoute(
+          path: '/appraisals/:id/result',
+          builder: (_, state) => AppraisalResultScreen(
+            appraisalId: state.pathParameters['id']!,
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Estimasi trade-in'), findsOneWidget);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Beranda test'), findsOneWidget);
+
+    router.go(resultPath);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();

@@ -21,6 +21,16 @@ class AppraisalResultScreen extends ConsumerStatefulWidget {
 class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
   bool _busy = false;
 
+  void _goBack() {
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+      return;
+    }
+
+    context.go('/');
+  }
+
   Future<void> _decide(String decision) async {
     setState(() => _busy = true);
     try {
@@ -99,32 +109,41 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final async = ref.watch(appraisalDetailProvider(widget.appraisalId));
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.resultTitle)),
-      body: SafeArea(
-        child: async.when(
-          data: (appraisal) {
-            final result = appraisal.result;
-            if (result == null) {
-              return Center(child: Text(l10n.loadFailed));
-            }
-            return _ResultContent(
-              appraisal: appraisal,
-              result: result,
-              busy: _busy,
-              onAccept: () => _decide('accepted'),
-              onReject: () => _decide('rejected'),
-              onDefer: () => _decide('deferred'),
-              onSchedule: _schedule,
-            );
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, __) => Center(
-            child: OutlinedButton(
-              onPressed: () => ref.invalidate(
-                appraisalDetailProvider(widget.appraisalId),
+    return PopScope(
+      canPop: Navigator.of(context).canPop(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && mounted) context.go('/');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(onPressed: _goBack),
+          title: Text(l10n.resultTitle),
+        ),
+        body: SafeArea(
+          child: async.when(
+            data: (appraisal) {
+              final result = appraisal.result;
+              if (result == null) {
+                return Center(child: Text(l10n.loadFailed));
+              }
+              return _ResultContent(
+                appraisal: appraisal,
+                result: result,
+                busy: _busy,
+                onAccept: () => _decide('accepted'),
+                onReject: () => _decide('rejected'),
+                onDefer: () => _decide('deferred'),
+                onSchedule: _schedule,
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => Center(
+              child: OutlinedButton(
+                onPressed: () => ref.invalidate(
+                  appraisalDetailProvider(widget.appraisalId),
+                ),
+                child: Text(l10n.retry),
               ),
-              child: Text(l10n.retry),
             ),
           ),
         ),
@@ -224,6 +243,7 @@ class _ResultContent extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.large),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _ResultRow(
                   label: l10n.marketRange,
@@ -298,28 +318,30 @@ class _ResultContent extends StatelessWidget {
                 color: colors.onSurfaceVariant,
               ),
         ),
-        const SizedBox(height: AppSpacing.xLarge),
-        FilledButton(
-          onPressed: busy ? null : onAccept,
-          child: Text(l10n.acceptPrice),
-        ),
-        const SizedBox(height: AppSpacing.small),
-        if (result.requiresPhysicalInspection) ...[
-          OutlinedButton.icon(
-            onPressed: busy ? null : onSchedule,
-            icon: const Icon(Icons.event_available_outlined),
-            label: Text(l10n.scheduleInspection),
+        if (appraisal.resultReady) ...[
+          const SizedBox(height: AppSpacing.xLarge),
+          FilledButton(
+            onPressed: busy ? null : onAccept,
+            child: Text(l10n.acceptPrice),
           ),
           const SizedBox(height: AppSpacing.small),
+          if (result.requiresPhysicalInspection) ...[
+            OutlinedButton.icon(
+              onPressed: busy ? null : onSchedule,
+              icon: const Icon(Icons.event_available_outlined),
+              label: Text(l10n.scheduleInspection),
+            ),
+            const SizedBox(height: AppSpacing.small),
+          ],
+          OutlinedButton(
+            onPressed: busy ? null : onReject,
+            child: Text(l10n.declinePrice),
+          ),
+          TextButton(
+            onPressed: busy ? null : onDefer,
+            child: Text(l10n.decideLater),
+          ),
         ],
-        OutlinedButton(
-          onPressed: busy ? null : onReject,
-          child: Text(l10n.declinePrice),
-        ),
-        TextButton(
-          onPressed: busy ? null : onDefer,
-          child: Text(l10n.decideLater),
-        ),
       ],
     );
   }
