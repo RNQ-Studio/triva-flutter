@@ -170,6 +170,46 @@ final _appraisal = AppraisalData(
   status: 'result_ready',
   statusLabel: 'Hasil tersedia',
   vehicle: _vehicle,
+  condition: const AppraisalConditionData(
+    taxStatus: 'active',
+    floodHistory: 'no',
+    majorAccidentHistory: 'no',
+    serviceHistory: 'complete',
+    ownership: 'first',
+    conditionPercentage: 90,
+  ),
+  photos: const [
+    AppraisalPhoto(
+      id: 'photo-front',
+      angle: 'front',
+      angleLabel: 'Tampak depan',
+      reviewStatus: 'approved',
+    ),
+    AppraisalPhoto(
+      id: 'photo-rear',
+      angle: 'rear',
+      angleLabel: 'Tampak belakang',
+      reviewStatus: 'approved',
+    ),
+    AppraisalPhoto(
+      id: 'photo-left',
+      angle: 'left_side',
+      angleLabel: 'Sisi kiri',
+      reviewStatus: 'approved',
+    ),
+    AppraisalPhoto(
+      id: 'photo-right',
+      angle: 'right_side',
+      angleLabel: 'Sisi kanan',
+      reviewStatus: 'approved',
+    ),
+    AppraisalPhoto(
+      id: 'photo-dashboard',
+      angle: 'dashboard_odometer',
+      angleLabel: 'Dashboard & odometer',
+      reviewStatus: 'approved',
+    ),
+  ],
   timeline: [
     const AppraisalTimelineItem(
       status: 'submitted',
@@ -216,6 +256,8 @@ final _acceptedAppraisal = AppraisalData(
   status: 'accepted_by_customer',
   statusLabel: 'Harga diterima',
   vehicle: _appraisal.vehicle,
+  condition: _appraisal.condition,
+  photos: _appraisal.photos,
   timeline: _appraisal.timeline,
   result: _appraisal.result,
   customerDecision: 'accepted',
@@ -428,6 +470,39 @@ void main() {
     for (final text in alignedTexts) {
       expect(tester.getTopLeft(text).dx, closeTo(expectedLeft, 0.01));
     }
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('result includes all submitted vehicle data and photo slots',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Detail kendaraan'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Otomatis'), findsOneWidget);
+    expect(find.text('Bensin'), findsOneWidget);
+    expect(find.text('42.000 km'), findsOneWidget);
+    expect(find.text('Jawa Timur'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Foto kendaraan'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('90%'), findsOneWidget);
+    expect(find.text('Tampak depan'), findsOneWidget);
+    expect(find.text('Tampak belakang'), findsOneWidget);
+    expect(find.text('Sisi kiri'), findsOneWidget);
+    expect(find.text('Sisi kanan'), findsOneWidget);
+    expect(find.text('Dashboard & odometer'), findsOneWidget);
+    expect(find.byIcon(Icons.image_not_supported_outlined), findsNWidgets(5));
     expect(tester.takeException(), isNull);
   });
 

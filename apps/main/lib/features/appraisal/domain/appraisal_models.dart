@@ -292,6 +292,37 @@ class AppraisalAdjustment {
       );
 }
 
+class AppraisalConditionData {
+  const AppraisalConditionData({
+    required this.taxStatus,
+    required this.floodHistory,
+    required this.majorAccidentHistory,
+    required this.serviceHistory,
+    required this.ownership,
+    required this.conditionPercentage,
+  });
+
+  final String taxStatus;
+  final String floodHistory;
+  final String majorAccidentHistory;
+  final String serviceHistory;
+  final String ownership;
+  final int conditionPercentage;
+
+  factory AppraisalConditionData.fromJson(Map<String, dynamic> json) =>
+      AppraisalConditionData(
+        taxStatus: json['tax_status']?.toString() ?? '',
+        floodHistory: json['flood_history']?.toString() ?? '',
+        majorAccidentHistory: json['major_accident_history']?.toString() ?? '',
+        serviceHistory: json['service_history']?.toString() ?? '',
+        ownership: json['ownership']?.toString() ?? '',
+        conditionPercentage:
+            ((json['condition_percentage'] as num?)?.toInt() ?? 0)
+                .clamp(0, 100)
+                .toInt(),
+      );
+}
+
 class AppraisalData {
   const AppraisalData({
     required this.id,
@@ -299,6 +330,7 @@ class AppraisalData {
     required this.status,
     required this.statusLabel,
     this.vehicle,
+    this.condition,
     this.photos = const [],
     this.timeline = const [],
     this.result,
@@ -313,6 +345,7 @@ class AppraisalData {
   final String status;
   final String statusLabel;
   final VehicleData? vehicle;
+  final AppraisalConditionData? condition;
   final List<AppraisalPhoto> photos;
   final List<AppraisalTimelineItem> timeline;
   final AppraisalResultData? result;
@@ -339,6 +372,11 @@ class AppraisalData {
         statusLabel: json['status_label']?.toString() ?? '',
         vehicle: json['vehicle'] is Map<String, dynamic>
             ? VehicleData.fromJson(json['vehicle'] as Map<String, dynamic>)
+            : null,
+        condition: json['condition'] is Map<String, dynamic>
+            ? AppraisalConditionData.fromJson(
+                json['condition'] as Map<String, dynamic>,
+              )
             : null,
         photos: (json['photos'] as List<dynamic>? ?? const [])
             .whereType<Map<String, dynamic>>()

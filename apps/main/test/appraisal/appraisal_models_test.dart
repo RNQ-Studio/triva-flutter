@@ -77,6 +77,14 @@ void main() {
       'reference_no': 'TIA-20260726-00000001',
       'status': 'result_ready',
       'status_label': 'Hasil tersedia',
+      'condition': {
+        'tax_status': 'active',
+        'flood_history': 'no',
+        'major_accident_history': 'no',
+        'service_history': 'complete',
+        'ownership': 'first',
+        'condition_percentage': 87,
+      },
       'photos': [
         {
           'id': 'photo-1',
@@ -84,6 +92,7 @@ void main() {
           'angle_label': 'Depan',
           'review_status': 'rejected',
           'rejection_note': 'Foto buram',
+          'url': 'https://example.test/front.jpg',
         },
       ],
       'timeline': const [],
@@ -104,6 +113,9 @@ void main() {
 
     expect(appraisal.resultReady, isTrue);
     expect(appraisal.photos.single.rejectionNote, 'Foto buram');
+    expect(appraisal.photos.single.url, 'https://example.test/front.jpg');
+    expect(appraisal.condition?.taxStatus, 'active');
+    expect(appraisal.condition?.conditionPercentage, 87);
     expect(appraisal.result?.tradeInLow, 168000000);
     expect(appraisal.result?.comparableCount, 6);
   });
