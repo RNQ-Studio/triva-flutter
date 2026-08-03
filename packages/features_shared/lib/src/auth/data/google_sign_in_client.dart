@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -7,25 +8,25 @@ class GoogleSignInClient {
   GoogleSignInClient({
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    bool? isWeb,
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _injectedGoogleSignIn = googleSignIn,
+        _isWeb = isWeb ?? kIsWeb;
 
   final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  final GoogleSignIn? _injectedGoogleSignIn;
+  final bool _isWeb;
+  late final GoogleSignIn _googleSignIn =
+      _injectedGoogleSignIn ?? GoogleSignIn();
 
   Future<String> signInAndGetFirebaseIdToken() async {
     try {
-      final account = await _googleSignIn.signIn();
-      if (account == null) {
-        throw const SignInCancelledException();
-      }
-
-      final authentication = await account.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: authentication.accessToken,
-        idToken: authentication.idToken,
-      );
-      final result = await _firebaseAuth.signInWithCredential(credential);
+      final result = _isWeb
+          ? await _firebaseAuth.signInWithPopup(
+              GoogleAuthProvider()
+                ..setCustomParameters({'prompt': 'select_account'}),
+            )
+          : await _signInNatively();
       final firebaseUser = result.user;
       if (firebaseUser == null) {
         throw const AuthConfigurationException(
@@ -44,6 +45,10 @@ class GoogleSignInClient {
     } on SignInCancelledException {
       rethrow;
     } on FirebaseAuthException catch (error) {
+      if (error.code == 'popup-closed-by-user' ||
+          error.code == 'cancelled-popup-request') {
+        throw const SignInCancelledException();
+      }
       if (error.code == 'network-request-failed') {
         throw const NetworkException('Google sign-in network request failed.');
       }
@@ -63,7 +68,26 @@ class GoogleSignInClient {
     }
   }
 
+  Future<UserCredential> _signInNatively() async {
+    final account = await _googleSignIn.signIn();
+    if (account == null) {
+      throw const SignInCancelledException();
+    }
+
+    final authentication = await account.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: authentication.accessToken,
+      idToken: authentication.idToken,
+    );
+    return _firebaseAuth.signInWithCredential(credential);
+  }
+
   Future<void> signOut() async {
+    if (_isWeb) {
+      await _firebaseAuth.signOut();
+      return;
+    }
+
     await Future.wait([
       _firebaseAuth.signOut(),
       _googleSignIn.signOut(),
