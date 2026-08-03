@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1074553653742-2q191khg4u3ofdt4j1u6br1bdemqi2vs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.rnq.triva",
+            "certificate_hash": "b90847534e3103fb923e6a1421a6331c7f6d6c85"
+          }
+        },
+        {
+          "client_id": "1074553653742-cuemi0eceshnknqlsmp8cgqfqpv6f4e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.rnq.triva",
+            "certificate_hash": "b6d17f3d5ff2c8a868dc50e82f8c3ec3257bf399"
+          }
+        },
+        {
           "client_id": "1074553653742-o2il4kiadefbfgk2qgsdq1lglucj010j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
