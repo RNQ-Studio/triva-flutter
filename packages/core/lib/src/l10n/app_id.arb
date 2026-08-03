@@ -540,6 +540,10 @@
   "creditFlowSubtitle": "Bandingkan cicilan dari program yang berlaku. Hasil ini berupa estimasi, bukan persetujuan kredit.",
   "creditProgramLabel": "Program dan mobil target",
   "creditProgramHelper": "Program menentukan harga OTR, tenor, bunga, dan biaya.",
+  "creditProgramName": "Nama program",
+  "creditPartner": "Partner pembiayaan",
+  "creditDemoBadge": "Demo",
+  "creditDemoProgramNotice": "Program ini memakai data demo untuk pengujian. Angkanya bukan penawaran atau persetujuan kredit.",
   "creditNoProgramsTitle": "Program kredit belum tersedia",
   "creditNoProgramsDescription": "Program aktif untuk kota dan kendaraan target belum dimasukkan. Coba lagi setelah tim memperbarui program.",
   "creditTargetVehicle": "Mobil target",
@@ -547,7 +551,26 @@
   "creditOtrPrice": "Harga OTR",
   "creditDownPaymentSection": "Dana awal",
   "creditCashDownPayment": "DP tunai",
+  "creditDpRange": "Batas total DP",
+  "creditDpBelowMinimum": "Total DP minimum adalah {minimum}.",
+  "@creditDpBelowMinimum": {
+    "placeholders": {
+      "minimum": {
+        "type": "String"
+      }
+    }
+  },
+  "creditDpAboveMaximum": "Total DP maksimum adalah {maximum}.",
+  "@creditDpAboveMaximum": {
+    "placeholders": {
+      "maximum": {
+        "type": "String"
+      }
+    }
+  },
   "creditTradeInManual": "Nilai trade-in manual",
+  "creditTradeInRequired": "Masukkan nilai trade-in yang akan digunakan sebagai DP.",
+  "creditExpiredAppraisalWarning": "Hasil appraisal sudah kedaluwarsa dan perlu diverifikasi ulang.",
   "creditTradeInFromAppraisal": "Nilai trade-in akan diambil dari hasil appraisal ini.",
   "creditUseTradeInAsDp": "Gunakan equity trade-in sebagai DP",
   "creditOldVehiclePayoff": "Sisa kewajiban kendaraan lama",
@@ -589,6 +612,7 @@
   "creditSavedTitle": "Simulasi tersimpan",
   "creditSavedDescription": "Snapshot program dan hasil perhitungan tersimpan di Aktivitas Saya.",
   "creditRequestSales": "Minta dihubungi sales",
+  "creditRequestingFollowUp": "Mengirim permintaan…",
   "creditFollowUpConsentTitle": "Teruskan ke tim sales?",
   "creditFollowUpConsentDescription": "Saya setuju data kontak dan snapshot simulasi ini digunakan tim sales untuk menindaklanjuti permintaan.",
   "creditContactChannel": "Channel kontak",

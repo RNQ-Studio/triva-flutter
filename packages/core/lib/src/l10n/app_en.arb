@@ -540,6 +540,10 @@
   "creditFlowSubtitle": "Compare installments from active programs. This result is an estimate, not a credit approval.",
   "creditProgramLabel": "Program and target vehicle",
   "creditProgramHelper": "The program determines OTR price, term, rate, and fees.",
+  "creditProgramName": "Program name",
+  "creditPartner": "Financing partner",
+  "creditDemoBadge": "Demo",
+  "creditDemoProgramNotice": "This program uses demo data for testing. Its figures are not a credit offer or approval.",
   "creditNoProgramsTitle": "No credit program available",
   "creditNoProgramsDescription": "An active program for the target city and vehicle has not been entered yet. Try again after the team updates the program.",
   "creditTargetVehicle": "Target vehicle",
@@ -547,7 +551,26 @@
   "creditOtrPrice": "OTR price",
   "creditDownPaymentSection": "Initial funds",
   "creditCashDownPayment": "Cash down payment",
+  "creditDpRange": "Total down payment range",
+  "creditDpBelowMinimum": "The minimum total down payment is {minimum}.",
+  "@creditDpBelowMinimum": {
+    "placeholders": {
+      "minimum": {
+        "type": "String"
+      }
+    }
+  },
+  "creditDpAboveMaximum": "The maximum total down payment is {maximum}.",
+  "@creditDpAboveMaximum": {
+    "placeholders": {
+      "maximum": {
+        "type": "String"
+      }
+    }
+  },
   "creditTradeInManual": "Manual trade-in value",
+  "creditTradeInRequired": "Enter the trade-in value to use as a down payment.",
+  "creditExpiredAppraisalWarning": "The appraisal result has expired and must be verified again.",
   "creditTradeInFromAppraisal": "The trade-in value will be taken from this appraisal result.",
   "creditUseTradeInAsDp": "Use trade-in equity as down payment",
   "creditOldVehiclePayoff": "Outstanding old vehicle payoff",
@@ -589,6 +612,7 @@
   "creditSavedTitle": "Simulation saved",
   "creditSavedDescription": "The program snapshot and calculation are saved in My Activity.",
   "creditRequestSales": "Request a sales call",
+  "creditRequestingFollowUp": "Sending request…",
   "creditFollowUpConsentTitle": "Send this to the sales team?",
   "creditFollowUpConsentDescription": "I consent to the sales team using my contact details and this simulation snapshot to follow up.",
   "creditContactChannel": "Contact channel",

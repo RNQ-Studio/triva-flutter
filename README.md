@@ -1,6 +1,24 @@
 # TRIVA Flutter
 
 Aplikasi pelanggan TRIVA (Trade-In Vehicle Appraisal) untuk Android dan web.
+
+## Android release signing
+
+Material signing bersifat lokal/secret dan tidak boleh masuk Git. Salin
+`apps/main/android/key.properties.example` menjadi
+`apps/main/android/key.properties`, lalu arahkan `storeFile` ke upload keystore
+yang disimpan di lokasi aman. Build release akan gagal jika konfigurasi signing
+tidak lengkap; ia tidak pernah fallback ke debug signing.
+
+Sesudah menaikkan version name/code, build APK production dengan:
+
+```bash
+dart run melos run build:android:main
+```
+
+CI yang akan membuat artefak signed harus mematerialisasi keystore dan
+`key.properties` dari secret store sebelum build, lalu menghapusnya kembali.
+
 Produk ini membantu pelanggan Auto2000 Kertajaya memahami indikasi nilai
 kendaraan, memantau appraisal, dan melanjutkan hasilnya ke layanan kendaraan.
 

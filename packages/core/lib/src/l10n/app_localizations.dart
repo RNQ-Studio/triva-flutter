@@ -3230,6 +3230,30 @@ abstract class AppLocalizations {
   /// **'Program menentukan harga OTR, tenor, bunga, dan biaya.'**
   String get creditProgramHelper;
 
+  /// No description provided for @creditProgramName.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama program'**
+  String get creditProgramName;
+
+  /// No description provided for @creditPartner.
+  ///
+  /// In id, this message translates to:
+  /// **'Partner pembiayaan'**
+  String get creditPartner;
+
+  /// No description provided for @creditDemoBadge.
+  ///
+  /// In id, this message translates to:
+  /// **'Demo'**
+  String get creditDemoBadge;
+
+  /// No description provided for @creditDemoProgramNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Program ini memakai data demo untuk pengujian. Angkanya bukan penawaran atau persetujuan kredit.'**
+  String get creditDemoProgramNotice;
+
   /// No description provided for @creditNoProgramsTitle.
   ///
   /// In id, this message translates to:
@@ -3272,11 +3296,41 @@ abstract class AppLocalizations {
   /// **'DP tunai'**
   String get creditCashDownPayment;
 
+  /// No description provided for @creditDpRange.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas total DP'**
+  String get creditDpRange;
+
+  /// No description provided for @creditDpBelowMinimum.
+  ///
+  /// In id, this message translates to:
+  /// **'Total DP minimum adalah {minimum}.'**
+  String creditDpBelowMinimum(String minimum);
+
+  /// No description provided for @creditDpAboveMaximum.
+  ///
+  /// In id, this message translates to:
+  /// **'Total DP maksimum adalah {maximum}.'**
+  String creditDpAboveMaximum(String maximum);
+
   /// No description provided for @creditTradeInManual.
   ///
   /// In id, this message translates to:
   /// **'Nilai trade-in manual'**
   String get creditTradeInManual;
+
+  /// No description provided for @creditTradeInRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan nilai trade-in yang akan digunakan sebagai DP.'**
+  String get creditTradeInRequired;
+
+  /// No description provided for @creditExpiredAppraisalWarning.
+  ///
+  /// In id, this message translates to:
+  /// **'Hasil appraisal sudah kedaluwarsa dan perlu diverifikasi ulang.'**
+  String get creditExpiredAppraisalWarning;
 
   /// No description provided for @creditTradeInFromAppraisal.
   ///
@@ -3481,6 +3535,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Minta dihubungi sales'**
   String get creditRequestSales;
+
+  /// No description provided for @creditRequestingFollowUp.
+  ///
+  /// In id, this message translates to:
+  /// **'Mengirim permintaan…'**
+  String get creditRequestingFollowUp;
 
   /// No description provided for @creditFollowUpConsentTitle.
   ///

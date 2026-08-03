@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../domain/credit_models.dart';
 import '../credit_controller.dart';
 import '../credit_paths.dart';
+import 'widgets/credit_follow_up_dialog.dart';
 import 'widgets/credit_result_sections.dart';
 
 class CreditSimulationScreen extends ConsumerStatefulWidget {
@@ -33,11 +37,15 @@ class _CreditSimulationScreenState
   final _cashController = TextEditingController();
   final _tradeInController = TextEditingController();
   final _payoffController = TextEditingController();
+  Timer? _draftSaveTimer;
+  CreditFlowController? _flowController;
+  CreditSimulationDraft? _latestDraft;
   bool _hydrated = false;
   bool _entryContextApplied = false;
 
   @override
   void dispose() {
+    _flushPendingDraft();
     _cashController.dispose();
     _tradeInController.dispose();
     _payoffController.dispose();
@@ -65,6 +73,7 @@ class _CreditSimulationScreenState
   Future<void> _calculate(
     CreditSimulationDraft draft,
   ) async {
+    _draftSaveTimer?.cancel();
     if (!(_formKey.currentState?.validate() ?? false) ||
         draft.tenorMonths == null) {
       return;
@@ -82,71 +91,8 @@ class _CreditSimulationScreenState
 
   Future<void> _showFollowUp() async {
     final l10n = AppLocalizations.of(context)!;
-    var consent = false;
-    var channel = 'whatsapp';
-    final submitted = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog.adaptive(
-          title: Text(l10n.creditFollowUpConsentTitle),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(l10n.creditFollowUpConsentDescription),
-                const SizedBox(height: AppSpacing.large),
-                DropdownButtonFormField<String>(
-                  initialValue: channel,
-                  decoration: InputDecoration(
-                    labelText: l10n.creditContactChannel,
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: 'whatsapp',
-                      child: Text(l10n.creditContactWhatsapp),
-                    ),
-                    DropdownMenuItem(
-                      value: 'phone',
-                      child: Text(l10n.creditContactPhone),
-                    ),
-                    DropdownMenuItem(
-                      value: 'email',
-                      child: Text(l10n.creditContactEmail),
-                    ),
-                  ],
-                  onChanged: (value) => setDialogState(
-                    () => channel = value ?? channel,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.small),
-                CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: consent,
-                  onChanged: (value) => setDialogState(
-                    () => consent = value ?? false,
-                  ),
-                  title: Text(l10n.creditFollowUpConsentDescription),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancel),
-            ),
-            FilledButton(
-              onPressed:
-                  consent ? () => Navigator.pop(dialogContext, true) : null,
-              child: Text(l10n.creditRequestSales),
-            ),
-          ],
-        ),
-      ),
-    );
-    if (submitted != true || !mounted) return;
+    final channel = await showCreditFollowUpDialog(context);
+    if (channel == null || !mounted) return;
     final simulation =
         await ref.read(creditFlowProvider.notifier).requestFollowUp(channel);
     if (simulation != null && mounted) {
@@ -163,6 +109,50 @@ class _CreditSimulationScreenState
           text: creditShareText(context, calculation),
         ),
       );
+
+  void _scheduleDraftSave() {
+    ref.read(creditFlowProvider.notifier).markInputsDirty();
+    _draftSaveTimer?.cancel();
+    _draftSaveTimer = Timer(const Duration(milliseconds: 350), () {
+      if (!mounted) return;
+      _persistDraftFromControllers();
+    });
+  }
+
+  void _flushPendingDraft() {
+    if (!(_draftSaveTimer?.isActive ?? false)) return;
+    _draftSaveTimer?.cancel();
+    final notifier = _flowController;
+    final draft = _latestDraft;
+    final tenor = draft?.tenorMonths;
+    if (notifier == null || draft == null || tenor == null) return;
+    unawaited(
+      notifier.persistInputsOnExit(
+        cashDownPayment: _amount(_cashController),
+        manualTradeInValue: _manualTradeInAmount(draft),
+        useTradeInAsDp: draft.useTradeInAsDp,
+        oldVehiclePayoff: _amount(_payoffController),
+        tenorMonths: tenor,
+        acceptExpiredAppraisal: draft.acceptExpiredAppraisal,
+      ),
+    );
+  }
+
+  void _persistDraftFromControllers() {
+    final state = ref.read(creditFlowProvider).value;
+    final tenor = state?.draft.tenorMonths;
+    if (state == null || tenor == null) return;
+    unawaited(
+      ref.read(creditFlowProvider.notifier).updateInputs(
+            cashDownPayment: _amount(_cashController),
+            manualTradeInValue: _manualTradeInAmount(state.draft),
+            useTradeInAsDp: state.draft.useTradeInAsDp,
+            oldVehiclePayoff: _amount(_payoffController),
+            tenorMonths: tenor,
+            acceptExpiredAppraisal: state.draft.acceptExpiredAppraisal,
+          ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +179,8 @@ class _CreditSimulationScreenState
                 onRetry: () => ref.invalidate(creditFlowProvider),
               ),
               data: (state) {
+                _flowController = ref.read(creditFlowProvider.notifier);
+                _latestDraft = state.draft;
                 _hydrate(state.draft);
                 if (!_entryContextApplied) {
                   _entryContextApplied = true;
@@ -276,6 +268,7 @@ class _CreditSimulationScreenState
                             1,
                         acceptExpiredAppraisal: value,
                       ),
+                  onMoneyChanged: (_) => _scheduleDraftSave(),
                   onCalculate: () => _calculate(state.draft),
                   onAddScenario: () =>
                       ref.read(creditFlowProvider.notifier).addScenario(),
@@ -305,6 +298,7 @@ class _CreditForm extends StatelessWidget {
     required this.onUseTradeInChanged,
     required this.onTenorChanged,
     required this.onExpiredConsentChanged,
+    required this.onMoneyChanged,
     required this.onCalculate,
     required this.onAddScenario,
     required this.onShare,
@@ -323,6 +317,7 @@ class _CreditForm extends StatelessWidget {
   final ValueChanged<bool> onUseTradeInChanged;
   final ValueChanged<int?> onTenorChanged;
   final ValueChanged<bool> onExpiredConsentChanged;
+  final ValueChanged<String> onMoneyChanged;
   final VoidCallback onCalculate;
   final VoidCallback onAddScenario;
   final VoidCallback onShare;
@@ -357,6 +352,9 @@ class _CreditForm extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.medium),
                   DropdownButtonFormField<CreditProgram>(
+                    key: ValueKey(
+                      'credit-program-${selectedProgram?.id ?? 'none'}',
+                    ),
                     initialValue: selectedProgram,
                     isExpanded: true,
                     decoration: InputDecoration(
@@ -367,6 +365,7 @@ class _CreditForm extends StatelessWidget {
                           (program) => DropdownMenuItem(
                             value: program,
                             child: Text(
+                              '${program.isDemo ? '${l10n.creditDemoBadge} · ' : ''}'
                               '${program.vehicleLabel} · ${program.city} · '
                               '${program.partnerName}',
                               overflow: TextOverflow.ellipsis,
@@ -379,6 +378,8 @@ class _CreditForm extends StatelessWidget {
                           (program) => Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
+                              '${program.isDemo ? '${l10n.creditDemoBadge} · ' : ''}'
+                              '${program.programName} · '
                               '${program.vehicleModel} · ${program.city}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -399,6 +400,12 @@ class _CreditForm extends StatelessWidget {
                     _MoneyField(
                       controller: cashController,
                       label: l10n.creditCashDownPayment,
+                      onChanged: onMoneyChanged,
+                      validator: (value) => _validateDownPayment(
+                        context,
+                        selectedProgram!,
+                        value,
+                      ),
                     ),
                     const SizedBox(height: AppSpacing.medium),
                     if (state.draft.tradeInAppraisalId != null)
@@ -411,6 +418,13 @@ class _CreditForm extends StatelessWidget {
                         controller: tradeInController,
                         label: l10n.creditTradeInManual,
                         required: false,
+                        onChanged: onMoneyChanged,
+                        validator: (value) {
+                          if (!state.draft.useTradeInAsDp) return null;
+                          return (int.tryParse(value ?? '') ?? 0) <= 0
+                              ? l10n.creditTradeInRequired
+                              : null;
+                        },
                       ),
                     const SizedBox(height: AppSpacing.small),
                     SwitchListTile.adaptive(
@@ -425,11 +439,16 @@ class _CreditForm extends StatelessWidget {
                         controller: payoffController,
                         label: l10n.creditOldVehiclePayoff,
                         required: false,
+                        onChanged: onMoneyChanged,
                       ),
                     ],
                     const SizedBox(height: AppSpacing.large),
                     DropdownButtonFormField<int>(
-                      initialValue: state.draft.tenorMonths,
+                      key: ValueKey(
+                        'credit-tenor-${selectedProgram!.id}-'
+                        '${_selectedTenor(selectedProgram!)}',
+                      ),
+                      initialValue: _selectedTenor(selectedProgram!),
                       isExpanded: true,
                       decoration: InputDecoration(
                         labelText: l10n.creditTenor,
@@ -450,6 +469,8 @@ class _CreditForm extends StatelessWidget {
                           )
                           .toList(growable: false),
                       onChanged: onTenorChanged,
+                      validator: (value) =>
+                          value == null ? l10n.fieldRequired : null,
                     ),
                     if (state.error != null) ...[
                       const SizedBox(height: AppSpacing.medium),
@@ -570,6 +591,44 @@ class _CreditForm extends StatelessWidget {
       _ => error,
     };
   }
+
+  int? _selectedTenor(CreditProgram program) {
+    final tenor = state.draft.tenorMonths;
+    return program.tenorOptions.any((item) => item.tenorMonths == tenor)
+        ? tenor
+        : null;
+  }
+
+  String? _validateDownPayment(
+    BuildContext context,
+    CreditProgram program,
+    String? rawValue,
+  ) {
+    final cash = int.tryParse(rawValue ?? '');
+    if (cash == null) return null;
+    final hasAppraisal = state.draft.tradeInAppraisalId != null;
+    final manualTradeIn = int.tryParse(tradeInController.text) ?? 0;
+    final payoff = int.tryParse(payoffController.text) ?? 0;
+    final usesKnownTradeIn = state.draft.useTradeInAsDp && !hasAppraisal;
+    if (usesKnownTradeIn && manualTradeIn <= 0) return null;
+
+    var total = cash + program.approvedDiscount;
+    if (usesKnownTradeIn) {
+      total += max(manualTradeIn - payoff, 0);
+    }
+    final l10n = AppLocalizations.of(context)!;
+    if ((!state.draft.useTradeInAsDp || !hasAppraisal) &&
+        total < program.minimumDpAmount) {
+      return l10n.creditDpBelowMinimum(
+        creditMoney(program.minimumDpAmount),
+      );
+    }
+    final maximum = min(program.maximumDpAmount, program.otrPrice);
+    if (total > maximum) {
+      return l10n.creditDpAboveMaximum(creditMoney(maximum));
+    }
+    return null;
+  }
 }
 
 class _ProgramMeta extends StatelessWidget {
@@ -582,17 +641,68 @@ class _ProgramMeta extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
+        if (program.isDemo) ...[
+          _DemoProgramNotice(message: l10n.creditDemoProgramNotice),
+          const SizedBox(height: AppSpacing.medium),
+        ],
+        _MetaRow(label: l10n.creditProgramName, value: program.programName),
+        _MetaRow(label: l10n.creditPartner, value: program.partnerName),
         _MetaRow(label: l10n.creditOtrCity, value: program.city),
         _MetaRow(
           label: l10n.creditOtrPrice,
           value: creditMoney(program.otrPrice),
         ),
         _MetaRow(
-          label: l10n.creditCashDownPayment,
+          label: l10n.creditDpRange,
           value: '${creditMoney(program.minimumDpAmount)} – '
               '${creditMoney(program.maximumDpAmount)}',
         ),
+        if (program.approvedDiscount > 0)
+          _MetaRow(
+            label: l10n.creditApprovedDiscount,
+            value: creditMoney(program.approvedDiscount),
+          ),
+        const SizedBox(height: AppSpacing.small),
+        Text(
+          program.disclaimer,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
       ],
+    );
+  }
+}
+
+class _DemoProgramNotice extends StatelessWidget {
+  const _DemoProgramNotice({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.tertiaryContainer,
+        borderRadius: AppRadius.medium,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.medium),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.science_outlined, color: colors.onTertiaryContainer),
+            const SizedBox(width: AppSpacing.small),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyle(color: colors.onTertiaryContainer),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -741,11 +851,15 @@ class _MoneyField extends StatelessWidget {
     required this.controller,
     required this.label,
     this.required = true,
+    this.onChanged,
+    this.validator,
   });
 
   final TextEditingController controller;
   final String label;
   final bool required;
+  final ValueChanged<String>? onChanged;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -754,7 +868,11 @@ class _MoneyField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.number,
       textInputAction: TextInputAction.next,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(12),
+      ],
+      onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
         prefixText: 'Rp ',
@@ -763,7 +881,8 @@ class _MoneyField extends StatelessWidget {
         if (value == null || value.isEmpty) {
           return required ? l10n.fieldRequired : null;
         }
-        return int.tryParse(value) == null ? l10n.creditInvalidNumber : null;
+        if (int.tryParse(value) == null) return l10n.creditInvalidNumber;
+        return validator?.call(value);
       },
     );
   }

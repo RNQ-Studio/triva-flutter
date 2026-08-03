@@ -22,6 +22,7 @@ String creditShareText(
   final l10n = AppLocalizations.of(context)!;
   return [
     l10n.creditFlowTitle,
+    if (calculation.isDemoProgram) l10n.creditDemoProgramNotice,
     '${l10n.creditMonthlyInstallment}: '
         '${creditMoney(calculation.monthlyInstallment)}',
     '${l10n.creditInitialPayment}: '
@@ -56,6 +57,15 @@ class CreditResultSummary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (calculation.isDemoProgram) ...[
+          _ResultNotice(
+            message: l10n.creditDemoProgramNotice,
+            icon: Icons.science_outlined,
+            background: colors.tertiaryContainer,
+            foreground: colors.onTertiaryContainer,
+          ),
+          const SizedBox(height: AppSpacing.medium),
+        ],
         DecoratedBox(
           decoration: BoxDecoration(
             color: colors.secondaryContainer,
@@ -180,6 +190,18 @@ class CreditResultSummary extends StatelessWidget {
                 ),
           ),
         ],
+        if (calculation.warnings.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.medium),
+          for (final warning in calculation.warnings) ...[
+            _ResultNotice(
+              message: _creditWarningText(context, warning),
+              icon: Icons.warning_amber_rounded,
+              background: colors.errorContainer,
+              foreground: colors.onErrorContainer,
+            ),
+            const SizedBox(height: AppSpacing.small),
+          ],
+        ],
         const SizedBox(height: AppSpacing.medium),
         DecoratedBox(
           decoration: BoxDecoration(
@@ -211,6 +233,50 @@ class CreditResultSummary extends StatelessWidget {
       ],
     );
   }
+}
+
+String _creditWarningText(BuildContext context, String warning) {
+  final l10n = AppLocalizations.of(context)!;
+  return switch (warning) {
+    'Hasil appraisal sudah kedaluwarsa dan perlu verifikasi ulang.' =>
+      l10n.creditExpiredAppraisalWarning,
+    _ => warning,
+  };
+}
+
+class _ResultNotice extends StatelessWidget {
+  const _ResultNotice({
+    required this.message,
+    required this.icon,
+    required this.background,
+    required this.foreground,
+  });
+
+  final String message;
+  final IconData icon;
+  final Color background;
+  final Color foreground;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: AppRadius.medium,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.medium),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: foreground),
+              const SizedBox(width: AppSpacing.small),
+              Expanded(
+                child: Text(message, style: TextStyle(color: foreground)),
+              ),
+            ],
+          ),
+        ),
+      );
 }
 
 class CreditComparisonTable extends StatelessWidget {

@@ -21,12 +21,24 @@ class CreditTenorOption {
 
   factory CreditTenorOption.fromJson(Map<String, dynamic> json) =>
       CreditTenorOption(
-        tenorMonths: _int(json['tenor_months']),
-        annualFlatRateBasisPoints: _int(json['annual_flat_rate_basis_points']),
-        administrationFee: _int(json['administration_fee']),
-        provisionFee: _int(json['provision_fee']),
-        upfrontInsurance: _int(json['upfront_insurance']),
-        otherUpfrontCosts: _int(json['other_upfront_costs']),
+        tenorMonths: _requiredInt(json['tenor_months'], 'tenor_months'),
+        annualFlatRateBasisPoints: _requiredInt(
+          json['annual_flat_rate_basis_points'],
+          'annual_flat_rate_basis_points',
+        ),
+        administrationFee: _requiredInt(
+          json['administration_fee'],
+          'administration_fee',
+        ),
+        provisionFee: _requiredInt(json['provision_fee'], 'provision_fee'),
+        upfrontInsurance: _requiredInt(
+          json['upfront_insurance'],
+          'upfront_insurance',
+        ),
+        otherUpfrontCosts: _requiredInt(
+          json['other_upfront_costs'],
+          'other_upfront_costs',
+        ),
         otherUpfrontCostLabel: json['other_upfront_cost_label']?.toString(),
       );
 }
@@ -50,6 +62,7 @@ class CreditProgram {
     required this.effectiveFrom,
     required this.sourceReference,
     required this.disclaimer,
+    this.isDemo = false,
     this.modelYear,
     this.effectiveTo,
   });
@@ -73,6 +86,7 @@ class CreditProgram {
   final DateTime? effectiveTo;
   final String sourceReference;
   final String disclaimer;
+  final bool isDemo;
 
   String get vehicleLabel {
     final year = modelYear == null ? '' : ' $modelYear';
@@ -80,34 +94,59 @@ class CreditProgram {
   }
 
   factory CreditProgram.fromJson(Map<String, dynamic> json) {
-    final vehicle = _map(json['vehicle']);
-    final tenors = (json['tenor_options'] as List<dynamic>? ?? const [])
-        .whereType<Map<String, dynamic>>()
-        .map(CreditTenorOption.fromJson)
+    final vehicle = _requiredMap(json['vehicle'], 'vehicle');
+    final tenorPayload = json['tenor_options'];
+    if (tenorPayload is! List<dynamic>) {
+      throw const FormatException(
+        'Invalid credit API payload: tenor_options must be a list.',
+      );
+    }
+    final tenors = tenorPayload
+        .map(
+          (item) => CreditTenorOption.fromJson(
+            _requiredMap(item, 'tenor_options[]'),
+          ),
+        )
         .toList(growable: false);
     if (tenors.isEmpty) {
       throw const FormatException('Credit program has no tenor option.');
     }
     return CreditProgram(
-      id: json['id'].toString(),
-      programCode: json['program_code'].toString(),
-      version: _int(json['version']),
-      partnerName: json['partner_name'].toString(),
-      programName: json['program_name'].toString(),
-      city: json['city'].toString(),
-      vehicleModel: vehicle['model'].toString(),
-      vehicleVariant: vehicle['variant'].toString(),
+      id: _requiredString(json['id'], 'id'),
+      programCode: _requiredString(json['program_code'], 'program_code'),
+      version: _requiredInt(json['version'], 'version'),
+      partnerName: _requiredString(json['partner_name'], 'partner_name'),
+      programName: _requiredString(json['program_name'], 'program_name'),
+      city: _requiredString(json['city'], 'city'),
+      vehicleModel: _requiredString(vehicle['model'], 'vehicle.model'),
+      vehicleVariant: _requiredString(vehicle['variant'], 'vehicle.variant'),
       modelYear: _nullableInt(vehicle['model_year']),
-      otrPrice: _int(vehicle['otr_price']),
-      approvedDiscount: _int(vehicle['approved_discount']),
-      minimumDpAmount: _int(json['minimum_dp_amount']),
-      maximumDpAmount: _int(json['maximum_dp_amount']),
+      otrPrice: _requiredInt(vehicle['otr_price'], 'vehicle.otr_price'),
+      approvedDiscount: _requiredInt(
+        vehicle['approved_discount'],
+        'vehicle.approved_discount',
+      ),
+      minimumDpAmount: _requiredInt(
+        json['minimum_dp_amount'],
+        'minimum_dp_amount',
+      ),
+      maximumDpAmount: _requiredInt(
+        json['maximum_dp_amount'],
+        'maximum_dp_amount',
+      ),
       tenorOptions: tenors,
-      formulaVersion: json['formula_version'].toString(),
-      effectiveFrom: DateTime.parse(json['effective_from'].toString()),
+      formulaVersion: _requiredString(
+        json['formula_version'],
+        'formula_version',
+      ),
+      effectiveFrom: _requiredDate(json['effective_from'], 'effective_from'),
       effectiveTo: _date(json['effective_to']),
-      sourceReference: json['source_reference'].toString(),
-      disclaimer: json['disclaimer'].toString(),
+      sourceReference: _requiredString(
+        json['source_reference'],
+        'source_reference',
+      ),
+      disclaimer: _requiredString(json['disclaimer'], 'disclaimer'),
+      isDemo: json['is_demo'] == true,
     );
   }
 }
@@ -169,44 +208,94 @@ class CreditCalculation {
   final List<String> warnings;
   final String disclaimer;
 
+  bool get isDemoProgram => program['is_demo'] == true;
+
   String get scenarioKey =>
       '$monthlyInstallment|$totalDownPayment|$tenorMonths|'
       '$annualFlatRateBasisPoints';
 
   factory CreditCalculation.fromJson(Map<String, dynamic> json) {
-    final inputs = _map(json['inputs']);
-    final calculation = _map(json['calculation']);
+    final inputs = _requiredMap(json['inputs'], 'inputs');
+    final calculation = _requiredMap(json['calculation'], 'calculation');
     return CreditCalculation(
-      program: _map(json['program']),
-      otrPrice: _int(inputs['otr_price']),
-      cashDownPayment: _int(inputs['cash_down_payment']),
+      program: _requiredMap(json['program'], 'program'),
+      otrPrice: _requiredInt(inputs['otr_price'], 'inputs.otr_price'),
+      cashDownPayment: _requiredInt(
+        inputs['cash_down_payment'],
+        'inputs.cash_down_payment',
+      ),
       tradeInAppraisalId: inputs['trade_in_appraisal_id']?.toString(),
-      tradeInValue: _int(inputs['trade_in_value']),
+      tradeInValue: _requiredInt(
+        inputs['trade_in_value'],
+        'inputs.trade_in_value',
+      ),
       useTradeInAsDp: inputs['use_trade_in_as_dp'] == true,
-      oldVehiclePayoff: _int(inputs['old_vehicle_payoff']),
-      tenorMonths: _int(inputs['tenor_months']),
-      tradeInEquity: _int(calculation['trade_in_equity']),
-      approvedDiscount: _int(calculation['approved_discount']),
-      totalDownPayment: _int(calculation['total_down_payment']),
-      principal: _int(calculation['principal']),
-      annualFlatRateBasisPoints:
-          _int(calculation['annual_flat_rate_basis_points']),
-      totalFlatInterest: _int(calculation['total_flat_interest']),
-      monthlyInstallment: _int(calculation['monthly_installment']),
-      administrationFee: _int(calculation['administration_fee']),
-      provisionFee: _int(calculation['provision_fee']),
-      upfrontInsurance: _int(calculation['upfront_insurance']),
+      oldVehiclePayoff: _requiredInt(
+        inputs['old_vehicle_payoff'],
+        'inputs.old_vehicle_payoff',
+      ),
+      tenorMonths: _requiredInt(inputs['tenor_months'], 'inputs.tenor_months'),
+      tradeInEquity: _requiredInt(
+        calculation['trade_in_equity'],
+        'calculation.trade_in_equity',
+      ),
+      approvedDiscount: _requiredInt(
+        calculation['approved_discount'],
+        'calculation.approved_discount',
+      ),
+      totalDownPayment: _requiredInt(
+        calculation['total_down_payment'],
+        'calculation.total_down_payment',
+      ),
+      principal:
+          _requiredInt(calculation['principal'], 'calculation.principal'),
+      annualFlatRateBasisPoints: _requiredInt(
+        calculation['annual_flat_rate_basis_points'],
+        'calculation.annual_flat_rate_basis_points',
+      ),
+      totalFlatInterest: _requiredInt(
+        calculation['total_flat_interest'],
+        'calculation.total_flat_interest',
+      ),
+      monthlyInstallment: _requiredInt(
+        calculation['monthly_installment'],
+        'calculation.monthly_installment',
+      ),
+      administrationFee: _requiredInt(
+        calculation['administration_fee'],
+        'calculation.administration_fee',
+      ),
+      provisionFee: _requiredInt(
+        calculation['provision_fee'],
+        'calculation.provision_fee',
+      ),
+      upfrontInsurance: _requiredInt(
+        calculation['upfront_insurance'],
+        'calculation.upfront_insurance',
+      ),
       otherUpfrontCostLabel:
           calculation['other_upfront_cost_label']?.toString(),
-      otherUpfrontCosts: _int(calculation['other_upfront_costs']),
-      initialPayment: _int(calculation['initial_payment']),
-      totalPayment: _int(calculation['total_payment']),
-      formulaVersion: json['formula_version'].toString(),
+      otherUpfrontCosts: _requiredInt(
+        calculation['other_upfront_costs'],
+        'calculation.other_upfront_costs',
+      ),
+      initialPayment: _requiredInt(
+        calculation['initial_payment'],
+        'calculation.initial_payment',
+      ),
+      totalPayment: _requiredInt(
+        calculation['total_payment'],
+        'calculation.total_payment',
+      ),
+      formulaVersion: _requiredString(
+        json['formula_version'],
+        'formula_version',
+      ),
       validUntil: _date(json['valid_until']),
       warnings: (json['warnings'] as List<dynamic>? ?? const [])
           .map((item) => item.toString())
           .toList(growable: false),
-      disclaimer: json['disclaimer'].toString(),
+      disclaimer: _requiredString(json['disclaimer'], 'disclaimer'),
     );
   }
 }
@@ -229,11 +318,20 @@ class CreditFollowUp {
   final DateTime? requestedAt;
 
   factory CreditFollowUp.fromJson(Map<String, dynamic> json) => CreditFollowUp(
-        id: json['id'].toString(),
-        referenceNo: json['reference_no'].toString(),
-        status: json['status'].toString(),
-        statusLabel: json['status_label'].toString(),
-        contactChannel: json['contact_channel'].toString(),
+        id: _requiredString(json['id'], 'follow_up.id'),
+        referenceNo: _requiredString(
+          json['reference_no'],
+          'follow_up.reference_no',
+        ),
+        status: _requiredString(json['status'], 'follow_up.status'),
+        statusLabel: _requiredString(
+          json['status_label'],
+          'follow_up.status_label',
+        ),
+        contactChannel: _requiredString(
+          json['contact_channel'],
+          'follow_up.contact_channel',
+        ),
         requestedAt: _date(json['requested_at']),
       );
 }
@@ -265,26 +363,28 @@ class CreditSimulation {
 
   factory CreditSimulation.fromJson(Map<String, dynamic> json) {
     final calculationJson = <String, dynamic>{
-      'program': _map(json['program']),
-      'inputs': _map(json['inputs']),
-      'calculation': _map(json['calculation']),
+      'program': _requiredMap(json['program'], 'program'),
+      'inputs': _requiredMap(json['inputs'], 'inputs'),
+      'calculation': _requiredMap(json['calculation'], 'calculation'),
       'formula_version': json['formula_version'],
       'valid_until': json['valid_until'],
       'warnings': const <String>[],
       'disclaimer': json['disclaimer'],
     };
     return CreditSimulation(
-      id: json['id'].toString(),
-      referenceNo: json['reference_no'].toString(),
-      status: json['status'].toString(),
-      statusLabel: json['status_label'].toString(),
+      id: _requiredString(json['id'], 'id'),
+      referenceNo: _requiredString(json['reference_no'], 'reference_no'),
+      status: _requiredString(json['status'], 'status'),
+      statusLabel: _requiredString(json['status_label'], 'status_label'),
       comparisonGroupId: json['comparison_group_id']?.toString(),
       calculation: CreditCalculation.fromJson(calculationJson),
       isProgramExpired: json['is_program_expired'] == true,
       followUp: json['follow_up'] is Map<String, dynamic>
-          ? CreditFollowUp.fromJson(_map(json['follow_up']))
+          ? CreditFollowUp.fromJson(
+              _requiredMap(json['follow_up'], 'follow_up'),
+            )
           : null,
-      savedAt: DateTime.parse(json['saved_at'].toString()),
+      savedAt: _requiredDate(json['saved_at'], 'saved_at'),
       updatedAt: _date(json['updated_at']),
     );
   }
@@ -361,12 +461,12 @@ class CreditSimulationDraft {
   factory CreditSimulationDraft.fromJson(Map<String, dynamic> json) =>
       CreditSimulationDraft(
         programId: json['program_id']?.toString(),
-        otrPrice: _int(json['otr_price']),
-        cashDownPayment: _int(json['cash_down_payment']),
-        manualTradeInValue: _int(json['manual_trade_in_value']),
+        otrPrice: _draftInt(json['otr_price']),
+        cashDownPayment: _draftInt(json['cash_down_payment']),
+        manualTradeInValue: _draftInt(json['manual_trade_in_value']),
         tradeInAppraisalId: json['trade_in_appraisal_id']?.toString(),
         useTradeInAsDp: json['use_trade_in_as_dp'] == true,
-        oldVehiclePayoff: _int(json['old_vehicle_payoff']),
+        oldVehiclePayoff: _draftInt(json['old_vehicle_payoff']),
         tenorMonths: _nullableInt(json['tenor_months']),
         acceptExpiredAppraisal: json['accept_expired_appraisal'] == true,
         idempotencyKey: json['idempotency_key']?.toString(),
@@ -390,14 +490,41 @@ class CreditSimulationDraft {
       };
 }
 
-Map<String, dynamic> _map(dynamic value) =>
-    value is Map<String, dynamic> ? value : const {};
+Map<String, dynamic> _requiredMap(dynamic value, String field) {
+  if (value is Map<String, dynamic>) return value;
+  throw FormatException(
+      'Invalid credit API payload: $field must be an object.');
+}
 
-int _int(dynamic value) => value is num ? value.toInt() : 0;
+String _requiredString(dynamic value, String field) {
+  if (value is String && value.trim().isNotEmpty) return value;
+  throw FormatException('Invalid credit API payload: $field must be a string.');
+}
 
-int? _nullableInt(dynamic value) => value is num ? value.toInt() : null;
+int _requiredInt(dynamic value, String field) {
+  if (value is int) return value;
+  if (value is num && value.isFinite && value == value.truncateToDouble()) {
+    return value.toInt();
+  }
+  throw FormatException(
+      'Invalid credit API payload: $field must be an integer.');
+}
+
+int _draftInt(dynamic value) => value is num ? value.toInt() : 0;
+
+int? _nullableInt(dynamic value) =>
+    value == null ? null : _requiredInt(value, 'optional integer');
 
 DateTime? _date(dynamic value) {
   final text = value?.toString();
-  return text == null || text.isEmpty ? null : DateTime.tryParse(text);
+  if (text == null || text.isEmpty) return null;
+  final parsed = DateTime.tryParse(text);
+  if (parsed == null) {
+    throw const FormatException('Invalid credit API payload: invalid date.');
+  }
+  return parsed;
 }
+
+DateTime _requiredDate(dynamic value, String field) =>
+    _date(value) ??
+    (throw FormatException('Invalid credit API payload: $field is required.'));

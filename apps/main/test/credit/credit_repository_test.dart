@@ -54,6 +54,7 @@ void main() {
       return Response<dynamic>(
         requestOptions: RequestOptions(path: 'v1/credit/programs'),
         data: {
+          'success': true,
           'data': [_programJson('program-$page')],
           'meta': {
             'pagination': {'current_page': page, 'last_page': 2},
@@ -85,7 +86,7 @@ void main() {
         requestOptions: RequestOptions(
           path: 'v1/credit/simulations/calculate',
         ),
-        data: {'data': _calculationJson()},
+        data: {'success': true, 'data': _calculationJson()},
       );
     });
     when(
@@ -99,7 +100,7 @@ void main() {
       saveOptions = invocation.namedArguments[#options] as Options;
       return Response<dynamic>(
         requestOptions: RequestOptions(path: 'v1/credit/simulations'),
-        data: {'data': _simulationJson()},
+        data: {'success': true, 'data': _simulationJson()},
       );
     });
     const draft = CreditSimulationDraft(
@@ -146,6 +147,65 @@ void main() {
     expect((await first.loadDraft()).programId, 'program-a');
     expect((await second.loadDraft()).programId, isNull);
   });
+
+  test('rejects regressive pagination metadata instead of truncating',
+      () async {
+    when(
+      () => dio.get<dynamic>(
+        any(),
+        queryParameters: any(named: 'queryParameters'),
+      ),
+    ).thenAnswer(
+      (_) async => Response<dynamic>(
+        requestOptions: RequestOptions(path: 'v1/credit/programs'),
+        data: {
+          'success': true,
+          'data': <dynamic>[],
+          'meta': {
+            'pagination': {'current_page': 1, 'last_page': 0},
+          },
+        },
+      ),
+    );
+
+    await expectLater(repository.listPrograms(), throwsFormatException);
+  });
+
+  test('rejects a successful HTTP response without the API envelope', () async {
+    when(
+      () => dio.get<dynamic>(
+        any(),
+        queryParameters: any(named: 'queryParameters'),
+      ),
+    ).thenAnswer(
+      (_) async => Response<dynamic>(
+        requestOptions: RequestOptions(path: 'v1/credit/programs'),
+        data: {'data': <dynamic>[]},
+      ),
+    );
+
+    await expectLater(repository.listPrograms(), throwsFormatException);
+  });
+
+  test('refuses to save without an idempotency key', () async {
+    await expectLater(
+      repository.save(
+        const CreditSimulationDraft(
+          programId: 'program-1',
+          otrPrice: 320000000,
+          tenorMonths: 60,
+        ),
+      ),
+      throwsStateError,
+    );
+    verifyNever(
+      () => dio.post<dynamic>(
+        any(),
+        data: any(named: 'data'),
+        options: any(named: 'options'),
+      ),
+    );
+  });
 }
 
 Map<String, dynamic> _programJson(String id) => {
@@ -179,6 +239,7 @@ Map<String, dynamic> _programJson(String id) => {
       'effective_to': '2026-08-31',
       'source_reference': 'Dokumen program.',
       'disclaimer': 'Estimasi.',
+      'is_demo': true,
     };
 
 Map<String, dynamic> _calculationJson() => {
@@ -187,6 +248,7 @@ Map<String, dynamic> _calculationJson() => {
         'program_name': 'Program Flat',
         'partner_name': 'TAF',
         'source_reference': 'Dokumen program.',
+        'is_demo': true,
       },
       'inputs': {
         'otr_price': 320000000,

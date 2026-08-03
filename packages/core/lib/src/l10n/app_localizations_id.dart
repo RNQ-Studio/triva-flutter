@@ -1727,6 +1727,19 @@ class AppLocalizationsId extends AppLocalizations {
       'Program menentukan harga OTR, tenor, bunga, dan biaya.';
 
   @override
+  String get creditProgramName => 'Nama program';
+
+  @override
+  String get creditPartner => 'Partner pembiayaan';
+
+  @override
+  String get creditDemoBadge => 'Demo';
+
+  @override
+  String get creditDemoProgramNotice =>
+      'Program ini memakai data demo untuk pengujian. Angkanya bukan penawaran atau persetujuan kredit.';
+
+  @override
   String get creditNoProgramsTitle => 'Program kredit belum tersedia';
 
   @override
@@ -1749,7 +1762,28 @@ class AppLocalizationsId extends AppLocalizations {
   String get creditCashDownPayment => 'DP tunai';
 
   @override
+  String get creditDpRange => 'Batas total DP';
+
+  @override
+  String creditDpBelowMinimum(String minimum) {
+    return 'Total DP minimum adalah $minimum.';
+  }
+
+  @override
+  String creditDpAboveMaximum(String maximum) {
+    return 'Total DP maksimum adalah $maximum.';
+  }
+
+  @override
   String get creditTradeInManual => 'Nilai trade-in manual';
+
+  @override
+  String get creditTradeInRequired =>
+      'Masukkan nilai trade-in yang akan digunakan sebagai DP.';
+
+  @override
+  String get creditExpiredAppraisalWarning =>
+      'Hasil appraisal sudah kedaluwarsa dan perlu diverifikasi ulang.';
 
   @override
   String get creditTradeInFromAppraisal =>
@@ -1858,6 +1892,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get creditRequestSales => 'Minta dihubungi sales';
+
+  @override
+  String get creditRequestingFollowUp => 'Mengirim permintaan…';
 
   @override
   String get creditFollowUpConsentTitle => 'Teruskan ke tim sales?';

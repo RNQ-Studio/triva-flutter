@@ -53,13 +53,10 @@ android {
 
     buildTypes {
         release {
-            // Uses release signing when key.properties is present;
-            // falls back to debug signing for local dev convenience.
-            signingConfig = if (keyPropsFile.exists()) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
-            }
+            // Release artifacts must never silently fall back to a debug key.
+            // A missing local key.properties/store file makes Gradle's signing
+            // validation fail while debug builds remain unaffected.
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }

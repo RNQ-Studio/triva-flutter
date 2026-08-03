@@ -1731,6 +1731,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'The program determines OTR price, term, rate, and fees.';
 
   @override
+  String get creditProgramName => 'Program name';
+
+  @override
+  String get creditPartner => 'Financing partner';
+
+  @override
+  String get creditDemoBadge => 'Demo';
+
+  @override
+  String get creditDemoProgramNotice =>
+      'This program uses demo data for testing. Its figures are not a credit offer or approval.';
+
+  @override
   String get creditNoProgramsTitle => 'No credit program available';
 
   @override
@@ -1753,7 +1766,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creditCashDownPayment => 'Cash down payment';
 
   @override
+  String get creditDpRange => 'Total down payment range';
+
+  @override
+  String creditDpBelowMinimum(String minimum) {
+    return 'The minimum total down payment is $minimum.';
+  }
+
+  @override
+  String creditDpAboveMaximum(String maximum) {
+    return 'The maximum total down payment is $maximum.';
+  }
+
+  @override
   String get creditTradeInManual => 'Manual trade-in value';
+
+  @override
+  String get creditTradeInRequired =>
+      'Enter the trade-in value to use as a down payment.';
+
+  @override
+  String get creditExpiredAppraisalWarning =>
+      'The appraisal result has expired and must be verified again.';
 
   @override
   String get creditTradeInFromAppraisal =>
@@ -1861,6 +1895,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creditRequestSales => 'Request a sales call';
+
+  @override
+  String get creditRequestingFollowUp => 'Sending request…';
 
   @override
   String get creditFollowUpConsentTitle => 'Send this to the sales team?';

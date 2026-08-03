@@ -23,16 +23,16 @@ final creditRepositoryProvider = Provider<CreditRepository>((ref) {
 
 final creditProgramsProvider = FutureProvider<List<CreditProgram>>((ref) {
   return ref.watch(creditRepositoryProvider).listPrograms();
-});
+}, retry: (_, __) => null);
 
 final creditSimulationsProvider = FutureProvider<List<CreditSimulation>>((ref) {
   return ref.watch(creditRepositoryProvider).listSimulations();
-});
+}, retry: (_, __) => null);
 
 final creditSimulationProvider =
     FutureProvider.family<CreditSimulation, String>((ref, id) {
   return ref.watch(creditRepositoryProvider).getSimulation(id);
-});
+}, retry: (_, __) => null);
 
 class CreditFlowState {
   const CreditFlowState({
@@ -82,6 +82,8 @@ class CreditFlowState {
 }
 
 class CreditFlowController extends AsyncNotifier<CreditFlowState> {
+  int _inputRevision = 0;
+
   CreditRepository get _repository => ref.read(creditRepositoryProvider);
 
   @override
@@ -158,6 +160,52 @@ class CreditFlowController extends AsyncNotifier<CreditFlowState> {
     );
   }
 
+  void markInputsDirty() {
+    _inputRevision++;
+    final current = state.value;
+    if (current == null ||
+        (current.calculation == null && current.savedSimulation == null)) {
+      return;
+    }
+    state = AsyncData(
+      current.copyWith(
+        clearCalculation: true,
+        clearSaved: true,
+        clearError: true,
+      ),
+    );
+  }
+
+  Future<void> persistInputsOnExit({
+    required int cashDownPayment,
+    required int manualTradeInValue,
+    required bool useTradeInAsDp,
+    required int oldVehiclePayoff,
+    required int tenorMonths,
+    required bool acceptExpiredAppraisal,
+  }) async {
+    final current = state.value;
+    if (current == null) return;
+    _inputRevision++;
+    try {
+      await _repository.saveDraft(
+        current.draft
+            .copyWith(
+              cashDownPayment: cashDownPayment,
+              manualTradeInValue: manualTradeInValue,
+              useTradeInAsDp: useTradeInAsDp,
+              oldVehiclePayoff: oldVehiclePayoff,
+              tenorMonths: tenorMonths,
+              acceptExpiredAppraisal: acceptExpiredAppraisal,
+            )
+            .copyWith(clearIdempotency: true),
+      );
+    } on Object {
+      // This is a best-effort flush during widget teardown. The next edit will
+      // retry normal persistence and surface failures through the flow state.
+    }
+  }
+
   Future<CreditCalculation?> calculate() async {
     var current = state.value;
     if (current == null ||
@@ -165,12 +213,23 @@ class CreditFlowController extends AsyncNotifier<CreditFlowState> {
         !current.draft.canCalculate) {
       return null;
     }
+    final inputRevision = _inputRevision;
     state = AsyncData(
       current.copyWith(isCalculating: true, clearError: true),
     );
     try {
       final result = await _repository.calculate(current.draft);
       current = state.value!;
+      if (inputRevision != _inputRevision) {
+        state = AsyncData(
+          current.copyWith(
+            isCalculating: false,
+            clearCalculation: true,
+            clearSaved: true,
+          ),
+        );
+        return null;
+      }
       state = AsyncData(
         current.copyWith(
           calculation: result,
@@ -312,10 +371,13 @@ class CreditFlowController extends AsyncNotifier<CreditFlowState> {
   }
 
   Future<void> _saveDraft(CreditSimulationDraft draft) async {
+    if (state.value == null) return;
+    draft = draft.copyWith(clearIdempotency: true);
+    final inputRevision = ++_inputRevision;
+    await _repository.saveDraft(draft);
+    if (inputRevision != _inputRevision) return;
     final current = state.value;
     if (current == null) return;
-    draft = draft.copyWith(clearIdempotency: true);
-    await _repository.saveDraft(draft);
     state = AsyncData(
       current.copyWith(
         draft: draft,
@@ -342,6 +404,7 @@ class CreditFlowController extends AsyncNotifier<CreditFlowState> {
 final creditFlowProvider =
     AsyncNotifierProvider<CreditFlowController, CreditFlowState>(
   CreditFlowController.new,
+  retry: (_, __) => null,
 );
 
 String friendlyCreditError(Object error) {

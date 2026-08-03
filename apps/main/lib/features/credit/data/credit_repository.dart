@@ -56,6 +56,10 @@ class CreditRepository {
   }
 
   Future<CreditSimulation> save(CreditSimulationDraft draft) async {
+    final idempotencyKey = draft.idempotencyKey;
+    if (idempotencyKey == null || idempotencyKey.isEmpty) {
+      throw StateError('An idempotency key is required to save a simulation.');
+    }
     final response = await _dio.post<dynamic>(
       'v1/credit/simulations',
       data: {
@@ -64,7 +68,7 @@ class CreditRepository {
           'comparison_group_id': draft.comparisonGroupId,
         'campaign_source': draft.campaignSource,
       },
-      options: Options(headers: {'Idempotency-Key': draft.idempotencyKey}),
+      options: Options(headers: {'Idempotency-Key': idempotencyKey}),
     );
     return CreditSimulation.fromJson(_mapData(response));
   }
@@ -122,28 +126,43 @@ class CreditRepository {
         path,
         queryParameters: {...queryParameters, 'page': page},
       );
-      items.addAll(_listData(response).whereType<Map<String, dynamic>>());
-      final envelope = response.data as Map<String, dynamic>;
+      for (final item in _listData(response)) {
+        if (item is! Map<String, dynamic>) {
+          throw const FormatException('Invalid credit API list item.');
+        }
+        items.add(item);
+      }
+      final envelope = _envelope(response);
       final meta = envelope['meta'] as Map<String, dynamic>?;
       final pagination = meta?['pagination'] as Map<String, dynamic>? ?? meta;
       final current = (pagination?['current_page'] as num?)?.toInt() ?? page;
       final last = (pagination?['last_page'] as num?)?.toInt() ?? current;
-      if (current >= last) break;
       if (current != page || current < 1 || last < current) {
         throw const FormatException('Invalid credit pagination metadata.');
       }
+      if (current >= last) break;
       page = current + 1;
     }
     return List.unmodifiable(items);
   }
 
   List<dynamic> _listData(Response<dynamic> response) {
-    final envelope = response.data as Map<String, dynamic>;
-    return envelope['data'] as List<dynamic>? ?? const [];
+    final data = _envelope(response)['data'];
+    if (data is List<dynamic>) return data;
+    throw const FormatException('Invalid credit API list payload.');
   }
 
   Map<String, dynamic> _mapData(Response<dynamic> response) {
-    final envelope = response.data as Map<String, dynamic>;
-    return envelope['data'] as Map<String, dynamic>;
+    final data = _envelope(response)['data'];
+    if (data is Map<String, dynamic>) return data;
+    throw const FormatException('Invalid credit API object payload.');
+  }
+
+  Map<String, dynamic> _envelope(Response<dynamic> response) {
+    final body = response.data;
+    if (body is! Map<String, dynamic> || body['success'] != true) {
+      throw const FormatException('Invalid credit API response envelope.');
+    }
+    return body;
   }
 }

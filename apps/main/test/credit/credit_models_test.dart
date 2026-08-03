@@ -8,12 +8,14 @@ void main() {
 
     expect(program.vehicleLabel, 'Avanza 1.5 G CVT 2026');
     expect(program.minimumDpAmount, 64000000);
+    expect(program.isDemo, isTrue);
     expect(program.tenorOptions.single.annualFlatRatePercent, 5.25);
     expect(calculation.tradeInEquity, 80000000);
     expect(calculation.totalDownPayment, 110000000);
     expect(calculation.principal, 210000000);
     expect(calculation.monthlyInstallment, 4418750);
     expect(calculation.totalPayment, 296625000);
+    expect(calculation.isDemoProgram, isTrue);
   });
 
   test('parses saved snapshot, follow-up, and expired program state', () {
@@ -67,6 +69,17 @@ void main() {
     expect(restored.comparisonGroupId, 'group-1');
     expect(restored.campaignSource, 'sales_share');
   });
+
+  test('rejects malformed required nominal instead of displaying zero', () {
+    final payload = _calculationJson();
+    final calculation = payload['calculation']! as Map<String, dynamic>;
+    calculation.remove('monthly_installment');
+
+    expect(
+      () => CreditCalculation.fromJson(payload),
+      throwsFormatException,
+    );
+  });
 }
 
 Map<String, dynamic> _programJson() => {
@@ -101,6 +114,7 @@ Map<String, dynamic> _programJson() => {
       'effective_to': '2026-08-31',
       'source_reference': 'Dokumen program.',
       'disclaimer': 'Estimasi.',
+      'is_demo': true,
     };
 
 Map<String, dynamic> _calculationJson() => {
@@ -109,6 +123,7 @@ Map<String, dynamic> _calculationJson() => {
         'program_name': 'Program Flat',
         'partner_name': 'TAF',
         'source_reference': 'Dokumen program.',
+        'is_demo': true,
       },
       'inputs': {
         'otr_price': 320000000,
