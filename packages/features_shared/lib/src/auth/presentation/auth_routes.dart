@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
 
+import 'auth_paths.dart';
 import 'complete_profile_screen.dart';
 import 'login_screen.dart';
 import 'splash_screen.dart';
 
-const authLoginPath = '/login';
-const completeProfilePath = '/complete-profile';
+export 'auth_paths.dart';
 
 final List<GoRoute> authRoutes = [
   GoRoute(
@@ -14,10 +14,14 @@ final List<GoRoute> authRoutes = [
   ),
   GoRoute(
     path: authLoginPath,
-    builder: (context, state) => const LoginScreen(),
+    builder: (context, state) => LoginScreen(
+      returnTo: state.uri.queryParameters['from'],
+    ),
   ),
   GoRoute(
     path: completeProfilePath,
-    builder: (context, state) => const CompleteProfileScreen(),
+    builder: (context, state) => CompleteProfileScreen(
+      returnTo: state.uri.queryParameters['from'],
+    ),
   ),
 ];

@@ -45,4 +45,23 @@ void main() {
       isNull,
     );
   });
+
+  test('notification opened from a transient app root is anchored at home', () {
+    expect(shouldAnchorNotificationOpen(Uri.parse('/splash')), isTrue);
+    expect(
+      shouldAnchorNotificationOpen(Uri.parse('/login?from=%2Factivity')),
+      isTrue,
+    );
+    expect(
+      shouldAnchorNotificationOpen(
+        Uri.parse('/complete-profile?from=%2Factivity'),
+      ),
+      isTrue,
+    );
+    expect(shouldAnchorNotificationOpen(Uri.parse('/')), isFalse);
+    expect(
+      shouldAnchorNotificationOpen(Uri.parse('/activity')),
+      isFalse,
+    );
+  });
 }

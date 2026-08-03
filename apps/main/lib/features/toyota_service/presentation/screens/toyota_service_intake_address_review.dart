@@ -69,6 +69,7 @@ class _ToyotaServiceAddressScreenState
         !optionsAsync.hasError;
     return ToyotaServiceFlowScaffold(
       step: 2,
+      fallbackLocation: toyotaServiceSchedulePath,
       title: l10n.thsAddressTitle,
       description: l10n.thsAddressDescription,
       primaryLabel: l10n.reviewBooking,
@@ -294,6 +295,9 @@ class _ToyotaServiceReviewScreenState
         : const ['whatsapp', 'phone', 'email'];
     return ToyotaServiceFlowScaffold(
       step: 3,
+      fallbackLocation: draft.fulfillmentType == ToyotaServiceFulfillment.ths
+          ? toyotaServiceAddressPath
+          : toyotaServiceSchedulePath,
       title: l10n.reviewServiceRequestTitle,
       description: l10n.reviewServiceRequestDescription,
       primaryLabel: l10n.submitServiceRequest,

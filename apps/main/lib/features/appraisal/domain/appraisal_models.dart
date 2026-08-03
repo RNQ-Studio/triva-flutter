@@ -323,6 +323,32 @@ class AppraisalConditionData {
       );
 }
 
+class AppraisalContinuation {
+  const AppraisalContinuation({
+    required this.type,
+    this.vehicleId,
+    this.appraisalId,
+    this.suggestedTradeInLow,
+    this.suggestedTradeInHigh,
+  });
+
+  final String type;
+  final String? vehicleId;
+  final String? appraisalId;
+  final int? suggestedTradeInLow;
+  final int? suggestedTradeInHigh;
+
+  factory AppraisalContinuation.fromJson(Map<String, dynamic> json) =>
+      AppraisalContinuation(
+        type: json['type']?.toString() ?? '',
+        vehicleId: json['vehicle_id']?.toString(),
+        appraisalId: json['appraisal_id']?.toString(),
+        suggestedTradeInLow: (json['suggested_trade_in_low'] as num?)?.toInt(),
+        suggestedTradeInHigh:
+            (json['suggested_trade_in_high'] as num?)?.toInt(),
+      );
+}
+
 class AppraisalData {
   const AppraisalData({
     required this.id,
@@ -335,6 +361,7 @@ class AppraisalData {
     this.timeline = const [],
     this.result,
     this.customerDecision,
+    this.continuation,
     this.submittedAt,
     this.dueAt,
     this.inspectionScheduledAt,
@@ -350,6 +377,7 @@ class AppraisalData {
   final List<AppraisalTimelineItem> timeline;
   final AppraisalResultData? result;
   final String? customerDecision;
+  final AppraisalContinuation? continuation;
   final DateTime? submittedAt;
   final DateTime? dueAt;
   final DateTime? inspectionScheduledAt;
@@ -392,6 +420,11 @@ class AppraisalData {
               )
             : null,
         customerDecision: json['customer_decision']?.toString(),
+        continuation: json['continuation'] is Map<String, dynamic>
+            ? AppraisalContinuation.fromJson(
+                json['continuation'] as Map<String, dynamic>,
+              )
+            : null,
         submittedAt: DateTime.tryParse(json['submitted_at']?.toString() ?? ''),
         dueAt: DateTime.tryParse(json['due_at']?.toString() ?? ''),
         inspectionScheduledAt: DateTime.tryParse(
@@ -427,6 +460,8 @@ class AppraisalDraft {
     this.assetIds = const {},
     this.vehicleId,
     this.appraisalId,
+    this.vehicleCreationIdempotencyKey,
+    this.appraisalCreationIdempotencyKey,
     this.idempotencyKey,
     this.marketingConsent = false,
   });
@@ -456,6 +491,8 @@ class AppraisalDraft {
   final Map<String, String> assetIds;
   final String? vehicleId;
   final String? appraisalId;
+  final String? vehicleCreationIdempotencyKey;
+  final String? appraisalCreationIdempotencyKey;
   final String? idempotencyKey;
   final bool marketingConsent;
 
@@ -511,7 +548,11 @@ class AppraisalDraft {
     Map<String, String>? assetIds,
     String? vehicleId,
     String? appraisalId,
+    String? vehicleCreationIdempotencyKey,
+    String? appraisalCreationIdempotencyKey,
     String? idempotencyKey,
+    bool clearVehicleCreationIdempotencyKey = false,
+    bool clearAppraisalCreationIdempotencyKey = false,
     bool? marketingConsent,
   }) =>
       AppraisalDraft(
@@ -540,6 +581,14 @@ class AppraisalDraft {
         assetIds: assetIds ?? this.assetIds,
         vehicleId: vehicleId ?? this.vehicleId,
         appraisalId: appraisalId ?? this.appraisalId,
+        vehicleCreationIdempotencyKey: clearVehicleCreationIdempotencyKey
+            ? null
+            : vehicleCreationIdempotencyKey ??
+                this.vehicleCreationIdempotencyKey,
+        appraisalCreationIdempotencyKey: clearAppraisalCreationIdempotencyKey
+            ? null
+            : appraisalCreationIdempotencyKey ??
+                this.appraisalCreationIdempotencyKey,
         idempotencyKey: idempotencyKey ?? this.idempotencyKey,
         marketingConsent: marketingConsent ?? this.marketingConsent,
       );
@@ -577,6 +626,10 @@ class AppraisalDraft {
         ),
         vehicleId: json['vehicle_id']?.toString(),
         appraisalId: json['appraisal_id']?.toString(),
+        vehicleCreationIdempotencyKey:
+            json['vehicle_creation_idempotency_key']?.toString(),
+        appraisalCreationIdempotencyKey:
+            json['appraisal_creation_idempotency_key']?.toString(),
         idempotencyKey: json['idempotency_key']?.toString(),
         marketingConsent: json['marketing_consent'] as bool? ?? false,
       );
@@ -607,6 +660,8 @@ class AppraisalDraft {
         'asset_ids': assetIds,
         'vehicle_id': vehicleId,
         'appraisal_id': appraisalId,
+        'vehicle_creation_idempotency_key': vehicleCreationIdempotencyKey,
+        'appraisal_creation_idempotency_key': appraisalCreationIdempotencyKey,
         'idempotency_key': idempotencyKey,
         'marketing_consent': marketingConsent,
       };

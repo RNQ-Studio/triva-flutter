@@ -3,6 +3,8 @@ import '../domain/toyota_service_models.dart';
 const toyotaServiceVehiclePath = '/toyota-service/new/vehicle';
 const toyotaServiceNonToyotaPath = '/toyota-service/new/non-toyota';
 const toyotaServiceAddVehiclePath = '/toyota-service/new/add-vehicle';
+const toyotaServiceAddVehicleSelectionPath =
+    '$toyotaServiceAddVehiclePath?return_to=caller';
 const toyotaServiceFulfillmentPath = '/toyota-service/new/fulfillment';
 const toyotaServiceTypePath = '/toyota-service/new/service';
 const toyotaServiceDetailsPath = '/toyota-service/new/details';

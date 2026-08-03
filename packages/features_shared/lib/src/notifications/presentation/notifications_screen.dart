@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,10 +45,21 @@ class NotificationsScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(AppSpacing.large),
                     itemCount: items.length,
                     separatorBuilder: (_, __) => const Divider(height: 1),
-                    itemBuilder: (_, index) => _NotificationTile(
-                      notification: items[index],
-                      onTap: () => _open(context, ref, items[index]),
-                    ),
+                    itemBuilder: (_, index) {
+                      final notification = items[index];
+                      final destination = notificationDestination(notification);
+                      return _NotificationTile(
+                        notification: notification,
+                        onTap: destination == null
+                            ? null
+                            : () => _open(
+                                  context,
+                                  ref,
+                                  notification,
+                                  destination,
+                                ),
+                      );
+                    },
                   ),
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -84,39 +97,45 @@ class NotificationsScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _open(
+  void _open(
     BuildContext context,
     WidgetRef ref,
     AppNotification notification,
-  ) async {
+    String destination,
+  ) {
     if (!notification.isRead) {
-      try {
-        await ref
-            .read(notificationsRepositoryProvider)
-            .markAsRead(notification.id);
-        ref.invalidate(notificationsListProvider);
-        ref.invalidate(unreadNotificationCountProvider);
-      } on Object {
-        // Opening the source-of-truth detail must not depend on a read receipt.
-      }
+      unawaited(_markAsRead(ref, notification.id));
     }
-    final otoxpertId = notification.otoxpertBookingId;
-    final toyotaId = notification.toyotaServiceBookingId;
-    final creditId = notification.creditSimulationId;
-    final bodyPaintId = notification.bodyPaintEstimateId;
-    final appraisalRoute = notification.appraisalRoute;
-    if (appraisalRoute != null && context.mounted) {
-      context.push(appraisalRoute);
-    } else if (bodyPaintId != null && context.mounted) {
-      context.push('/body-paint/estimates/$bodyPaintId');
-    } else if (creditId != null && context.mounted) {
-      context.push('/credit/simulations/$creditId');
-    } else if (otoxpertId != null && context.mounted) {
-      context.push('/otoxpert/bookings/$otoxpertId');
-    } else if (toyotaId != null && context.mounted) {
-      context.push('/toyota-service/bookings/$toyotaId');
+    if (context.mounted) {
+      unawaited(context.push<void>(destination));
     }
   }
+
+  Future<void> _markAsRead(WidgetRef ref, String notificationId) async {
+    try {
+      await ref
+          .read(notificationsRepositoryProvider)
+          .markAsRead(notificationId);
+      ref.invalidate(notificationsListProvider);
+      ref.invalidate(unreadNotificationCountProvider);
+    } on Object {
+      // A read receipt is best-effort and never gates the destination page.
+    }
+  }
+}
+
+String? notificationDestination(AppNotification notification) {
+  final appraisalRoute = notification.appraisalRoute;
+  if (appraisalRoute != null) return appraisalRoute;
+  final bodyPaintId = notification.bodyPaintEstimateId;
+  if (bodyPaintId != null) return '/body-paint/estimates/$bodyPaintId';
+  final creditId = notification.creditSimulationId;
+  if (creditId != null) return '/credit/simulations/$creditId';
+  final otoxpertId = notification.otoxpertBookingId;
+  if (otoxpertId != null) return '/otoxpert/bookings/$otoxpertId';
+  final toyotaId = notification.toyotaServiceBookingId;
+  if (toyotaId != null) return '/toyota-service/bookings/$toyotaId';
+  return null;
 }
 
 class _NotificationTile extends StatelessWidget {
@@ -126,7 +145,7 @@ class _NotificationTile extends StatelessWidget {
   });
 
   final AppNotification notification;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -158,7 +177,9 @@ class _NotificationTile extends StatelessWidget {
           ),
           subtitle: Text(notification.body),
           trailing: notification.isRead
-              ? const Icon(Icons.chevron_right_rounded)
+              ? onTap == null
+                  ? null
+                  : const Icon(Icons.chevron_right_rounded)
               : const Badge(),
           onTap: onTap,
         ),

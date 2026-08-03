@@ -6,16 +6,26 @@ import 'package:dio/dio.dart';
 import '../domain/appraisal_models.dart';
 
 class AppraisalRepository {
-  AppraisalRepository({required Dio dio, required StorageService storage})
-      : _dio = dio,
-        _storage = storage;
+  AppraisalRepository({
+    required Dio dio,
+    required StorageService storage,
+    String? userId,
+  })  : _dio = dio,
+        _storage = storage,
+        _userId = userId;
 
-  static const _draftKey = 'appraisal_draft_v1';
+  static const _legacyDraftKey = 'appraisal_draft_v1';
 
   final Dio _dio;
   final StorageService _storage;
+  final String? _userId;
+
+  String get _draftKey => 'appraisal_draft_v1:${_userId ?? 'anonymous'}';
 
   Future<AppraisalDraft> loadDraft() async {
+    // The legacy key had no account owner. Never migrate it into the active
+    // account because doing so could expose another customer's draft.
+    await _storage.delete(_legacyDraftKey);
     final raw = await _storage.read(_draftKey);
     if (raw == null || raw.isEmpty) return const AppraisalDraft();
     try {
@@ -69,10 +79,16 @@ class AppraisalRepository {
         .toList(growable: false);
   }
 
-  Future<VehicleData> createVehicle(VehicleData vehicle) async {
+  Future<VehicleData> createVehicle(
+    VehicleData vehicle, {
+    String? idempotencyKey,
+  }) async {
     final response = await _dio.post<dynamic>(
       'v1/vehicles',
       data: vehicle.toJson(),
+      options: idempotencyKey == null
+          ? null
+          : Options(headers: {'Idempotency-Key': idempotencyKey}),
     );
     return VehicleData.fromJson(_data(response));
   }
@@ -88,10 +104,14 @@ class AppraisalRepository {
     return VehicleData.fromJson(_data(response));
   }
 
-  Future<AppraisalData> createAppraisal(String vehicleId) async {
+  Future<AppraisalData> createAppraisal(
+    String vehicleId, {
+    required String idempotencyKey,
+  }) async {
     final response = await _dio.post<dynamic>(
       'v1/appraisals',
       data: {'vehicle_id': vehicleId},
+      options: Options(headers: {'Idempotency-Key': idempotencyKey}),
     );
     return AppraisalData.fromJson(_data(response));
   }

@@ -110,6 +110,14 @@ void main() {
       find.byKey(const ValueKey('profile-admin-panel-menu')),
       findsNothing,
     );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('profile-settings-menu')),
+      200,
+    );
+    expect(
+      find.byKey(const ValueKey('profile-settings-menu')),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 }

@@ -32,6 +32,28 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
   var _contactChannel = 'whatsapp';
   var _partnerConsent = false;
 
+  void _goToPreviousStep() {
+    if (_step == 0) return;
+    setState(() => _step--);
+  }
+
+  void _goBack() {
+    if (_step > 0) {
+      _goToPreviousStep();
+      return;
+    }
+
+    final router = GoRouter.maybeOf(context);
+    final navigator = Navigator.maybeOf(context);
+    if (router?.canPop() == true) {
+      router!.pop();
+    } else if (navigator?.canPop() == true) {
+      navigator!.pop();
+    } else {
+      router?.go('/');
+    }
+  }
+
   @override
   void dispose() {
     _mileage.dispose();
@@ -45,114 +67,144 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
     final l10n = AppLocalizations.of(context)!;
     final flow = ref.watch(otoxpertFlowProvider);
     final options = ref.watch(otoxpertOptionsProvider);
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.otoxpertFlowTitle)),
-      body: SafeArea(
-        child: flow.when(
-          data: (state) {
-            _initializeDetails(state.draft);
-            return options.when(
-              data: (value) => Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 760),
-                  child: Stepper(
-                    currentStep: _step,
-                    onStepTapped: (value) {
-                      if (value <= _furthestStep(state.draft)) {
-                        setState(() => _step = value);
-                      }
-                    },
-                    controlsBuilder: (context, details) => Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.large),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton(
-                              onPressed: state.isSubmitting || state.isUploading
-                                  ? null
-                                  : () => _continue(state, value),
-                              child: state.isSubmitting
-                                  ? const SizedBox.square(
-                                      dimension: AppIconSize.medium,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
+    final router = GoRouter.maybeOf(context);
+    final navigator = Navigator.maybeOf(context);
+    final navigationLocked =
+        flow.value?.isSubmitting == true || flow.value?.isUploading == true;
+    final hasRouteHistory =
+        (router?.canPop() ?? false) || (navigator?.canPop() ?? false);
+    final canHandleBack = router != null || (navigator?.canPop() ?? false);
+    return PopScope(
+      canPop: !navigationLocked &&
+          _step == 0 &&
+          (router == null || hasRouteHistory),
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop || navigationLocked) return;
+        if (_step > 0) {
+          _goToPreviousStep();
+        } else if (!hasRouteHistory) {
+          router?.go('/');
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: !navigationLocked,
+          leading: canHandleBack && !navigationLocked
+              ? BackButton(onPressed: _goBack)
+              : null,
+          title: Text(l10n.otoxpertFlowTitle),
+        ),
+        body: SafeArea(
+          child: flow.when(
+            data: (state) {
+              _initializeDetails(state.draft);
+              return options.when(
+                data: (value) => Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 760),
+                    child: Stepper(
+                      currentStep: _step,
+                      onStepTapped: (value) {
+                        if (!state.isSubmitting &&
+                            !state.isUploading &&
+                            value <= _furthestStep(state.draft)) {
+                          setState(() => _step = value);
+                        }
+                      },
+                      controlsBuilder: (context, details) => Padding(
+                        padding: const EdgeInsets.only(top: AppSpacing.large),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: FilledButton(
+                                onPressed:
+                                    state.isSubmitting || state.isUploading
+                                        ? null
+                                        : () => _continue(state, value),
+                                child: state.isSubmitting
+                                    ? const SizedBox.square(
+                                        dimension: AppIconSize.medium,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : Text(
+                                        _step == 4
+                                            ? l10n.submitServiceRequest
+                                            : l10n.next,
                                       ),
-                                    )
-                                  : Text(
-                                      _step == 4
-                                          ? l10n.submitServiceRequest
-                                          : l10n.next,
-                                    ),
-                            ),
-                          ),
-                          if (_step > 0) ...[
-                            const SizedBox(width: AppSpacing.small),
-                            TextButton(
-                              onPressed: state.isSubmitting
-                                  ? null
-                                  : () => setState(() => _step--),
-                              child: Text(
-                                MaterialLocalizations.of(context)
-                                    .backButtonTooltip,
                               ),
                             ),
+                            if (_step > 0) ...[
+                              const SizedBox(width: AppSpacing.small),
+                              TextButton(
+                                onPressed:
+                                    state.isSubmitting || state.isUploading
+                                        ? null
+                                        : _goToPreviousStep,
+                                child: Text(
+                                  MaterialLocalizations.of(context)
+                                      .backButtonTooltip,
+                                ),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
+                      steps: [
+                        Step(
+                          title: Text(l10n.bookingStepVehicle),
+                          isActive: _step >= 0,
+                          state: state.draft.vehicle == null
+                              ? StepState.indexed
+                              : StepState.complete,
+                          content: _VehicleStep(draft: state.draft),
+                        ),
+                        Step(
+                          title: Text(l10n.bookingStepService),
+                          isActive: _step >= 1,
+                          state: state.draft.service == null
+                              ? StepState.indexed
+                              : StepState.complete,
+                          content: _WorkshopServiceStep(draft: state.draft),
+                        ),
+                        Step(
+                          title: Text(l10n.serviceDetailsTitle),
+                          isActive: _step >= 2,
+                          state: state.draft.complaint.trim().length >= 5 &&
+                                  state.draft.symptomCodes.isNotEmpty
+                              ? StepState.complete
+                              : StepState.indexed,
+                          content: _detailsStep(state, value),
+                        ),
+                        Step(
+                          title: Text(l10n.bookingStepSchedule),
+                          isActive: _step >= 3,
+                          state: state.draft.primarySlot != null &&
+                                  state.draft.alternativeSlot != null
+                              ? StepState.complete
+                              : StepState.indexed,
+                          content: _scheduleStep(state.draft),
+                        ),
+                        Step(
+                          title: Text(l10n.bookingStepReview),
+                          isActive: _step >= 4,
+                          content: _reviewStep(state.draft, value),
+                        ),
+                      ],
                     ),
-                    steps: [
-                      Step(
-                        title: Text(l10n.bookingStepVehicle),
-                        isActive: _step >= 0,
-                        state: state.draft.vehicle == null
-                            ? StepState.indexed
-                            : StepState.complete,
-                        content: _VehicleStep(draft: state.draft),
-                      ),
-                      Step(
-                        title: Text(l10n.bookingStepService),
-                        isActive: _step >= 1,
-                        state: state.draft.service == null
-                            ? StepState.indexed
-                            : StepState.complete,
-                        content: _WorkshopServiceStep(draft: state.draft),
-                      ),
-                      Step(
-                        title: Text(l10n.serviceDetailsTitle),
-                        isActive: _step >= 2,
-                        state: state.draft.complaint.trim().length >= 5 &&
-                                state.draft.symptomCodes.isNotEmpty
-                            ? StepState.complete
-                            : StepState.indexed,
-                        content: _detailsStep(state, value),
-                      ),
-                      Step(
-                        title: Text(l10n.bookingStepSchedule),
-                        isActive: _step >= 3,
-                        state: state.draft.primarySlot != null &&
-                                state.draft.alternativeSlot != null
-                            ? StepState.complete
-                            : StepState.indexed,
-                        content: _scheduleStep(state.draft),
-                      ),
-                      Step(
-                        title: Text(l10n.bookingStepReview),
-                        isActive: _step >= 4,
-                        content: _reviewStep(state.draft, value),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => _LoadError(
-                onRetry: () => ref.invalidate(otoxpertOptionsProvider),
-              ),
-            );
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, __) => _LoadError(
-            onRetry: () => ref.invalidate(otoxpertFlowProvider),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, __) => _LoadError(
+                  onRetry: () => ref.invalidate(otoxpertOptionsProvider),
+                ),
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => _LoadError(
+              onRetry: () => ref.invalidate(otoxpertFlowProvider),
+            ),
           ),
         ),
       ),
@@ -494,6 +546,7 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
   void _initializeDetails(OtoxpertDraft draft) {
     if (_detailsInitialized) return;
     _detailsInitialized = true;
+    _step = _furthestStep(draft);
     _mileage.text = draft.currentMileage?.toString() ?? '';
     _complaint.text = draft.complaint;
     _lastService.text = draft.lastServiceDate ?? '';
@@ -538,6 +591,16 @@ class _VehicleStep extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final vehicles = ref.watch(otoxpertVehiclesProvider);
+
+    Future<void> addVehicle() async {
+      final vehicle = await context.push<ToyotaServiceVehicle>(
+        toyotaServiceAddVehicleSelectionPath,
+      );
+      if (vehicle == null || !context.mounted) return;
+      await ref.read(otoxpertFlowProvider.notifier).selectVehicle(vehicle);
+      ref.invalidate(otoxpertVehiclesProvider);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -549,7 +612,7 @@ class _VehicleStep extends ConsumerWidget {
                   title: l10n.bookingNoVehicles,
                   description: l10n.bookingNoVehiclesDescription,
                   action: OutlinedButton.icon(
-                    onPressed: () => context.push(toyotaServiceAddVehiclePath),
+                    onPressed: addVehicle,
                     icon: const Icon(Icons.add_rounded),
                     label: Text(l10n.addVehicle),
                   ),
@@ -566,6 +629,12 @@ class _VehicleStep extends ConsumerWidget {
                             .read(otoxpertFlowProvider.notifier)
                             .selectVehicle(vehicle),
                       ),
+                    const SizedBox(height: AppSpacing.small),
+                    OutlinedButton.icon(
+                      onPressed: addVehicle,
+                      icon: const Icon(Icons.add_rounded),
+                      label: Text(l10n.addVehicle),
+                    ),
                   ],
                 ),
           loading: () => const LinearProgressIndicator(),

@@ -204,13 +204,18 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<void> logout([String? deviceId]) async {
+  Future<void> logout({String? deviceId, String? accessToken}) async {
     try {
       await _dio.post(
         'v1/auth/logout',
         data: {
           if (deviceId != null) 'device_id': deviceId,
         },
+        options: accessToken == null
+            ? null
+            : Options(
+                headers: {'Authorization': 'Bearer $accessToken'},
+              ),
       );
     } on DioException catch (e) {
       throw e.error ?? ServerException(e.message ?? 'Logout failed');

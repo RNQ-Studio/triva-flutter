@@ -261,6 +261,11 @@ final _acceptedAppraisal = AppraisalData(
   timeline: _appraisal.timeline,
   result: _appraisal.result,
   customerDecision: 'accepted',
+  continuation: const AppraisalContinuation(
+    type: 'credit_simulation',
+    vehicleId: 'vehicle-1',
+    appraisalId: 'appraisal-1',
+  ),
 );
 
 void main() {
@@ -442,6 +447,12 @@ void main() {
     expect(find.text('Terima harga'), findsNothing);
     expect(find.text('Belum cocok'), findsNothing);
     expect(find.text('Putuskan nanti'), findsNothing);
+    await tester.scrollUntilVisible(
+      find.text('Simulasi kredit'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Simulasi kredit'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -811,6 +822,52 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Beranda test'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('rejected appraisal continues to Body Paint with source scope',
+      (tester) async {
+    final router = GoRouter(
+      initialLocation: '/complete',
+      routes: [
+        GoRoute(
+          path: '/complete',
+          builder: (_, __) => const AppraisalCompleteScreen(
+            appraisalId: 'appraisal-1',
+            outcome: 'rejected',
+          ),
+        ),
+        GoRoute(
+          path: '/body-paint',
+          builder: (_, state) => Scaffold(
+            body: Text(
+              '${state.uri.queryParameters['appraisal_id']}|'
+              '${state.uri.queryParameters['vehicle_id']}',
+            ),
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Estimasi Body & Paint'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('appraisal-1|vehicle-1'), findsOneWidget);
   });
 }
 

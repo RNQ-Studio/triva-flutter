@@ -98,7 +98,7 @@ void main() {
     }
   }
 
-  testWidgets('profile setup sends selected province and city IDs',
+  testWidgets('back preserves return route and profile setup sends region IDs',
       (tester) async {
     tester.view
       ..physicalSize = const Size(360, 690)
@@ -107,7 +107,7 @@ void main() {
 
     late _ProfileAuthNotifier notifier;
     final router = GoRouter(
-      initialLocation: '/complete-profile',
+      initialLocation: '/complete-profile?from=%2Factivity%3Ffilter%3Dpending',
       routes: [
         GoRoute(
           path: '/',
@@ -117,7 +117,15 @@ void main() {
         ),
         GoRoute(
           path: '/complete-profile',
-          builder: (context, state) => const CompleteProfileScreen(),
+          builder: (context, state) => CompleteProfileScreen(
+            returnTo: state.uri.queryParameters['from'],
+          ),
+        ),
+        GoRoute(
+          path: '/activity',
+          builder: (context, state) => const Scaffold(
+            body: Text('Aktivitas'),
+          ),
         ),
       ],
     );
@@ -145,6 +153,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(await tester.binding.handlePopRoute(), isTrue);
+    await tester.pumpAndSettle();
+    expect(router.state.uri.path, '/complete-profile');
+    expect(
+      router.state.uri.queryParameters['from'],
+      '/activity?filter=pending',
+    );
+
     await tester.enterText(
       find.byType(TextFormField).first,
       '+6281234567890',
@@ -169,7 +185,8 @@ void main() {
 
     expect(notifier.submittedProvinceId, 35);
     expect(notifier.submittedCityId, 3578);
-    expect(find.text('Beranda'), findsOneWidget);
+    expect(find.text('Aktivitas'), findsOneWidget);
+    expect(router.state.uri.toString(), '/activity?filter=pending');
     expect(tester.takeException(), isNull);
   });
 

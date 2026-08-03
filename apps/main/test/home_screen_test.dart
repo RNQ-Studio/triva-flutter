@@ -3,8 +3,8 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:triva_app/features/appraisal/presentation/appraisal_controller.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
+import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 
 class _FakeAuthNotifier extends AuthNotifier {
   _FakeAuthNotifier(this.initialState);
@@ -21,6 +21,7 @@ void main() {
     required ThemeData theme,
     required AuthState authState,
     double textScale = 1.3,
+    bool vehicleLoadFails = false,
   }) async {
     tester.view
       ..physicalSize = const Size(360, 690)
@@ -33,7 +34,10 @@ void main() {
           authProvider.overrideWith(
             () => _FakeAuthNotifier(authState),
           ),
-          appraisalsProvider.overrideWith((ref) async => const []),
+          toyotaServiceVehiclesProvider.overrideWith((ref) async {
+            if (vehicleLoadFails) throw StateError('offline');
+            return const [];
+          }),
         ],
         child: MaterialApp(
           theme: theme,
@@ -91,5 +95,20 @@ void main() {
 
     expect(find.text('Halo, Ramadhan'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('vehicle API failure is not misrepresented as an empty garage',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      vehicleLoadFails: true,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Data belum dapat dimuat.'), findsOneWidget);
+    expect(find.byIcon(Icons.refresh_rounded), findsOneWidget);
+    expect(find.text('Belum ada kendaraan'), findsNothing);
   });
 }

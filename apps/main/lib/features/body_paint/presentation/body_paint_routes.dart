@@ -8,7 +8,10 @@ import 'screens/body_paint_intake_screen.dart';
 final bodyPaintRoutes = <RouteBase>[
   GoRoute(
     path: bodyPaintPath,
-    builder: (_, __) => const BodyPaintIntakeScreen(),
+    builder: (_, state) => BodyPaintIntakeScreen(
+      sourceAppraisalId: state.uri.queryParameters['appraisal_id'],
+      sourceVehicleId: state.uri.queryParameters['vehicle_id'],
+    ),
   ),
   GoRoute(
     path: '/body-paint/estimates/:id',

@@ -73,6 +73,8 @@ class BodyPaintRepository {
       'v1/body-paint/estimates',
       data: {
         'vehicle_id': draft.vehicle!.id,
+        if (draft.sourceAppraisalId != null)
+          'appraisal_id': draft.sourceAppraisalId,
         'service_location_id': draft.location!.id,
         if (draft.notes.trim().isNotEmpty) 'customer_notes': draft.notes.trim(),
         'campaign_source': 'triva_app',

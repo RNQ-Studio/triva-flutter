@@ -81,6 +81,11 @@ class _CreditSimulationDetailScreenState
     }
   }
 
+  Future<void> _startNewSimulation() async {
+    await ref.read(creditFlowProvider.notifier).reset();
+    if (mounted) context.go(creditPath);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -207,7 +212,7 @@ class _CreditSimulationDetailScreenState
                               label: Text(l10n.creditShareSummary),
                             ),
                             OutlinedButton.icon(
-                              onPressed: () => context.go(creditPath),
+                              onPressed: _startNewSimulation,
                               icon: const Icon(Icons.add_rounded),
                               label: Text(l10n.creditStartNew),
                             ),

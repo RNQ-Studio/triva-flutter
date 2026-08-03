@@ -49,6 +49,7 @@ build/
 google-services.json
 GoogleService-Info.plist
 firebase_options.dart
+triva-7138e-7ad4be304943.json
 !apps/main/android/app/google-services.json
 !apps/main/lib/firebase_options.dart
 

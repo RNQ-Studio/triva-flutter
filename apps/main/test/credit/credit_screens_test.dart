@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:triva_app/features/credit/data/credit_repository.dart';
 import 'package:triva_app/features/credit/domain/credit_models.dart';
@@ -62,6 +63,18 @@ class _FakeCreditFlowController extends CreditFlowController {
 }
 
 class _MockCreditRepository extends Mock implements CreditRepository {}
+
+class _TrackingCreditFlowController extends _FakeCreditFlowController {
+  var resetCalls = 0;
+
+  @override
+  Future<void> reset() async {
+    resetCalls++;
+    state = const AsyncData(
+      CreditFlowState(draft: CreditSimulationDraft()),
+    );
+  }
+}
 
 void main() {
   test('input revision discards a calculation completed for stale inputs',
@@ -165,6 +178,65 @@ void main() {
     expect(find.text('Total pembayaran estimasi'), findsOneWidget);
     expect(find.text('Minta dihubungi sales'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('start new clears the persisted flow before opening the form',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final simulation = CreditSimulation(
+      id: 'simulation-1',
+      referenceNo: 'SK-001',
+      status: 'saved',
+      statusLabel: 'Simulasi tersimpan',
+      calculation: _calculation(),
+      isProgramExpired: false,
+      savedAt: DateTime(2026, 7, 27),
+    );
+    final flow = _TrackingCreditFlowController();
+    final router = GoRouter(
+      initialLocation: '/credit/simulations/simulation-1',
+      routes: [
+        GoRoute(
+          path: '/credit',
+          builder: (_, __) => const Scaffold(
+            body: Text('Form simulasi baru'),
+          ),
+        ),
+        GoRoute(
+          path: '/credit/simulations/:id',
+          builder: (_, state) => CreditSimulationDetailScreen(
+            simulationId: state.pathParameters['id']!,
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          creditFlowProvider.overrideWith(() => flow),
+          creditSimulationProvider('simulation-1').overrideWith(
+            (_) async => simulation,
+          ),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Buat simulasi baru'));
+    await tester.tap(find.text('Buat simulasi baru'));
+    await tester.pumpAndSettle();
+
+    expect(flow.resetCalls, 1);
+    expect(find.text('Form simulasi baru'), findsOneWidget);
   });
 
   testWidgets('invalid down payment is blocked before calculation',

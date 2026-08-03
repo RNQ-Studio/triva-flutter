@@ -10,7 +10,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'router/app_router.dart';
+import 'router/home_fallback_back_button_dispatcher.dart';
 import 'features/appraisal/presentation/appraisal_controller.dart';
+import 'features/body_paint/presentation/body_paint_controller.dart';
 import 'features/credit/presentation/credit_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
 import 'features/otoxpert/presentation/otoxpert_controller.dart';
@@ -58,6 +60,15 @@ String? notificationTarget(Map<String, dynamic> data) {
       : null;
 }
 
+const notificationAnchorRootPaths = <String>{
+  '/splash',
+  '/login',
+  '/complete-profile',
+};
+
+bool shouldAnchorNotificationOpen(Uri currentUri) =>
+    notificationAnchorRootPaths.contains(currentUri.path);
+
 Future<void> syncPushTokenSafely({
   required Future<String?> Function() getToken,
   required Future<void> Function(String token) register,
@@ -98,6 +109,10 @@ class _AppRouter extends ConsumerStatefulWidget {
 class _AppRouterState extends ConsumerState<_AppRouter> {
   final _fcm = FCMNotificationService();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  late final _backButtonDispatcher = HomeFallbackBackButtonDispatcher(
+    currentUri: () => appRouter.state.uri,
+    goHome: () => appRouter.go('/'),
+  );
   String? _pendingNotificationRoute;
   String? _authenticatedUserId;
   String? _registeredPushIdentity;
@@ -120,6 +135,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       if (identityChanged || signedOut) {
         _invalidateUserScopedState();
         _registeredPushIdentity = null;
+        _pendingNotificationRoute = null;
       }
       if (nextUserId != null || next is AuthUnauthenticated) {
         _authenticatedUserId = nextUserId;
@@ -127,10 +143,11 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       appRouter.refresh();
       if (next is AuthAuthenticated) {
         unawaited(_syncPushToken());
-        final pending = _pendingNotificationRoute;
+        final pending =
+            next.user.profileCompleted ? _pendingNotificationRoute : null;
         if (pending != null) {
           _pendingNotificationRoute = null;
-          appRouter.go(pending);
+          _openNotificationFromAppRoot(pending);
         }
       }
     });
@@ -145,6 +162,11 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
 
   void _invalidateUserScopedState() {
     ref.invalidate(appraisalsProvider);
+    ref.invalidate(appraisalFlowProvider);
+    ref.invalidate(bodyPaintOptionsProvider);
+    ref.invalidate(bodyPaintVehiclesProvider);
+    ref.invalidate(bodyPaintEstimatesProvider);
+    ref.invalidate(bodyPaintFlowProvider);
     ref.invalidate(toyotaServiceVehiclesProvider);
     ref.invalidate(toyotaServiceBookingsProvider);
     ref.invalidate(toyotaServiceFlowProvider);
@@ -213,11 +235,34 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
   void _openNotification(RemoteMessage message) {
     final target = notificationTarget(message.data);
     if (target == null) return;
-    if (ref.read(authProvider) is AuthAuthenticated) {
-      appRouter.go(target);
+    if (appRouter.state.uri.toString() == target) return;
+    final auth = ref.read(authProvider);
+    if (auth is AuthAuthenticated && auth.user.profileCompleted) {
+      // Keep the page the customer was using underneath a notification opened
+      // while the app is alive. If an initial notification arrives while an
+      // app-root screen is still active, first create Home as a safe anchor.
+      if (shouldAnchorNotificationOpen(appRouter.state.uri)) {
+        _openNotificationFromAppRoot(target);
+      } else {
+        unawaited(appRouter.push<void>(target));
+      }
     } else {
       _pendingNotificationRoute = target;
     }
+  }
+
+  void _openNotificationFromAppRoot(String target) {
+    appRouter.go('/');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final auth = ref.read(authProvider);
+      if (auth is! AuthAuthenticated || !auth.user.profileCompleted) {
+        _pendingNotificationRoute = target;
+        return;
+      }
+      if (appRouter.state.uri.toString() == target) return;
+      unawaited(appRouter.push<void>(target));
+    });
   }
 
   Future<void> _registerDevice(String token) async {
@@ -292,7 +337,15 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: appRouter,
+      routeInformationProvider: appRouter.routeInformationProvider,
+      routeInformationParser: appRouter.routeInformationParser,
+      routerDelegate: appRouter.routerDelegate,
+      backButtonDispatcher: _backButtonDispatcher,
+      onNavigationNotification: (notification) =>
+          handleSystemBackNavigationNotification(
+        notification,
+        currentUri: appRouter.state.uri,
+      ),
       builder: (context, child) => WebMobileViewport(
         enabled: kIsWeb,
         child: child ?? const SizedBox.shrink(),

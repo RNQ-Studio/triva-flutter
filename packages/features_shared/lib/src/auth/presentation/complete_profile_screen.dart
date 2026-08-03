@@ -4,13 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'auth_guard.dart';
 import 'auth_provider.dart';
 import 'auth_state.dart';
 import '../domain/entities/region_option.dart';
 import 'region_provider.dart';
 
 class CompleteProfileScreen extends ConsumerStatefulWidget {
-  const CompleteProfileScreen({super.key});
+  const CompleteProfileScreen({super.key, this.returnTo});
+
+  final String? returnTo;
 
   @override
   ConsumerState<CompleteProfileScreen> createState() =>
@@ -85,7 +88,9 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
             serviceConsent: true,
             marketingConsent: _marketingConsent,
           );
-      if (mounted) context.go('/');
+      if (mounted) {
+        context.go(safeAuthReturnLocation(widget.returnTo) ?? '/');
+      }
     } catch (_) {
       if (mounted) setState(() => _error = l10n.profileSetupError);
     } finally {
@@ -112,7 +117,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     final user = state is AuthAuthenticated ? state.user : null;
     final regionOptionsReady = provinces.asData?.value.isNotEmpty ?? false;
 
-    return Scaffold(
+    final screen = Scaffold(
       appBar: AppBar(title: const Text('TRIVA')),
       body: SafeArea(
         child: Center(
@@ -261,6 +266,13 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
           ),
         ),
       ),
+    );
+
+    return PopScope(
+      // Profile setup is mandatory. Consuming back here also preserves the
+      // original `from` destination until setup succeeds.
+      canPop: false,
+      child: screen,
     );
   }
 }

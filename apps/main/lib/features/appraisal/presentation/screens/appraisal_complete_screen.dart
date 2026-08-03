@@ -1,11 +1,14 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../body_paint/presentation/body_paint_paths.dart';
 import '../appraisal_paths.dart';
+import '../appraisal_controller.dart';
 import '../../../credit/presentation/credit_paths.dart';
 
-class AppraisalCompleteScreen extends StatelessWidget {
+class AppraisalCompleteScreen extends ConsumerWidget {
   const AppraisalCompleteScreen({
     super.key,
     required this.appraisalId,
@@ -16,11 +19,15 @@ class AppraisalCompleteScreen extends StatelessWidget {
   final String outcome;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
     final accepted = outcome == 'accepted';
+    final rejected = outcome == 'rejected';
     final inspection = outcome == 'inspection';
+    final rejectedDetail =
+        rejected ? ref.watch(appraisalDetailProvider(appraisalId)) : null;
+    final rejectedVehicleId = rejectedDetail?.value?.vehicle?.id;
     final title = accepted
         ? l10n.decisionAcceptedTitle
         : inspection
@@ -70,15 +77,41 @@ class AppraisalCompleteScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: () => context.go(
-                        accepted ? creditFromAppraisalPath(appraisalId) : '/',
-                      ),
-                      child: Text(
-                        accepted ? l10n.serviceCreditTitle : l10n.backToHome,
-                      ),
+                      onPressed: rejected && rejectedVehicleId == null
+                          ? rejectedDetail?.hasError == true
+                              ? () => ref.invalidate(
+                                    appraisalDetailProvider(appraisalId),
+                                  )
+                              : null
+                          : () => context.go(
+                                accepted
+                                    ? creditFromAppraisalPath(appraisalId)
+                                    : rejected
+                                        ? bodyPaintFromAppraisalPath(
+                                            appraisalId: appraisalId,
+                                            vehicleId: rejectedVehicleId!,
+                                          )
+                                        : '/',
+                              ),
+                      child: rejected &&
+                              rejectedVehicleId == null &&
+                              rejectedDetail?.hasError != true
+                          ? const SizedBox.square(
+                              dimension: 22,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(
+                              accepted
+                                  ? l10n.serviceCreditTitle
+                                  : rejected
+                                      ? rejectedDetail?.hasError == true
+                                          ? l10n.retry
+                                          : l10n.serviceBodyPaintTitle
+                                      : l10n.backToHome,
+                            ),
                     ),
                   ),
-                  if (accepted)
+                  if (accepted || rejected)
                     TextButton(
                       onPressed: () => context.go('/'),
                       child: Text(l10n.backToHome),

@@ -61,6 +61,7 @@ void main() {
     await repository.createDraft(_completeDraft());
 
     expect(payload?['vehicle_id'], 'vehicle-1');
+    expect(payload?['appraisal_id'], 'appraisal-1');
     expect(payload?['service_location_id'], 'location-1');
     expect(payload?['campaign_source'], 'triva_app');
     expect(options?.headers?['Idempotency-Key'], 'idem-1');
@@ -162,6 +163,7 @@ void main() {
 
 BodyPaintDraft _completeDraft() => const BodyPaintDraft(
       estimateId: 'estimate-1',
+      sourceAppraisalId: 'appraisal-1',
       vehicle: ToyotaServiceVehicle(
         id: 'vehicle-1',
         make: 'Honda',

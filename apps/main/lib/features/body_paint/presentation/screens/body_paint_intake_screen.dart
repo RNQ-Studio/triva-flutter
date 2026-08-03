@@ -5,11 +5,19 @@ import 'package:go_router/go_router.dart';
 
 import '../../domain/body_paint_models.dart';
 import '../../../toyota_service/domain/toyota_service_models.dart';
+import '../../../toyota_service/presentation/toyota_service_paths.dart';
 import '../body_paint_controller.dart';
 import '../body_paint_paths.dart';
 
 class BodyPaintIntakeScreen extends ConsumerStatefulWidget {
-  const BodyPaintIntakeScreen({super.key});
+  const BodyPaintIntakeScreen({
+    super.key,
+    this.sourceAppraisalId,
+    this.sourceVehicleId,
+  });
+
+  final String? sourceAppraisalId;
+  final String? sourceVehicleId;
 
   @override
   ConsumerState<BodyPaintIntakeScreen> createState() =>
@@ -19,11 +27,41 @@ class BodyPaintIntakeScreen extends ConsumerStatefulWidget {
 class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
   final _notes = TextEditingController();
   var _initialized = false;
+  var _sourceInitialized = false;
 
   @override
   void dispose() {
     _notes.dispose();
     super.dispose();
+  }
+
+  Future<void> _addVehicle() async {
+    final vehicle = await context.push<ToyotaServiceVehicle>(
+      toyotaServiceAddVehicleSelectionPath,
+    );
+    if (vehicle == null || !mounted) return;
+    await ref.read(bodyPaintFlowProvider.notifier).selectVehicle(vehicle);
+    ref.invalidate(bodyPaintVehiclesProvider);
+  }
+
+  void _initializeSource(List<ToyotaServiceVehicle> vehicles) {
+    final appraisalId = widget.sourceAppraisalId;
+    if (_sourceInitialized || appraisalId == null) return;
+    _sourceInitialized = true;
+    ToyotaServiceVehicle? sourceVehicle;
+    for (final vehicle in vehicles) {
+      if (vehicle.id == widget.sourceVehicleId) {
+        sourceVehicle = vehicle;
+        break;
+      }
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(bodyPaintFlowProvider.notifier).initializeSource(
+            appraisalId: appraisalId,
+            vehicle: sourceVehicle,
+          );
+    });
   }
 
   @override
@@ -55,11 +93,10 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
                 error: (_, __) => _LoadError(
                   onRetry: () => ref.invalidate(bodyPaintVehiclesProvider),
                 ),
-                data: (vehicleItems) => _content(
-                  state,
-                  catalog,
-                  vehicleItems,
-                ),
+                data: (vehicleItems) {
+                  _initializeSource(vehicleItems);
+                  return _content(state, catalog, vehicleItems);
+                },
               ),
             );
           },
@@ -122,27 +159,62 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
         const SizedBox(height: AppSpacing.large),
         _SectionTitle(number: 1, title: l10n.bodyPaintVehicle),
         const SizedBox(height: AppSpacing.small),
-        DropdownButtonFormField<ToyotaServiceVehicle>(
-          key: ValueKey('body-paint-vehicle-${state.draft.vehicle?.id}'),
-          initialValue: state.draft.vehicle,
-          isExpanded: true,
-          decoration: InputDecoration(labelText: l10n.bodyPaintVehicle),
-          items: [
-            for (final vehicle in vehicles)
-              DropdownMenuItem<ToyotaServiceVehicle>(
-                value: vehicle,
-                child: Text(
-                  '${vehicle.displayName} - ${vehicle.licensePlate}',
-                  overflow: TextOverflow.ellipsis,
-                ),
+        if (vehicles.isEmpty)
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.large),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    l10n.bookingNoVehicles,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(l10n.bookingNoVehiclesDescription),
+                  const SizedBox(height: AppSpacing.medium),
+                  OutlinedButton.icon(
+                    key: const Key('body-paint-add-vehicle'),
+                    onPressed: state.isSubmitting ? null : _addVehicle,
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(l10n.addVehicle),
+                  ),
+                ],
               ),
-          ],
-          onChanged: state.isSubmitting
-              ? null
-              : (vehicle) {
-                  if (vehicle != null) controller.selectVehicle(vehicle);
-                },
-        ),
+            ),
+          )
+        else ...[
+          DropdownButtonFormField<ToyotaServiceVehicle>(
+            key: ValueKey('body-paint-vehicle-${state.draft.vehicle?.id}'),
+            initialValue: state.draft.vehicle,
+            isExpanded: true,
+            decoration: InputDecoration(labelText: l10n.bodyPaintVehicle),
+            items: [
+              for (final vehicle in vehicles)
+                DropdownMenuItem<ToyotaServiceVehicle>(
+                  value: vehicle,
+                  child: Text(
+                    '${vehicle.displayName} - ${vehicle.licensePlate}',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
+            onChanged: state.isSubmitting
+                ? null
+                : (vehicle) {
+                    if (vehicle != null) controller.selectVehicle(vehicle);
+                  },
+          ),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: TextButton.icon(
+              key: const Key('body-paint-add-another-vehicle'),
+              onPressed: state.isSubmitting ? null : _addVehicle,
+              icon: const Icon(Icons.add_rounded),
+              label: Text(l10n.addVehicle),
+            ),
+          ),
+        ],
         const SizedBox(height: AppSpacing.medium),
         DropdownButtonFormField<ToyotaServiceLocation>(
           key: ValueKey('body-paint-location-${state.draft.location?.id}'),
@@ -229,10 +301,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
           maxLines: 4,
           maxLength: 3000,
           decoration: InputDecoration(labelText: l10n.bodyPaintNotes),
-          onChanged: (value) => controller.setDetails(
-            notes: value,
-            consent: state.draft.consent,
-          ),
+          onChanged: controller.setNotes,
         ),
         CheckboxListTile(
           value: state.draft.consent,
@@ -241,10 +310,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
           title: Text(l10n.bodyPaintConsent),
           onChanged: state.isSubmitting
               ? null
-              : (value) => controller.setDetails(
-                    notes: _notes.text,
-                    consent: value ?? false,
-                  ),
+              : (value) => controller.setConsent(value ?? false),
         ),
         if (state.error != null) ...[
           const SizedBox(height: AppSpacing.small),
@@ -332,7 +398,12 @@ class _SectionTitle extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.small),
-          Text(title, style: Theme.of(context).textTheme.titleMedium),
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
         ],
       );
 }

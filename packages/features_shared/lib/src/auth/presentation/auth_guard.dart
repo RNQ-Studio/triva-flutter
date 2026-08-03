@@ -2,9 +2,54 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'auth_paths.dart';
 import 'auth_provider.dart';
-import 'auth_routes.dart';
 import 'auth_state.dart';
+
+const _authEntryPaths = <String>{
+  '/splash',
+  authLoginPath,
+  completeProfilePath,
+};
+
+/// Returns an internal post-auth destination, or null when [candidate] is
+/// unsafe or would send the router back into the authentication flow.
+///
+/// Keeping this validation in one place prevents values from the `from` query
+/// parameter from becoming an open redirect when login or profile setup
+/// completes.
+String? safeAuthReturnLocation(String? candidate) {
+  if (candidate == null ||
+      candidate.isEmpty ||
+      candidate != candidate.trim() ||
+      candidate.contains('\\') ||
+      RegExp(r'[\u0000-\u001F\u007F]').hasMatch(candidate)) {
+    return null;
+  }
+
+  final uri = Uri.tryParse(candidate);
+  if (uri == null ||
+      uri.hasScheme ||
+      uri.hasAuthority ||
+      !candidate.startsWith('/') ||
+      candidate.startsWith('//') ||
+      !uri.path.startsWith('/') ||
+      _authEntryPaths.contains(uri.path)) {
+    return null;
+  }
+
+  return uri.toString();
+}
+
+String _authLocationWithReturnTo(String path, String? candidate) {
+  final destination = safeAuthReturnLocation(candidate);
+  if (destination == null || destination == '/') return path;
+
+  return Uri(
+    path: path,
+    queryParameters: {'from': destination},
+  ).toString();
+}
 
 /// Compatible with GoRouter's [redirect] callback: `redirect: authRedirect`.
 ///
@@ -26,19 +71,21 @@ String? authRedirect(BuildContext context, GoRouterState state) {
 
   if (!isAuthenticated) {
     if (isOnLoginPage) return null;
-    final from = Uri.encodeComponent(state.uri.toString());
-    return '$authLoginPath?from=$from';
+    final destination = isOnProfileSetup
+        ? state.uri.queryParameters['from']
+        : state.uri.toString();
+    return _authLocationWithReturnTo(authLoginPath, destination);
   }
 
   final user = authState.user;
   if (!user.profileCompleted && !isOnProfileSetup) {
-    return completeProfilePath;
+    final destination = isOnLoginPage
+        ? state.uri.queryParameters['from']
+        : state.uri.toString();
+    return _authLocationWithReturnTo(completeProfilePath, destination);
   }
   if (user.profileCompleted && (isOnLoginPage || isOnProfileSetup)) {
-    final destination = state.uri.queryParameters['from'];
-    return destination == null || destination.startsWith('/login')
-        ? '/'
-        : destination;
+    return safeAuthReturnLocation(state.uri.queryParameters['from']) ?? '/';
   }
   return null;
 }

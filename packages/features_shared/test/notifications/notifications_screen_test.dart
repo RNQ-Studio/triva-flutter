@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 class _FailingMarkAllRepository implements NotificationsRepository {
   final items = [
@@ -66,6 +69,31 @@ class _AccountRepository implements NotificationsRepository {
 
   @override
   Future<void> markAsRead(String notificationId) async {}
+}
+
+class _DelayedReadRepository implements NotificationsRepository {
+  final markCompleter = Completer<void>();
+
+  @override
+  Future<List<AppNotification>> getNotifications() async => [
+        AppNotification(
+          id: 'notification-1',
+          title: 'Booking siap dibuka',
+          body: 'Detail booking tersedia.',
+          createdAt: DateTime(2026, 7, 27),
+          type: 'toyota_service_booking',
+          data: const {'booking_id': 'booking-1'},
+        ),
+      ];
+
+  @override
+  Future<int> getUnreadCount() async => 1;
+
+  @override
+  Future<void> markAllAsRead() async {}
+
+  @override
+  Future<void> markAsRead(String notificationId) => markCompleter.future;
 }
 
 void main() {
@@ -137,6 +165,67 @@ void main() {
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('opens detail without waiting for read receipt network',
+      (tester) async {
+    final repository = _DelayedReadRepository();
+    addTearDown(() {
+      if (!repository.markCompleter.isCompleted) {
+        repository.markCompleter.complete();
+      }
+    });
+    final router = GoRouter(
+      initialLocation: '/notifications',
+      routes: [
+        GoRoute(
+          path: '/notifications',
+          builder: (_, __) => const NotificationsScreen(),
+        ),
+        GoRoute(
+          path: '/toyota-service/bookings/:id',
+          builder: (_, state) => Scaffold(
+            body: Text('Detail ${state.pathParameters['id']}'),
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authProvider.overrideWith(_SwitchableAuthNotifier.new),
+          notificationsRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Booking siap dibuka'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Detail booking-1'), findsOneWidget);
+    expect(repository.markCompleter.isCompleted, isFalse);
+  });
+
+  test('generic notification has no destination', () {
+    final notification = AppNotification(
+      id: 'promo-1',
+      title: 'Promo',
+      body: 'Info umum',
+      createdAt: DateTime(2026, 7, 27),
+      type: 'promo',
+    );
+
+    expect(notificationDestination(notification), isNull);
   });
 
   test('account switch rebuilds inbox without exposing account A cache',

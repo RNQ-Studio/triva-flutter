@@ -141,6 +141,7 @@ class BodyPaintDraftDamage {
 class BodyPaintDraft {
   const BodyPaintDraft({
     this.estimateId,
+    this.sourceAppraisalId,
     this.vehicle,
     this.location,
     this.damages = const [],
@@ -152,6 +153,7 @@ class BodyPaintDraft {
   });
 
   final String? estimateId;
+  final String? sourceAppraisalId;
   final ToyotaServiceVehicle? vehicle;
   final ToyotaServiceLocation? location;
   final List<BodyPaintDraftDamage> damages;
@@ -171,6 +173,7 @@ class BodyPaintDraft {
 
   BodyPaintDraft copyWith({
     String? estimateId,
+    String? sourceAppraisalId,
     ToyotaServiceVehicle? vehicle,
     ToyotaServiceLocation? location,
     List<BodyPaintDraftDamage>? damages,
@@ -183,6 +186,7 @@ class BodyPaintDraft {
   }) =>
       BodyPaintDraft(
         estimateId: clearRemote ? null : estimateId ?? this.estimateId,
+        sourceAppraisalId: sourceAppraisalId ?? this.sourceAppraisalId,
         vehicle: vehicle ?? this.vehicle,
         location: location ?? this.location,
         damages: damages ?? this.damages,
@@ -196,6 +200,7 @@ class BodyPaintDraft {
 
   factory BodyPaintDraft.fromJson(Map<String, dynamic> json) => BodyPaintDraft(
         estimateId: json['estimate_id']?.toString(),
+        sourceAppraisalId: json['source_appraisal_id']?.toString(),
         vehicle: json['vehicle'] is Map<String, dynamic>
             ? ToyotaServiceVehicle.fromJson(
                 json['vehicle'] as Map<String, dynamic>,
@@ -219,6 +224,7 @@ class BodyPaintDraft {
 
   Map<String, dynamic> toJson() => {
         'estimate_id': estimateId,
+        'source_appraisal_id': sourceAppraisalId,
         'vehicle': vehicle?.toJson(),
         'location': location == null
             ? null

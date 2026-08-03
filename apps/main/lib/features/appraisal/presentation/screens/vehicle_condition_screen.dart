@@ -62,6 +62,7 @@ class _VehicleConditionScreenState
 
     return AppraisalFlowScaffold(
       step: 2,
+      fallbackLocation: appraisalDetailsPath,
       title: l10n.conditionTitle,
       description: l10n.conditionDescription,
       primaryLabel: l10n.next,

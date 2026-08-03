@@ -4,13 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../branding/triva_logo.dart';
+import 'auth_guard.dart';
 import 'auth_provider.dart';
 import 'auth_state.dart';
 
 class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key, this.onLoginSuccess});
+  const LoginScreen({super.key, this.onLoginSuccess, this.returnTo});
 
   final VoidCallback? onLoginSuccess;
+  final String? returnTo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +24,7 @@ class LoginScreen extends ConsumerWidget {
       if (onLoginSuccess case final callback?) {
         callback();
       } else {
-        context.go('/');
+        context.go(safeAuthReturnLocation(returnTo) ?? '/');
       }
     });
 

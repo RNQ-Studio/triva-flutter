@@ -12,7 +12,7 @@ import '../data/appraisal_repository.dart';
 import '../domain/appraisal_models.dart';
 
 final appraisalRepositoryProvider = Provider<AppraisalRepository>((ref) {
-  ref.watch(authProvider);
+  final auth = ref.watch(authProvider);
   final storage = ref.watch(storageServiceProvider);
   return AppraisalRepository(
     dio: DioClient(
@@ -20,6 +20,7 @@ final appraisalRepositoryProvider = Provider<AppraisalRepository>((ref) {
       onLogout: () => ref.read(authProvider.notifier).expireSession(),
     ).dio,
     storage: storage,
+    userId: auth is AuthAuthenticated ? auth.user.id : null,
   );
 });
 
@@ -90,7 +91,9 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
 
   @override
   Future<AppraisalFlowState> build() async {
-    return AppraisalFlowState(draft: await _repository.loadDraft());
+    final repository = ref.watch(appraisalRepositoryProvider);
+    await _removeUnscopedLegacyPhotos();
+    return AppraisalFlowState(draft: await repository.loadDraft());
   }
 
   Future<void> saveIdentity({
@@ -105,18 +108,36 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     String? variantFuelType,
   }) =>
       _updateDraft(
-        (draft) => draft.copyWith(
-          makeId: makeId,
-          modelId: modelId,
-          make: make.trim(),
-          model: model.trim(),
-          variantId: variantId,
-          clearVariantId: variantId == null,
-          variant: variant.trim(),
-          year: year,
-          transmission: variantTransmission,
-          fuelType: variantFuelType,
-        ),
+        (draft) {
+          final normalizedMake = make.trim();
+          final normalizedModel = model.trim();
+          final normalizedVariant = variant.trim();
+          final payloadChanged = draft.makeId != makeId ||
+              draft.modelId != modelId ||
+              draft.variantId != variantId ||
+              draft.make != normalizedMake ||
+              draft.model != normalizedModel ||
+              draft.variant != normalizedVariant ||
+              draft.year != year ||
+              draft.transmission !=
+                  (variantTransmission ?? draft.transmission) ||
+              draft.fuelType != (variantFuelType ?? draft.fuelType);
+          final rotateCreationKeys = draft.vehicleId == null && payloadChanged;
+          return draft.copyWith(
+            makeId: makeId,
+            modelId: modelId,
+            make: normalizedMake,
+            model: normalizedModel,
+            variantId: variantId,
+            clearVariantId: variantId == null,
+            variant: normalizedVariant,
+            year: year,
+            transmission: variantTransmission,
+            fuelType: variantFuelType,
+            clearVehicleCreationIdempotencyKey: rotateCreationKeys,
+            clearAppraisalCreationIdempotencyKey: rotateCreationKeys,
+          );
+        },
       );
 
   Future<void> saveDetails({
@@ -130,16 +151,32 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required String city,
   }) =>
       _updateDraft(
-        (draft) => draft.copyWith(
-          transmission: transmission,
-          fuelType: fuelType,
-          mileage: mileage,
-          color: color.trim(),
-          licensePlate: licensePlate.trim().toUpperCase(),
-          provinceId: provinceId,
-          cityId: cityId,
-          city: city.trim(),
-        ),
+        (draft) {
+          final normalizedColor = color.trim();
+          final normalizedLicensePlate = licensePlate.trim().toUpperCase();
+          final normalizedCity = city.trim();
+          final payloadChanged = draft.transmission != transmission ||
+              draft.fuelType != fuelType ||
+              draft.mileage != mileage ||
+              draft.color != normalizedColor ||
+              draft.licensePlate != normalizedLicensePlate ||
+              draft.provinceId != provinceId ||
+              draft.cityId != cityId ||
+              draft.city != normalizedCity;
+          final rotateCreationKeys = draft.vehicleId == null && payloadChanged;
+          return draft.copyWith(
+            transmission: transmission,
+            fuelType: fuelType,
+            mileage: mileage,
+            color: normalizedColor,
+            licensePlate: normalizedLicensePlate,
+            provinceId: provinceId,
+            cityId: cityId,
+            city: normalizedCity,
+            clearVehicleCreationIdempotencyKey: rotateCreationKeys,
+            clearAppraisalCreationIdempotencyKey: rotateCreationKeys,
+          );
+        },
       );
 
   Future<void> saveCondition({
@@ -168,10 +205,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     final current = state.value;
     if (current == null) return;
 
-    final root = await getApplicationDocumentsDirectory();
-    final directory = Directory(
-      '${root.path}${Platform.pathSeparator}triva_appraisal_draft',
-    );
+    final directory = await _scopedPhotoDirectory();
     await directory.create(recursive: true);
     final extension = photo.name.contains('.')
         ? photo.name.substring(photo.name.lastIndexOf('.')).toLowerCase()
@@ -199,6 +233,23 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     var current = state.value;
     if (current == null || current.isSubmitting) return null;
     var draft = current.draft;
+    final missingLocalPhotos = <String>[];
+    for (final angle in appraisalPhotoAngles) {
+      if (draft.assetIds.containsKey(angle)) continue;
+      final path = draft.photoPaths[angle];
+      if (path == null || !await File(path).exists()) {
+        missingLocalPhotos.add(angle);
+      }
+    }
+    if (missingLocalPhotos.isNotEmpty) {
+      final paths = Map<String, String>.from(draft.photoPaths);
+      for (final angle in missingLocalPhotos) {
+        paths.remove(angle);
+      }
+      draft = draft.copyWith(photoPaths: paths);
+      await _repository.saveDraft(draft);
+      current = current.copyWith(draft: draft);
+    }
     if (!draft.hasIdentity ||
         !draft.hasDetails ||
         !draft.hasCondition ||
@@ -222,7 +273,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
       if (draft.appraisalId != null) {
         final remote = await _repository.getAppraisal(draft.appraisalId!);
         if (remote.status != 'draft') {
-          await _repository.clearDraft();
+          await _clearLocalDraft();
           state = AsyncData(
             AppraisalFlowState(
               draft: const AppraisalDraft(),
@@ -237,7 +288,18 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
       }
 
       if (draft.vehicleId == null) {
-        final vehicle = await _repository.createVehicle(draft.toVehicle());
+        final creationKey = draft.vehicleCreationIdempotencyKey ?? _uuidV4();
+        draft = draft.copyWith(
+          vehicleCreationIdempotencyKey: creationKey,
+        );
+        // Persist the operation identity before the first network attempt. If
+        // the response is lost after the backend commits, retrying or resuming
+        // after restart reuses this key and receives the original vehicle.
+        await _persistDuringSubmit(draft, 'prepare_vehicle');
+        final vehicle = await _repository.createVehicle(
+          draft.toVehicle(),
+          idempotencyKey: creationKey,
+        );
         draft = draft.copyWith(vehicleId: vehicle.id);
         await _persistDuringSubmit(draft, 'create_request');
       } else {
@@ -248,7 +310,15 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
       }
 
       if (draft.appraisalId == null) {
-        final appraisal = await _repository.createAppraisal(draft.vehicleId!);
+        final creationKey = draft.appraisalCreationIdempotencyKey ?? _uuidV4();
+        draft = draft.copyWith(
+          appraisalCreationIdempotencyKey: creationKey,
+        );
+        await _persistDuringSubmit(draft, 'create_request');
+        final appraisal = await _repository.createAppraisal(
+          draft.vehicleId!,
+          idempotencyKey: creationKey,
+        );
         draft = draft.copyWith(appraisalId: appraisal.id);
         await _persistDuringSubmit(draft, 'save_condition');
       }
@@ -292,7 +362,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
         idempotencyKey: idempotencyKey,
         marketingConsent: draft.marketingConsent,
       );
-      await _repository.clearDraft();
+      await _clearLocalDraft();
       state = AsyncData(
         AppraisalFlowState(
           draft: const AppraisalDraft(),
@@ -318,7 +388,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
   }
 
   Future<void> reset() async {
-    await _repository.clearDraft();
+    await _clearLocalDraft();
     state = const AsyncData(
       AppraisalFlowState(draft: AppraisalDraft()),
     );
@@ -364,6 +434,46 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
       UnauthorizedException() => 'auth',
       _ => 'general',
     };
+  }
+
+  Future<void> _removeUnscopedLegacyPhotos() async {
+    try {
+      final root = await getApplicationDocumentsDirectory();
+      final directory = Directory(
+        '${root.path}${Platform.pathSeparator}triva_appraisal_draft',
+      );
+      if (!await directory.exists()) return;
+      await for (final entity in directory.list(followLinks: false)) {
+        // New account-scoped photos live in subdirectories. Only remove old
+        // files placed directly in the shared legacy directory.
+        if (entity is File) await entity.delete();
+      }
+    } on Object {
+      // A stale file must not make the flow unusable; scoped writes below still
+      // prevent it from being selected by another account.
+    }
+  }
+
+  Future<Directory> _scopedPhotoDirectory() async {
+    final root = await getApplicationDocumentsDirectory();
+    final auth = ref.read(authProvider);
+    final owner = auth is AuthAuthenticated ? auth.user.id : 'anonymous';
+    final safeOwner = owner.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
+    return Directory(
+      '${root.path}${Platform.pathSeparator}triva_appraisal_draft'
+      '${Platform.pathSeparator}$safeOwner',
+    );
+  }
+
+  Future<void> _clearLocalDraft() async {
+    await _repository.clearDraft();
+    try {
+      final directory = await _scopedPhotoDirectory();
+      if (await directory.exists()) await directory.delete(recursive: true);
+    } on Object {
+      // The storage record is authoritative. Orphan cleanup can retry without
+      // turning a successful submit into a visible failure.
+    }
   }
 
   String _uuidV4() {

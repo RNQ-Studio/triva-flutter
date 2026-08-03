@@ -54,6 +54,7 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
 
     return AppraisalFlowScaffold(
       step: 4,
+      fallbackLocation: appraisalPhotosPath,
       title: l10n.reviewTitle,
       description: l10n.reviewDescription,
       primaryLabel:

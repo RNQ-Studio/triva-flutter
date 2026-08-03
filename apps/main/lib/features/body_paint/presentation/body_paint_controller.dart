@@ -113,11 +113,15 @@ class BodyPaintFlowState {
 }
 
 class BodyPaintFlowController extends AsyncNotifier<BodyPaintFlowState> {
+  Future<void> _saveQueue = Future<void>.value();
+
   BodyPaintRepository get _repository => ref.read(bodyPaintRepositoryProvider);
 
   @override
-  Future<BodyPaintFlowState> build() async =>
-      BodyPaintFlowState(draft: await _repository.loadDraft());
+  Future<BodyPaintFlowState> build() async {
+    final repository = ref.watch(bodyPaintRepositoryProvider);
+    return BodyPaintFlowState(draft: await repository.loadDraft());
+  }
 
   Future<void> selectVehicle(ToyotaServiceVehicle vehicle) async {
     final current = state.value;
@@ -126,6 +130,28 @@ class BodyPaintFlowController extends AsyncNotifier<BodyPaintFlowState> {
       current.draft.copyWith(vehicle: vehicle, clearRemote: true),
     );
   }
+
+  Future<void> initializeSource({
+    required String appraisalId,
+    ToyotaServiceVehicle? vehicle,
+  }) =>
+      _enqueueSave((draft) {
+        if (draft.sourceAppraisalId == appraisalId) {
+          return draft.vehicle == null && vehicle != null
+              ? draft.copyWith(vehicle: vehicle)
+              : draft;
+        }
+        final isPristine = draft.estimateId == null &&
+            draft.damages.isEmpty &&
+            draft.contextPhotoAssetId == null &&
+            draft.notes.trim().isEmpty;
+        if (!isPristine) return draft;
+        return draft.copyWith(
+          sourceAppraisalId: appraisalId,
+          vehicle: vehicle,
+          clearRemote: true,
+        );
+      });
 
   Future<void> selectLocation(ToyotaServiceLocation location) async {
     final current = state.value;
@@ -188,12 +214,11 @@ class BodyPaintFlowController extends AsyncNotifier<BodyPaintFlowState> {
     );
   }
 
-  Future<void> setDetails(
-      {required String notes, required bool consent}) async {
-    final current = state.value;
-    if (current == null) return;
-    await _save(current.draft.copyWith(notes: notes, consent: consent));
-  }
+  Future<void> setNotes(String notes) =>
+      _enqueueSave((draft) => draft.copyWith(notes: notes));
+
+  Future<void> setConsent(bool consent) =>
+      _enqueueSave((draft) => draft.copyWith(consent: consent));
 
   Future<void> pickDamagePhoto(String key) async {
     final photo = await ImagePicker().pickImage(
@@ -343,11 +368,26 @@ class BodyPaintFlowController extends AsyncNotifier<BodyPaintFlowState> {
     }
   }
 
-  Future<void> _save(BodyPaintDraft draft) async {
-    final current = state.value;
-    if (current == null) return;
-    await _repository.saveDraft(draft);
-    state = AsyncData(current.copyWith(draft: draft, clearError: true));
+  Future<void> _save(BodyPaintDraft draft) => _enqueueSave((_) => draft);
+
+  Future<void> _enqueueSave(
+    BodyPaintDraft Function(BodyPaintDraft current) update,
+  ) {
+    // Text and consent changes can arrive faster than secure/local storage
+    // writes complete. Preserve invocation order so an older write cannot
+    // finish last and overwrite the newest customer input.
+    final operation = _saveQueue.then<void>((_) async {
+      final current = state.value;
+      if (current == null) return;
+      final draft = update(current.draft);
+      await _repository.saveDraft(draft);
+      state = AsyncData(current.copyWith(draft: draft, clearError: true));
+    });
+    _saveQueue = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace __) {},
+    );
+    return operation;
   }
 
   void _invalidateCustomer() {

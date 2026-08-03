@@ -55,6 +55,29 @@ void main() {
     );
   }
 
+  testWidgets('first-time intake offers vehicle creation instead of dead end',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(500, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          bodyPaintFlowProvider.overrideWith(
+            _FakeBodyPaintFlowController.new,
+          ),
+          bodyPaintOptionsProvider.overrideWith((_) async => _options()),
+          bodyPaintVehiclesProvider.overrideWith((_) async => const []),
+        ],
+        child: _app(const BodyPaintIntakeScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Belum ada kendaraan tersimpan'), findsOneWidget);
+    expect(find.byKey(const Key('body-paint-add-vehicle')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('published detail shows range, item, and customer decisions',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(360, 900));

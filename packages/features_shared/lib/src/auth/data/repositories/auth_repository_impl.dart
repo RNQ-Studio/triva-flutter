@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 
 import '../../domain/entities/user.dart';
@@ -44,22 +46,50 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    String? accessToken;
+    String? deviceId;
+
     try {
-      final deviceId = await _storage?.read('triva.device_id');
-      if (deviceId == null) {
-        await _remote.logout();
-      } else {
-        await _remote.logout(deviceId);
-      }
-    } catch (_) {
-      // Fail-safe: even if backend logout fails (e.g. offline),
-      // we must still clear the local user session.
-    } finally {
-      try {
-        await _googleSignInClient.signOut();
-      } finally {
-        await _local.clearUser();
-      }
+      accessToken = await _local.getToken();
+    } on Object {
+      // Local cleanup below is still authoritative even when a token snapshot
+      // cannot be read for best-effort server revocation.
+    }
+    try {
+      deviceId = await _storage?.read('triva.device_id');
+    } on Object {
+      // Device cleanup is best-effort and must not delay local logout.
+    }
+
+    // Lock the local session before starting any network/provider cleanup.
+    // This is the only awaited, authoritative part of logout.
+    await _local.clearUser();
+
+    unawaited(
+      _revokeRemoteSession(accessToken: accessToken, deviceId: deviceId),
+    );
+    unawaited(_signOutFromGoogle());
+  }
+
+  Future<void> _revokeRemoteSession({
+    required String? accessToken,
+    required String? deviceId,
+  }) async {
+    try {
+      await _remote.logout(
+        deviceId: deviceId,
+        accessToken: accessToken,
+      );
+    } on Object {
+      // Offline/timeout/server failures cannot reactivate a local session.
+    }
+  }
+
+  Future<void> _signOutFromGoogle() async {
+    try {
+      await _googleSignInClient.signOut();
+    } on Object {
+      // The TRIVA session is already locked; provider cleanup is best-effort.
     }
   }
 

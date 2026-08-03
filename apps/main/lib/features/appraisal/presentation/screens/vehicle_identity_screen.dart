@@ -124,6 +124,7 @@ class _VehicleIdentityScreenState extends ConsumerState<VehicleIdentityScreen> {
 
     return AppraisalFlowScaffold(
       step: 1,
+      fallbackLocation: '/',
       title: l10n.vehicleIdentityTitle,
       description: l10n.vehicleIdentityDescription,
       primaryLabel: l10n.next,

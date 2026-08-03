@@ -1,4 +1,15 @@
 const bodyPaintPath = '/body-paint';
+String bodyPaintFromAppraisalPath({
+  required String appraisalId,
+  required String vehicleId,
+}) =>
+    Uri(
+      path: bodyPaintPath,
+      queryParameters: {
+        'appraisal_id': appraisalId,
+        'vehicle_id': vehicleId,
+      },
+    ).toString();
 String bodyPaintEstimatePath(String id) => '/body-paint/estimates/$id';
 String bodyPaintBookingPath(String id) => '/body-paint/estimates/$id/booking';
 

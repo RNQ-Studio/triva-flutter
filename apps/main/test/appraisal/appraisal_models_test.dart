@@ -29,6 +29,8 @@ void main() {
       assetIds: {'front': 'asset-1'},
       vehicleId: 'vehicle-1',
       appraisalId: 'appraisal-1',
+      vehicleCreationIdempotencyKey: 'vehicle-create-key',
+      appraisalCreationIdempotencyKey: 'appraisal-create-key',
       idempotencyKey: '89a96c9f-27af-42dc-9fea-4fb7d5f08cb4',
     );
 
@@ -41,6 +43,8 @@ void main() {
     expect(restored.provinceId, 35);
     expect(restored.cityId, 3578);
     expect(restored.appraisalId, 'appraisal-1');
+    expect(restored.vehicleCreationIdempotencyKey, 'vehicle-create-key');
+    expect(restored.appraisalCreationIdempotencyKey, 'appraisal-create-key');
     expect(restored.assetIds['front'], 'asset-1');
     expect(restored.idempotencyKey, draft.idempotencyKey);
     expect(restored.conditionPercentage, 87);
@@ -96,6 +100,13 @@ void main() {
         },
       ],
       'timeline': const [],
+      'continuation': {
+        'type': 'credit_simulation',
+        'vehicle_id': 'vehicle-1',
+        'appraisal_id': 'appraisal-1',
+        'suggested_trade_in_low': 168000000,
+        'suggested_trade_in_high': 176000000,
+      },
       'result': {
         'trade_in_estimate': {'low': 168000000, 'high': 176000000},
         'market_price': {
@@ -118,5 +129,8 @@ void main() {
     expect(appraisal.condition?.conditionPercentage, 87);
     expect(appraisal.result?.tradeInLow, 168000000);
     expect(appraisal.result?.comparableCount, 6);
+    expect(appraisal.continuation?.type, 'credit_simulation');
+    expect(appraisal.continuation?.vehicleId, 'vehicle-1');
+    expect(appraisal.continuation?.suggestedTradeInHigh, 176000000);
   });
 }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../body_paint/presentation/body_paint_paths.dart';
+import '../../../credit/presentation/credit_paths.dart';
 import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
@@ -38,21 +40,22 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
       await ref
           .read(appraisalRepositoryProvider)
           .decide(widget.appraisalId, decision);
-      ref.invalidate(appraisalsProvider);
-      ref.invalidate(appraisalDetailProvider(widget.appraisalId));
-      if (!mounted) return;
-      if (decision == 'deferred') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text(AppLocalizations.of(context)!.decisionDeferredMessage),
-          ),
-        );
-        context.go(appraisalActivityPath);
-      } else {
-        context.go(appraisalCompletePath(widget.appraisalId, decision));
-      }
+      _finishDecision(decision);
     } catch (_) {
+      // The decision may have committed before a timeout or connection loss.
+      // Reconcile once before offering a retry so the customer cannot submit a
+      // duplicate decision or lose the continuation page.
+      try {
+        final latest = await ref
+            .read(appraisalRepositoryProvider)
+            .getAppraisal(widget.appraisalId);
+        if (latest.customerDecision == decision) {
+          _finishDecision(decision);
+          return;
+        }
+      } on Object {
+        // The normal retry feedback below remains appropriate while offline.
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)!.errorGeneral)),
@@ -60,6 +63,22 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
       }
     } finally {
       if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  void _finishDecision(String decision) {
+    if (!mounted) return;
+    ref.invalidate(appraisalsProvider);
+    ref.invalidate(appraisalDetailProvider(widget.appraisalId));
+    if (decision == 'deferred') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.decisionDeferredMessage),
+        ),
+      );
+      context.go(appraisalActivityPath);
+    } else {
+      context.go(appraisalCompletePath(widget.appraisalId, decision));
     }
   }
 
@@ -111,13 +130,14 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     final l10n = AppLocalizations.of(context)!;
     final async = ref.watch(appraisalDetailProvider(widget.appraisalId));
     return PopScope(
-      canPop: Navigator.of(context).canPop(),
+      canPop: !_busy && Navigator.of(context).canPop(),
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && mounted) context.go('/');
+        if (!didPop && !_busy && mounted) context.go('/');
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: BackButton(onPressed: _goBack),
+          automaticallyImplyLeading: !_busy,
+          leading: _busy ? null : BackButton(onPressed: _goBack),
           title: Text(l10n.resultTitle),
         ),
         body: SafeArea(
@@ -250,6 +270,17 @@ class _ResultContent extends StatelessWidget {
         : DateFormat('d MMMM yyyy', 'id_ID').format(result.dataAsOf!);
     final vehicle = appraisal.vehicle;
     final condition = appraisal.condition;
+    final continuation = appraisal.continuation;
+    final continuationPath = switch (continuation?.type) {
+      'credit_simulation' =>
+        creditFromAppraisalPath(continuation?.appraisalId ?? appraisal.id),
+      'body_paint_estimate' when continuation?.vehicleId != null =>
+        bodyPaintFromAppraisalPath(
+          appraisalId: continuation?.appraisalId ?? appraisal.id,
+          vehicleId: continuation!.vehicleId!,
+        ),
+      _ => null,
+    };
     final photos = [...appraisal.photos]..sort((left, right) {
         final leftIndex = appraisalPhotoAngles.indexOf(left.angle);
         final rightIndex = appraisalPhotoAngles.indexOf(right.angle);
@@ -518,6 +549,21 @@ class _ResultContent extends StatelessWidget {
           TextButton(
             onPressed: busy ? null : onDefer,
             child: Text(l10n.decideLater),
+          ),
+        ] else if (continuationPath != null) ...[
+          const SizedBox(height: AppSpacing.xLarge),
+          FilledButton.icon(
+            onPressed: busy ? null : () => context.push(continuationPath),
+            icon: Icon(
+              continuation?.type == 'credit_simulation'
+                  ? Icons.calculate_outlined
+                  : Icons.format_paint_outlined,
+            ),
+            label: Text(
+              continuation?.type == 'credit_simulation'
+                  ? l10n.serviceCreditTitle
+                  : l10n.serviceBodyPaintTitle,
+            ),
           ),
         ],
       ],

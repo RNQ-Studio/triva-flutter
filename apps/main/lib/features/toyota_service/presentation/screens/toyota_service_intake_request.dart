@@ -56,6 +56,7 @@ class _ToyotaServiceDetailsScreenState
         _pendingPhotos.isEmpty;
     return ToyotaServiceFlowScaffold(
       step: 1,
+      fallbackLocation: toyotaServiceTypePath,
       title: l10n.serviceDetailsTitle,
       description: l10n.serviceDetailsDescription,
       primaryLabel: l10n.chooseSchedule,
@@ -331,6 +332,7 @@ class ToyotaServiceScheduleScreen extends ConsumerWidget {
     final availability = ref.watch(toyotaServiceAvailabilityProvider(query));
     return ToyotaServiceFlowScaffold(
       step: 2,
+      fallbackLocation: toyotaServiceDetailsPath,
       title: l10n.schedulePreferenceTitle,
       description: l10n.schedulePreferenceDescription,
       primaryLabel: l10n.reviewBooking,

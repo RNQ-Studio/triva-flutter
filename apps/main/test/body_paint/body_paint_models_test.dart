@@ -102,4 +102,12 @@ void main() {
       isTrue,
     );
   });
+
+  test('draft persists its source appraisal for resumable continuation', () {
+    const draft = BodyPaintDraft(sourceAppraisalId: 'appraisal-1');
+
+    final restored = BodyPaintDraft.fromJson(draft.toJson());
+
+    expect(restored.sourceAppraisalId, 'appraisal-1');
+  });
 }

@@ -216,6 +216,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: AppRadius.large,
+                    ),
+                    child: ListTile(
+                      key: const ValueKey('profile-settings-menu'),
+                      leading: Icon(
+                        Icons.settings_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      title: Text(l10n.settings),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: () => context.push(AppRoutes.settings),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   if (widget.onOpenAdminPanel != null) ...[
                     Card(
                       elevation: 0,

@@ -17,6 +17,7 @@ class ToyotaServiceFulfillmentScreen extends ConsumerWidget {
         (freshOptions?.supportsFulfillmentSelection(draft) ?? false);
     return ToyotaServiceFlowScaffold(
       step: 1,
+      fallbackLocation: toyotaServiceVehiclePath,
       title: l10n.serviceWhereTitle,
       description: l10n.serviceWhereDescription,
       primaryLabel: l10n.chooseServiceType,
@@ -225,6 +226,7 @@ class ToyotaServiceTypeScreen extends ConsumerWidget {
         false;
     return ToyotaServiceFlowScaffold(
       step: 1,
+      fallbackLocation: toyotaServiceFulfillmentPath,
       title: l10n.serviceTypeTitle,
       description: l10n.serviceTypeDescription,
       primaryLabel: l10n.continueServiceDetails,

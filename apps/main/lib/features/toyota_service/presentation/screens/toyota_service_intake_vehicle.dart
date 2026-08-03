@@ -12,6 +12,7 @@ class ToyotaServiceVehicleScreen extends ConsumerWidget {
 
     return ToyotaServiceFlowScaffold(
       step: 0,
+      fallbackLocation: '/',
       title: l10n.bookingSelectVehicleTitle,
       description: l10n.bookingSelectVehicleDescription,
       primaryLabel: l10n.useThisVehicle,

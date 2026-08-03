@@ -22,7 +22,9 @@ final toyotaServiceRoutes = <RouteBase>[
   ),
   GoRoute(
     path: toyotaServiceAddVehiclePath,
-    builder: (_, __) => const ToyotaServiceAddVehicleScreen(),
+    builder: (_, state) => ToyotaServiceAddVehicleScreen(
+      returnToCaller: state.uri.queryParameters['return_to'] == 'caller',
+    ),
   ),
   GoRoute(
     path: toyotaServiceFulfillmentPath,

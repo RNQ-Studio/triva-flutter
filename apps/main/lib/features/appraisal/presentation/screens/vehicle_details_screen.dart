@@ -90,6 +90,7 @@ class _VehicleDetailsScreenState extends ConsumerState<VehicleDetailsScreen> {
 
     return AppraisalFlowScaffold(
       step: 1,
+      fallbackLocation: appraisalIdentityPath,
       title: l10n.vehicleDetailsTitle,
       description: l10n.vehicleDetailsDescription,
       primaryLabel: l10n.next,

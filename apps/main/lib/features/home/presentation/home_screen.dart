@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final auth = ref.watch(authProvider);
     final user = auth is AuthAuthenticated ? auth.user : null;
-    final appraisals = ref.watch(appraisalsProvider);
+    final vehicles = ref.watch(toyotaServiceVehiclesProvider);
     final draft = ref.watch(appraisalFlowProvider).value?.draft;
     final startPath = appraisalResumePath(
       draft ?? const AppraisalDraft(),
@@ -33,7 +33,8 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () async => ref.refresh(appraisalsProvider.future),
+          onRefresh: () async =>
+              ref.refresh(toyotaServiceVehiclesProvider.future),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -113,15 +114,16 @@ class HomeScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: AppSpacing.medium),
-                          appraisals.when(
+                          vehicles.when(
                             data: (items) => items.isEmpty
                                 ? _EmptyVehicle(
                                     onStart: () => context.push(startPath),
                                   )
-                                : _LatestVehicle(appraisal: items.first),
+                                : _LatestVehicle(vehicle: items.first),
                             loading: () => const LinearProgressIndicator(),
-                            error: (_, __) => _EmptyVehicle(
-                              onStart: () => context.push(startPath),
+                            error: (_, __) => _VehicleLoadError(
+                              onRetry: () =>
+                                  ref.invalidate(toyotaServiceVehiclesProvider),
                             ),
                           ),
                         ],
@@ -434,14 +436,12 @@ class _EmptyVehicle extends StatelessWidget {
 }
 
 class _LatestVehicle extends StatelessWidget {
-  const _LatestVehicle({required this.appraisal});
+  const _LatestVehicle({required this.vehicle});
 
-  final AppraisalData appraisal;
+  final ToyotaServiceVehicle vehicle;
 
   @override
   Widget build(BuildContext context) {
-    final vehicle = appraisal.vehicle;
-    if (vehicle == null) return const SizedBox.shrink();
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -451,12 +451,34 @@ class _LatestVehicle extends StatelessWidget {
           child: Icon(Icons.directions_car_outlined),
         ),
         title: Text('${vehicle.make} ${vehicle.model} ${vehicle.year}'),
-        subtitle: Text(appraisal.statusLabel),
-        trailing: const Icon(Icons.chevron_right_rounded),
-        onTap: () => context.push(
-          appraisal.resultReady
-              ? appraisalResultPath(appraisal.id)
-              : appraisalDetailPath(appraisal.id),
+        subtitle: Text(
+          '${vehicle.licensePlate} · ${vehicle.mileage} km',
+        ),
+      ),
+    );
+  }
+}
+
+class _VehicleLoadError extends StatelessWidget {
+  const _VehicleLoadError({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Card(
+      margin: EdgeInsets.zero,
+      child: ListTile(
+        leading: Icon(
+          Icons.cloud_off_outlined,
+          color: Theme.of(context).colorScheme.error,
+        ),
+        title: Text(l10n.loadFailed),
+        trailing: IconButton(
+          onPressed: onRetry,
+          tooltip: l10n.retry,
+          icon: const Icon(Icons.refresh_rounded),
         ),
       ),
     );

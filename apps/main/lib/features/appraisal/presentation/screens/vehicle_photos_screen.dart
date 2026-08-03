@@ -86,6 +86,7 @@ class _VehiclePhotosScreenState extends ConsumerState<VehiclePhotosScreen> {
 
     return AppraisalFlowScaffold(
       step: 3,
+      fallbackLocation: appraisalConditionPath,
       title: l10n.photosTitle,
       description: l10n.photosDescription,
       primaryLabel:

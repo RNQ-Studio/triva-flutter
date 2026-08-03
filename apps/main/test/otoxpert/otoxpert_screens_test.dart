@@ -2,11 +2,13 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:triva_app/features/otoxpert/domain/otoxpert_models.dart';
 import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
 import 'package:triva_app/features/otoxpert/presentation/screens/otoxpert_booking_screen.dart';
 import 'package:triva_app/features/otoxpert/presentation/screens/otoxpert_intake_screen.dart';
 import 'package:triva_app/features/toyota_service/domain/toyota_service_models.dart';
+import 'package:triva_app/features/toyota_service/presentation/toyota_service_paths.dart';
 
 class _FakeOtoxpertFlowController extends OtoxpertFlowController {
   @override
@@ -24,6 +26,16 @@ class _FakeOtoxpertFlowController extends OtoxpertFlowController {
       ),
     );
   }
+}
+
+class _RestoredOtoxpertFlowController extends OtoxpertFlowController {
+  @override
+  Future<OtoxpertFlowState> build() async => const OtoxpertFlowState(
+        draft: OtoxpertDraft(
+          vehicle: _vehicle,
+          currentMileage: 12000,
+        ),
+      );
 }
 
 void main() {
@@ -69,6 +81,115 @@ void main() {
       },
     );
   }
+
+  testWidgets('system back moves to the previous intake step before popping',
+      (tester) async {
+    final router = await _pumpIntakeRouter(tester);
+
+    await _openIntakeAndAdvanceToService(tester);
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buka OtoXpert'), findsNothing);
+    expect(find.text('Booking OtoXpert'), findsOneWidget);
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 0);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buka OtoXpert'), findsOneWidget);
+    expect(find.byType(OtoxpertIntakeScreen), findsNothing);
+    expect(tester.takeException(), isNull);
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/');
+  });
+
+  testWidgets('app bar back moves to the previous intake step before popping',
+      (tester) async {
+    final router = await _pumpIntakeRouter(tester);
+
+    await _openIntakeAndAdvanceToService(tester);
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buka OtoXpert'), findsNothing);
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 0);
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buka OtoXpert'), findsOneWidget);
+    expect(find.byType(OtoxpertIntakeScreen), findsNothing);
+    expect(tester.takeException(), isNull);
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/');
+  });
+
+  testWidgets('direct intake exposes back and falls back to home',
+      (tester) async {
+    final router = await _pumpIntakeRouter(tester);
+
+    router.go('/otoxpert');
+    await tester.pumpAndSettle();
+    expect(find.byType(OtoxpertIntakeScreen), findsOneWidget);
+    expect(find.byType(BackButton), findsOneWidget);
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Buka OtoXpert'), findsOneWidget);
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/');
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('add vehicle returns to OtoXpert and selects the saved vehicle',
+      (tester) async {
+    final router = await _pumpIntakeRouter(tester, vehicles: const []);
+
+    await tester.tap(find.text('Buka OtoXpert'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tambah kendaraan'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Form kendaraan test'), findsOneWidget);
+    await tester.tap(find.text('Simpan kendaraan test'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(OtoxpertIntakeScreen), findsOneWidget);
+    expect(find.text('Honda Brio RS'), findsWidgets);
+    expect(
+      tester.widget<Stepper>(find.byType(Stepper)).currentStep,
+      0,
+    );
+    expect(router.state.uri.path, '/otoxpert');
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('restored draft resumes at its next incomplete step',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          otoxpertFlowProvider.overrideWith(
+            _RestoredOtoxpertFlowController.new,
+          ),
+          otoxpertOptionsProvider.overrideWith((_) async => _options()),
+          otoxpertWorkshopsProvider(_vehicle.id).overrideWith(
+            (_) async => const [],
+          ),
+        ],
+        child: _app(const OtoxpertIntakeScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('booking detail exposes alternative lifecycle actions',
       (tester) async {
@@ -117,6 +238,95 @@ void main() {
     expect(find.text('Kapasitas penuh.'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+}
+
+Future<GoRouter> _pumpIntakeRouter(
+  WidgetTester tester, {
+  List<ToyotaServiceVehicle> vehicles = const [_vehicle],
+}) async {
+  await tester.binding.setSurfaceSize(const Size(800, 1200));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
+  final availableVehicles = vehicles.toList();
+  final router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => Scaffold(
+          body: Center(
+            child: FilledButton(
+              onPressed: () => context.push('/otoxpert'),
+              child: const Text('Buka OtoXpert'),
+            ),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/otoxpert',
+        builder: (context, state) => const OtoxpertIntakeScreen(),
+      ),
+      GoRoute(
+        path: toyotaServiceAddVehiclePath,
+        builder: (context, state) => Scaffold(
+          body: Center(
+            child: FilledButton(
+              onPressed: () {
+                availableVehicles.add(_vehicle);
+                context.pop(_vehicle);
+              },
+              child: const Text('Simpan kendaraan test'),
+            ),
+          ),
+          appBar: AppBar(title: const Text('Form kendaraan test')),
+        ),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        otoxpertFlowProvider.overrideWith(_FakeOtoxpertFlowController.new),
+        otoxpertOptionsProvider.overrideWith((_) async => _options()),
+        otoxpertVehiclesProvider.overrideWith(
+          (_) async => availableVehicles,
+        ),
+        otoxpertWorkshopsProvider('vehicle-1').overrideWith(
+          (_) async => const [],
+        ),
+      ],
+      child: MaterialApp.router(
+        theme: AppTheme.light,
+        locale: const Locale('id'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: router,
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+  return router;
+}
+
+const _vehicle = ToyotaServiceVehicle(
+  id: 'vehicle-1',
+  make: 'Honda',
+  model: 'Brio',
+  variant: 'RS',
+  year: 2024,
+  mileage: 12000,
+  licensePlate: 'L 1234 AB',
+);
+
+Future<void> _openIntakeAndAdvanceToService(WidgetTester tester) async {
+  await tester.tap(find.text('Buka OtoXpert'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Honda Brio RS'));
+  await tester.pumpAndSettle();
+  await tester.tap(
+    find.widgetWithText(FilledButton, 'Lanjut').hitTestable(),
+  );
+  await tester.pumpAndSettle();
 }
 
 Widget _app(

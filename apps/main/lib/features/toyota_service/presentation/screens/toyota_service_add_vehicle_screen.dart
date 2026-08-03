@@ -13,7 +13,12 @@ import '../toyota_service_paths.dart';
 import '../widgets/toyota_service_widgets.dart';
 
 class ToyotaServiceAddVehicleScreen extends ConsumerStatefulWidget {
-  const ToyotaServiceAddVehicleScreen({super.key});
+  const ToyotaServiceAddVehicleScreen({
+    this.returnToCaller = false,
+    super.key,
+  });
+
+  final bool returnToCaller;
 
   @override
   ConsumerState<ToyotaServiceAddVehicleScreen> createState() =>
@@ -144,7 +149,7 @@ class _ToyotaServiceAddVehicleScreenState
                             decoration:
                                 InputDecoration(labelText: l10n.vehicleYear),
                             items: List.generate(
-                              DateTime.now().year - 1989,
+                              DateTime.now().year - 1949,
                               (index) => DateTime.now().year - index,
                             )
                                 .map(
@@ -222,7 +227,9 @@ class _ToyotaServiceAddVehicleScreenState
                             ),
                             validator: (value) {
                               final number = int.tryParse(value ?? '');
-                              return number == null || number < 0
+                              return number == null ||
+                                      number < 0 ||
+                                      number > 2000000
                                   ? l10n.fieldRequired
                                   : null;
                             },
@@ -375,8 +382,13 @@ class _ToyotaServiceAddVehicleScreenState
         mileage: saved.mileage,
         licensePlate: saved.licensePlate,
       );
-      await ref.read(toyotaServiceFlowProvider.notifier).selectVehicle(vehicle);
       ref.invalidate(toyotaServiceVehiclesProvider);
+      if (!mounted) return;
+      if (widget.returnToCaller && context.canPop()) {
+        context.pop(vehicle);
+        return;
+      }
+      await ref.read(toyotaServiceFlowProvider.notifier).selectVehicle(vehicle);
       if (!mounted) return;
       context.go(
         vehicle.isToyota

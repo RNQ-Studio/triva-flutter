@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../domain/toyota_service_models.dart';
@@ -15,6 +16,7 @@ class ToyotaServiceFlowScaffold extends StatelessWidget {
     required this.body,
     required this.primaryLabel,
     required this.onPrimary,
+    required this.fallbackLocation,
     this.primaryBusy = false,
     this.secondary,
     super.key,
@@ -26,6 +28,7 @@ class ToyotaServiceFlowScaffold extends StatelessWidget {
   final Widget body;
   final String primaryLabel;
   final VoidCallback? onPrimary;
+  final String fallbackLocation;
   final bool primaryBusy;
   final Widget? secondary;
 
@@ -33,112 +36,143 @@ class ToyotaServiceFlowScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.bookingToyotaTitle)),
-      body: SafeArea(
-        child: Column(
-          children: [
-            BookingProgress(step: step),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.large,
-                  AppSpacing.medium,
-                  AppSpacing.large,
-                  AppSpacing.xLarge,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 620),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          title,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: AppSpacing.small),
-                        Text(
-                          description,
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: colors.onSurfaceVariant,
-                                  ),
-                        ),
-                        const SizedBox(height: AppSpacing.xLarge),
-                        body,
-                        const SizedBox(height: AppSpacing.large),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.cloud_done_outlined,
-                              size: 16,
-                              color: colors.secondary,
-                            ),
-                            const SizedBox(width: AppSpacing.xSmall),
-                            Flexible(
-                              child: Text(
-                                l10n.draftSaved,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
+    final router = GoRouter.maybeOf(context);
+    final navigator = Navigator.maybeOf(context);
+    final routerCanPop =
+        (router?.canPop() ?? false) || (navigator?.canPop() ?? false);
+    final canHandleBack = router != null || (navigator?.canPop() ?? false);
+
+    void goBack() {
+      if (primaryBusy) return;
+      if (router?.canPop() == true) {
+        router!.pop();
+      } else if (navigator?.canPop() == true) {
+        navigator!.pop();
+      } else {
+        router?.go(fallbackLocation);
+      }
+    }
+
+    return PopScope(
+      canPop: !primaryBusy && (router == null || routerCanPop),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && !primaryBusy && !routerCanPop && context.mounted) {
+          router?.go(fallbackLocation);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: !primaryBusy,
+          leading: canHandleBack && !primaryBusy
+              ? BackButton(onPressed: goBack)
+              : null,
+          title: Text(l10n.bookingToyotaTitle),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              BookingProgress(step: step),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.large,
+                    AppSpacing.medium,
+                    AppSpacing.large,
+                    AppSpacing.xLarge,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 620),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: AppSpacing.small),
+                          Text(
+                            description,
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       color: colors.onSurfaceVariant,
                                     ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: colors.surface,
-                border: Border(top: BorderSide(color: colors.outlineVariant)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.large,
-                  AppSpacing.medium,
-                  AppSpacing.large,
-                  AppSpacing.large,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 620),
-                    child: Row(
-                      children: [
-                        if (secondary != null) ...[
-                          Expanded(child: secondary!),
-                          const SizedBox(width: AppSpacing.medium),
-                        ],
-                        Expanded(
-                          flex: secondary == null ? 1 : 2,
-                          child: FilledButton(
-                            onPressed: primaryBusy ? null : onPrimary,
-                            child: primaryBusy
-                                ? const SizedBox.square(
-                                    dimension: 22,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text(primaryLabel),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: AppSpacing.xLarge),
+                          body,
+                          const SizedBox(height: AppSpacing.large),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.cloud_done_outlined,
+                                size: 16,
+                                color: colors.secondary,
+                              ),
+                              const SizedBox(width: AppSpacing.xSmall),
+                              Flexible(
+                                child: Text(
+                                  l10n.draftSaved,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: colors.onSurfaceVariant,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: colors.surface,
+                  border: Border(top: BorderSide(color: colors.outlineVariant)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.large,
+                    AppSpacing.medium,
+                    AppSpacing.large,
+                    AppSpacing.large,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 620),
+                      child: Row(
+                        children: [
+                          if (secondary != null) ...[
+                            Expanded(child: secondary!),
+                            const SizedBox(width: AppSpacing.medium),
+                          ],
+                          Expanded(
+                            flex: secondary == null ? 1 : 2,
+                            child: FilledButton(
+                              onPressed: primaryBusy ? null : onPrimary,
+                              child: primaryBusy
+                                  ? const SizedBox.square(
+                                      dimension: 22,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : Text(primaryLabel),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

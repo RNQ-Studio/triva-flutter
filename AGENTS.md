@@ -95,6 +95,21 @@ Gunakan `dart run melos ...` agar tidak bergantung pada instalasi Melos global.
 Setelah mengubah file Dart, jalankan formatter hanya pada file/scope yang
 berubah sebelum gate penuh.
 
+## Google Play Release Credential
+
+- Untuk deploy Google Play package `id.rnq.triva`, gunakan service-account key
+  lokal di root repo: `triva-7138e-7ad4be304943.json`.
+- Identitas yang wajib cocok sebelum deploy adalah project `triva-7138e` dan
+  client email `triva-play-publisher@triva-7138e.iam.gserviceaccount.com`.
+- Pastikan mode file tetap `0600`. Jangan pernah menampilkan isi key, access
+  token, atau JWT ke log/output.
+- File JSON tersebut adalah credential lokal aktif: jangan stage atau commit
+  plaintext-nya. Jika file tidak tersedia, hentikan deploy dan minta key
+  dipulihkan; jangan memakai credential aplikasi lain.
+- Gunakan scope OAuth `https://www.googleapis.com/auth/androidpublisher` dan
+  targetkan track yang diminta secara eksplisit. Jangan mengubah production
+  ketika permintaan hanya untuk Internal Testing.
+
 ## Verifikasi Integrasi
 
 Untuk perubahan full-stack:
