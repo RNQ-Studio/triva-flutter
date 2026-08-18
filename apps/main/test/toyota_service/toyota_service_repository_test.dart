@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:triva_app/features/toyota_service/data/toyota_service_repository.dart';
@@ -128,6 +129,57 @@ void main() {
     expect(capturedPayload?['service_consent'], isTrue);
     expect(capturedPayload?['service_consent'], isA<bool>());
     expect(capturedPayload?['photo_asset_ids'], ['asset-1', 'asset-2']);
+  });
+
+  test('submit classifies HTTP 429 and preserves the complete draft', () async {
+    final storage = _MemoryStorage();
+    final flowRepository = ToyotaServiceRepository(
+      dio: dio,
+      storage: storage,
+      userId: 'user-a',
+    );
+    final draft = _completeWorkshopDraft();
+    await flowRepository.saveDraft(draft);
+    when(() => dio.get<dynamic>('v1/toyota-service/options')).thenAnswer(
+      (_) async => Response<dynamic>(
+        requestOptions: RequestOptions(path: 'v1/toyota-service/options'),
+        data: {'data': _optionsJson()},
+      ),
+    );
+    when(
+      () => dio.post<dynamic>(
+        'v1/toyota-service/bookings',
+        data: any(named: 'data'),
+        options: any(named: 'options'),
+      ),
+    ).thenThrow(
+      DioException(
+        requestOptions: RequestOptions(
+          path: 'v1/toyota-service/bookings',
+        ),
+        error: const ServerException(
+          'Too many attempts.',
+          code: 'TOYOTA_SERVICE_RATE_LIMITED',
+          statusCode: 429,
+        ),
+      ),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        toyotaServiceRepositoryProvider.overrideWithValue(flowRepository),
+      ],
+    );
+    addTearDown(container.dispose);
+    await container.read(toyotaServiceFlowProvider.future);
+
+    final submitted =
+        await container.read(toyotaServiceFlowProvider.notifier).submit();
+
+    expect(submitted, isNull);
+    expect(
+        container.read(toyotaServiceFlowProvider).value?.error, 'rate_limited');
+    expect((await flowRepository.loadDraft()).idempotencyKey,
+        draft.idempotencyKey);
   });
 
   test('draft storage is isolated between authenticated user identities',
@@ -320,3 +372,37 @@ ToyotaServiceDraft _completeWorkshopDraft() => ToyotaServiceDraft(
       serviceConsent: true,
       idempotencyKey: 'idempotency-key',
     );
+
+Map<String, dynamic> _optionsJson() => {
+      'timezone': 'Asia/Jakarta',
+      'contact_channels': ['whatsapp'],
+      'locations': [
+        {
+          'id': 'location-1',
+          'name': 'Toyota Surabaya',
+          'address': 'Jl. Toyota 1',
+          'city': 'Surabaya',
+          'supports_workshop': true,
+          'supports_ths': false,
+          'is_active': true,
+        },
+      ],
+      'service_types': [
+        {
+          'id': 'service-1',
+          'code': 'periodic-service',
+          'name': 'Servis berkala',
+          'description': 'Perawatan rutin',
+          'allowed_fulfillment_types': ['workshop'],
+          'is_active': true,
+        },
+      ],
+      'ths_coverage': <Map<String, dynamic>>[],
+      'fulfillment_types': [
+        {
+          'value': 'workshop',
+          'label': 'Bengkel',
+          'is_available': true,
+        },
+      ],
+    };

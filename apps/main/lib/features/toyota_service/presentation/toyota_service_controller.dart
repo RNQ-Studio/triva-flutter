@@ -531,6 +531,10 @@ class ToyotaServiceFlowController
     if (cause is NetworkException) return 'network';
     if (cause is UnauthorizedException) return 'auth';
     if (cause is ServerException) {
+      if (cause.statusCode == 429 ||
+          cause.code == 'TOYOTA_SERVICE_RATE_LIMITED') {
+        return 'rate_limited';
+      }
       if (cause.code == 'TOYOTA_SERVICE_DUPLICATE_ACTIVE' ||
           cause.code == 'TOYOTA_SERVICE_IDEMPOTENCY_CONFLICT') {
         return 'duplicate';

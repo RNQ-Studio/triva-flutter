@@ -2558,6 +2558,12 @@ abstract class AppLocalizations {
   /// **'Anda sedang offline. Draft tetap tersimpan; sambungkan internet lalu coba lagi.'**
   String get bookingOfflineError;
 
+  /// No description provided for @bookingRateLimitError.
+  ///
+  /// In id, this message translates to:
+  /// **'Terlalu banyak percobaan booking. Tunggu sebentar lalu kirim kembali. Draft tetap tersimpan.'**
+  String get bookingRateLimitError;
+
   /// No description provided for @bookingDuplicateError.
   ///
   /// In id, this message translates to:
@@ -2569,6 +2575,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lengkapi seluruh data wajib sebelum mengirim.'**
   String get bookingIncompleteError;
+
+  /// No description provided for @bookingSubmissionError.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan servis belum dapat dikirim. Draft tetap tersimpan; silakan coba lagi.'**
+  String get bookingSubmissionError;
 
   /// No description provided for @activityEmptyDescription.
   ///

@@ -1356,12 +1356,20 @@ class AppLocalizationsId extends AppLocalizations {
       'Anda sedang offline. Draft tetap tersimpan; sambungkan internet lalu coba lagi.';
 
   @override
+  String get bookingRateLimitError =>
+      'Terlalu banyak percobaan booking. Tunggu sebentar lalu kirim kembali. Draft tetap tersimpan.';
+
+  @override
   String get bookingDuplicateError =>
       'Booking aktif dengan kendaraan dan jadwal yang sama sudah tersedia.';
 
   @override
   String get bookingIncompleteError =>
       'Lengkapi seluruh data wajib sebelum mengirim.';
+
+  @override
+  String get bookingSubmissionError =>
+      'Permintaan servis belum dapat dikirim. Draft tetap tersimpan; silakan coba lagi.';
 
   @override
   String get activityEmptyDescription =>

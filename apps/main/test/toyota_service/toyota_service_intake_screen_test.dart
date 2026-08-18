@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
+import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,17 +16,19 @@ class _FakeFlowController extends ToyotaServiceFlowController {
     this.initialDraft, {
     this.failFirstUpload = false,
     this.uploadGate,
+    this.initialError,
   });
 
   final ToyotaServiceDraft initialDraft;
   final bool failFirstUpload;
   final Completer<void>? uploadGate;
+  final String? initialError;
   var uploadCalls = 0;
   ToyotaServiceDraft get draft => state.value!.draft;
 
   @override
   Future<ToyotaServiceFlowState> build() async =>
-      ToyotaServiceFlowState(draft: initialDraft);
+      ToyotaServiceFlowState(draft: initialDraft, error: initialError);
 
   @override
   Future<void> savePhoto(
@@ -118,6 +121,18 @@ class _FakePhotoPicker implements ToyotaServicePhotoPicker {
           mimeType: 'image/jpeg',
         ),
       ];
+}
+
+class _AuthenticatedUserNotifier extends AuthNotifier {
+  @override
+  AuthState build() => const AuthAuthenticated(
+        User(
+          id: 'user-a',
+          name: 'Pelanggan',
+          email: 'customer@example.com',
+          phone: '081234567890',
+        ),
+      );
 }
 
 void main() {
@@ -294,6 +309,53 @@ void main() {
     expect(flow.draft.thsLongitude, 112.76);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets(
+      'review shows booking-specific rate limit copy on compact light and dark themes',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(360, 690));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    for (final theme in [AppTheme.light, AppTheme.dark]) {
+      final flow = _FakeFlowController(
+        _completeWorkshopDraft(),
+        initialError: 'rate_limited',
+      );
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authProvider.overrideWith(_AuthenticatedUserNotifier.new),
+            toyotaServiceFlowProvider.overrideWith(() => flow),
+            toyotaServiceOptionsProvider.overrideWith((_) async => _options()),
+          ],
+          child: MaterialApp(
+            theme: theme,
+            locale: const Locale('id'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: const TextScaler.linear(1.3),
+              ),
+              child: child!,
+            ),
+            home: const ToyotaServiceReviewScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(
+          'Terlalu banyak percobaan booking. Tunggu sebentar lalu kirim kembali. Draft tetap tersimpan.',
+        ),
+        findsOneWidget,
+      );
+      expect(
+          find.textContaining('Appraisal belum dapat dikirim'), findsNothing);
+      expect(tester.takeException(), isNull);
+    }
+  });
 }
 
 Widget _app(Widget home) => MaterialApp(
@@ -355,3 +417,31 @@ ToyotaServiceOptions _options({bool ths = false}) {
         : const [],
   );
 }
+
+ToyotaServiceDraft _completeWorkshopDraft() => ToyotaServiceDraft(
+      vehicle: const ToyotaServiceVehicle(
+        id: 'vehicle-1',
+        make: 'Toyota',
+        model: 'Avanza',
+        variant: 'G',
+        year: 2024,
+        mileage: 10000,
+        licensePlate: 'L 1234 AB',
+      ),
+      serviceLocation: _options().locations.single,
+      serviceType: _options().serviceTypes.single,
+      fulfillmentType: ToyotaServiceFulfillment.workshop,
+      currentMileage: 10000,
+      complaint: 'Servis berkala kendaraan',
+      primarySlot: const ToyotaServiceSlot(
+        date: '2026-08-20',
+        timeWindow: '07:00-09:00',
+      ),
+      alternativeSlot: const ToyotaServiceSlot(
+        date: '2026-08-20',
+        timeWindow: '09:00-11:00',
+      ),
+      contactChannel: 'whatsapp',
+      serviceConsent: true,
+      idempotencyKey: 'idempotency-key',
+    );

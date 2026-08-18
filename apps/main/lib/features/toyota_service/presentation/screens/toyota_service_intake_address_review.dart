@@ -462,11 +462,12 @@ class _ToyotaServiceReviewScreenState
   String _submitError(AppLocalizations l10n, String error) {
     return switch (error) {
       'network' => l10n.bookingOfflineError,
+      'rate_limited' => l10n.bookingRateLimitError,
       'duplicate' => l10n.bookingDuplicateError,
       'incomplete' => l10n.bookingIncompleteError,
       'selection_changed' => l10n.serviceSelectionChanged,
       'auth' => l10n.submissionAuthError,
-      'general' => l10n.submissionGeneralError,
+      'general' => l10n.bookingSubmissionError,
       _ => error,
     };
   }

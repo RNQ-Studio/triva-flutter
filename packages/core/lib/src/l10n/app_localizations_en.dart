@@ -1362,12 +1362,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'You are offline. Your draft is saved; connect to the internet and try again.';
 
   @override
+  String get bookingRateLimitError =>
+      'Too many booking attempts were made. Wait a moment, then submit again. Your draft is saved.';
+
+  @override
   String get bookingDuplicateError =>
       'An active booking with the same vehicle and schedule already exists.';
 
   @override
   String get bookingIncompleteError =>
       'Complete all required information before submitting.';
+
+  @override
+  String get bookingSubmissionError =>
+      'The service request could not be submitted. Your draft is saved; please try again.';
 
   @override
   String get activityEmptyDescription =>
