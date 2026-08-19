@@ -60,44 +60,87 @@ class AdminPanelScreen extends ConsumerWidget {
         path: adminBodyPaintQueuePath,
       ),
     ];
+    final content = ListView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.large,
+        AppSpacing.small,
+        AppSpacing.large,
+        AppSpacing.xLarge,
+      ),
+      children: [
+        if (auth.user.canViewVisitAnalytics) ...[
+          const AdminVisitDashboardSection(),
+          const SizedBox(height: AppSpacing.xLarge),
+        ],
+        Text(
+          l10n.adminPanelSubtitle,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        Card(
+          margin: EdgeInsets.zero,
+          child: Column(
+            children: [
+              for (var index = 0; index < entries.length; index++) ...[
+                _AdminPanelEntryTile(entry: entries[index]),
+                if (index < entries.length - 1)
+                  Divider(
+                    height: 1,
+                    indent: AppSpacing.large,
+                    endIndent: AppSpacing.large,
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
     return Scaffold(
       appBar: AppBar(title: Text(l10n.adminPanelTitle)),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(AppSpacing.large),
-        itemCount: entries.length + 1,
-        separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.medium),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.small),
-              child: Text(l10n.adminPanelSubtitle),
-            );
-          }
-          final entry = entries[index - 1];
-          return Card(
-            margin: EdgeInsets.zero,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: entry.color.withValues(alpha: .12),
-                child: Icon(entry.icon, color: entry.color),
-              ),
-              title: Text(entry.title),
-              subtitle: Text(
-                entry.path == adminUsersPath
-                    ? l10n.adminUserAccessDescription
-                    : entry.path != null
-                        ? l10n.adminBookingQueueDescription
-                        : l10n.comingSoon,
-              ),
-              trailing: entry.path != null
-                  ? const Icon(Icons.chevron_right_rounded)
-                  : const Icon(Icons.lock_clock_outlined),
-              onTap:
-                  entry.path != null ? () => context.push(entry.path!) : null,
-            ),
-          );
-        },
+      body: SafeArea(
+        child: auth.user.canViewVisitAnalytics
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  final _ = await ref.refresh(
+                    adminVisitStatisticsProvider.future,
+                  );
+                },
+                child: content,
+              )
+            : content,
       ),
+    );
+  }
+}
+
+class _AdminPanelEntryTile extends StatelessWidget {
+  const _AdminPanelEntryTile({required this.entry});
+
+  final ({IconData icon, String title, Color color, String? path}) entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: entry.color.withValues(alpha: .12),
+        child: Icon(entry.icon, color: entry.color),
+      ),
+      title: Text(entry.title),
+      subtitle: Text(
+        entry.path == adminUsersPath
+            ? l10n.adminUserAccessDescription
+            : entry.path != null
+                ? l10n.adminBookingQueueDescription
+                : l10n.comingSoon,
+      ),
+      trailing: entry.path != null
+          ? const Icon(Icons.chevron_right_rounded)
+          : const Icon(Icons.lock_clock_outlined),
+      onTap: entry.path != null ? () => context.push(entry.path!) : null,
     );
   }
 }

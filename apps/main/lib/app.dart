@@ -16,6 +16,8 @@ import 'features/body_paint/presentation/body_paint_controller.dart';
 import 'features/credit/presentation/credit_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
 import 'features/otoxpert/presentation/otoxpert_controller.dart';
+import 'features/visit_analytics/domain/visit_analytics_models.dart';
+import 'features/visit_analytics/presentation/visit_analytics_controller.dart';
 
 String? notificationTarget(Map<String, dynamic> data) {
   String? safeId(String key) {
@@ -124,6 +126,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(authProvider.notifier).checkCurrentUser();
       _initializeNotifications();
+      unawaited(_reportApplicationVisit());
     });
     ref.listenManual(authProvider, (_, next) {
       final nextUserId = next is AuthAuthenticated ? next.user.id : null;
@@ -158,6 +161,27 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       getToken: _fcm.getToken,
       register: _registerDevice,
     );
+  }
+
+  Future<void> _reportApplicationVisit() async {
+    if (AppConfig.instance.environment != Environment.prod) return;
+    final source = kIsWeb
+        ? VisitSource.web
+        : defaultTargetPlatform == TargetPlatform.android
+            ? VisitSource.android
+            : null;
+    if (source == null) return;
+
+    try {
+      final package = await PackageInfo.fromPlatform();
+      await ref.read(visitLaunchReporterProvider).report(
+            source: source,
+            appVersion: package.version,
+            appBuild: package.buildNumber,
+          );
+    } on Object {
+      // Visit telemetry is best-effort and must never block application use.
+    }
   }
 
   void _invalidateUserScopedState() {

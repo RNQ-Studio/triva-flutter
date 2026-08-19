@@ -87,6 +87,21 @@ void main() {
     expect(find.text('ADMIN'), findsNothing);
   });
 
+  testWidgets('visit analytics permission grants the Admin Panel dashboard',
+      (tester) async {
+    final harness = _RouterHarness(
+      initialLocation: '/admin',
+      user: _user(const ['analytics.viewAny']),
+    );
+    addTearDown(harness.dispose);
+
+    await tester.pumpWidget(harness.app);
+    await tester.pumpAndSettle();
+
+    expect(find.text('ADMIN'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('view grants detail only while viewAny grants queue',
       (tester) async {
     final detailHarness = _RouterHarness(

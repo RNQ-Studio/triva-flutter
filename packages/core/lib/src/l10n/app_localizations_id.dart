@@ -845,6 +845,72 @@ class AppLocalizationsId extends AppLocalizations {
       'Kelola layanan sesuai akses yang diberikan kepada akun Anda.';
 
   @override
+  String get adminVisitDashboardTitle => 'Statistik kunjungan';
+
+  @override
+  String get adminVisitDashboardDescription =>
+      'Sesi penggunaan Android, web app, dan landing page dalam waktu WIB.';
+
+  @override
+  String get adminVisitRefresh => 'Perbarui statistik kunjungan';
+
+  @override
+  String get adminVisitDaily => 'Hari ini';
+
+  @override
+  String get adminVisitWeekly => 'Minggu ini';
+
+  @override
+  String get adminVisitMonthly => 'Bulan ini';
+
+  @override
+  String get adminVisitOverall => 'Keseluruhan';
+
+  @override
+  String get adminVisitAndroid => 'Android';
+
+  @override
+  String get adminVisitWeb => 'Web app';
+
+  @override
+  String get adminVisitLandingPage => 'Landing';
+
+  @override
+  String get adminVisitTrackingStartsNow =>
+      'Pencatatan dimulai saat fitur ini aktif; data historis tidak direka ulang.';
+
+  @override
+  String adminVisitRecordedSince(String date) {
+    return 'Dicatat sejak $date.';
+  }
+
+  @override
+  String adminVisitUpdatedAt(String date) {
+    return 'Diperbarui $date.';
+  }
+
+  @override
+  String get adminVisitEmptyTitle => 'Belum ada kunjungan tercatat';
+
+  @override
+  String get adminVisitEmptyDescription =>
+      'Angka akan muncul setelah Android, web app, atau landing page menerima sesi baru.';
+
+  @override
+  String get adminVisitOfflineTitle => 'Statistik sedang offline';
+
+  @override
+  String get adminVisitOfflineDescription =>
+      'Periksa koneksi lalu coba muat statistik kembali. Menu operasional tetap dapat digunakan.';
+
+  @override
+  String get adminVisitErrorTitle => 'Statistik belum dapat dimuat';
+
+  @override
+  String get adminVisitErrorDescription =>
+      'Terjadi gangguan saat mengambil statistik. Menu operasional tetap dapat digunakan.';
+
+  @override
   String get adminAccessDenied => 'Akses admin tidak tersedia';
 
   @override

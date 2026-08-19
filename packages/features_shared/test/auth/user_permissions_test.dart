@@ -29,6 +29,14 @@ void main() {
       isFalse,
     );
     expect(
+      userWith(const ['analytics.viewAny']).canAccessAdminPanel,
+      isTrue,
+    );
+    expect(
+      userWith(const ['analytics.viewAny']).canViewVisitAnalytics,
+      isTrue,
+    );
+    expect(
       userWith(
         const ['users.viewAny', 'users.update'],
         roles: const ['admin'],

@@ -10,14 +10,7 @@ class DioClient {
     StorageService storage, {
     Future<void> Function()? onLogout,
   }) {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl: AppConfig.instance.baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        headers: {'Content-Type': 'application/json'},
-      ),
-    );
+    _dio = Dio(_baseOptions());
 
     _dio.interceptors.addAll([
       AuthInterceptor(storage),
@@ -30,9 +23,25 @@ class DioClient {
     ]);
   }
 
+  /// Creates a client for deliberately public endpoints.
+  ///
+  /// It never reads or refreshes authentication credentials, so a best-effort
+  /// public request cannot expire the signed-in session.
+  DioClient.anonymous() {
+    _dio = Dio(_baseOptions());
+    _dio.interceptors.add(_errorInterceptor());
+  }
+
   late final Dio _dio;
 
   Dio get dio => _dio;
+
+  static BaseOptions _baseOptions() => BaseOptions(
+        baseUrl: AppConfig.instance.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {'Content-Type': 'application/json'},
+      );
 
   Interceptor _errorInterceptor() {
     return InterceptorsWrapper(

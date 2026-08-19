@@ -34,7 +34,11 @@ class User {
   bool get canAccessAdminPanel =>
       canViewAnyServiceBookings ||
       canViewAnyBodyPaintEstimates ||
-      canManageUsers;
+      canManageUsers ||
+      canViewVisitAnalytics;
+
+  bool get canViewVisitAnalytics =>
+      _isSuperAdmin || permissions.contains('analytics.viewAny');
 
   bool get canManageUsers =>
       _isSuperAdmin ||

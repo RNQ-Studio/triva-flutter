@@ -851,6 +851,72 @@ class AppLocalizationsEn extends AppLocalizations {
       'Manage services according to the access granted to your account.';
 
   @override
+  String get adminVisitDashboardTitle => 'Visit statistics';
+
+  @override
+  String get adminVisitDashboardDescription =>
+      'Android, web app, and landing-page sessions grouped in Jakarta time.';
+
+  @override
+  String get adminVisitRefresh => 'Refresh visit statistics';
+
+  @override
+  String get adminVisitDaily => 'Today';
+
+  @override
+  String get adminVisitWeekly => 'This week';
+
+  @override
+  String get adminVisitMonthly => 'This month';
+
+  @override
+  String get adminVisitOverall => 'All time';
+
+  @override
+  String get adminVisitAndroid => 'Android';
+
+  @override
+  String get adminVisitWeb => 'Web app';
+
+  @override
+  String get adminVisitLandingPage => 'Landing';
+
+  @override
+  String get adminVisitTrackingStartsNow =>
+      'Tracking starts when this feature is enabled; historical data is not reconstructed.';
+
+  @override
+  String adminVisitRecordedSince(String date) {
+    return 'Recorded since $date.';
+  }
+
+  @override
+  String adminVisitUpdatedAt(String date) {
+    return 'Updated $date.';
+  }
+
+  @override
+  String get adminVisitEmptyTitle => 'No visits recorded yet';
+
+  @override
+  String get adminVisitEmptyDescription =>
+      'Figures will appear after Android, the web app, or the landing page receives a new session.';
+
+  @override
+  String get adminVisitOfflineTitle => 'Statistics are offline';
+
+  @override
+  String get adminVisitOfflineDescription =>
+      'Check the connection and try loading statistics again. Operational menus remain available.';
+
+  @override
+  String get adminVisitErrorTitle => 'Statistics could not be loaded';
+
+  @override
+  String get adminVisitErrorDescription =>
+      'Something interrupted the statistics request. Operational menus remain available.';
+
+  @override
   String get adminAccessDenied => 'Admin access is unavailable';
 
   @override

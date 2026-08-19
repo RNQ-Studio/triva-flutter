@@ -1628,6 +1628,120 @@ abstract class AppLocalizations {
   /// **'Kelola layanan sesuai akses yang diberikan kepada akun Anda.'**
   String get adminPanelSubtitle;
 
+  /// No description provided for @adminVisitDashboardTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Statistik kunjungan'**
+  String get adminVisitDashboardTitle;
+
+  /// No description provided for @adminVisitDashboardDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Sesi penggunaan Android, web app, dan landing page dalam waktu WIB.'**
+  String get adminVisitDashboardDescription;
+
+  /// No description provided for @adminVisitRefresh.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbarui statistik kunjungan'**
+  String get adminVisitRefresh;
+
+  /// No description provided for @adminVisitDaily.
+  ///
+  /// In id, this message translates to:
+  /// **'Hari ini'**
+  String get adminVisitDaily;
+
+  /// No description provided for @adminVisitWeekly.
+  ///
+  /// In id, this message translates to:
+  /// **'Minggu ini'**
+  String get adminVisitWeekly;
+
+  /// No description provided for @adminVisitMonthly.
+  ///
+  /// In id, this message translates to:
+  /// **'Bulan ini'**
+  String get adminVisitMonthly;
+
+  /// No description provided for @adminVisitOverall.
+  ///
+  /// In id, this message translates to:
+  /// **'Keseluruhan'**
+  String get adminVisitOverall;
+
+  /// No description provided for @adminVisitAndroid.
+  ///
+  /// In id, this message translates to:
+  /// **'Android'**
+  String get adminVisitAndroid;
+
+  /// No description provided for @adminVisitWeb.
+  ///
+  /// In id, this message translates to:
+  /// **'Web app'**
+  String get adminVisitWeb;
+
+  /// No description provided for @adminVisitLandingPage.
+  ///
+  /// In id, this message translates to:
+  /// **'Landing'**
+  String get adminVisitLandingPage;
+
+  /// No description provided for @adminVisitTrackingStartsNow.
+  ///
+  /// In id, this message translates to:
+  /// **'Pencatatan dimulai saat fitur ini aktif; data historis tidak direka ulang.'**
+  String get adminVisitTrackingStartsNow;
+
+  /// No description provided for @adminVisitRecordedSince.
+  ///
+  /// In id, this message translates to:
+  /// **'Dicatat sejak {date}.'**
+  String adminVisitRecordedSince(String date);
+
+  /// No description provided for @adminVisitUpdatedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Diperbarui {date}.'**
+  String adminVisitUpdatedAt(String date);
+
+  /// No description provided for @adminVisitEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada kunjungan tercatat'**
+  String get adminVisitEmptyTitle;
+
+  /// No description provided for @adminVisitEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Angka akan muncul setelah Android, web app, atau landing page menerima sesi baru.'**
+  String get adminVisitEmptyDescription;
+
+  /// No description provided for @adminVisitOfflineTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Statistik sedang offline'**
+  String get adminVisitOfflineTitle;
+
+  /// No description provided for @adminVisitOfflineDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa koneksi lalu coba muat statistik kembali. Menu operasional tetap dapat digunakan.'**
+  String get adminVisitOfflineDescription;
+
+  /// No description provided for @adminVisitErrorTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Statistik belum dapat dimuat'**
+  String get adminVisitErrorTitle;
+
+  /// No description provided for @adminVisitErrorDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Terjadi gangguan saat mengambil statistik. Menu operasional tetap dapat digunakan.'**
+  String get adminVisitErrorDescription;
+
   /// No description provided for @adminAccessDenied.
   ///
   /// In id, this message translates to:

@@ -13,6 +13,8 @@ import '../widgets/toyota_service_widgets.dart';
 import '../../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../../body_paint/presentation/body_paint_paths.dart';
 import '../../../admin_users/presentation/admin_user_paths.dart';
+import '../../../visit_analytics/presentation/admin_visit_dashboard_section.dart';
+import '../../../visit_analytics/presentation/visit_analytics_controller.dart';
 
 part 'toyota_service_booking_customer.dart';
 part 'toyota_service_booking_admin_queue.dart';
