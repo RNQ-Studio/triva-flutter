@@ -3872,6 +3872,18 @@ abstract class AppLocalizations {
   /// **'Sisa kewajiban kendaraan lama'**
   String get creditOldVehiclePayoff;
 
+  /// No description provided for @creditTenorSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenor dan cicilan'**
+  String get creditTenorSection;
+
+  /// No description provided for @creditTenorSectionHelper.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih lama cicilan yang sesuai kemampuan Anda.'**
+  String get creditTenorSectionHelper;
+
   /// No description provided for @creditTenor.
   ///
   /// In id, this message translates to:

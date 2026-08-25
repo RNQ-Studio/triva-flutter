@@ -1,7 +1,5 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 /// Batas bawah yang sama dengan validasi backend, supaya salah ketik tertahan
 /// sebelum request dikirim.
@@ -35,9 +33,9 @@ class _ExpectedPriceDialogState extends State<_ExpectedPriceDialog> {
   }
 
   int? _parse(String? raw) {
-    final digits = (raw ?? '').replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty) return null;
-    return int.tryParse(digits);
+    final value = rupiahValueOf(raw ?? '');
+
+    return value == 0 ? null : value;
   }
 
   void _submit() {
@@ -72,7 +70,7 @@ class _ExpectedPriceDialogState extends State<_ExpectedPriceDialog> {
                 controller: _controller,
                 autofocus: true,
                 keyboardType: TextInputType.number,
-                inputFormatters: [_ThousandsFormatter()],
+                inputFormatters: const [RupiahInputFormatter()],
                 decoration: InputDecoration(
                   labelText: l10n.expectedPriceLabel,
                   prefixText: 'Rp ',
@@ -100,27 +98,6 @@ class _ExpectedPriceDialogState extends State<_ExpectedPriceDialog> {
           child: Text(l10n.expectedPriceSubmit),
         ),
       ],
-    );
-  }
-}
-
-/// Menjaga angka tetap terbaca saat diketik tanpa mengubah nilai yang dikirim.
-class _ThousandsFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    final digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty) {
-      return newValue.copyWith(text: '');
-    }
-    final formatted = NumberFormat.decimalPattern('id_ID').format(
-      int.parse(digits),
-    );
-    return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
     );
   }
 }

@@ -55,17 +55,19 @@ class _CreditSimulationScreenState
   void _hydrate(CreditSimulationDraft draft) {
     if (_hydrated) return;
     _hydrated = true;
-    _cashController.text =
-        draft.cashDownPayment == 0 ? '' : draft.cashDownPayment.toString();
+    _cashController.text = draft.cashDownPayment == 0
+        ? ''
+        : formatRupiahAmount(draft.cashDownPayment);
     _tradeInController.text = draft.manualTradeInValue == 0
         ? ''
-        : draft.manualTradeInValue.toString();
-    _payoffController.text =
-        draft.oldVehiclePayoff == 0 ? '' : draft.oldVehiclePayoff.toString();
+        : formatRupiahAmount(draft.manualTradeInValue);
+    _payoffController.text = draft.oldVehiclePayoff == 0
+        ? ''
+        : formatRupiahAmount(draft.oldVehiclePayoff);
   }
 
   int _amount(TextEditingController controller) =>
-      int.tryParse(controller.text) ?? 0;
+      rupiahValueOf(controller.text);
 
   int _manualTradeInAmount(CreditSimulationDraft draft) =>
       draft.tradeInAppraisalId == null ? _amount(_tradeInController) : 0;
@@ -201,11 +203,11 @@ class _CreditSimulationScreenState
                         widget.sourceAppraisalId,
                       );
                       if (linkedProgram != null) {
-                        _cashController.text =
-                            (linkedProgram.suggestedDpAmount -
-                                    linkedProgram.approvedDiscount)
-                                .clamp(0, linkedProgram.otrPrice)
-                                .toString();
+                        _cashController.text = formatRupiahAmount(
+                          (linkedProgram.suggestedDpAmount -
+                                  linkedProgram.approvedDiscount)
+                              .clamp(0, linkedProgram.otrPrice),
+                        );
                         await notifier.selectProgram(linkedProgram);
                       }
                     }();
@@ -224,10 +226,10 @@ class _CreditSimulationScreenState
                   payoffController: _payoffController,
                   onProgramChanged: (program) async {
                     if (program == null) return;
-                    _cashController.text =
-                        (program.suggestedDpAmount - program.approvedDiscount)
-                            .clamp(0, program.otrPrice)
-                            .toString();
+                    _cashController.text = formatRupiahAmount(
+                      (program.suggestedDpAmount - program.approvedDiscount)
+                          .clamp(0, program.otrPrice),
+                    );
                     await ref
                         .read(creditFlowProvider.notifier)
                         .selectProgram(program);
@@ -424,7 +426,7 @@ class _CreditForm extends StatelessWidget {
                         onChanged: onMoneyChanged,
                         validator: (value) {
                           if (!state.draft.useTradeInAsDp) return null;
-                          return (int.tryParse(value ?? '') ?? 0) <= 0
+                          return rupiahValueOf(value ?? '') <= 0
                               ? l10n.creditTradeInRequired
                               : null;
                         },
@@ -445,7 +447,12 @@ class _CreditForm extends StatelessWidget {
                         onChanged: onMoneyChanged,
                       ),
                     ],
-                    const SizedBox(height: AppSpacing.large),
+                    const SizedBox(height: AppSpacing.xLarge),
+                    _SectionTitle(
+                      title: l10n.creditTenorSection,
+                      subtitle: l10n.creditTenorSectionHelper,
+                    ),
+                    const SizedBox(height: AppSpacing.medium),
                     DropdownButtonFormField<int>(
                       key: ValueKey(
                         'credit-tenor-${selectedProgram!.id}-'
@@ -607,11 +614,13 @@ class _CreditForm extends StatelessWidget {
     CreditProgram program,
     String? rawValue,
   ) {
-    final cash = int.tryParse(rawValue ?? '');
-    if (cash == null) return null;
+    // Nilai yang dibaca sudah berpemisah ribuan, jadi pemisahnya dibuang
+    // dulu sebelum dihitung.
+    if (digitsOnly(rawValue ?? '').isEmpty) return null;
+    final cash = rupiahValueOf(rawValue ?? '');
     final hasAppraisal = state.draft.tradeInAppraisalId != null;
-    final manualTradeIn = int.tryParse(tradeInController.text) ?? 0;
-    final payoff = int.tryParse(payoffController.text) ?? 0;
+    final manualTradeIn = rupiahValueOf(tradeInController.text);
+    final payoff = rupiahValueOf(payoffController.text);
     final usesKnownTradeIn = state.draft.useTradeInAsDp && !hasAppraisal;
     if (usesKnownTradeIn && manualTradeIn <= 0) return null;
 
@@ -879,6 +888,7 @@ class _MoneyField extends StatelessWidget {
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(12),
+        const RupiahInputFormatter(),
       ],
       onChanged: onChanged,
       decoration: InputDecoration(
@@ -889,7 +899,7 @@ class _MoneyField extends StatelessWidget {
         if (value == null || value.isEmpty) {
           return required ? l10n.fieldRequired : null;
         }
-        if (int.tryParse(value) == null) return l10n.creditInvalidNumber;
+        if (rupiahValueOf(value) <= 0) return l10n.creditInvalidNumber;
         return validator?.call(value);
       },
     );

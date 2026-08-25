@@ -268,6 +268,33 @@ void main() {
     );
   });
 
+  testWidgets('money inputs are grouped with thousand separators',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(360, 690));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          creditFlowProvider.overrideWith(_FakeCreditFlowController.new),
+          creditProgramsProvider.overrideWith((_) async => [_program()]),
+        ],
+        child: _app(const CreditSimulationScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final cashField = find.widgetWithText(TextFormField, 'DP tunai');
+    await tester.enterText(cashField, '64000000');
+    await tester.pump();
+
+    // Nominal sembilan digit tanpa pemisah adalah bagian yang paling sulit
+    // dibaca pada form kredit -- notulensi 19 Agustus 2026.
+    expect(find.text('64.000.000'), findsOneWidget);
+    expect(find.text('64000000'), findsNothing);
+    expect(find.text('Tenor dan cicilan'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('editing a money input clears the stale result', (tester) async {
     await tester.pumpWidget(
       ProviderScope(

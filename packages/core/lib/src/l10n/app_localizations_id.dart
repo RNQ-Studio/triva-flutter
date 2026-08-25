@@ -2085,6 +2085,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get creditOldVehiclePayoff => 'Sisa kewajiban kendaraan lama';
 
   @override
+  String get creditTenorSection => 'Tenor dan cicilan';
+
+  @override
+  String get creditTenorSectionHelper =>
+      'Pilih lama cicilan yang sesuai kemampuan Anda.';
+
+  @override
   String get creditTenor => 'Tenor';
 
   @override

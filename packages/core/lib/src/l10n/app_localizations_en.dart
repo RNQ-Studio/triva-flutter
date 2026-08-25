@@ -2089,6 +2089,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creditOldVehiclePayoff => 'Outstanding old vehicle payoff';
 
   @override
+  String get creditTenorSection => 'Tenor and instalment';
+
+  @override
+  String get creditTenorSectionHelper =>
+      'Pick the tenor that fits your budget.';
+
+  @override
   String get creditTenor => 'Term';
 
   @override

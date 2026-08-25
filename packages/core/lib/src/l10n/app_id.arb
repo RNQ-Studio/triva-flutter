@@ -666,6 +666,8 @@
   "creditTradeInFromAppraisal": "Nilai trade-in akan diambil dari hasil appraisal ini.",
   "creditUseTradeInAsDp": "Gunakan equity trade-in sebagai DP",
   "creditOldVehiclePayoff": "Sisa kewajiban kendaraan lama",
+  "creditTenorSection": "Tenor dan cicilan",
+  "creditTenorSectionHelper": "Pilih lama cicilan yang sesuai kemampuan Anda.",
   "creditTenor": "Tenor",
   "creditMonths": "bulan",
   "creditInvalidNumber": "Masukkan angka Rupiah yang valid.",

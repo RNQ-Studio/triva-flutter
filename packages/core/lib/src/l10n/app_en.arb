@@ -666,6 +666,8 @@
   "creditTradeInFromAppraisal": "The trade-in value will be taken from this appraisal result.",
   "creditUseTradeInAsDp": "Use trade-in equity as down payment",
   "creditOldVehiclePayoff": "Outstanding old vehicle payoff",
+  "creditTenorSection": "Tenor and instalment",
+  "creditTenorSectionHelper": "Pick the tenor that fits your budget.",
   "creditTenor": "Term",
   "creditMonths": "months",
   "creditInvalidNumber": "Enter a valid Rupiah amount.",

@@ -51,6 +51,7 @@ export 'src/theme/app_tokens.dart';
 // utils
 export 'src/utils/date_utils.dart';
 export 'src/utils/input_validators.dart';
+export 'src/utils/rupiah_input.dart';
 
 // widgets
 export 'src/widgets/app_button.dart';
