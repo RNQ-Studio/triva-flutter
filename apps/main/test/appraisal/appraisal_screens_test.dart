@@ -53,6 +53,7 @@ const _draft = AppraisalDraft(
   serviceHistory: 'complete',
   ownership: 'first',
   conditionPercentage: 90,
+  conditionGrade: 'b',
   engineCondition: 'normal',
   tyreCondition: 'normal',
   photoPaths: {
@@ -179,6 +180,7 @@ final _appraisal = AppraisalData(
     serviceHistory: 'complete',
     ownership: 'first',
     conditionPercentage: 90,
+    conditionGrade: 'c',
     engineCondition: 'wet',
     tyreCondition: 'normal',
   ),
@@ -670,6 +672,31 @@ void main() {
     final slider = tester.widget<Slider>(find.byType(Slider));
     expect(slider.value, 90);
     expect(find.text('90%'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('condition step offers the four OLX grades', (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleConditionScreen(),
+      brightness: Brightness.light,
+    );
+
+    expect(find.text('Grade kondisi kendaraan'), findsOneWidget);
+    for (final label in const [
+      'Grade A - Istimewa, siap pakai',
+      'Grade B - Baik, perlu perawatan ringan',
+      'Grade C - Cukup, ada perbaikan yang perlu dikerjakan',
+      'Grade D - Perlu perbaikan menyeluruh',
+    ]) {
+      expect(find.text(label), findsOneWidget);
+    }
+
+    await tester
+        .tap(find.text('Grade C - Cukup, ada perbaikan yang perlu dikerjakan'));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

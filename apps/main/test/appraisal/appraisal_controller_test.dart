@@ -122,6 +122,7 @@ void main() {
       majorAccidentHistory: 'no',
       serviceHistory: 'complete',
       ownership: 'first',
+      conditionGrade: 'b',
       engineCondition: 'normal',
       tyreCondition: 'normal',
       photoPaths: photoPaths,

@@ -519,6 +519,25 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get conditionGrade => 'Vehicle condition grade';
+
+  @override
+  String get conditionGradeDescription =>
+      'Pick the grade closest to your car. OLX and dealers use these same grades when valuing a unit.';
+
+  @override
+  String get conditionGradeA => 'Grade A - Excellent, ready to drive';
+
+  @override
+  String get conditionGradeB => 'Grade B - Good, light servicing only';
+
+  @override
+  String get conditionGradeC => 'Grade C - Fair, some repairs needed';
+
+  @override
+  String get conditionGradeD => 'Grade D - Needs major repairs';
+
+  @override
   String get engineCondition => 'Engine condition';
 
   @override

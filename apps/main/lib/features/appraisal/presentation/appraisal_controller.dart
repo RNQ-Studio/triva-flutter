@@ -186,6 +186,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required String serviceHistory,
     required String ownership,
     required int conditionPercentage,
+    required String conditionGrade,
     required String engineCondition,
     required String tyreCondition,
   }) =>
@@ -197,6 +198,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
           serviceHistory: serviceHistory,
           ownership: ownership,
           conditionPercentage: conditionPercentage,
+          conditionGrade: conditionGrade,
           engineCondition: engineCondition,
           tyreCondition: tyreCondition,
         ),

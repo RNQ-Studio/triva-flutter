@@ -25,6 +25,7 @@ void main() {
       serviceHistory: 'complete',
       ownership: 'first',
       conditionPercentage: 87,
+      conditionGrade: 'c',
       engineCondition: 'wet',
       tyreCondition: 'damaged',
       photoPaths: {'front': '/draft/front.jpg'},

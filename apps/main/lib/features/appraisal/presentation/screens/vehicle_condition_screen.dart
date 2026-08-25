@@ -23,14 +23,20 @@ class _VehicleConditionScreenState
   String? _accident;
   String? _service;
   String? _ownership;
+  String? _grade;
   String? _engine;
   String? _tyre;
   int _conditionPercentage = 90;
+  bool _gradeMissing = false;
   bool _initialized = false;
   bool _saving = false;
 
   Future<void> _continue() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_grade == null) {
+      setState(() => _gradeMissing = true);
+      return;
+    }
     setState(() => _saving = true);
     await ref.read(appraisalFlowProvider.notifier).saveCondition(
           taxStatus: _tax!,
@@ -39,6 +45,7 @@ class _VehicleConditionScreenState
           serviceHistory: _service!,
           ownership: _ownership!,
           conditionPercentage: _conditionPercentage,
+          conditionGrade: _grade!,
           engineCondition: _engine!,
           tyreCondition: _tyre!,
         );
@@ -61,6 +68,7 @@ class _VehicleConditionScreenState
           : draft.majorAccidentHistory;
       _service = draft.serviceHistory.isEmpty ? null : draft.serviceHistory;
       _ownership = draft.ownership.isEmpty ? null : draft.ownership;
+      _grade = draft.conditionGrade.isEmpty ? null : draft.conditionGrade;
       _engine = draft.engineCondition.isEmpty ? null : draft.engineCondition;
       _tyre = draft.tyreCondition.isEmpty ? null : draft.tyreCondition;
       _conditionPercentage = draft.conditionPercentage;
@@ -79,6 +87,15 @@ class _VehicleConditionScreenState
           key: _formKey,
           child: Column(
             children: [
+              _ConditionGradeField(
+                value: _grade,
+                showError: _gradeMissing,
+                onChanged: (value) => setState(() {
+                  _grade = value;
+                  _gradeMissing = false;
+                }),
+              ),
+              const SizedBox(height: AppSpacing.large),
               _ConditionPercentageField(
                 value: _conditionPercentage,
                 onChanged: (value) {
@@ -257,6 +274,137 @@ class _ConditionPercentageField extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Grade kondisi memakai tier yang sama dengan OLX, lengkap dengan penjelasan
+/// tiap pilihan supaya pelanggan tidak menebak-nebak seperti saat memakai
+/// persentase.
+class _ConditionGradeField extends StatelessWidget {
+  const _ConditionGradeField({
+    required this.value,
+    required this.showError,
+    required this.onChanged,
+  });
+
+  final String? value;
+  final bool showError;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    final options = <String, String>{
+      'a': l10n.conditionGradeA,
+      'b': l10n.conditionGradeB,
+      'c': l10n.conditionGradeC,
+      'd': l10n.conditionGradeD,
+    };
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          l10n.conditionGrade,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: AppSpacing.xSmall),
+        Text(
+          l10n.conditionGradeDescription,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        for (final option in options.entries) ...[
+          _GradeOption(
+            code: option.key,
+            label: option.value,
+            selected: value == option.key,
+            onTap: () => onChanged(option.key),
+          ),
+          if (option.key != options.keys.last)
+            const SizedBox(height: AppSpacing.small),
+        ],
+        if (showError) ...[
+          const SizedBox(height: AppSpacing.small),
+          Text(
+            l10n.fieldRequired,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colors.error,
+                ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _GradeOption extends StatelessWidget {
+  const _GradeOption({
+    required this.code,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String code;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Material(
+      color: selected ? colors.primaryContainer : colors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.large,
+        side: BorderSide(
+          color: selected ? colors.primary : colors.outlineVariant,
+          width: selected ? 1.5 : 1,
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.medium),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 16,
+                backgroundColor:
+                    selected ? colors.primary : colors.surfaceContainerHighest,
+                child: Text(
+                  code.toUpperCase(),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: selected
+                            ? colors.onPrimary
+                            : colors.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.medium),
+              Expanded(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: selected
+                            ? colors.onPrimaryContainer
+                            : colors.onSurface,
+                      ),
+                ),
+              ),
+              if (selected)
+                Icon(Icons.check_circle_rounded, color: colors.primary),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

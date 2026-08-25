@@ -515,6 +515,26 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get conditionGrade => 'Grade kondisi kendaraan';
+
+  @override
+  String get conditionGradeDescription =>
+      'Pilih grade yang paling mendekati kondisi mobil Anda. Grade ini dipakai OLX dan dealer saat menilai unit.';
+
+  @override
+  String get conditionGradeA => 'Grade A - Istimewa, siap pakai';
+
+  @override
+  String get conditionGradeB => 'Grade B - Baik, perlu perawatan ringan';
+
+  @override
+  String get conditionGradeC =>
+      'Grade C - Cukup, ada perbaikan yang perlu dikerjakan';
+
+  @override
+  String get conditionGradeD => 'Grade D - Perlu perbaikan menyeluruh';
+
+  @override
   String get engineCondition => 'Kondisi mesin';
 
   @override

@@ -1016,6 +1016,42 @@ abstract class AppLocalizations {
   /// **'{value}%'**
   String conditionPercentageValue(int value);
 
+  /// No description provided for @conditionGrade.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade kondisi kendaraan'**
+  String get conditionGrade;
+
+  /// No description provided for @conditionGradeDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih grade yang paling mendekati kondisi mobil Anda. Grade ini dipakai OLX dan dealer saat menilai unit.'**
+  String get conditionGradeDescription;
+
+  /// No description provided for @conditionGradeA.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade A - Istimewa, siap pakai'**
+  String get conditionGradeA;
+
+  /// No description provided for @conditionGradeB.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade B - Baik, perlu perawatan ringan'**
+  String get conditionGradeB;
+
+  /// No description provided for @conditionGradeC.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade C - Cukup, ada perbaikan yang perlu dikerjakan'**
+  String get conditionGradeC;
+
+  /// No description provided for @conditionGradeD.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade D - Perlu perbaikan menyeluruh'**
+  String get conditionGradeD;
+
   /// No description provided for @engineCondition.
   ///
   /// In id, this message translates to:

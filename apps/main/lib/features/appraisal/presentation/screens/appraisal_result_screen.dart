@@ -249,6 +249,15 @@ class _ResultContent extends StatelessWidget {
         _ => value,
       };
 
+  String _conditionGradeLabel(AppLocalizations l10n, String value) =>
+      switch (value) {
+        'a' => l10n.conditionGradeA,
+        'b' => l10n.conditionGradeB,
+        'c' => l10n.conditionGradeC,
+        'd' => l10n.conditionGradeD,
+        _ => value,
+      };
+
   String _engineConditionLabel(AppLocalizations l10n, String value) =>
       switch (value) {
         'normal' => l10n.engineConditionNormal,
@@ -526,6 +535,11 @@ class _ResultContent extends StatelessWidget {
                     l10n.ownership,
                     _ownershipLabel(l10n, condition.ownership),
                   ),
+                  if (condition.conditionGrade.isNotEmpty)
+                    (
+                      l10n.conditionGrade,
+                      _conditionGradeLabel(l10n, condition.conditionGrade),
+                    ),
                   if (condition.engineCondition.isNotEmpty)
                     (
                       l10n.engineCondition,

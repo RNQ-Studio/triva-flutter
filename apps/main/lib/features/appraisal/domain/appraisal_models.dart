@@ -300,6 +300,7 @@ class AppraisalConditionData {
     required this.serviceHistory,
     required this.ownership,
     required this.conditionPercentage,
+    required this.conditionGrade,
     required this.engineCondition,
     required this.tyreCondition,
   });
@@ -310,6 +311,7 @@ class AppraisalConditionData {
   final String serviceHistory;
   final String ownership;
   final int conditionPercentage;
+  final String conditionGrade;
   final String engineCondition;
   final String tyreCondition;
 
@@ -324,6 +326,7 @@ class AppraisalConditionData {
             ((json['condition_percentage'] as num?)?.toInt() ?? 0)
                 .clamp(0, 100)
                 .toInt(),
+        conditionGrade: json['condition_grade']?.toString() ?? '',
         engineCondition: json['engine_condition']?.toString() ?? '',
         tyreCondition: json['tyre_condition']?.toString() ?? '',
       );
@@ -462,6 +465,7 @@ class AppraisalDraft {
     this.serviceHistory = '',
     this.ownership = '',
     this.conditionPercentage = 90,
+    this.conditionGrade = '',
     this.engineCondition = '',
     this.tyreCondition = '',
     this.photoPaths = const {},
@@ -495,6 +499,7 @@ class AppraisalDraft {
   final String serviceHistory;
   final String ownership;
   final int conditionPercentage;
+  final String conditionGrade;
   final String engineCondition;
   final String tyreCondition;
   final Map<String, String> photoPaths;
@@ -527,6 +532,7 @@ class AppraisalDraft {
       majorAccidentHistory.isNotEmpty &&
       serviceHistory.isNotEmpty &&
       ownership.isNotEmpty &&
+      conditionGrade.isNotEmpty &&
       engineCondition.isNotEmpty &&
       tyreCondition.isNotEmpty &&
       conditionPercentage >= 0 &&
@@ -556,6 +562,7 @@ class AppraisalDraft {
     String? serviceHistory,
     String? ownership,
     int? conditionPercentage,
+    String? conditionGrade,
     String? engineCondition,
     String? tyreCondition,
     Map<String, String>? photoPaths,
@@ -591,6 +598,7 @@ class AppraisalDraft {
         serviceHistory: serviceHistory ?? this.serviceHistory,
         ownership: ownership ?? this.ownership,
         conditionPercentage: conditionPercentage ?? this.conditionPercentage,
+        conditionGrade: conditionGrade ?? this.conditionGrade,
         engineCondition: engineCondition ?? this.engineCondition,
         tyreCondition: tyreCondition ?? this.tyreCondition,
         photoPaths: photoPaths ?? this.photoPaths,
@@ -634,6 +642,7 @@ class AppraisalDraft {
             ((json['condition_percentage'] as num?)?.toInt() ?? 90)
                 .clamp(0, 100)
                 .toInt(),
+        conditionGrade: json['condition_grade']?.toString() ?? '',
         engineCondition: json['engine_condition']?.toString() ?? '',
         tyreCondition: json['tyre_condition']?.toString() ?? '',
         photoPaths: Map<String, String>.from(
@@ -674,6 +683,7 @@ class AppraisalDraft {
         'service_history': serviceHistory,
         'ownership': ownership,
         'condition_percentage': conditionPercentage,
+        'condition_grade': conditionGrade,
         'engine_condition': engineCondition,
         'tyre_condition': tyreCondition,
         'photo_paths': photoPaths,
@@ -712,6 +722,7 @@ class AppraisalDraft {
         'service_history': serviceHistory,
         'ownership': ownership,
         'condition_percentage': conditionPercentage,
+        'condition_grade': conditionGrade,
         'engine_condition': engineCondition,
         'tyre_condition': tyreCondition,
       };
