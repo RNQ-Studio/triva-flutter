@@ -52,7 +52,6 @@ const _draft = AppraisalDraft(
   majorAccidentHistory: 'no',
   serviceHistory: 'complete',
   ownership: 'first',
-  conditionPercentage: 90,
   conditionGrade: 'b',
   engineCondition: 'normal',
   tyreCondition: 'normal',
@@ -179,7 +178,6 @@ final _appraisal = AppraisalData(
     majorAccidentHistory: 'no',
     serviceHistory: 'complete',
     ownership: 'first',
-    conditionPercentage: 90,
     conditionGrade: 'c',
     engineCondition: 'wet',
     tyreCondition: 'normal',
@@ -513,7 +511,12 @@ void main() {
       300,
       scrollable: find.byType(Scrollable).first,
     );
-    expect(find.text('90%'), findsOneWidget);
+    expect(find.text('90%'), findsNothing);
+    expect(
+      find.text('Grade C - Cukup, ada perbaikan yang perlu dikerjakan'),
+      findsOneWidget,
+    );
+    expect(find.text('Basah / rembes'), findsOneWidget);
     expect(find.text('Tampak depan'), findsOneWidget);
     expect(find.text('Tampak belakang'), findsOneWidget);
     expect(find.text('Sisi kiri'), findsOneWidget);
@@ -662,16 +665,16 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('condition percentage defaults to 90 percent', (tester) async {
+  testWidgets('condition step no longer asks for a percentage', (tester) async {
     await _pump(
       tester,
       widget: const VehicleConditionScreen(),
       brightness: Brightness.light,
     );
 
-    final slider = tester.widget<Slider>(find.byType(Slider));
-    expect(slider.value, 90);
-    expect(find.text('90%'), findsOneWidget);
+    expect(find.byType(Slider), findsNothing);
+    expect(find.text('Kondisi kendaraan saat ini'), findsNothing);
+    expect(find.text('Grade kondisi kendaraan'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

@@ -24,7 +24,6 @@ void main() {
       majorAccidentHistory: 'no',
       serviceHistory: 'complete',
       ownership: 'first',
-      conditionPercentage: 87,
       conditionGrade: 'c',
       engineCondition: 'wet',
       tyreCondition: 'damaged',
@@ -50,16 +49,19 @@ void main() {
     expect(restored.appraisalCreationIdempotencyKey, 'appraisal-create-key');
     expect(restored.assetIds['front'], 'asset-1');
     expect(restored.idempotencyKey, draft.idempotencyKey);
-    expect(restored.conditionPercentage, 87);
+    expect(restored.conditionGrade, 'c');
   });
 
-  test('legacy draft defaults condition percentage to 90', () {
+  test('legacy draft without the new condition answers stays incomplete', () {
     final restored = AppraisalDraft.fromJson({
       'make': 'Toyota',
       'model': 'Avanza',
     });
 
-    expect(restored.conditionPercentage, 90);
+    expect(restored.conditionGrade, '');
+    expect(restored.engineCondition, '');
+    expect(restored.tyreCondition, '');
+    expect(restored.hasCondition, isFalse);
     expect(restored.variantId, isNull);
   });
 
@@ -90,7 +92,9 @@ void main() {
         'major_accident_history': 'no',
         'service_history': 'complete',
         'ownership': 'first',
-        'condition_percentage': 87,
+        'condition_grade': 'c',
+        'engine_condition': 'wet',
+        'tyre_condition': 'normal',
       },
       'photos': [
         {
@@ -129,7 +133,7 @@ void main() {
     expect(appraisal.photos.single.rejectionNote, 'Foto buram');
     expect(appraisal.photos.single.url, 'https://example.test/front.jpg');
     expect(appraisal.condition?.taxStatus, 'active');
-    expect(appraisal.condition?.conditionPercentage, 87);
+    expect(appraisal.condition?.conditionGrade, 'c');
     expect(appraisal.result?.tradeInLow, 168000000);
     expect(appraisal.result?.comparableCount, 6);
     expect(appraisal.continuation?.type, 'credit_simulation');

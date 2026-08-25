@@ -299,7 +299,6 @@ class AppraisalConditionData {
     required this.majorAccidentHistory,
     required this.serviceHistory,
     required this.ownership,
-    required this.conditionPercentage,
     required this.conditionGrade,
     required this.engineCondition,
     required this.tyreCondition,
@@ -310,7 +309,6 @@ class AppraisalConditionData {
   final String majorAccidentHistory;
   final String serviceHistory;
   final String ownership;
-  final int conditionPercentage;
   final String conditionGrade;
   final String engineCondition;
   final String tyreCondition;
@@ -322,10 +320,6 @@ class AppraisalConditionData {
         majorAccidentHistory: json['major_accident_history']?.toString() ?? '',
         serviceHistory: json['service_history']?.toString() ?? '',
         ownership: json['ownership']?.toString() ?? '',
-        conditionPercentage:
-            ((json['condition_percentage'] as num?)?.toInt() ?? 0)
-                .clamp(0, 100)
-                .toInt(),
         conditionGrade: json['condition_grade']?.toString() ?? '',
         engineCondition: json['engine_condition']?.toString() ?? '',
         tyreCondition: json['tyre_condition']?.toString() ?? '',
@@ -464,7 +458,6 @@ class AppraisalDraft {
     this.majorAccidentHistory = '',
     this.serviceHistory = '',
     this.ownership = '',
-    this.conditionPercentage = 90,
     this.conditionGrade = '',
     this.engineCondition = '',
     this.tyreCondition = '',
@@ -498,7 +491,6 @@ class AppraisalDraft {
   final String majorAccidentHistory;
   final String serviceHistory;
   final String ownership;
-  final int conditionPercentage;
   final String conditionGrade;
   final String engineCondition;
   final String tyreCondition;
@@ -534,9 +526,7 @@ class AppraisalDraft {
       ownership.isNotEmpty &&
       conditionGrade.isNotEmpty &&
       engineCondition.isNotEmpty &&
-      tyreCondition.isNotEmpty &&
-      conditionPercentage >= 0 &&
-      conditionPercentage <= 100;
+      tyreCondition.isNotEmpty;
   bool get hasAllPhotos => appraisalPhotoAngles.every(photoPaths.containsKey);
 
   AppraisalDraft copyWith({
@@ -561,7 +551,6 @@ class AppraisalDraft {
     String? majorAccidentHistory,
     String? serviceHistory,
     String? ownership,
-    int? conditionPercentage,
     String? conditionGrade,
     String? engineCondition,
     String? tyreCondition,
@@ -597,7 +586,6 @@ class AppraisalDraft {
         majorAccidentHistory: majorAccidentHistory ?? this.majorAccidentHistory,
         serviceHistory: serviceHistory ?? this.serviceHistory,
         ownership: ownership ?? this.ownership,
-        conditionPercentage: conditionPercentage ?? this.conditionPercentage,
         conditionGrade: conditionGrade ?? this.conditionGrade,
         engineCondition: engineCondition ?? this.engineCondition,
         tyreCondition: tyreCondition ?? this.tyreCondition,
@@ -638,10 +626,6 @@ class AppraisalDraft {
         majorAccidentHistory: json['major_accident_history']?.toString() ?? '',
         serviceHistory: json['service_history']?.toString() ?? '',
         ownership: json['ownership']?.toString() ?? '',
-        conditionPercentage:
-            ((json['condition_percentage'] as num?)?.toInt() ?? 90)
-                .clamp(0, 100)
-                .toInt(),
         conditionGrade: json['condition_grade']?.toString() ?? '',
         engineCondition: json['engine_condition']?.toString() ?? '',
         tyreCondition: json['tyre_condition']?.toString() ?? '',
@@ -682,7 +666,6 @@ class AppraisalDraft {
         'major_accident_history': majorAccidentHistory,
         'service_history': serviceHistory,
         'ownership': ownership,
-        'condition_percentage': conditionPercentage,
         'condition_grade': conditionGrade,
         'engine_condition': engineCondition,
         'tyre_condition': tyreCondition,
@@ -721,7 +704,6 @@ class AppraisalDraft {
         'major_accident_history': majorAccidentHistory,
         'service_history': serviceHistory,
         'ownership': ownership,
-        'condition_percentage': conditionPercentage,
         'condition_grade': conditionGrade,
         'engine_condition': engineCondition,
         'tyre_condition': tyreCondition,

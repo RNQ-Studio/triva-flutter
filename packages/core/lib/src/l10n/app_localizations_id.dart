@@ -503,18 +503,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Jawab sesuai kondisi sebenarnya agar engine dapat menyesuaikan indikasi nilai.';
 
   @override
-  String get vehicleConditionPercentage => 'Kondisi kendaraan saat ini';
-
-  @override
-  String get vehicleConditionPercentageDescription =>
-      'Geser berdasarkan penilaian kondisi keseluruhan kendaraan.';
-
-  @override
-  String conditionPercentageValue(int value) {
-    return '$value%';
-  }
-
-  @override
   String get conditionGrade => 'Grade kondisi kendaraan';
 
   @override

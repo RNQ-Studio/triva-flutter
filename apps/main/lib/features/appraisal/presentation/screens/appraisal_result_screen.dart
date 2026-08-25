@@ -486,36 +486,6 @@ class _ResultContent extends StatelessWidget {
             icon: Icons.fact_check_outlined,
             title: l10n.conditionTitle,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      l10n.vehicleConditionPercentage,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.medium),
-                  Text(
-                    l10n.conditionPercentageValue(
-                      condition.conditionPercentage,
-                    ),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: colors.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.small),
-              ClipRRect(
-                borderRadius: AppRadius.small,
-                child: LinearProgressIndicator(
-                  value: condition.conditionPercentage / 100,
-                  minHeight: 8,
-                  backgroundColor: colors.surfaceContainerHighest,
-                ),
-              ),
-              const Divider(height: AppSpacing.xLarge),
               _DetailsGrid(
                 items: [
                   (l10n.taxStatus, _taxLabel(l10n, condition.taxStatus)),

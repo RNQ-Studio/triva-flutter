@@ -998,24 +998,6 @@ abstract class AppLocalizations {
   /// **'Jawab sesuai kondisi sebenarnya agar engine dapat menyesuaikan indikasi nilai.'**
   String get conditionDescription;
 
-  /// No description provided for @vehicleConditionPercentage.
-  ///
-  /// In id, this message translates to:
-  /// **'Kondisi kendaraan saat ini'**
-  String get vehicleConditionPercentage;
-
-  /// No description provided for @vehicleConditionPercentageDescription.
-  ///
-  /// In id, this message translates to:
-  /// **'Geser berdasarkan penilaian kondisi keseluruhan kendaraan.'**
-  String get vehicleConditionPercentageDescription;
-
-  /// No description provided for @conditionPercentageValue.
-  ///
-  /// In id, this message translates to:
-  /// **'{value}%'**
-  String conditionPercentageValue(int value);
-
   /// No description provided for @conditionGrade.
   ///
   /// In id, this message translates to:

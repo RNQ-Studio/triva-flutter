@@ -75,10 +75,10 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
           _SummaryCard(
             icon: Icons.fact_check_outlined,
             title: l10n.reviewCondition,
-            value: '${l10n.taxStatus}: $taxLabel\n'
-                '${l10n.serviceHistory}: $serviceLabel\n'
-                '${l10n.vehicleConditionPercentage}: '
-                '${l10n.conditionPercentageValue(draft.conditionPercentage)}',
+            value: '${l10n.conditionGrade}: '
+                '${draft.conditionGrade.toUpperCase()}\n'
+                '${l10n.taxStatus}: $taxLabel\n'
+                '${l10n.serviceHistory}: $serviceLabel',
             onEdit: () => context.push(appraisalConditionPath),
           ),
           const SizedBox(height: AppSpacing.medium),

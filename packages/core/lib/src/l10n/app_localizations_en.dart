@@ -507,18 +507,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Answer truthfully so the engine can adjust the indicative value.';
 
   @override
-  String get vehicleConditionPercentage => 'Current vehicle condition';
-
-  @override
-  String get vehicleConditionPercentageDescription =>
-      'Move the slider to reflect the vehicle\'s overall condition.';
-
-  @override
-  String conditionPercentageValue(int value) {
-    return '$value%';
-  }
-
-  @override
   String get conditionGrade => 'Vehicle condition grade';
 
   @override

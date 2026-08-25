@@ -26,7 +26,6 @@ class _VehicleConditionScreenState
   String? _grade;
   String? _engine;
   String? _tyre;
-  int _conditionPercentage = 90;
   bool _gradeMissing = false;
   bool _initialized = false;
   bool _saving = false;
@@ -44,7 +43,6 @@ class _VehicleConditionScreenState
           majorAccidentHistory: _accident!,
           serviceHistory: _service!,
           ownership: _ownership!,
-          conditionPercentage: _conditionPercentage,
           conditionGrade: _grade!,
           engineCondition: _engine!,
           tyreCondition: _tyre!,
@@ -71,7 +69,6 @@ class _VehicleConditionScreenState
       _grade = draft.conditionGrade.isEmpty ? null : draft.conditionGrade;
       _engine = draft.engineCondition.isEmpty ? null : draft.engineCondition;
       _tyre = draft.tyreCondition.isEmpty ? null : draft.tyreCondition;
-      _conditionPercentage = draft.conditionPercentage;
     }
 
     return AppraisalFlowScaffold(
@@ -94,13 +91,6 @@ class _VehicleConditionScreenState
                   _grade = value;
                   _gradeMissing = false;
                 }),
-              ),
-              const SizedBox(height: AppSpacing.large),
-              _ConditionPercentageField(
-                value: _conditionPercentage,
-                onChanged: (value) {
-                  setState(() => _conditionPercentage = value);
-                },
               ),
               const SizedBox(height: AppSpacing.large),
               _choice(
@@ -207,73 +197,6 @@ class _VehicleConditionScreenState
       onChanged: onChanged,
       validator: (value) =>
           value == null ? AppLocalizations.of(context)!.fieldRequired : null,
-    );
-  }
-}
-
-class _ConditionPercentageField extends StatelessWidget {
-  const _ConditionPercentageField({
-    required this.value,
-    required this.onChanged,
-  });
-
-  final int value;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final colors = Theme.of(context).colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                l10n.vehicleConditionPercentage,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            Text(
-              l10n.conditionPercentageValue(value),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colors.primary,
-                  ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.small),
-        Text(
-          l10n.vehicleConditionPercentageDescription,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: colors.onSurfaceVariant,
-              ),
-        ),
-        Slider(
-          value: value.toDouble(),
-          min: 0,
-          max: 100,
-          divisions: 100,
-          label: l10n.conditionPercentageValue(value),
-          semanticFormatterCallback: (sliderValue) =>
-              l10n.conditionPercentageValue(sliderValue.round()),
-          onChanged: (sliderValue) => onChanged(sliderValue.round()),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              l10n.conditionPercentageValue(0),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Text(
-              l10n.conditionPercentageValue(100),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
