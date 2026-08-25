@@ -855,6 +855,50 @@ class AppLocalizationsId extends AppLocalizations {
   String get whatsappContactBranch => 'Hubungi lewat WhatsApp';
 
   @override
+  String get benefitCheckTitle => 'Cek No. Rangka';
+
+  @override
+  String get benefitCheckSubtitle =>
+      'Ketahui apakah unit Anda terlibat SSC dan berapa sisa fasilitas T-Care.';
+
+  @override
+  String get benefitCheckVin => 'Nomor rangka';
+
+  @override
+  String get benefitCheckVinHint => 'Tertera pada STNK atau BPKB, 17 karakter.';
+
+  @override
+  String get benefitCheckYear => 'Tahun kendaraan';
+
+  @override
+  String get benefitCheckSubmit => 'Periksa sekarang';
+
+  @override
+  String get benefitCheckVinRequired => 'Masukkan nomor rangka kendaraan Anda.';
+
+  @override
+  String get benefitCheckYearInvalid => 'Masukkan tahun kendaraan yang wajar.';
+
+  @override
+  String get benefitCheckSscTitle => 'Status SSC';
+
+  @override
+  String get benefitCheckTcareTitle => 'Fasilitas T-Care';
+
+  @override
+  String benefitCheckTcareRemaining(int months) {
+    return 'Sisa sekitar $months bulan';
+  }
+
+  @override
+  String benefitCheckTcareUntil(String date) {
+    return 'Berlaku sampai $date';
+  }
+
+  @override
+  String get benefitCheckRecheck => 'Periksa nomor rangka lain';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

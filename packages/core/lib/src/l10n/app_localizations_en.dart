@@ -859,6 +859,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsappContactBranch => 'Contact via WhatsApp';
 
   @override
+  String get benefitCheckTitle => 'Check chassis number';
+
+  @override
+  String get benefitCheckSubtitle =>
+      'Find out whether your car is part of an SSC campaign and how much T-Care is left.';
+
+  @override
+  String get benefitCheckVin => 'Chassis number';
+
+  @override
+  String get benefitCheckVinHint =>
+      'Shown on your STNK or BPKB, 17 characters.';
+
+  @override
+  String get benefitCheckYear => 'Vehicle year';
+
+  @override
+  String get benefitCheckSubmit => 'Check now';
+
+  @override
+  String get benefitCheckVinRequired => 'Enter your vehicle chassis number.';
+
+  @override
+  String get benefitCheckYearInvalid => 'Enter a plausible vehicle year.';
+
+  @override
+  String get benefitCheckSscTitle => 'SSC status';
+
+  @override
+  String get benefitCheckTcareTitle => 'T-Care coverage';
+
+  @override
+  String benefitCheckTcareRemaining(int months) {
+    return 'About $months months left';
+  }
+
+  @override
+  String benefitCheckTcareUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get benefitCheckRecheck => 'Check another chassis number';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override

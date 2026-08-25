@@ -13,6 +13,7 @@ import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
 import '../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../credit/presentation/credit_paths.dart';
+import '../../vehicle_benefit/presentation/vehicle_benefit_paths.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -75,6 +76,10 @@ class HomeScreen extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.xLarge),
                           _AppraisalHero(
                             onTap: () => context.push(startPath),
+                          ),
+                          const SizedBox(height: AppSpacing.medium),
+                          _BenefitCheckTile(
+                            onTap: () => context.push(vehicleBenefitCheckPath),
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
                           _SectionHeading(title: l10n.homeServicesTitle),
@@ -165,6 +170,76 @@ class _Header extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Pintu masuk pemeriksaan mandiri No. Rangka. Notulensi 19 Agustus 2026
+/// meminta tautan ini ada di halaman depan, karena hasilnya menentukan
+/// pelanggan diarahkan ke Auto2000 atau OtoXpert.
+class _BenefitCheckTile extends StatelessWidget {
+  const _BenefitCheckTile({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    return Material(
+      color: colors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.large,
+        side: BorderSide(color: colors.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.medium),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: colors.primaryContainer,
+                child: Icon(
+                  Icons.pin_outlined,
+                  color: colors.onPrimaryContainer,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.medium),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      l10n.benefitCheckTitle,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: AppSpacing.xSmall),
+                    Text(
+                      l10n.benefitCheckSubtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.small),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: colors.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

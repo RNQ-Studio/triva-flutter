@@ -1652,6 +1652,84 @@ abstract class AppLocalizations {
   /// **'Hubungi lewat WhatsApp'**
   String get whatsappContactBranch;
 
+  /// No description provided for @benefitCheckTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Cek No. Rangka'**
+  String get benefitCheckTitle;
+
+  /// No description provided for @benefitCheckSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Ketahui apakah unit Anda terlibat SSC dan berapa sisa fasilitas T-Care.'**
+  String get benefitCheckSubtitle;
+
+  /// No description provided for @benefitCheckVin.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor rangka'**
+  String get benefitCheckVin;
+
+  /// No description provided for @benefitCheckVinHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Tertera pada STNK atau BPKB, 17 karakter.'**
+  String get benefitCheckVinHint;
+
+  /// No description provided for @benefitCheckYear.
+  ///
+  /// In id, this message translates to:
+  /// **'Tahun kendaraan'**
+  String get benefitCheckYear;
+
+  /// No description provided for @benefitCheckSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa sekarang'**
+  String get benefitCheckSubmit;
+
+  /// No description provided for @benefitCheckVinRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan nomor rangka kendaraan Anda.'**
+  String get benefitCheckVinRequired;
+
+  /// No description provided for @benefitCheckYearInvalid.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan tahun kendaraan yang wajar.'**
+  String get benefitCheckYearInvalid;
+
+  /// No description provided for @benefitCheckSscTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Status SSC'**
+  String get benefitCheckSscTitle;
+
+  /// No description provided for @benefitCheckTcareTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Fasilitas T-Care'**
+  String get benefitCheckTcareTitle;
+
+  /// No description provided for @benefitCheckTcareRemaining.
+  ///
+  /// In id, this message translates to:
+  /// **'Sisa sekitar {months} bulan'**
+  String benefitCheckTcareRemaining(int months);
+
+  /// No description provided for @benefitCheckTcareUntil.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlaku sampai {date}'**
+  String benefitCheckTcareUntil(String date);
+
+  /// No description provided for @benefitCheckRecheck.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa nomor rangka lain'**
+  String get benefitCheckRecheck;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

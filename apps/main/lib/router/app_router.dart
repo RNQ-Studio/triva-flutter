@@ -19,6 +19,7 @@ import '../features/body_paint/presentation/body_paint_routes.dart';
 import '../features/body_paint/presentation/body_paint_paths.dart';
 import '../features/admin_users/presentation/admin_user_paths.dart';
 import '../features/admin_users/presentation/admin_user_routes.dart';
+import '../features/vehicle_benefit/presentation/vehicle_benefit_routes.dart';
 import 'customer_shell.dart';
 
 String? trivaAppRedirect(BuildContext context, GoRouterState state) {
@@ -61,6 +62,7 @@ final appRouter = GoRouter(
     ...creditRoutes,
     ...bodyPaintRoutes,
     ...adminUserRoutes,
+    ...vehicleBenefitRoutes,
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => CustomerShell(
         navigationShell: navigationShell,
