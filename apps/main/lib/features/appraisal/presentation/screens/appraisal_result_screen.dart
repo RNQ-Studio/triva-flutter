@@ -11,6 +11,7 @@ import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
 import '../widgets/expected_price_dialog.dart';
+import '../widgets/upgrade_offer_sheet.dart';
 
 class AppraisalResultScreen extends ConsumerStatefulWidget {
   const AppraisalResultScreen({super.key, required this.appraisalId});
@@ -24,6 +25,36 @@ class AppraisalResultScreen extends ConsumerStatefulWidget {
 
 class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
   bool _busy = false;
+
+  /// Pop-up upgrade hanya muncul sekali per kunjungan halaman, supaya tidak
+  /// menutupi hasil setiap kali daftar di-refresh.
+  bool _upgradeOfferShown = false;
+
+  /// Menampilkan dua opsi unit baru yang uang mukanya tertutup harga
+  /// appraisal, sesuai permintaan notulensi 19 Agustus 2026.
+  Future<void> _offerUpgrade() async {
+    if (_upgradeOfferShown) return;
+    _upgradeOfferShown = true;
+    final AppraisalUpgradeOffer offer;
+    try {
+      offer = await ref.read(
+        appraisalUpgradeOptionsProvider(widget.appraisalId).future,
+      );
+    } on Object {
+      // Pop-up ini pelengkap, bukan syarat. Kegagalan memuatnya tidak boleh
+      // mengganggu pembacaan hasil appraisal.
+      return;
+    }
+    if (!mounted || !offer.hasOptions) return;
+    final chosen = await showUpgradeOfferSheet(context, offer: offer);
+    if (chosen == null || !mounted) return;
+    await context.push(
+      creditUpgradePath(
+        programId: chosen.programId,
+        appraisalId: widget.appraisalId,
+      ),
+    );
+  }
 
   void _goBack() {
     final navigator = Navigator.of(context);
@@ -149,6 +180,11 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
               final result = appraisal.result;
               if (result == null) {
                 return Center(child: Text(l10n.loadFailed));
+              }
+              if (appraisal.resultReady && !_upgradeOfferShown) {
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _offerUpgrade(),
+                );
               }
               String? provinceName;
               final provinceId = appraisal.vehicle?.provinceId;

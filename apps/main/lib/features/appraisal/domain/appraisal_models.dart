@@ -709,3 +709,83 @@ class AppraisalDraft {
         'tyre_condition': tyreCondition,
       };
 }
+
+/// Satu opsi unit baru Toyota yang uang mukanya tertutup harga appraisal.
+///
+/// Notulensi 19 Agustus 2026 mengganti rentang harga dan data pembanding pada
+/// hasil appraisal dengan dua opsi seperti ini, memakai hitungan reguler.
+class AppraisalUpgradeOption {
+  const AppraisalUpgradeOption({
+    required this.programId,
+    required this.programCode,
+    required this.partnerName,
+    required this.programName,
+    required this.vehicleModel,
+    required this.vehicleVariant,
+    required this.otrPrice,
+    required this.tenorMonths,
+    required this.downPaymentFromAppraisal,
+    required this.monthlyInstallment,
+    this.modelYear,
+    this.packageCode,
+    this.isDemo = false,
+  });
+
+  final String programId;
+  final String programCode;
+  final String partnerName;
+  final String programName;
+  final String vehicleModel;
+  final String vehicleVariant;
+  final int? modelYear;
+  final int otrPrice;
+  final int tenorMonths;
+  final int downPaymentFromAppraisal;
+  final int monthlyInstallment;
+  final String? packageCode;
+  final bool isDemo;
+
+  String get vehicleLabel {
+    final year = modelYear == null ? '' : ' $modelYear';
+    return '$vehicleModel $vehicleVariant$year';
+  }
+
+  factory AppraisalUpgradeOption.fromJson(Map<String, dynamic> json) =>
+      AppraisalUpgradeOption(
+        programId: json['program_id']?.toString() ?? '',
+        programCode: json['program_code']?.toString() ?? '',
+        partnerName: json['partner_name']?.toString() ?? '',
+        programName: json['program_name']?.toString() ?? '',
+        vehicleModel: json['vehicle_model']?.toString() ?? '',
+        vehicleVariant: json['vehicle_variant']?.toString() ?? '',
+        modelYear: (json['model_year'] as num?)?.toInt(),
+        otrPrice: (json['otr_price'] as num?)?.toInt() ?? 0,
+        tenorMonths: (json['tenor_months'] as num?)?.toInt() ?? 0,
+        downPaymentFromAppraisal:
+            (json['down_payment_from_appraisal'] as num?)?.toInt() ?? 0,
+        monthlyInstallment: (json['monthly_installment'] as num?)?.toInt() ?? 0,
+        packageCode: json['package_code']?.toString(),
+        isDemo: json['is_demo'] == true,
+      );
+}
+
+class AppraisalUpgradeOffer {
+  const AppraisalUpgradeOffer({
+    required this.tradeInValue,
+    required this.options,
+  });
+
+  final int tradeInValue;
+  final List<AppraisalUpgradeOption> options;
+
+  bool get hasOptions => options.isNotEmpty;
+
+  factory AppraisalUpgradeOffer.fromJson(Map<String, dynamic> json) =>
+      AppraisalUpgradeOffer(
+        tradeInValue: (json['trade_in_value'] as num?)?.toInt() ?? 0,
+        options: (json['options'] as List<dynamic>? ?? const [])
+            .whereType<Map<String, dynamic>>()
+            .map(AppraisalUpgradeOption.fromJson)
+            .toList(growable: false),
+      );
+}

@@ -44,6 +44,11 @@ final vehicleVariantsProvider =
       .listVehicleVariants(modelId: modelId);
 }, retry: (_, __) => null);
 
+final appraisalUpgradeOptionsProvider =
+    FutureProvider.family<AppraisalUpgradeOffer, String>((ref, appraisalId) {
+  return ref.watch(appraisalRepositoryProvider).upgradeOptions(appraisalId);
+});
+
 final appraisalDetailProvider =
     FutureProvider.family<AppraisalData, String>((ref, appraisalId) {
   return ref.watch(appraisalRepositoryProvider).getAppraisal(appraisalId);

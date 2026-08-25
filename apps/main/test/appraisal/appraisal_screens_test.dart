@@ -893,6 +893,58 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('a ready result offers two new units funded by the appraisal',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      upgradeOffer: const AppraisalUpgradeOffer(
+        tradeInValue: 176000000,
+        options: [
+          AppraisalUpgradeOption(
+            programId: 'program-veloz',
+            programCode: 'SPEKTA-VELOZ-2026',
+            partnerName: 'ACC',
+            programName: 'SPEKTA DP 20%',
+            vehicleModel: 'Veloz',
+            vehicleVariant: '1.5 Q CVT TSS',
+            modelYear: 2026,
+            otrPrice: 360000000,
+            tenorMonths: 60,
+            downPaymentFromAppraisal: 176000000,
+            monthlyInstallment: 3900000,
+          ),
+          AppraisalUpgradeOption(
+            programId: 'program-zenix',
+            programCode: 'SPEKTA-INNOVA-2026',
+            partnerName: 'TAF',
+            programName: 'SPEKTA DP 20%',
+            vehicleModel: 'Kijang Innova Zenix',
+            vehicleVariant: '2.0 V CVT',
+            modelYear: 2026,
+            otrPrice: 470000000,
+            tenorMonths: 60,
+            downPaymentFromAppraisal: 176000000,
+            monthlyInstallment: 6100000,
+          ),
+        ],
+      ),
+    );
+
+    expect(find.text('Tukar tambah ke unit baru'), findsOneWidget);
+    expect(find.text('Veloz 1.5 Q CVT TSS 2026'), findsOneWidget);
+    expect(find.text('Kijang Innova Zenix 2.0 V CVT 2026'), findsOneWidget);
+    expect(find.text('Rp 3.900.000'), findsOneWidget);
+    expect(find.text('Simulasikan'), findsNWidgets(2));
+
+    await tester.tap(find.text('Nanti saja'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tukar tambah ke unit baru'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('declining the price asks for the expected price first',
       (tester) async {
     await _pump(
@@ -981,6 +1033,10 @@ Future<void> _pump(
   List<AppraisalData>? appraisalItems,
   AppraisalData? detailData,
   AppraisalDraft draft = _draft,
+  AppraisalUpgradeOffer upgradeOffer = const AppraisalUpgradeOffer(
+    tradeInValue: 0,
+    options: [],
+  ),
 }) async {
   tester.view
     ..physicalSize = const Size(360, 690)
@@ -995,6 +1051,9 @@ Future<void> _pump(
         ),
         appraisalsProvider.overrideWith(
           (ref) async => appraisalItems ?? [_appraisal],
+        ),
+        appraisalUpgradeOptionsProvider.overrideWith(
+          (ref, id) async => upgradeOffer,
         ),
         toyotaServiceBookingsProvider.overrideWith((ref) async => const []),
         otoxpertBookingsProvider.overrideWith((ref) async => const []),

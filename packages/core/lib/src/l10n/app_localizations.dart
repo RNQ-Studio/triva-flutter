@@ -1526,6 +1526,48 @@ abstract class AppLocalizations {
   /// **'Harga harapan Anda sudah kami catat.'**
   String get expectedPriceRecorded;
 
+  /// No description provided for @upgradeOfferTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tukar tambah ke unit baru'**
+  String get upgradeOfferTitle;
+
+  /// No description provided for @upgradeOfferSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga appraisal Anda {amount} sudah cukup jadi uang muka unit berikut.'**
+  String upgradeOfferSubtitle(String amount);
+
+  /// No description provided for @upgradeOfferInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Cicilan {months} bulan'**
+  String upgradeOfferInstallment(int months);
+
+  /// No description provided for @upgradeOfferDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'DP dari appraisal'**
+  String get upgradeOfferDownPayment;
+
+  /// No description provided for @upgradeOfferSimulate.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasikan'**
+  String get upgradeOfferSimulate;
+
+  /// No description provided for @upgradeOfferDismiss.
+  ///
+  /// In id, this message translates to:
+  /// **'Nanti saja'**
+  String get upgradeOfferDismiss;
+
+  /// No description provided for @upgradeOfferEstimateNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Angka cicilan bersifat estimasi, bukan persetujuan kredit.'**
+  String get upgradeOfferEstimateNotice;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

@@ -783,6 +783,32 @@ class AppLocalizationsId extends AppLocalizations {
   String get expectedPriceRecorded => 'Harga harapan Anda sudah kami catat.';
 
   @override
+  String get upgradeOfferTitle => 'Tukar tambah ke unit baru';
+
+  @override
+  String upgradeOfferSubtitle(String amount) {
+    return 'Harga appraisal Anda $amount sudah cukup jadi uang muka unit berikut.';
+  }
+
+  @override
+  String upgradeOfferInstallment(int months) {
+    return 'Cicilan $months bulan';
+  }
+
+  @override
+  String get upgradeOfferDownPayment => 'DP dari appraisal';
+
+  @override
+  String get upgradeOfferSimulate => 'Simulasikan';
+
+  @override
+  String get upgradeOfferDismiss => 'Nanti saja';
+
+  @override
+  String get upgradeOfferEstimateNotice =>
+      'Angka cicilan bersifat estimasi, bukan persetujuan kredit.';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

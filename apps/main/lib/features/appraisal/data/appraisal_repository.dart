@@ -227,6 +227,13 @@ class AppraisalRepository {
     return AppraisalData.fromJson(_data(response));
   }
 
+  Future<AppraisalUpgradeOffer> upgradeOptions(String appraisalId) async {
+    final response = await _dio.get<dynamic>(
+      'v1/appraisals/$appraisalId/upgrade-options',
+    );
+    return AppraisalUpgradeOffer.fromJson(_data(response));
+  }
+
   Future<AppraisalData> scheduleInspection(
     String appraisalId,
     DateTime scheduledAt, {

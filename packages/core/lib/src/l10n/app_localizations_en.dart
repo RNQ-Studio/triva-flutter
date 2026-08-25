@@ -787,6 +787,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expectedPriceRecorded => 'We have recorded your expected price.';
 
   @override
+  String get upgradeOfferTitle => 'Trade in for a new car';
+
+  @override
+  String upgradeOfferSubtitle(String amount) {
+    return 'Your appraisal of $amount already covers the down payment on these units.';
+  }
+
+  @override
+  String upgradeOfferInstallment(int months) {
+    return '$months-month instalment';
+  }
+
+  @override
+  String get upgradeOfferDownPayment => 'Down payment from appraisal';
+
+  @override
+  String get upgradeOfferSimulate => 'Simulate';
+
+  @override
+  String get upgradeOfferDismiss => 'Maybe later';
+
+  @override
+  String get upgradeOfferEstimateNotice =>
+      'Instalment figures are estimates, not credit approval.';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override
