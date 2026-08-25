@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../contact/presentation/whatsapp_handoff.dart';
 import '../../../toyota_service/domain/toyota_service_models.dart';
 import '../../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../domain/otoxpert_models.dart';
@@ -529,6 +530,40 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
       SnackBar(content: Text(l10n.otoxpertRequestSubmitted)),
     );
     context.go(otoxpertBookingPath(booking.id));
+    await _handOffToWhatsApp(booking, l10n);
+  }
+
+  /// Menyambungkan pelanggan ke WhatsApp OtoXpert dengan ringkasan booking
+  /// yang baru dikirim, sesuai permintaan notulensi 19 Agustus 2026.
+  Future<void> _handOffToWhatsApp(
+    OtoxpertBooking booking,
+    AppLocalizations l10n,
+  ) async {
+    final vehicle = booking.vehicle;
+    final slot = booking.primarySlot;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.otoxpert,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappHandoffOtoxpertTitle,
+        details: {
+          l10n.whatsappHandoffReference: booking.referenceNo,
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+          l10n.whatsappHandoffLocation: booking.workshop?.name,
+          l10n.whatsappHandoffSchedule:
+              slot == null ? null : '${slot.date} ${slot.timeWindow}',
+          l10n.whatsappHandoffComplaint: booking.complaint,
+        },
+      ),
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 
   Future<void> _pickLastServiceDate() async {

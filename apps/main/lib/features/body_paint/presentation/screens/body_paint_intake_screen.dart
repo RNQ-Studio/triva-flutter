@@ -1,3 +1,4 @@
+import '../../../contact/presentation/whatsapp_handoff.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -411,6 +412,42 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
       ),
     );
     if (mounted) context.go(bodyPaintEstimatePath(estimate.id));
+    if (mounted) await _handOffToWhatsApp(estimate, state, l10n);
+  }
+
+  /// Meneruskan permintaan estimasi ke WhatsApp PIC Body & Paint, sesuai
+  /// permintaan notulensi 19 Agustus 2026.
+  Future<void> _handOffToWhatsApp(
+    BodyPaintEstimate estimate,
+    BodyPaintFlowState state,
+    AppLocalizations l10n,
+  ) async {
+    final draft = state.draft;
+    final vehicle = draft.vehicle;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.bodyPaint,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappHandoffBodyPaintTitle,
+        details: {
+          l10n.whatsappHandoffReference: estimate.referenceNo,
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+          l10n.whatsappHandoffLocation: draft.location?.name,
+          l10n.whatsappHandoffInsurance: draft.isInsured
+              ? '${l10n.bodyPaintInsuranceYes} - ${draft.insuranceProvider}'
+              : l10n.bodyPaintInsuranceNo,
+          l10n.whatsappHandoffComplaint: draft.notes,
+        },
+      ),
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 }
 

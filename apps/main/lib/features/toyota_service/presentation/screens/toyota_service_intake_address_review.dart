@@ -317,6 +317,7 @@ class _ToyotaServiceReviewScreenState
                   await ref.read(toyotaServiceFlowProvider.notifier).submit();
               if (!context.mounted || booking == null) return;
               context.go(toyotaServiceSubmittedPath(booking.id));
+              await _handOffToWhatsApp(booking, l10n);
             }
           : null,
       body: Column(
@@ -470,6 +471,39 @@ class _ToyotaServiceReviewScreenState
       'general' => l10n.bookingSubmissionError,
       _ => error,
     };
+  }
+
+  /// Meneruskan ringkasan booking ke WhatsApp Auto2000 Kertajaya begitu
+  /// permintaan terkirim, sesuai permintaan notulensi 19 Agustus 2026.
+  Future<void> _handOffToWhatsApp(
+    ToyotaServiceBooking booking,
+    AppLocalizations l10n,
+  ) async {
+    final vehicle = booking.vehicle;
+    final slot = booking.primarySlot;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.toyotaService,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappHandoffToyotaTitle,
+        details: {
+          l10n.whatsappHandoffReference: booking.referenceNo,
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+          l10n.whatsappHandoffLocation: booking.serviceLocation?.name,
+          l10n.whatsappHandoffSchedule:
+              slot == null ? null : '${slot.date} ${slot.timeWindow}',
+          l10n.whatsappHandoffComplaint: booking.complaint,
+        },
+      ),
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 }
 

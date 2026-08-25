@@ -809,6 +809,52 @@ class AppLocalizationsId extends AppLocalizations {
       'Angka cicilan bersifat estimasi, bukan persetujuan kredit.';
 
   @override
+  String get whatsappHandoffOpening => 'Membuka WhatsApp cabang...';
+
+  @override
+  String get whatsappHandoffFailed =>
+      'WhatsApp tidak dapat dibuka. Data Anda tetap tersimpan dan tim kami akan menghubungi Anda.';
+
+  @override
+  String get whatsappHandoffOtoxpertTitle =>
+      'Halo OtoXpert Auto2000, saya ingin booking servis lewat aplikasi TRIVA.';
+
+  @override
+  String get whatsappHandoffToyotaTitle =>
+      'Halo Auto2000 Kertajaya, saya ingin booking servis lewat aplikasi TRIVA.';
+
+  @override
+  String get whatsappHandoffBodyPaintTitle =>
+      'Halo Body & Paint Auto2000 Kertajaya, saya mengirim permintaan estimasi lewat aplikasi TRIVA.';
+
+  @override
+  String get whatsappHandoffReference => 'Nomor referensi';
+
+  @override
+  String get whatsappHandoffCustomer => 'Nama pelanggan';
+
+  @override
+  String get whatsappHandoffVehicle => 'Kendaraan';
+
+  @override
+  String get whatsappHandoffPlate => 'Nomor polisi';
+
+  @override
+  String get whatsappHandoffSchedule => 'Jadwal diminta';
+
+  @override
+  String get whatsappHandoffLocation => 'Lokasi';
+
+  @override
+  String get whatsappHandoffComplaint => 'Keluhan';
+
+  @override
+  String get whatsappHandoffInsurance => 'Asuransi';
+
+  @override
+  String get whatsappContactBranch => 'Hubungi lewat WhatsApp';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

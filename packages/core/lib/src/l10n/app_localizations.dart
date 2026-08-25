@@ -1568,6 +1568,90 @@ abstract class AppLocalizations {
   /// **'Angka cicilan bersifat estimasi, bukan persetujuan kredit.'**
   String get upgradeOfferEstimateNotice;
 
+  /// No description provided for @whatsappHandoffOpening.
+  ///
+  /// In id, this message translates to:
+  /// **'Membuka WhatsApp cabang...'**
+  String get whatsappHandoffOpening;
+
+  /// No description provided for @whatsappHandoffFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'WhatsApp tidak dapat dibuka. Data Anda tetap tersimpan dan tim kami akan menghubungi Anda.'**
+  String get whatsappHandoffFailed;
+
+  /// No description provided for @whatsappHandoffOtoxpertTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo OtoXpert Auto2000, saya ingin booking servis lewat aplikasi TRIVA.'**
+  String get whatsappHandoffOtoxpertTitle;
+
+  /// No description provided for @whatsappHandoffToyotaTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Auto2000 Kertajaya, saya ingin booking servis lewat aplikasi TRIVA.'**
+  String get whatsappHandoffToyotaTitle;
+
+  /// No description provided for @whatsappHandoffBodyPaintTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Body & Paint Auto2000 Kertajaya, saya mengirim permintaan estimasi lewat aplikasi TRIVA.'**
+  String get whatsappHandoffBodyPaintTitle;
+
+  /// No description provided for @whatsappHandoffReference.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor referensi'**
+  String get whatsappHandoffReference;
+
+  /// No description provided for @whatsappHandoffCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama pelanggan'**
+  String get whatsappHandoffCustomer;
+
+  /// No description provided for @whatsappHandoffVehicle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan'**
+  String get whatsappHandoffVehicle;
+
+  /// No description provided for @whatsappHandoffPlate.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor polisi'**
+  String get whatsappHandoffPlate;
+
+  /// No description provided for @whatsappHandoffSchedule.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwal diminta'**
+  String get whatsappHandoffSchedule;
+
+  /// No description provided for @whatsappHandoffLocation.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi'**
+  String get whatsappHandoffLocation;
+
+  /// No description provided for @whatsappHandoffComplaint.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluhan'**
+  String get whatsappHandoffComplaint;
+
+  /// No description provided for @whatsappHandoffInsurance.
+  ///
+  /// In id, this message translates to:
+  /// **'Asuransi'**
+  String get whatsappHandoffInsurance;
+
+  /// No description provided for @whatsappContactBranch.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi lewat WhatsApp'**
+  String get whatsappContactBranch;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

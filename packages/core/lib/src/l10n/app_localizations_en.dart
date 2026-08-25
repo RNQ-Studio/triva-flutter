@@ -813,6 +813,52 @@ class AppLocalizationsEn extends AppLocalizations {
       'Instalment figures are estimates, not credit approval.';
 
   @override
+  String get whatsappHandoffOpening => 'Opening the branch WhatsApp...';
+
+  @override
+  String get whatsappHandoffFailed =>
+      'WhatsApp could not be opened. Your data is saved and our team will contact you.';
+
+  @override
+  String get whatsappHandoffOtoxpertTitle =>
+      'Hello OtoXpert Auto2000, I would like to book a service through the TRIVA app.';
+
+  @override
+  String get whatsappHandoffToyotaTitle =>
+      'Hello Auto2000 Kertajaya, I would like to book a service through the TRIVA app.';
+
+  @override
+  String get whatsappHandoffBodyPaintTitle =>
+      'Hello Auto2000 Kertajaya Body & Paint, I have submitted an estimate request through the TRIVA app.';
+
+  @override
+  String get whatsappHandoffReference => 'Reference number';
+
+  @override
+  String get whatsappHandoffCustomer => 'Customer name';
+
+  @override
+  String get whatsappHandoffVehicle => 'Vehicle';
+
+  @override
+  String get whatsappHandoffPlate => 'Licence plate';
+
+  @override
+  String get whatsappHandoffSchedule => 'Requested schedule';
+
+  @override
+  String get whatsappHandoffLocation => 'Location';
+
+  @override
+  String get whatsappHandoffComplaint => 'Complaint';
+
+  @override
+  String get whatsappHandoffInsurance => 'Insurance';
+
+  @override
+  String get whatsappContactBranch => 'Contact via WhatsApp';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override
