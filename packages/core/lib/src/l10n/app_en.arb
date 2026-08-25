@@ -571,6 +571,8 @@
   "creditFlowSubtitle": "Compare installments from active programs. This result is an estimate, not a credit approval.",
   "creditProgramLabel": "Program and target vehicle",
   "creditProgramHelper": "The program determines OTR price, term, rate, and fees.",
+  "creditSpektaBadge": "SPEKTA 20% down payment",
+  "creditRecommendedDp": "Package recommended down payment",
   "creditProgramName": "Program name",
   "creditPartner": "Financing partner",
   "creditDemoBadge": "Demo",

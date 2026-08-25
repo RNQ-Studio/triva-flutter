@@ -1830,6 +1830,12 @@ class AppLocalizationsId extends AppLocalizations {
       'Program menentukan harga OTR, tenor, bunga, dan biaya.';
 
   @override
+  String get creditSpektaBadge => 'SPEKTA DP 20%';
+
+  @override
+  String get creditRecommendedDp => 'DP anjuran paket';
+
+  @override
   String get creditProgramName => 'Nama program';
 
   @override

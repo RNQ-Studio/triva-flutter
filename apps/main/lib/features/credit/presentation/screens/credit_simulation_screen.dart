@@ -201,10 +201,11 @@ class _CreditSimulationScreenState
                         widget.sourceAppraisalId,
                       );
                       if (linkedProgram != null) {
-                        _cashController.text = (linkedProgram.minimumDpAmount -
-                                linkedProgram.approvedDiscount)
-                            .clamp(0, linkedProgram.otrPrice)
-                            .toString();
+                        _cashController.text =
+                            (linkedProgram.suggestedDpAmount -
+                                    linkedProgram.approvedDiscount)
+                                .clamp(0, linkedProgram.otrPrice)
+                                .toString();
                         await notifier.selectProgram(linkedProgram);
                       }
                     }();
@@ -224,7 +225,7 @@ class _CreditSimulationScreenState
                   onProgramChanged: (program) async {
                     if (program == null) return;
                     _cashController.text =
-                        (program.minimumDpAmount - program.approvedDiscount)
+                        (program.suggestedDpAmount - program.approvedDiscount)
                             .clamp(0, program.otrPrice)
                             .toString();
                     await ref
@@ -365,6 +366,7 @@ class _CreditForm extends StatelessWidget {
                           (program) => DropdownMenuItem(
                             value: program,
                             child: Text(
+                              '${program.isSpekta ? '${l10n.creditSpektaBadge} · ' : ''}'
                               '${program.isDemo ? '${l10n.creditDemoBadge} · ' : ''}'
                               '${program.vehicleLabel} · ${program.city} · '
                               '${program.partnerName}',
@@ -378,6 +380,7 @@ class _CreditForm extends StatelessWidget {
                           (program) => Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
+                              '${program.isSpekta ? '${l10n.creditSpektaBadge} · ' : ''}'
                               '${program.isDemo ? '${l10n.creditDemoBadge} · ' : ''}'
                               '${program.programName} · '
                               '${program.vehicleModel} · ${program.city}',
@@ -652,6 +655,11 @@ class _ProgramMeta extends StatelessWidget {
           label: l10n.creditOtrPrice,
           value: creditMoney(program.otrPrice),
         ),
+        if (program.recommendedDpAmount != null)
+          _MetaRow(
+            label: l10n.creditRecommendedDp,
+            value: creditMoney(program.recommendedDpAmount!),
+          ),
         _MetaRow(
           label: l10n.creditDpRange,
           value: '${creditMoney(program.minimumDpAmount)} – '

@@ -571,6 +571,8 @@
   "creditFlowSubtitle": "Bandingkan cicilan dari program yang berlaku. Hasil ini berupa estimasi, bukan persetujuan kredit.",
   "creditProgramLabel": "Program dan mobil target",
   "creditProgramHelper": "Program menentukan harga OTR, tenor, bunga, dan biaya.",
+  "creditSpektaBadge": "SPEKTA DP 20%",
+  "creditRecommendedDp": "DP anjuran paket",
   "creditProgramName": "Nama program",
   "creditPartner": "Partner pembiayaan",
   "creditDemoBadge": "Demo",

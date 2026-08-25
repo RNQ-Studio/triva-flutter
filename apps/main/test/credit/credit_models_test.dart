@@ -2,6 +2,87 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:triva_app/features/credit/domain/credit_models.dart';
 
 void main() {
+  test('a package program exposes its recommended down payment', () {
+    final program = CreditProgram.fromJson({
+      'id': 'program-spekta',
+      'program_code': 'SPEKTA-AVANZA-2026',
+      'version': 1,
+      'partner_name': 'ACC',
+      'program_name': 'SPEKTA DP 20%',
+      'city': 'Surabaya',
+      'package_code': 'spekta',
+      'recommended_dp_basis_points': 2000,
+      'recommended_dp_amount': 64000000,
+      'vehicle': {
+        'model': 'Avanza',
+        'variant': '1.5 G CVT',
+        'model_year': 2026,
+        'otr_price': 320000000,
+        'approved_discount': 0,
+      },
+      'minimum_dp_amount': 32000000,
+      'maximum_dp_amount': 256000000,
+      'tenor_options': [
+        {
+          'tenor_months': 36,
+          'annual_flat_rate_basis_points': 450,
+          'administration_fee': 2500000,
+          'provision_fee': 1000000,
+          'upfront_insurance': 6000000,
+          'other_upfront_costs': 500000,
+        },
+      ],
+      'formula_version': 'flat-v1',
+      'effective_from': '2026-08-01',
+      'effective_to': null,
+      'source_reference': 'Kerangka paket SPEKTA.',
+      'disclaimer': 'Estimasi.',
+      'is_demo': true,
+    });
+
+    expect(program.isSpekta, isTrue);
+    expect(program.recommendedDpAmount, 64000000);
+    // Form kredit mengisikan DP anjuran, bukan DP minimum program.
+    expect(program.suggestedDpAmount, 64000000);
+  });
+
+  test('a regular program falls back to the minimum down payment', () {
+    final program = CreditProgram.fromJson({
+      'id': 'program-regular',
+      'program_code': 'REG-001',
+      'version': 1,
+      'partner_name': 'TAF',
+      'program_name': 'Program Reguler',
+      'city': 'Surabaya',
+      'vehicle': {
+        'model': 'Rush',
+        'variant': '1.5 S',
+        'model_year': 2026,
+        'otr_price': 300000000,
+        'approved_discount': 0,
+      },
+      'minimum_dp_amount': 45000000,
+      'maximum_dp_amount': 240000000,
+      'tenor_options': [
+        {
+          'tenor_months': 36,
+          'annual_flat_rate_basis_points': 450,
+          'administration_fee': 2500000,
+          'provision_fee': 1000000,
+          'upfront_insurance': 6000000,
+          'other_upfront_costs': 500000,
+        },
+      ],
+      'formula_version': 'flat-v1',
+      'effective_from': '2026-08-01',
+      'source_reference': 'Dokumen program.',
+      'disclaimer': 'Estimasi.',
+    });
+
+    expect(program.isSpekta, isFalse);
+    expect(program.recommendedDpAmount, isNull);
+    expect(program.suggestedDpAmount, 45000000);
+  });
   test('parses program tenor fees and exact calculation breakdown', () {
     final program = CreditProgram.fromJson(_programJson());
     final calculation = CreditCalculation.fromJson(_calculationJson());

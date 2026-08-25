@@ -1833,6 +1833,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'The program determines OTR price, term, rate, and fees.';
 
   @override
+  String get creditSpektaBadge => 'SPEKTA 20% down payment';
+
+  @override
+  String get creditRecommendedDp => 'Package recommended down payment';
+
+  @override
   String get creditProgramName => 'Program name';
 
   @override

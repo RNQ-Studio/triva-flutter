@@ -65,6 +65,8 @@ class CreditProgram {
     this.isDemo = false,
     this.modelYear,
     this.effectiveTo,
+    this.packageCode,
+    this.recommendedDpAmount,
   });
 
   final String id;
@@ -87,6 +89,18 @@ class CreditProgram {
   final String sourceReference;
   final String disclaimer;
   final bool isDemo;
+
+  /// Kode paket program, misalnya `spekta`. Kosong untuk program reguler.
+  final String? packageCode;
+
+  /// Uang muka anjuran paket. SPEKTA memakai 20% dari OTR, dan angka inilah
+  /// yang diisikan otomatis ke form alih-alih DP minimum.
+  final int? recommendedDpAmount;
+
+  bool get isSpekta => packageCode == 'spekta';
+
+  /// Uang muka awal yang ditawarkan ke pelanggan untuk program ini.
+  int get suggestedDpAmount => recommendedDpAmount ?? minimumDpAmount;
 
   String get vehicleLabel {
     final year = modelYear == null ? '' : ' $modelYear';
@@ -147,6 +161,8 @@ class CreditProgram {
       ),
       disclaimer: _requiredString(json['disclaimer'], 'disclaimer'),
       isDemo: json['is_demo'] == true,
+      packageCode: json['package_code']?.toString(),
+      recommendedDpAmount: _nullableInt(json['recommended_dp_amount']),
     );
   }
 }

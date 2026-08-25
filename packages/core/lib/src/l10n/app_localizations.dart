@@ -3416,6 +3416,18 @@ abstract class AppLocalizations {
   /// **'Program menentukan harga OTR, tenor, bunga, dan biaya.'**
   String get creditProgramHelper;
 
+  /// No description provided for @creditSpektaBadge.
+  ///
+  /// In id, this message translates to:
+  /// **'SPEKTA DP 20%'**
+  String get creditSpektaBadge;
+
+  /// No description provided for @creditRecommendedDp.
+  ///
+  /// In id, this message translates to:
+  /// **'DP anjuran paket'**
+  String get creditRecommendedDp;
+
   /// No description provided for @creditProgramName.
   ///
   /// In id, this message translates to:
