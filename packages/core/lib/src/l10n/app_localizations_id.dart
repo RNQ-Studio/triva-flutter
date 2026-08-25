@@ -899,6 +899,27 @@ class AppLocalizationsId extends AppLocalizations {
   String get benefitCheckRecheck => 'Periksa nomor rangka lain';
 
   @override
+  String get promoSectionTitle => 'Promo bulan ini';
+
+  @override
+  String get promoPopupCta => 'Lihat promo';
+
+  @override
+  String get promoPopupDismiss => 'Nanti saja';
+
+  @override
+  String get promoCategorySales => 'Sales';
+
+  @override
+  String get promoCategoryServiceGr => 'Servis Berkala';
+
+  @override
+  String get promoCategoryServiceBp => 'Body & Paint';
+
+  @override
+  String get promoCategoryOtoxpert => 'OtoXpert';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

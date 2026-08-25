@@ -1730,6 +1730,48 @@ abstract class AppLocalizations {
   /// **'Periksa nomor rangka lain'**
   String get benefitCheckRecheck;
 
+  /// No description provided for @promoSectionTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Promo bulan ini'**
+  String get promoSectionTitle;
+
+  /// No description provided for @promoPopupCta.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat promo'**
+  String get promoPopupCta;
+
+  /// No description provided for @promoPopupDismiss.
+  ///
+  /// In id, this message translates to:
+  /// **'Nanti saja'**
+  String get promoPopupDismiss;
+
+  /// No description provided for @promoCategorySales.
+  ///
+  /// In id, this message translates to:
+  /// **'Sales'**
+  String get promoCategorySales;
+
+  /// No description provided for @promoCategoryServiceGr.
+  ///
+  /// In id, this message translates to:
+  /// **'Servis Berkala'**
+  String get promoCategoryServiceGr;
+
+  /// No description provided for @promoCategoryServiceBp.
+  ///
+  /// In id, this message translates to:
+  /// **'Body & Paint'**
+  String get promoCategoryServiceBp;
+
+  /// No description provided for @promoCategoryOtoxpert.
+  ///
+  /// In id, this message translates to:
+  /// **'OtoXpert'**
+  String get promoCategoryOtoxpert;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

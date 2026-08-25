@@ -904,6 +904,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get benefitCheckRecheck => 'Check another chassis number';
 
   @override
+  String get promoSectionTitle => 'This month\'s promos';
+
+  @override
+  String get promoPopupCta => 'See the promo';
+
+  @override
+  String get promoPopupDismiss => 'Maybe later';
+
+  @override
+  String get promoCategorySales => 'Sales';
+
+  @override
+  String get promoCategoryServiceGr => 'Scheduled service';
+
+  @override
+  String get promoCategoryServiceBp => 'Body & Paint';
+
+  @override
+  String get promoCategoryOtoxpert => 'OtoXpert';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override

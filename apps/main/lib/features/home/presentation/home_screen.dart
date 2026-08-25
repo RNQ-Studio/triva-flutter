@@ -13,14 +13,38 @@ import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
 import '../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../credit/presentation/credit_paths.dart';
+import '../../promotion/domain/promotion_models.dart';
+import '../../promotion/presentation/promotion_controller.dart';
+import '../../promotion/presentation/promotion_widgets.dart';
 import '../../vehicle_benefit/presentation/vehicle_benefit_paths.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool _popupHandled = false;
+
+  /// Menampilkan pop-up promo unggulan sekali per periode tayang, sesuai
+  /// permintaan notulensi 19 Agustus 2026 ("Update per Month").
+  Future<void> _maybeShowPromotionPopup(List<Promotion> promotions) async {
+    if (_popupHandled) return;
+    _popupHandled = true;
+    final featured = promotions.where((promo) => promo.showAsPopup).firstOrNull;
+    if (featured == null) return;
+    final seen = ref.read(seenPromotionPopupsProvider);
+    if (await seen.hasSeen(featured.periodKey)) return;
+    if (!mounted) return;
+    await showPromotionPopup(context, promotion: featured);
+    await seen.markSeen(featured.periodKey);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final auth = ref.watch(authProvider);
     final user = auth is AuthAuthenticated ? auth.user : null;
@@ -31,6 +55,13 @@ class HomeScreen extends ConsumerWidget {
     );
     final serviceDraft = ref.watch(toyotaServiceFlowProvider).value?.draft;
     ref.watch(toyotaServiceOptionsProvider);
+    final promotions =
+        ref.watch(runningPromotionsProvider).value ?? const <Promotion>[];
+    if (promotions.isNotEmpty && !_popupHandled) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _maybeShowPromotionPopup(promotions),
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -73,6 +104,12 @@ class HomeScreen extends ConsumerWidget {
                                           .onSurfaceVariant,
                                     ),
                           ),
+                          if (promotions.isNotEmpty) ...[
+                            const SizedBox(height: AppSpacing.large),
+                            _SectionHeading(title: l10n.promoSectionTitle),
+                            const SizedBox(height: AppSpacing.medium),
+                            PromotionCarousel(promotions: promotions),
+                          ],
                           const SizedBox(height: AppSpacing.xLarge),
                           _AppraisalHero(
                             onTap: () => context.push(startPath),

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:triva_app/branding/partner_brands.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
+import 'package:triva_app/features/promotion/domain/promotion_models.dart';
+import 'package:triva_app/features/promotion/presentation/promotion_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 
 class _FakeAuthNotifier extends AuthNotifier {
@@ -23,6 +25,7 @@ void main() {
     required AuthState authState,
     double textScale = 1.3,
     bool vehicleLoadFails = false,
+    List<Promotion> promotions = const [],
   }) async {
     tester.view
       ..physicalSize = const Size(360, 690)
@@ -39,6 +42,7 @@ void main() {
             if (vehicleLoadFails) throw StateError('offline');
             return const [];
           }),
+          runningPromotionsProvider.overrideWith((ref) async => promotions),
         ],
         child: MaterialApp(
           theme: theme,
@@ -169,6 +173,55 @@ void main() {
         PartnerBrand.taf,
       ]),
     );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('running promos appear as a carousel on the home page',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      promotions: const [
+        Promotion(
+          id: 'promo-1',
+          category: 'sales',
+          categoryLabel: 'Sales',
+          title: 'Tukar tambah Agustus',
+          subtitle: 'Bonus aksesori senilai 5 juta',
+          startsOn: '2026-08-01',
+          endsOn: '2026-08-31',
+        ),
+        Promotion(
+          id: 'promo-2',
+          category: 'otoxpert',
+          categoryLabel: 'OtoXpert',
+          title: 'Servis hemat OtoXpert',
+          startsOn: '2026-08-01',
+          endsOn: '2026-08-31',
+        ),
+      ],
+    );
+    await tester.pump();
+
+    expect(find.text('Promo bulan ini'), findsOneWidget);
+    expect(find.text('Tukar tambah Agustus'), findsOneWidget);
+    expect(find.text('Sales'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the home page stays clean when no promo is running',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+    );
+    await tester.pump();
+
+    expect(find.text('Promo bulan ini'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
