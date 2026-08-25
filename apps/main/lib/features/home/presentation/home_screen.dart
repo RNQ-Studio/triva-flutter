@@ -467,9 +467,12 @@ class _ServiceRow extends StatelessWidget {
 class _PartnerStrip extends StatelessWidget {
   const _PartnerStrip();
 
+  // Notulensi 19 Agustus 2026 meminta kelima mitra tampil di halaman depan:
+  // Auto2000 Kertajaya, OtoXpert, OLX, TAFS, dan ACC.
   static const _brands = [
     PartnerBrand.auto2000,
     PartnerBrand.otoxpert,
+    PartnerBrand.olx,
     PartnerBrand.acc,
     PartnerBrand.taf,
   ];

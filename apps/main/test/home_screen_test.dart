@@ -133,6 +133,45 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('partner strip carries all five partners including OLX',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+    );
+
+    final strip = find.ancestor(
+      of: find.text('Mitra resmi'),
+      matching: find.byType(Column),
+    );
+    await tester.scrollUntilVisible(
+      find.text('Mitra resmi'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+
+    final brands = tester
+        .widgetList<PartnerLogo>(
+          find.descendant(of: strip.first, matching: find.byType(PartnerLogo)),
+        )
+        .map((logo) => logo.brand)
+        .toSet();
+
+    expect(
+      brands,
+      containsAll(<PartnerBrand>[
+        PartnerBrand.auto2000,
+        PartnerBrand.otoxpert,
+        PartnerBrand.olx,
+        PartnerBrand.acc,
+        PartnerBrand.taf,
+      ]),
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('vehicle API failure is not misrepresented as an empty garage',
       (tester) async {
     await pumpHome(
