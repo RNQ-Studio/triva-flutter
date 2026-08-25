@@ -925,6 +925,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get promoCategoryOtoxpert => 'OtoXpert';
 
   @override
+  String get maintenanceEstimateTitle => 'Service cost estimate';
+
+  @override
+  String get maintenanceEstimateSubtitle =>
+      'Estimate your next scheduled service before booking.';
+
+  @override
+  String get maintenanceEstimateMileage => 'Current mileage';
+
+  @override
+  String get maintenanceEstimateModel => 'Vehicle model';
+
+  @override
+  String get maintenanceEstimateSubmit => 'Calculate estimate';
+
+  @override
+  String get maintenanceEstimateParts => 'Parts cost';
+
+  @override
+  String get maintenanceEstimateLabor => 'Labour cost';
+
+  @override
+  String get maintenanceEstimateTotal => 'Estimated total';
+
+  @override
+  String get maintenanceEstimateIncludes => 'What is covered';
+
+  @override
+  String maintenanceEstimateDuration(int min, int max) {
+    return 'Around $min-$max minutes of work';
+  }
+
+  @override
+  String get maintenanceEstimateEmpty =>
+      'Service package data is not available yet. Contact Auto2000 Kertajaya for an estimate.';
+
+  @override
+  String get maintenanceEstimateOtherPackages => 'Other packages';
+
+  @override
+  String get maintenanceEstimateBook => 'Book a Toyota service';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override

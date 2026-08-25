@@ -1772,6 +1772,84 @@ abstract class AppLocalizations {
   /// **'OtoXpert'**
   String get promoCategoryOtoxpert;
 
+  /// No description provided for @maintenanceEstimateTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi biaya servis'**
+  String get maintenanceEstimateTitle;
+
+  /// No description provided for @maintenanceEstimateSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkirakan biaya servis berkala berikutnya sebelum booking.'**
+  String get maintenanceEstimateSubtitle;
+
+  /// No description provided for @maintenanceEstimateMileage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kilometer saat ini'**
+  String get maintenanceEstimateMileage;
+
+  /// No description provided for @maintenanceEstimateModel.
+  ///
+  /// In id, this message translates to:
+  /// **'Model kendaraan'**
+  String get maintenanceEstimateModel;
+
+  /// No description provided for @maintenanceEstimateSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Hitung perkiraan'**
+  String get maintenanceEstimateSubmit;
+
+  /// No description provided for @maintenanceEstimateParts.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya part'**
+  String get maintenanceEstimateParts;
+
+  /// No description provided for @maintenanceEstimateLabor.
+  ///
+  /// In id, this message translates to:
+  /// **'Biaya jasa'**
+  String get maintenanceEstimateLabor;
+
+  /// No description provided for @maintenanceEstimateTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkiraan total'**
+  String get maintenanceEstimateTotal;
+
+  /// No description provided for @maintenanceEstimateIncludes.
+  ///
+  /// In id, this message translates to:
+  /// **'Cakupan pekerjaan'**
+  String get maintenanceEstimateIncludes;
+
+  /// No description provided for @maintenanceEstimateDuration.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkiraan pengerjaan {min}-{max} menit'**
+  String maintenanceEstimateDuration(int min, int max);
+
+  /// No description provided for @maintenanceEstimateEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Data paket servis belum tersedia. Hubungi Auto2000 Kertajaya untuk perkiraan biaya.'**
+  String get maintenanceEstimateEmpty;
+
+  /// No description provided for @maintenanceEstimateOtherPackages.
+  ///
+  /// In id, this message translates to:
+  /// **'Paket lainnya'**
+  String get maintenanceEstimateOtherPackages;
+
+  /// No description provided for @maintenanceEstimateBook.
+  ///
+  /// In id, this message translates to:
+  /// **'Booking servis Toyota'**
+  String get maintenanceEstimateBook;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

@@ -920,6 +920,49 @@ class AppLocalizationsId extends AppLocalizations {
   String get promoCategoryOtoxpert => 'OtoXpert';
 
   @override
+  String get maintenanceEstimateTitle => 'Simulasi biaya servis';
+
+  @override
+  String get maintenanceEstimateSubtitle =>
+      'Perkirakan biaya servis berkala berikutnya sebelum booking.';
+
+  @override
+  String get maintenanceEstimateMileage => 'Kilometer saat ini';
+
+  @override
+  String get maintenanceEstimateModel => 'Model kendaraan';
+
+  @override
+  String get maintenanceEstimateSubmit => 'Hitung perkiraan';
+
+  @override
+  String get maintenanceEstimateParts => 'Biaya part';
+
+  @override
+  String get maintenanceEstimateLabor => 'Biaya jasa';
+
+  @override
+  String get maintenanceEstimateTotal => 'Perkiraan total';
+
+  @override
+  String get maintenanceEstimateIncludes => 'Cakupan pekerjaan';
+
+  @override
+  String maintenanceEstimateDuration(int min, int max) {
+    return 'Perkiraan pengerjaan $min-$max menit';
+  }
+
+  @override
+  String get maintenanceEstimateEmpty =>
+      'Data paket servis belum tersedia. Hubungi Auto2000 Kertajaya untuk perkiraan biaya.';
+
+  @override
+  String get maintenanceEstimateOtherPackages => 'Paket lainnya';
+
+  @override
+  String get maintenanceEstimateBook => 'Booking servis Toyota';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

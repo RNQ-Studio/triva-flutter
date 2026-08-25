@@ -16,6 +16,7 @@ import '../../credit/presentation/credit_paths.dart';
 import '../../promotion/domain/promotion_models.dart';
 import '../../promotion/presentation/promotion_controller.dart';
 import '../../promotion/presentation/promotion_widgets.dart';
+import '../../maintenance_estimate/presentation/maintenance_estimate_paths.dart';
 import '../../vehicle_benefit/presentation/vehicle_benefit_paths.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
 
@@ -115,8 +116,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             onTap: () => context.push(startPath),
                           ),
                           const SizedBox(height: AppSpacing.medium),
-                          _BenefitCheckTile(
+                          _ToolTile(
+                            icon: Icons.pin_outlined,
+                            title: l10n.benefitCheckTitle,
+                            description: l10n.benefitCheckSubtitle,
                             onTap: () => context.push(vehicleBenefitCheckPath),
+                          ),
+                          const SizedBox(height: AppSpacing.medium),
+                          _ToolTile(
+                            icon: Icons.receipt_long_outlined,
+                            title: l10n.maintenanceEstimateTitle,
+                            description: l10n.maintenanceEstimateSubtitle,
+                            onTap: () => context.push(maintenanceEstimatePath),
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
                           _SectionHeading(title: l10n.homeServicesTitle),
@@ -211,17 +222,24 @@ class _Header extends StatelessWidget {
   }
 }
 
-/// Pintu masuk pemeriksaan mandiri No. Rangka. Notulensi 19 Agustus 2026
-/// meminta tautan ini ada di halaman depan, karena hasilnya menentukan
-/// pelanggan diarahkan ke Auto2000 atau OtoXpert.
-class _BenefitCheckTile extends StatelessWidget {
-  const _BenefitCheckTile({required this.onTap});
+/// Pintu masuk alat bantu mandiri di halaman depan: cek No. Rangka dan
+/// simulasi biaya servis. Notulensi 19 Agustus 2026 meminta keduanya tersedia
+/// sebelum pelanggan memutuskan booking.
+class _ToolTile extends StatelessWidget {
+  const _ToolTile({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
 
+  final IconData icon;
+  final String title;
+  final String description;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
     return Material(
       color: colors.surface,
@@ -238,10 +256,7 @@ class _BenefitCheckTile extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundColor: colors.primaryContainer,
-                child: Icon(
-                  Icons.pin_outlined,
-                  color: colors.onPrimaryContainer,
-                ),
+                child: Icon(icon, color: colors.onPrimaryContainer),
               ),
               const SizedBox(width: AppSpacing.medium),
               Expanded(
@@ -250,14 +265,14 @@ class _BenefitCheckTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      l10n.benefitCheckTitle,
+                      title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
                     const SizedBox(height: AppSpacing.xSmall),
                     Text(
-                      l10n.benefitCheckSubtitle,
+                      description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
