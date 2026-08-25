@@ -3,6 +3,7 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:triva_app/branding/partner_brands.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 
@@ -94,6 +95,41 @@ void main() {
     );
 
     expect(find.text('Halo, Ramadhan'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('credit simulation row carries both financing partner logos',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+    );
+
+    List<PartnerBrand> brandsOfRow(String title) {
+      final row = find
+          .ancestor(of: find.text(title), matching: find.byType(InkWell))
+          .first;
+      return tester
+          .widgetList<PartnerLogo>(
+            find.descendant(of: row, matching: find.byType(PartnerLogo)),
+          )
+          .map((logo) => logo.brand)
+          .toList();
+    }
+
+    expect(
+      brandsOfRow('Simulasi kredit'),
+      containsAllInOrder(<PartnerBrand>[PartnerBrand.acc, PartnerBrand.taf]),
+    );
+    // Mitra ganda hanya untuk simulasi kredit; layanan lain tetap satu logo.
+    expect(brandsOfRow('Booking servis Toyota'),
+        <PartnerBrand>[PartnerBrand.auto2000]);
+    expect(
+        brandsOfRow('Booking OtoXpert'), <PartnerBrand>[PartnerBrand.otoxpert]);
+    expect(brandsOfRow('Estimasi Body & Paint'),
+        <PartnerBrand>[PartnerBrand.auto2000]);
     expect(tester.takeException(), isNull);
   });
 

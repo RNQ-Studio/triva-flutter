@@ -28,7 +28,9 @@ Dipakai beranda melalui `PartnerBrand` di
 - `otoxpert.png`: jaringan perawatan kendaraan non-Toyota. Dirender dari
   vektor resmi `https://otoxpert.co.id/front/assets/images/logo-otoxpert.svg`.
 - `acc.png`: mitra pembiayaan pada baris simulasi kredit.
-- `taf.png`: mitra pembiayaan pada strip mitra.
+- `taf.png`: mitra pembiayaan pada strip mitra dan, berdampingan dengan
+  `acc.png`, pada baris simulasi kredit — programnya memang datang dari kedua
+  mitra, jadi barisnya memakai `PartnerLogoPlate.secondaryBrand`.
 - `olx.png`: sumber pembanding harga pada hero appraisal.
 
 Semua lockup mitra hanya dipangkas margin kosongnya dan diskalakan agar sisi

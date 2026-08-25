@@ -337,7 +337,8 @@ class _ServiceList extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     // Setiap layanan lanjutan dijalankan oleh mitra, jadi logo mitralah yang
     // menjadi penanda barisnya. Auto2000 muncul dua kali karena memang
-    // mengoperasikan servis berkala sekaligus Body & Paint.
+    // mengoperasikan servis berkala sekaligus Body & Paint, dan simulasi
+    // kredit membawa dua logo karena programnya berasal dari ACC maupun TAF.
     final services = <_ServiceEntry>[
       _ServiceEntry(
         brand: PartnerBrand.auto2000,
@@ -353,6 +354,7 @@ class _ServiceList extends StatelessWidget {
       ),
       _ServiceEntry(
         brand: PartnerBrand.acc,
+        secondaryBrand: PartnerBrand.taf,
         title: l10n.serviceCreditTitle,
         description: l10n.serviceCreditDescription,
         onTap: onCredit,
@@ -383,9 +385,15 @@ class _ServiceEntry {
     required this.title,
     required this.description,
     required this.onTap,
+    this.secondaryBrand,
   });
 
   final PartnerBrand brand;
+
+  /// Mitra kedua bila layanannya dijalankan bersama, seperti simulasi kredit
+  /// yang programnya datang dari ACC dan TAF.
+  final PartnerBrand? secondaryBrand;
+
   final String title;
   final String description;
   final VoidCallback onTap;
@@ -412,7 +420,10 @@ class _ServiceRow extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.medium),
           child: Row(
             children: [
-              PartnerLogoPlate(brand: entry.brand),
+              PartnerLogoPlate(
+                brand: entry.brand,
+                secondaryBrand: entry.secondaryBrand,
+              ),
               const SizedBox(width: AppSpacing.medium),
               Expanded(
                 child: Column(

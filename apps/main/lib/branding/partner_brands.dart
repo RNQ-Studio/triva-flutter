@@ -106,20 +106,35 @@ class PartnerLogo extends StatelessWidget {
 }
 
 /// Kartu putih bergaris rambut sebagai dudukan netral untuk logo mitra.
+///
+/// Satu layanan bisa dijalankan lebih dari satu mitra — simulasi kredit
+/// memakai ACC sekaligus TAF. Untuk kasus itu isi [secondaryBrand]: kedua
+/// lockup berbagi satu kartu berukuran sama, sehingga baris layanan tetap
+/// sejajar dengan baris bermitra tunggal.
 class PartnerLogoPlate extends StatelessWidget {
   const PartnerLogoPlate({
     super.key,
     required this.brand,
+    this.secondaryBrand,
     this.width = 92,
     this.height = 60,
   });
 
   final PartnerBrand brand;
+
+  /// Mitra kedua pada layanan yang dijalankan bersama. `null` untuk layanan
+  /// bermitra tunggal.
+  final PartnerBrand? secondaryBrand;
+
   final double width;
   final double height;
 
   @override
   Widget build(BuildContext context) {
+    final secondary = secondaryBrand;
+    final boxHeight = height - AppSpacing.small;
+    final boxWidth = width - AppSpacing.large;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
@@ -131,11 +146,36 @@ class PartnerLogoPlate extends StatelessWidget {
           horizontal: AppSpacing.small,
           vertical: AppSpacing.xSmall,
         ),
-        child: PartnerLogo(
-          brand: brand,
-          boxHeight: height - AppSpacing.small,
-          boxWidth: width - AppSpacing.large,
-        ),
+        child: secondary == null
+            ? PartnerLogo(
+                brand: brand,
+                boxHeight: boxHeight,
+                boxWidth: boxWidth,
+              )
+            // Lebar dikunci di sini karena dudukan mitra tunggal juga
+            // dikunci oleh `boxWidth`-nya sendiri; tanpa ini baris layanan
+            // menerima lebar tak hingga dan `Expanded` tidak punya acuan.
+            : SizedBox(
+                width: boxWidth,
+                child: Row(
+                  children: [
+                    // Lockup tegak seperti ACC hanya butuh sedikit lebar,
+                    // sedangkan wordmark melebar seperti TAF butuh lebih —
+                    // bagi ruangnya menurut bentuk supaya bobot optiknya
+                    // setara.
+                    Expanded(
+                      flex: 4,
+                      child: PartnerLogo(brand: brand, boxHeight: boxHeight),
+                    ),
+                    const SizedBox(width: AppSpacing.small),
+                    Expanded(
+                      flex: 5,
+                      child:
+                          PartnerLogo(brand: secondary, boxHeight: boxHeight),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
