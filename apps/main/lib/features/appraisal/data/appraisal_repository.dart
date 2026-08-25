@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../domain/appraisal_models.dart';
 
@@ -127,15 +129,17 @@ class AppraisalRepository {
     return AppraisalData.fromJson(_data(response));
   }
 
+  /// Mengunggah dari byte, bukan dari jalur berkas, karena di browser foto
+  /// pilihan pelanggan tidak pernah berupa berkas yang bisa dibuka.
   Future<String> uploadPhoto(
-    String filePath, {
+    Uint8List bytes, {
+    required String filename,
     void Function(double progress)? onProgress,
   }) async {
-    final filename = filePath.split(RegExp(r'[\\/]')).last;
     final response = await _dio.post<dynamic>(
       'v1/assets/upload',
       data: FormData.fromMap({
-        'file': await MultipartFile.fromFile(filePath, filename: filename),
+        'file': MultipartFile.fromBytes(bytes, filename: filename),
         'type': 'appraisal-photo',
         'is_protected': true,
       }),
@@ -195,13 +199,22 @@ class AppraisalRepository {
     return AppraisalData.fromJson(_data(response));
   }
 
+  /// Menerima `XFile` langsung, bukan jalur berkas, supaya penggantian foto
+  /// yang ditolak juga bekerja di browser.
   Future<AppraisalData> replaceRejectedPhoto({
     required String appraisalId,
     required String angle,
-    required String filePath,
+    required XFile photo,
     void Function(double progress)? onProgress,
   }) async {
-    final assetId = await uploadPhoto(filePath, onProgress: onProgress);
+    final extension = photo.name.contains('.')
+        ? photo.name.substring(photo.name.lastIndexOf('.')).toLowerCase()
+        : '.jpg';
+    final assetId = await uploadPhoto(
+      await photo.readAsBytes(),
+      filename: '$angle$extension',
+      onProgress: onProgress,
+    );
     return attachPhotos(appraisalId, {angle: assetId});
   }
 

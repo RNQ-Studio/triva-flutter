@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:core/core.dart';
@@ -6,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
+import '../data/appraisal_photo_store.dart';
 import '../data/appraisal_repository.dart';
 import '../domain/appraisal_models.dart';
 
@@ -91,8 +90,16 @@ class AppraisalFlowState {
       );
 }
 
+/// Penyimpanan foto dipisah per platform: perangkat menyalin berkas,
+/// browser menahan byte-nya di memori.
+final appraisalPhotoStoreProvider = Provider<AppraisalPhotoStore>(
+  (ref) => createAppraisalPhotoStore(),
+);
+
 class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
   AppraisalRepository get _repository => ref.read(appraisalRepositoryProvider);
+
+  AppraisalPhotoStore get _photoStore => ref.read(appraisalPhotoStoreProvider);
 
   @override
   Future<AppraisalFlowState> build() async {
@@ -214,23 +221,15 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     final current = state.value;
     if (current == null) return;
 
-    final directory = await _scopedPhotoDirectory();
-    await directory.create(recursive: true);
-    final extension = photo.name.contains('.')
-        ? photo.name.substring(photo.name.lastIndexOf('.')).toLowerCase()
-        : '.jpg';
-    final target = File(
-      '${directory.path}${Platform.pathSeparator}$angle$extension',
+    final path = await _photoStore.save(
+      owner: _photoOwner,
+      angle: angle,
+      photo: photo,
+      previousPath: current.draft.photoPaths[angle],
     );
-    final previousPath = current.draft.photoPaths[angle];
-    if (previousPath != null && previousPath != target.path) {
-      final previous = File(previousPath);
-      if (await previous.exists()) await previous.delete();
-    }
-    await File(photo.path).copy(target.path);
 
     final paths = Map<String, String>.from(current.draft.photoPaths)
-      ..[angle] = target.path;
+      ..[angle] = path;
     final assetIds = Map<String, String>.from(current.draft.assetIds)
       ..remove(angle);
     await _setDraft(
@@ -246,7 +245,7 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     for (final angle in appraisalPhotoAngles) {
       if (draft.assetIds.containsKey(angle)) continue;
       final path = draft.photoPaths[angle];
-      if (path == null || !await File(path).exists()) {
+      if (path == null || !await _photoStore.exists(path)) {
         missingLocalPhotos.add(angle);
       }
     }
@@ -343,7 +342,8 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
         if (assetIds.containsKey(angle)) continue;
         final path = draft.photoPaths[angle]!;
         final assetId = await _repository.uploadPhoto(
-          path,
+          await _photoStore.readBytes(path),
+          filename: _photoFilename(angle, path),
           onProgress: (value) {
             final progress = (index + value) / appraisalPhotoAngles.length;
             final latest = state.value;
@@ -447,38 +447,37 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
 
   Future<void> _removeUnscopedLegacyPhotos() async {
     try {
-      final root = await getApplicationDocumentsDirectory();
-      final directory = Directory(
-        '${root.path}${Platform.pathSeparator}triva_appraisal_draft',
-      );
-      if (!await directory.exists()) return;
-      await for (final entity in directory.list(followLinks: false)) {
-        // New account-scoped photos live in subdirectories. Only remove old
-        // files placed directly in the shared legacy directory.
-        if (entity is File) await entity.delete();
-      }
+      await _photoStore.purgeUnscopedLegacyPhotos();
     } on Object {
       // A stale file must not make the flow unusable; scoped writes below still
       // prevent it from being selected by another account.
     }
   }
 
-  Future<Directory> _scopedPhotoDirectory() async {
-    final root = await getApplicationDocumentsDirectory();
+  String get _photoOwner {
     final auth = ref.read(authProvider);
-    final owner = auth is AuthAuthenticated ? auth.user.id : 'anonymous';
-    final safeOwner = owner.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
-    return Directory(
-      '${root.path}${Platform.pathSeparator}triva_appraisal_draft'
-      '${Platform.pathSeparator}$safeOwner',
-    );
+    return auth is AuthAuthenticated ? auth.user.id : 'anonymous';
+  }
+
+  /// Nama berkas unggahan diturunkan dari sudut foto, bukan dari jalurnya,
+  /// karena URL blob di browser tidak membawa nama maupun ekstensi.
+  String _photoFilename(String angle, String path) {
+    final candidate = path.split(RegExp(r'[\\/]')).last;
+    final extension = candidate.contains('.')
+        ? candidate.substring(candidate.lastIndexOf('.')).toLowerCase()
+        : '';
+    final safeExtension =
+        RegExp(r'^\.(jpg|jpeg|png|webp|heic)$').hasMatch(extension)
+            ? extension
+            : '.jpg';
+
+    return '$angle$safeExtension';
   }
 
   Future<void> _clearLocalDraft() async {
     await _repository.clearDraft();
     try {
-      final directory = await _scopedPhotoDirectory();
-      if (await directory.exists()) await directory.delete(recursive: true);
+      await _photoStore.clear(_photoOwner);
     } on Object {
       // The storage record is authoritative. Orphan cleanup can retry without
       // turning a successful submit into a visible failure.

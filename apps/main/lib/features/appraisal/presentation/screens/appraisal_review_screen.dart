@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +7,7 @@ import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
 import '../widgets/appraisal_flow_scaffold.dart';
+import '../widgets/appraisal_photo_preview.dart';
 
 class AppraisalReviewScreen extends ConsumerStatefulWidget {
   const AppraisalReviewScreen({super.key});
@@ -117,8 +116,8 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
                         borderRadius: AppRadius.small,
                         child: AspectRatio(
                           aspectRatio: 1.25,
-                          child: Image.file(
-                            File(path),
+                          child: Image(
+                            image: appraisalPhotoProvider(path),
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) =>
                                 const Icon(Icons.broken_image_outlined),

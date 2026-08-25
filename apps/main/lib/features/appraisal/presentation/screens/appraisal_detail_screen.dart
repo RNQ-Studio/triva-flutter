@@ -65,7 +65,7 @@ class _AppraisalDetailScreenState extends ConsumerState<AppraisalDetailScreen> {
       await ref.read(appraisalRepositoryProvider).replaceRejectedPhoto(
             appraisalId: widget.appraisalId,
             angle: photo.angle,
-            filePath: image.path,
+            photo: image,
           );
       ref.invalidate(appraisalDetailProvider(widget.appraisalId));
       ref.invalidate(appraisalsProvider);
