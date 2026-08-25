@@ -122,6 +122,8 @@ void main() {
       majorAccidentHistory: 'no',
       serviceHistory: 'complete',
       ownership: 'first',
+      engineCondition: 'normal',
+      tyreCondition: 'normal',
       photoPaths: photoPaths,
     );
     final repository = _RetryRepository();

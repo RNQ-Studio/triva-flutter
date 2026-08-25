@@ -300,6 +300,8 @@ class AppraisalConditionData {
     required this.serviceHistory,
     required this.ownership,
     required this.conditionPercentage,
+    required this.engineCondition,
+    required this.tyreCondition,
   });
 
   final String taxStatus;
@@ -308,6 +310,8 @@ class AppraisalConditionData {
   final String serviceHistory;
   final String ownership;
   final int conditionPercentage;
+  final String engineCondition;
+  final String tyreCondition;
 
   factory AppraisalConditionData.fromJson(Map<String, dynamic> json) =>
       AppraisalConditionData(
@@ -320,6 +324,8 @@ class AppraisalConditionData {
             ((json['condition_percentage'] as num?)?.toInt() ?? 0)
                 .clamp(0, 100)
                 .toInt(),
+        engineCondition: json['engine_condition']?.toString() ?? '',
+        tyreCondition: json['tyre_condition']?.toString() ?? '',
       );
 }
 
@@ -456,6 +462,8 @@ class AppraisalDraft {
     this.serviceHistory = '',
     this.ownership = '',
     this.conditionPercentage = 90,
+    this.engineCondition = '',
+    this.tyreCondition = '',
     this.photoPaths = const {},
     this.assetIds = const {},
     this.vehicleId,
@@ -487,6 +495,8 @@ class AppraisalDraft {
   final String serviceHistory;
   final String ownership;
   final int conditionPercentage;
+  final String engineCondition;
+  final String tyreCondition;
   final Map<String, String> photoPaths;
   final Map<String, String> assetIds;
   final String? vehicleId;
@@ -517,6 +527,8 @@ class AppraisalDraft {
       majorAccidentHistory.isNotEmpty &&
       serviceHistory.isNotEmpty &&
       ownership.isNotEmpty &&
+      engineCondition.isNotEmpty &&
+      tyreCondition.isNotEmpty &&
       conditionPercentage >= 0 &&
       conditionPercentage <= 100;
   bool get hasAllPhotos => appraisalPhotoAngles.every(photoPaths.containsKey);
@@ -544,6 +556,8 @@ class AppraisalDraft {
     String? serviceHistory,
     String? ownership,
     int? conditionPercentage,
+    String? engineCondition,
+    String? tyreCondition,
     Map<String, String>? photoPaths,
     Map<String, String>? assetIds,
     String? vehicleId,
@@ -577,6 +591,8 @@ class AppraisalDraft {
         serviceHistory: serviceHistory ?? this.serviceHistory,
         ownership: ownership ?? this.ownership,
         conditionPercentage: conditionPercentage ?? this.conditionPercentage,
+        engineCondition: engineCondition ?? this.engineCondition,
+        tyreCondition: tyreCondition ?? this.tyreCondition,
         photoPaths: photoPaths ?? this.photoPaths,
         assetIds: assetIds ?? this.assetIds,
         vehicleId: vehicleId ?? this.vehicleId,
@@ -618,6 +634,8 @@ class AppraisalDraft {
             ((json['condition_percentage'] as num?)?.toInt() ?? 90)
                 .clamp(0, 100)
                 .toInt(),
+        engineCondition: json['engine_condition']?.toString() ?? '',
+        tyreCondition: json['tyre_condition']?.toString() ?? '',
         photoPaths: Map<String, String>.from(
           json['photo_paths'] as Map<String, dynamic>? ?? const {},
         ),
@@ -656,6 +674,8 @@ class AppraisalDraft {
         'service_history': serviceHistory,
         'ownership': ownership,
         'condition_percentage': conditionPercentage,
+        'engine_condition': engineCondition,
+        'tyre_condition': tyreCondition,
         'photo_paths': photoPaths,
         'asset_ids': assetIds,
         'vehicle_id': vehicleId,
@@ -692,5 +712,7 @@ class AppraisalDraft {
         'service_history': serviceHistory,
         'ownership': ownership,
         'condition_percentage': conditionPercentage,
+        'engine_condition': engineCondition,
+        'tyre_condition': tyreCondition,
       };
 }

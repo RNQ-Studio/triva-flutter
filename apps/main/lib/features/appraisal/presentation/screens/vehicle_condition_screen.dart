@@ -23,6 +23,8 @@ class _VehicleConditionScreenState
   String? _accident;
   String? _service;
   String? _ownership;
+  String? _engine;
+  String? _tyre;
   int _conditionPercentage = 90;
   bool _initialized = false;
   bool _saving = false;
@@ -37,6 +39,8 @@ class _VehicleConditionScreenState
           serviceHistory: _service!,
           ownership: _ownership!,
           conditionPercentage: _conditionPercentage,
+          engineCondition: _engine!,
+          tyreCondition: _tyre!,
         );
     if (mounted) context.push(appraisalPhotosPath);
     if (mounted) setState(() => _saving = false);
@@ -57,6 +61,8 @@ class _VehicleConditionScreenState
           : draft.majorAccidentHistory;
       _service = draft.serviceHistory.isEmpty ? null : draft.serviceHistory;
       _ownership = draft.ownership.isEmpty ? null : draft.ownership;
+      _engine = draft.engineCondition.isEmpty ? null : draft.engineCondition;
+      _tyre = draft.tyreCondition.isEmpty ? null : draft.tyreCondition;
       _conditionPercentage = draft.conditionPercentage;
     }
 
@@ -80,6 +86,26 @@ class _VehicleConditionScreenState
                 },
               ),
               const SizedBox(height: AppSpacing.large),
+              _choice(
+                label: l10n.engineCondition,
+                value: _engine,
+                options: {
+                  'normal': l10n.engineConditionNormal,
+                  'wet': l10n.engineConditionWet,
+                },
+                onChanged: (value) => _engine = value,
+              ),
+              const SizedBox(height: AppSpacing.medium),
+              _choice(
+                label: l10n.tyreCondition,
+                value: _tyre,
+                options: {
+                  'normal': l10n.tyreConditionNormal,
+                  'damaged': l10n.tyreConditionDamaged,
+                },
+                onChanged: (value) => _tyre = value,
+              ),
+              const SizedBox(height: AppSpacing.medium),
               _choice(
                 label: l10n.taxStatus,
                 value: _tax,

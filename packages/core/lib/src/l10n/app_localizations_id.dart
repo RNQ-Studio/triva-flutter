@@ -515,6 +515,24 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get engineCondition => 'Kondisi mesin';
+
+  @override
+  String get engineConditionNormal => 'Normal';
+
+  @override
+  String get engineConditionWet => 'Basah / rembes';
+
+  @override
+  String get tyreCondition => 'Kondisi ban';
+
+  @override
+  String get tyreConditionNormal => 'Normal';
+
+  @override
+  String get tyreConditionDamaged => 'Rusak';
+
+  @override
   String get taxStatus => 'Status pajak';
 
   @override

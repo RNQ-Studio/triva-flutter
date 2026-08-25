@@ -186,6 +186,8 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
     required String serviceHistory,
     required String ownership,
     required int conditionPercentage,
+    required String engineCondition,
+    required String tyreCondition,
   }) =>
       _updateDraft(
         (draft) => draft.copyWith(
@@ -195,6 +197,8 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
           serviceHistory: serviceHistory,
           ownership: ownership,
           conditionPercentage: conditionPercentage,
+          engineCondition: engineCondition,
+          tyreCondition: tyreCondition,
         ),
       );
 

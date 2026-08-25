@@ -249,6 +249,20 @@ class _ResultContent extends StatelessWidget {
         _ => value,
       };
 
+  String _engineConditionLabel(AppLocalizations l10n, String value) =>
+      switch (value) {
+        'normal' => l10n.engineConditionNormal,
+        'wet' => l10n.engineConditionWet,
+        _ => value,
+      };
+
+  String _tyreConditionLabel(AppLocalizations l10n, String value) =>
+      switch (value) {
+        'normal' => l10n.tyreConditionNormal,
+        'damaged' => l10n.tyreConditionDamaged,
+        _ => value,
+      };
+
   String _ownershipLabel(AppLocalizations l10n, String value) =>
       switch (value) {
         'first' => l10n.ownershipFirst,
@@ -512,6 +526,16 @@ class _ResultContent extends StatelessWidget {
                     l10n.ownership,
                     _ownershipLabel(l10n, condition.ownership),
                   ),
+                  if (condition.engineCondition.isNotEmpty)
+                    (
+                      l10n.engineCondition,
+                      _engineConditionLabel(l10n, condition.engineCondition),
+                    ),
+                  if (condition.tyreCondition.isNotEmpty)
+                    (
+                      l10n.tyreCondition,
+                      _tyreConditionLabel(l10n, condition.tyreCondition),
+                    ),
                 ],
               ),
             ],

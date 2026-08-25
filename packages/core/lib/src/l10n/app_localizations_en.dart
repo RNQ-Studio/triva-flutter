@@ -519,6 +519,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get engineCondition => 'Engine condition';
+
+  @override
+  String get engineConditionNormal => 'Normal';
+
+  @override
+  String get engineConditionWet => 'Wet or seeping';
+
+  @override
+  String get tyreCondition => 'Tyre condition';
+
+  @override
+  String get tyreConditionNormal => 'Normal';
+
+  @override
+  String get tyreConditionDamaged => 'Damaged';
+
+  @override
   String get taxStatus => 'Tax status';
 
   @override

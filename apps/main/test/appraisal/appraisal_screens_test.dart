@@ -53,6 +53,8 @@ const _draft = AppraisalDraft(
   serviceHistory: 'complete',
   ownership: 'first',
   conditionPercentage: 90,
+  engineCondition: 'normal',
+  tyreCondition: 'normal',
   photoPaths: {
     'front': 'C:\\missing-front.jpg',
     'rear': 'C:\\missing-rear.jpg',
@@ -177,6 +179,8 @@ final _appraisal = AppraisalData(
     serviceHistory: 'complete',
     ownership: 'first',
     conditionPercentage: 90,
+    engineCondition: 'wet',
+    tyreCondition: 'normal',
   ),
   photos: const [
     AppraisalPhoto(
@@ -666,6 +670,33 @@ void main() {
     final slider = tester.widget<Slider>(find.byType(Slider));
     expect(slider.value, 90);
     expect(find.text('90%'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('condition step asks about the engine and the tyres',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleConditionScreen(),
+      brightness: Brightness.light,
+    );
+
+    expect(find.text('Kondisi mesin'), findsOneWidget);
+    expect(find.text('Kondisi ban'), findsOneWidget);
+
+    final engine = find.ancestor(
+      of: find.text('Kondisi mesin'),
+      matching: find.byType(DropdownButtonFormField<String>),
+    );
+    await tester.ensureVisible(engine);
+    await tester.pumpAndSettle();
+    await tester.tap(engine);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Basah / rembes'), findsOneWidget);
+    await tester.tap(find.text('Basah / rembes').last);
+    await tester.pumpAndSettle();
+
     expect(tester.takeException(), isNull);
   });
 

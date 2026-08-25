@@ -1016,6 +1016,42 @@ abstract class AppLocalizations {
   /// **'{value}%'**
   String conditionPercentageValue(int value);
 
+  /// No description provided for @engineCondition.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi mesin'**
+  String get engineCondition;
+
+  /// No description provided for @engineConditionNormal.
+  ///
+  /// In id, this message translates to:
+  /// **'Normal'**
+  String get engineConditionNormal;
+
+  /// No description provided for @engineConditionWet.
+  ///
+  /// In id, this message translates to:
+  /// **'Basah / rembes'**
+  String get engineConditionWet;
+
+  /// No description provided for @tyreCondition.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi ban'**
+  String get tyreCondition;
+
+  /// No description provided for @tyreConditionNormal.
+  ///
+  /// In id, this message translates to:
+  /// **'Normal'**
+  String get tyreConditionNormal;
+
+  /// No description provided for @tyreConditionDamaged.
+  ///
+  /// In id, this message translates to:
+  /// **'Rusak'**
+  String get tyreConditionDamaged;
+
   /// No description provided for @taxStatus.
   ///
   /// In id, this message translates to:
