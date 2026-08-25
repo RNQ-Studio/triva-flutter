@@ -460,7 +460,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('result labels and values share the same left alignment',
+  testWidgets('result shows one trade-in price without market internals',
       (tester) async {
     await _pump(
       tester,
@@ -468,23 +468,31 @@ void main() {
       brightness: Brightness.light,
     );
 
-    final alignedTexts = [
-      find.text('Rentang harga pasar'),
-      find.textContaining('178.000.000'),
-      find.text('Tingkat keyakinan'),
-      find.text('MEDIUM'),
-      find.text('6 kendaraan pembanding'),
-      find.text('6'),
-      find.text('Data pembanding per'),
-      find.text('28 Juli 2026'),
-      find.text('Sumber data'),
-      find.text('OLX (akses berizin)'),
-    ];
-    final expectedLeft = tester.getTopLeft(alignedTexts.first).dx;
+    // Sales menyampaikan angka tertinggi, jadi itu pula yang dilihat pelanggan.
+    expect(find.text('Rp 176.000.000'), findsOneWidget);
+    expect(find.textContaining('–'), findsNothing);
+    expect(find.textContaining('178.000.000'), findsNothing);
 
-    for (final text in alignedTexts) {
-      expect(tester.getTopLeft(text).dx, closeTo(expectedLeft, 0.01));
+    for (final removed in const [
+      'Rentang harga pasar',
+      'Tingkat keyakinan',
+      '6 kendaraan pembanding',
+      'Data pembanding per',
+      'Sumber data',
+      'Faktor penyesuaian',
+      'Putuskan nanti',
+    ]) {
+      expect(find.text(removed), findsNothing);
     }
+
+    await tester.scrollUntilVisible(
+      find.text('Terima harga'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Terima harga'), findsOneWidget);
+    expect(find.text('Belum cocok'), findsOneWidget);
+    expect(find.text('Putuskan nanti'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

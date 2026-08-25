@@ -762,26 +762,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tradeInEstimate => 'Trade-in estimate';
 
   @override
-  String get marketRange => 'Market price range';
-
-  @override
-  String get confidence => 'Confidence';
-
-  @override
-  String comparableCount(int count) {
-    return '$count comparable vehicles';
-  }
-
-  @override
-  String get marketDataAsOf => 'Comparable data as of';
-
-  @override
-  String get marketDataSources => 'Data sources';
-
-  @override
-  String get appraisalAdjustments => 'Adjustment factors';
-
-  @override
   String validUntil(String date) {
     return 'Valid until $date';
   }
@@ -791,9 +771,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get declinePrice => 'Not a fit';
-
-  @override
-  String get decideLater => 'Decide later';
 
   @override
   String get scheduleInspection => 'Schedule inspection';
@@ -817,10 +794,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get decisionRejectedDescription =>
       'Your vehicle data stays available for a repair estimate.';
-
-  @override
-  String get decisionDeferredMessage =>
-      'The result remains available in My Activity.';
 
   @override
   String get statusDraft => 'Draft';

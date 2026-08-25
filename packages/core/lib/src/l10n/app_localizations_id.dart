@@ -758,26 +758,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get tradeInEstimate => 'Estimasi trade-in';
 
   @override
-  String get marketRange => 'Rentang harga pasar';
-
-  @override
-  String get confidence => 'Tingkat keyakinan';
-
-  @override
-  String comparableCount(int count) {
-    return '$count kendaraan pembanding';
-  }
-
-  @override
-  String get marketDataAsOf => 'Data pembanding per';
-
-  @override
-  String get marketDataSources => 'Sumber data';
-
-  @override
-  String get appraisalAdjustments => 'Faktor penyesuaian';
-
-  @override
   String validUntil(String date) {
     return 'Berlaku hingga $date';
   }
@@ -787,9 +767,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get declinePrice => 'Belum cocok';
-
-  @override
-  String get decideLater => 'Putuskan nanti';
 
   @override
   String get scheduleInspection => 'Jadwalkan inspeksi';
@@ -813,10 +790,6 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get decisionRejectedDescription =>
       'Data kendaraan tetap tersimpan dan dapat dilanjutkan ke estimasi perbaikan.';
-
-  @override
-  String get decisionDeferredMessage =>
-      'Hasil tetap tersedia di Aktivitas Saya.';
 
   @override
   String get statusDraft => 'Draft';

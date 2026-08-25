@@ -70,16 +70,7 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     if (!mounted) return;
     ref.invalidate(appraisalsProvider);
     ref.invalidate(appraisalDetailProvider(widget.appraisalId));
-    if (decision == 'deferred') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.decisionDeferredMessage),
-        ),
-      );
-      context.go(appraisalActivityPath);
-    } else {
-      context.go(appraisalCompletePath(widget.appraisalId, decision));
-    }
+    context.go(appraisalCompletePath(widget.appraisalId, decision));
   }
 
   Future<void> _schedule() async {
@@ -165,7 +156,6 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
                 busy: _busy,
                 onAccept: () => _decide('accepted'),
                 onReject: () => _decide('rejected'),
-                onDefer: () => _decide('deferred'),
                 onSchedule: _schedule,
               );
             },
@@ -193,7 +183,6 @@ class _ResultContent extends StatelessWidget {
     required this.busy,
     required this.onAccept,
     required this.onReject,
-    required this.onDefer,
     required this.onSchedule,
   });
 
@@ -203,7 +192,6 @@ class _ResultContent extends StatelessWidget {
   final bool busy;
   final VoidCallback onAccept;
   final VoidCallback onReject;
-  final VoidCallback onDefer;
   final VoidCallback onSchedule;
 
   String _money(int value) => NumberFormat.currency(
@@ -288,9 +276,6 @@ class _ResultContent extends StatelessWidget {
     final date = result.validUntil == null
         ? '-'
         : DateFormat('d MMMM yyyy', 'id_ID').format(result.validUntil!);
-    final dataAsOf = result.dataAsOf == null
-        ? '-'
-        : DateFormat('d MMMM yyyy', 'id_ID').format(result.dataAsOf!);
     final vehicle = appraisal.vehicle;
     final condition = appraisal.condition;
     final continuation = appraisal.continuation;
@@ -339,9 +324,8 @@ class _ResultContent extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   alignment: AlignmentDirectional.centerStart,
                   child: Text(
-                    '${_money(result.tradeInLow)} – '
-                    '${_money(result.tradeInHigh)}',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    _money(result.tradeInHigh),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: colors.onPrimary,
                           fontWeight: FontWeight.w700,
                         ),
@@ -358,80 +342,6 @@ class _ResultContent extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.medium),
-        Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.large),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _ResultRow(
-                  label: l10n.marketRange,
-                  value:
-                      '${_money(result.marketLow)} – ${_money(result.marketHigh)}',
-                ),
-                const Divider(height: AppSpacing.xLarge),
-                _ResultRow(
-                  label: l10n.confidence,
-                  value: result.confidence.toUpperCase(),
-                ),
-                const Divider(height: AppSpacing.xLarge),
-                _ResultRow(
-                  label: l10n.comparableCount(result.comparableCount),
-                  value: result.comparableCount.toString(),
-                ),
-                const Divider(height: AppSpacing.xLarge),
-                _ResultRow(
-                  label: l10n.marketDataAsOf,
-                  value: dataAsOf,
-                ),
-                if (result.sources.isNotEmpty) ...[
-                  const Divider(height: AppSpacing.xLarge),
-                  _ResultRow(
-                    label: l10n.marketDataSources,
-                    value:
-                        result.sources.map((source) => source.label).join(', '),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        if (result.adjustments.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.medium),
-          Card(
-            margin: EdgeInsets.zero,
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.large),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.appraisalAdjustments,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  const SizedBox(height: AppSpacing.medium),
-                  Wrap(
-                    spacing: AppSpacing.small,
-                    runSpacing: AppSpacing.small,
-                    children: result.adjustments
-                        .map(
-                          (adjustment) => Chip(
-                            avatar: const Icon(
-                              Icons.tune,
-                              size: 16,
-                            ),
-                            label: Text(adjustment.label),
-                          ),
-                        )
-                        .toList(growable: false),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
         const SizedBox(height: AppSpacing.medium),
         Text(
           result.disclaimer,
@@ -553,10 +463,6 @@ class _ResultContent extends StatelessWidget {
           OutlinedButton(
             onPressed: busy ? null : onReject,
             child: Text(l10n.declinePrice),
-          ),
-          TextButton(
-            onPressed: busy ? null : onDefer,
-            child: Text(l10n.decideLater),
           ),
         ] else if (continuationPath != null) ...[
           const SizedBox(height: AppSpacing.xLarge),
@@ -950,29 +856,6 @@ class _PhotoViewer extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ResultRow extends StatelessWidget {
-  const _ResultRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label),
-        const SizedBox(height: AppSpacing.xSmall),
-        Text(
-          value,
-          style: Theme.of(context).textTheme.titleSmall,
-          softWrap: true,
-        ),
-      ],
     );
   }
 }
