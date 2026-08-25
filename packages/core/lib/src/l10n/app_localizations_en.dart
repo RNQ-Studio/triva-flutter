@@ -767,6 +767,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get expectedPriceTitle => 'What price were you hoping for?';
+
+  @override
+  String get expectedPriceDescription =>
+      'Tell us the figure you had in mind for this car. Our team will follow up with you.';
+
+  @override
+  String get expectedPriceLabel => 'Expected price';
+
+  @override
+  String get expectedPriceInvalid =>
+      'Enter an expected price of at least Rp 1,000,000.';
+
+  @override
+  String get expectedPriceSubmit => 'Send expected price';
+
+  @override
+  String get expectedPriceRecorded => 'We have recorded your expected price.';
+
+  @override
   String get acceptPrice => 'Accept price';
 
   @override

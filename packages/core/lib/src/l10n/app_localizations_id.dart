@@ -763,6 +763,26 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get expectedPriceTitle => 'Berapa harga yang Anda harapkan?';
+
+  @override
+  String get expectedPriceDescription =>
+      'Sebutkan angka yang Anda harapkan untuk mobil ini. Tim kami akan menghubungi Anda untuk menindaklanjuti.';
+
+  @override
+  String get expectedPriceLabel => 'Harga harapan';
+
+  @override
+  String get expectedPriceInvalid =>
+      'Masukkan harga harapan minimal Rp 1.000.000.';
+
+  @override
+  String get expectedPriceSubmit => 'Kirim harga harapan';
+
+  @override
+  String get expectedPriceRecorded => 'Harga harapan Anda sudah kami catat.';
+
+  @override
   String get acceptPrice => 'Terima harga';
 
   @override

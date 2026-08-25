@@ -1490,6 +1490,42 @@ abstract class AppLocalizations {
   /// **'Berlaku hingga {date}'**
   String validUntil(String date);
 
+  /// No description provided for @expectedPriceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Berapa harga yang Anda harapkan?'**
+  String get expectedPriceTitle;
+
+  /// No description provided for @expectedPriceDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebutkan angka yang Anda harapkan untuk mobil ini. Tim kami akan menghubungi Anda untuk menindaklanjuti.'**
+  String get expectedPriceDescription;
+
+  /// No description provided for @expectedPriceLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga harapan'**
+  String get expectedPriceLabel;
+
+  /// No description provided for @expectedPriceInvalid.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan harga harapan minimal Rp 1.000.000.'**
+  String get expectedPriceInvalid;
+
+  /// No description provided for @expectedPriceSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim harga harapan'**
+  String get expectedPriceSubmit;
+
+  /// No description provided for @expectedPriceRecorded.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga harapan Anda sudah kami catat.'**
+  String get expectedPriceRecorded;
+
   /// No description provided for @acceptPrice.
   ///
   /// In id, this message translates to:

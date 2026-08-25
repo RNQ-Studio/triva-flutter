@@ -10,6 +10,7 @@ import '../../../credit/presentation/credit_paths.dart';
 import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
+import '../widgets/expected_price_dialog.dart';
 
 class AppraisalResultScreen extends ConsumerStatefulWidget {
   const AppraisalResultScreen({super.key, required this.appraisalId});
@@ -34,12 +35,23 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     context.go('/');
   }
 
-  Future<void> _decide(String decision) async {
+  /// Menolak harga selalu disertai harapan harga pelanggan. Kalau dialognya
+  /// ditutup tanpa angka, keputusan tidak dikirim sama sekali supaya pelanggan
+  /// tidak terkunci di status ditolak tanpa tindak lanjut.
+  Future<void> _reject() async {
+    final expectedPrice = await showExpectedPriceDialog(context);
+    if (expectedPrice == null || !mounted) return;
+    await _decide('rejected', expectedPrice: expectedPrice);
+  }
+
+  Future<void> _decide(String decision, {int? expectedPrice}) async {
     setState(() => _busy = true);
     try {
-      await ref
-          .read(appraisalRepositoryProvider)
-          .decide(widget.appraisalId, decision);
+      await ref.read(appraisalRepositoryProvider).decide(
+            widget.appraisalId,
+            decision,
+            expectedPrice: expectedPrice,
+          );
       _finishDecision(decision);
     } catch (_) {
       // The decision may have committed before a timeout or connection loss.
@@ -155,7 +167,7 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
                 provinceName: provinceName,
                 busy: _busy,
                 onAccept: () => _decide('accepted'),
-                onReject: () => _decide('rejected'),
+                onReject: _reject,
                 onSchedule: _schedule,
               );
             },

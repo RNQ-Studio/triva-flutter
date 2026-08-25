@@ -893,6 +893,40 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('declining the price asks for the expected price first',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Belum cocok'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Belum cocok'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Berapa harga yang Anda harapkan?'), findsOneWidget);
+
+    // Angka di bawah batas minimum ditahan sebelum request dikirim.
+    await tester.enterText(find.byType(TextFormField), '500');
+    await tester.tap(find.text('Kirim harga harapan'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Masukkan harga harapan minimal Rp 1.000.000.'),
+      findsOneWidget,
+    );
+
+    await tester.enterText(find.byType(TextFormField), '210000000');
+    await tester.pumpAndSettle();
+    expect(find.text('210.000.000'), findsOneWidget);
+
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('rejected appraisal continues to Body Paint with source scope',
       (tester) async {
     final router = GoRouter(

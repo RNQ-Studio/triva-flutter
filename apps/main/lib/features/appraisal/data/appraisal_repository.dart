@@ -214,11 +214,15 @@ class AppraisalRepository {
 
   Future<AppraisalData> decide(
     String appraisalId,
-    String decision,
-  ) async {
+    String decision, {
+    int? expectedPrice,
+  }) async {
     final response = await _dio.post<dynamic>(
       'v1/appraisals/$appraisalId/decision',
-      data: {'decision': decision},
+      data: {
+        'decision': decision,
+        if (expectedPrice != null) 'expected_price': expectedPrice,
+      },
     );
     return AppraisalData.fromJson(_data(response));
   }
