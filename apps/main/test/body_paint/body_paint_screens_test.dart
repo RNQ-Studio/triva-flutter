@@ -78,6 +78,34 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('an insured estimate replaces the cost with claim guidance',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(360, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          bodyPaintEstimateProvider('estimate-1').overrideWith(
+            (_) async => _insuredEstimate(),
+          ),
+        ],
+        child: _app(
+          const BodyPaintEstimateScreen(estimateId: 'estimate-1'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Rp1.500.000'), findsNothing);
+    expect(find.textContaining('Rp2.100.000'), findsNothing);
+    expect(find.text('Asuransi Astra'), findsOneWidget);
+    expect(
+      find.textContaining('diproses lewat klaim asuransi'),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('published detail shows range, item, and customer decisions',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(360, 900));
@@ -178,7 +206,30 @@ BodyPaintOptions _options() => const BodyPaintOptions(
       serviceTypeId: 'service-1',
     );
 
-BodyPaintEstimate _publishedEstimate() => BodyPaintEstimate.fromJson({
+BodyPaintEstimate _insuredEstimate() {
+  final payload = _publishedPayload();
+  payload['is_insured'] = true;
+  payload['insurance_provider'] = 'Asuransi Astra';
+  final estimate = payload['estimate'] as Map<String, dynamic>;
+  estimate
+    ..remove('low')
+    ..remove('high')
+    ..['is_insured'] = true
+    ..['cost_hidden_reason'] = 'insurance_claim'
+    ..['insurance_provider'] = 'Asuransi Astra'
+    ..['insurance_notice'] =
+        'Perbaikan kendaraan Anda diproses lewat klaim asuransi.';
+  for (final item in estimate['items'] as List<dynamic>) {
+    (item as Map<String, dynamic>).remove('cost');
+  }
+
+  return BodyPaintEstimate.fromJson(payload);
+}
+
+BodyPaintEstimate _publishedEstimate() =>
+    BodyPaintEstimate.fromJson(_publishedPayload());
+
+Map<String, dynamic> _publishedPayload() => {
       'id': 'estimate-1',
       'reference_no': 'BP-001',
       'status': 'estimate_ready',
@@ -231,7 +282,7 @@ BodyPaintEstimate _publishedEstimate() => BodyPaintEstimate.fromJson({
           },
         ],
       },
-    });
+    };
 
 BodyPaintEstimate _adminEstimate() => BodyPaintEstimate.fromJson({
       'id': 'estimate-1',

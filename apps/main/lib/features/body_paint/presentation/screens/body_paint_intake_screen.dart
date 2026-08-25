@@ -26,12 +26,14 @@ class BodyPaintIntakeScreen extends ConsumerStatefulWidget {
 
 class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
   final _notes = TextEditingController();
+  final _insuranceProvider = TextEditingController();
   var _initialized = false;
   var _sourceInitialized = false;
 
   @override
   void dispose() {
     _notes.dispose();
+    _insuranceProvider.dispose();
     super.dispose();
   }
 
@@ -81,6 +83,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
           data: (state) {
             if (!_initialized) {
               _notes.text = state.draft.notes;
+              _insuranceProvider.text = state.draft.insuranceProvider;
               _initialized = true;
             }
             return options.when(
@@ -303,6 +306,41 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
           decoration: InputDecoration(labelText: l10n.bodyPaintNotes),
           onChanged: controller.setNotes,
         ),
+        const SizedBox(height: AppSpacing.large),
+        Text(
+          l10n.bodyPaintInsuranceQuestion,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        const SizedBox(height: AppSpacing.small),
+        SegmentedButton<bool>(
+          segments: [
+            ButtonSegment(
+              value: false,
+              label: Text(l10n.bodyPaintInsuranceNo),
+            ),
+            ButtonSegment(
+              value: true,
+              label: Text(l10n.bodyPaintInsuranceYes),
+            ),
+          ],
+          selected: {state.draft.isInsured},
+          onSelectionChanged: state.isSubmitting
+              ? null
+              : (selection) => controller.setInsured(selection.first),
+        ),
+        if (state.draft.isInsured) ...[
+          const SizedBox(height: AppSpacing.small),
+          TextField(
+            controller: _insuranceProvider,
+            maxLength: 120,
+            decoration: InputDecoration(
+              labelText: l10n.bodyPaintInsuranceProvider,
+              helperText: l10n.bodyPaintInsuranceHint,
+              helperMaxLines: 3,
+            ),
+            onChanged: controller.setInsuranceProvider,
+          ),
+        ],
         CheckboxListTile(
           value: state.draft.consent,
           contentPadding: EdgeInsets.zero,

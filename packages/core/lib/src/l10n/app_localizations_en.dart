@@ -2141,6 +2141,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bodyPaintPhotoReady => 'Photo ready to send';
 
   @override
+  String get bodyPaintInsuranceQuestion => 'Is this vehicle insured?';
+
+  @override
+  String get bodyPaintInsuranceYes => 'Yes, it is insured';
+
+  @override
+  String get bodyPaintInsuranceNo => 'No insurance';
+
+  @override
+  String get bodyPaintInsuranceProvider => 'Insurance company';
+
+  @override
+  String get bodyPaintInsuranceHint =>
+      'Repairs handled through an insurance claim do not show a cost estimate. Our team will help with the claim.';
+
+  @override
   String get bodyPaintNotes => 'Note for estimator (optional)';
 
   @override

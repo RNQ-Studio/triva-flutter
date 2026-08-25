@@ -2139,6 +2139,22 @@ class AppLocalizationsId extends AppLocalizations {
   String get bodyPaintPhotoReady => 'Foto siap dikirim';
 
   @override
+  String get bodyPaintInsuranceQuestion => 'Kendaraan ini diasuransikan?';
+
+  @override
+  String get bodyPaintInsuranceYes => 'Ya, ada asuransi';
+
+  @override
+  String get bodyPaintInsuranceNo => 'Tidak ada asuransi';
+
+  @override
+  String get bodyPaintInsuranceProvider => 'Nama perusahaan asuransi';
+
+  @override
+  String get bodyPaintInsuranceHint =>
+      'Perbaikan lewat klaim asuransi tidak menampilkan estimasi biaya. Tim kami membantu proses klaimnya.';
+
+  @override
   String get bodyPaintNotes => 'Catatan untuk estimator (opsional)';
 
   @override

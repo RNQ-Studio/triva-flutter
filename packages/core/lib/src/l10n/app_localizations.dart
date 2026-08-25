@@ -3980,6 +3980,36 @@ abstract class AppLocalizations {
   /// **'Foto siap dikirim'**
   String get bodyPaintPhotoReady;
 
+  /// No description provided for @bodyPaintInsuranceQuestion.
+  ///
+  /// In id, this message translates to:
+  /// **'Kendaraan ini diasuransikan?'**
+  String get bodyPaintInsuranceQuestion;
+
+  /// No description provided for @bodyPaintInsuranceYes.
+  ///
+  /// In id, this message translates to:
+  /// **'Ya, ada asuransi'**
+  String get bodyPaintInsuranceYes;
+
+  /// No description provided for @bodyPaintInsuranceNo.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada asuransi'**
+  String get bodyPaintInsuranceNo;
+
+  /// No description provided for @bodyPaintInsuranceProvider.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama perusahaan asuransi'**
+  String get bodyPaintInsuranceProvider;
+
+  /// No description provided for @bodyPaintInsuranceHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbaikan lewat klaim asuransi tidak menampilkan estimasi biaya. Tim kami membantu proses klaimnya.'**
+  String get bodyPaintInsuranceHint;
+
   /// No description provided for @bodyPaintNotes.
   ///
   /// In id, this message translates to:

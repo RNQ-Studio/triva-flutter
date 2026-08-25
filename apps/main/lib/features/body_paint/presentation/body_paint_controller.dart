@@ -217,6 +217,18 @@ class BodyPaintFlowController extends AsyncNotifier<BodyPaintFlowState> {
   Future<void> setNotes(String notes) =>
       _enqueueSave((draft) => draft.copyWith(notes: notes));
 
+  /// Menyimpan jawaban asuransi. Nama perusahaan dibuang saat pelanggan
+  /// beralih ke "tidak ada asuransi" supaya data lama tidak ikut terkirim.
+  Future<void> setInsured(bool isInsured) => _enqueueSave(
+        (draft) => draft.copyWith(
+          isInsured: isInsured,
+          insuranceProvider: isInsured ? draft.insuranceProvider : '',
+        ),
+      );
+
+  Future<void> setInsuranceProvider(String provider) =>
+      _enqueueSave((draft) => draft.copyWith(insuranceProvider: provider));
+
   Future<void> setConsent(bool consent) =>
       _enqueueSave((draft) => draft.copyWith(consent: consent));
 

@@ -77,6 +77,9 @@ class BodyPaintRepository {
           'appraisal_id': draft.sourceAppraisalId,
         'service_location_id': draft.location!.id,
         if (draft.notes.trim().isNotEmpty) 'customer_notes': draft.notes.trim(),
+        'is_insured': draft.isInsured,
+        if (draft.isInsured)
+          'insurance_provider': draft.insuranceProvider.trim(),
         'campaign_source': 'triva_app',
       },
       options: Options(headers: {'Idempotency-Key': draft.idempotencyKey}),

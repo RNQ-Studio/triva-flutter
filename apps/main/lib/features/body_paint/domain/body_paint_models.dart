@@ -148,6 +148,8 @@ class BodyPaintDraft {
     this.contextPhotoAssetId,
     this.contextPhotoName,
     this.notes = '',
+    this.isInsured = false,
+    this.insuranceProvider = '',
     this.consent = false,
     this.idempotencyKey,
   });
@@ -160,6 +162,11 @@ class BodyPaintDraft {
   final String? contextPhotoAssetId;
   final String? contextPhotoName;
   final String notes;
+
+  /// Apakah kendaraan diasuransikan. Bila ya, estimasi biaya tidak
+  /// ditampilkan karena perbaikannya mengikuti klaim.
+  final bool isInsured;
+  final String insuranceProvider;
   final bool consent;
   final String? idempotencyKey;
 
@@ -169,6 +176,7 @@ class BodyPaintDraft {
       damages.isNotEmpty &&
       damages.every((damage) => damage.isComplete) &&
       contextPhotoAssetId != null &&
+      (!isInsured || insuranceProvider.trim().isNotEmpty) &&
       consent;
 
   BodyPaintDraft copyWith({
@@ -180,6 +188,8 @@ class BodyPaintDraft {
     String? contextPhotoAssetId,
     String? contextPhotoName,
     String? notes,
+    bool? isInsured,
+    String? insuranceProvider,
     bool? consent,
     String? idempotencyKey,
     bool clearRemote = false,
@@ -193,6 +203,8 @@ class BodyPaintDraft {
         contextPhotoAssetId: contextPhotoAssetId ?? this.contextPhotoAssetId,
         contextPhotoName: contextPhotoName ?? this.contextPhotoName,
         notes: notes ?? this.notes,
+        isInsured: isInsured ?? this.isInsured,
+        insuranceProvider: insuranceProvider ?? this.insuranceProvider,
         consent: consent ?? this.consent,
         idempotencyKey:
             clearRemote ? null : idempotencyKey ?? this.idempotencyKey,
@@ -218,6 +230,8 @@ class BodyPaintDraft {
         contextPhotoAssetId: json['context_photo_asset_id']?.toString(),
         contextPhotoName: json['context_photo_name']?.toString(),
         notes: json['notes']?.toString() ?? '',
+        isInsured: json['is_insured'] as bool? ?? false,
+        insuranceProvider: json['insurance_provider']?.toString() ?? '',
         consent: json['consent'] as bool? ?? false,
         idempotencyKey: json['idempotency_key']?.toString(),
       );
@@ -238,6 +252,8 @@ class BodyPaintDraft {
         'context_photo_asset_id': contextPhotoAssetId,
         'context_photo_name': contextPhotoName,
         'notes': notes,
+        'is_insured': isInsured,
+        'insurance_provider': insuranceProvider,
         'consent': consent,
         'idempotency_key': idempotencyKey,
       };
@@ -419,6 +435,9 @@ class BodyPaintResult {
     required this.assumptions,
     required this.disclaimer,
     this.validUntil,
+    this.isInsured = false,
+    this.insuranceNotice,
+    this.insuranceProvider,
   });
 
   final int version;
@@ -430,6 +449,14 @@ class BodyPaintResult {
   final List<String> assumptions;
   final String disclaimer;
   final DateTime? validUntil;
+
+  /// Kendaraan yang diasuransikan tidak menerima nominal estimasi karena
+  /// biayanya ditentukan klaim. Notulensi 19 Agustus 2026.
+  final bool isInsured;
+  final String? insuranceNotice;
+  final String? insuranceProvider;
+
+  bool get showsCost => !isInsured;
 
   factory BodyPaintResult.fromJson(Map<String, dynamic> json) {
     final duration = json['duration'] as Map<String, dynamic>? ?? const {};
@@ -448,6 +475,9 @@ class BodyPaintResult {
           .toList(growable: false),
       disclaimer: json['disclaimer']?.toString() ?? '',
       validUntil: DateTime.tryParse(json['valid_until']?.toString() ?? ''),
+      isInsured: json['is_insured'] == true,
+      insuranceNotice: json['insurance_notice']?.toString(),
+      insuranceProvider: json['insurance_provider']?.toString(),
     );
   }
 }

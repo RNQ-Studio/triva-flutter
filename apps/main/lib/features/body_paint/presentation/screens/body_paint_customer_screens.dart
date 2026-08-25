@@ -311,15 +311,23 @@ class _ResultCard extends StatelessWidget {
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: AppSpacing.small),
-            FittedBox(
-              child: Text(
-                '${money.format(result.low)} - ${money.format(result.high)}',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: AppColors.accent,
-                      fontWeight: FontWeight.w800,
-                    ),
+            // Kendaraan yang diasuransikan tidak menerima nominal: biayanya
+            // ditentukan klaim, bukan penawaran bengkel.
+            if (result.showsCost)
+              FittedBox(
+                child: Text(
+                  '${money.format(result.low)} - ${money.format(result.high)}',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+              )
+            else
+              _InsuranceNotice(
+                provider: result.insuranceProvider,
+                notice: result.insuranceNotice,
               ),
-            ),
             const SizedBox(height: AppSpacing.xSmall),
             Text(
               '${l10n.bodyPaintVersion} ${result.version} - '
@@ -344,10 +352,11 @@ class _ResultCard extends StatelessWidget {
                             '${item.panelLabel} - ${item.workTypeLabel}',
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          Text(
-                            '${money.format(item.totalLow)} - '
-                            '${money.format(item.totalHigh)}',
-                          ),
+                          if (result.showsCost)
+                            Text(
+                              '${money.format(item.totalLow)} - '
+                              '${money.format(item.totalHigh)}',
+                            ),
                           if (item.recommendation?.isNotEmpty == true)
                             Text(
                               item.recommendation!,
@@ -702,6 +711,59 @@ class _BodyPaintError extends StatelessWidget {
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
               label: Text(l10n.retry),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Menggantikan nominal estimasi untuk kendaraan yang diasuransikan.
+class _InsuranceNotice extends StatelessWidget {
+  const _InsuranceNotice({required this.provider, required this.notice});
+
+  final String? provider;
+  final String? notice;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.secondaryContainer,
+        borderRadius: AppRadius.medium,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.medium),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.verified_user_outlined,
+                color: colors.onSecondaryContainer),
+            const SizedBox(width: AppSpacing.small),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    provider == null || provider!.isEmpty
+                        ? l10n.bodyPaintInsuranceYes
+                        : provider!,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: colors.onSecondaryContainer,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(
+                    notice ?? l10n.bodyPaintInsuranceHint,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: colors.onSecondaryContainer,
+                        ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
