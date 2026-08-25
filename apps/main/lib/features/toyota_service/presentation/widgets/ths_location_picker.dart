@@ -98,7 +98,7 @@ class _ThsLocationPickerState extends ConsumerState<ThsLocationPicker> {
                         child: const Icon(
                           Icons.location_on_rounded,
                           size: 44,
-                          color: AppColors.serviceOrange,
+                          color: AppColors.accent,
                         ),
                       ),
                     ],

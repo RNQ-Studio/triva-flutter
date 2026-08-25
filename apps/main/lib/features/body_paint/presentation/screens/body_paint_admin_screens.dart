@@ -170,14 +170,14 @@ class _AdminQueueTile extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: estimate.hasHighRiskDamage
                 ? Theme.of(context).colorScheme.errorContainer
-                : AppColors.serviceRoseSoft,
+                : AppColors.accentSoft,
             child: Icon(
               estimate.hasHighRiskDamage
                   ? Icons.warning_amber_rounded
                   : Icons.format_paint_outlined,
               color: estimate.hasHighRiskDamage
                   ? Theme.of(context).colorScheme.error
-                  : AppColors.serviceRose,
+                  : AppColors.accent,
             ),
           ),
           title: Text(
@@ -249,7 +249,7 @@ class _AdminEstimateContent extends ConsumerWidget {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.serviceRoseSoft,
+            color: AppColors.accentSoft,
             borderRadius: AppRadius.large,
           ),
           child: Padding(
@@ -371,7 +371,7 @@ class _AdminEstimateContent extends ConsumerWidget {
           const SizedBox(height: AppSpacing.small),
           FilledButton.icon(
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.serviceRose,
+              backgroundColor: AppColors.accent,
             ),
             onPressed: mutation.isLoading
                 ? null
@@ -600,7 +600,7 @@ class _AdminBodyPaintPublishScreenState
           const SizedBox(height: AppSpacing.large),
           FilledButton.icon(
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.serviceRose,
+              backgroundColor: AppColors.accent,
             ),
             onPressed: mutation.isLoading ? null : () => _publish(estimate),
             icon: const Icon(Icons.publish_rounded),

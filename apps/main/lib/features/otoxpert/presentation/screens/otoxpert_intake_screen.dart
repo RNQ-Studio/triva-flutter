@@ -771,7 +771,7 @@ class _SelectionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.small),
       color: selected ? colors.primaryContainer : null,
       child: ListTile(
-        leading: Icon(icon, color: AppColors.serviceViolet),
+        leading: Icon(icon, color: AppColors.accent),
         title: Text(title),
         subtitle: Text(subtitle),
         trailing: Icon(
@@ -793,7 +793,7 @@ class _PriceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Card(
-      color: AppColors.serviceVioletSoft,
+      color: AppColors.accentSoft,
       margin: const EdgeInsets.only(top: AppSpacing.medium),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.medium),
@@ -803,7 +803,7 @@ class _PriceCard extends StatelessWidget {
             Text(
               l10n.otoxpertIndicativePrice,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.serviceViolet,
+                    color: AppColors.accent,
                   ),
             ),
             const SizedBox(height: AppSpacing.xSmall),

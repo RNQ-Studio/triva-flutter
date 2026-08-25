@@ -326,10 +326,10 @@ class _BookingTile extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: AppColors.serviceOrangeSoft,
+            backgroundColor: AppColors.accentSoft,
             child: const Icon(
               Icons.car_repair_outlined,
-              color: AppColors.serviceOrange,
+              color: AppColors.accent,
             ),
           ),
           title: Text(
@@ -357,10 +357,10 @@ class _OtoxpertBookingTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         leading: const CircleAvatar(
-          backgroundColor: AppColors.serviceVioletSoft,
+          backgroundColor: AppColors.accentSoft,
           child: Icon(
             Icons.handyman_outlined,
-            color: AppColors.serviceViolet,
+            color: AppColors.accent,
           ),
         ),
         title: Text(
@@ -391,10 +391,10 @@ class _CreditSimulationTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         leading: const CircleAvatar(
-          backgroundColor: AppColors.serviceGreenSoft,
+          backgroundColor: AppColors.accentSoft,
           child: Icon(
             Icons.calculate_outlined,
-            color: AppColors.serviceGreen,
+            color: AppColors.accent,
           ),
         ),
         title: Text(program),
@@ -421,10 +421,10 @@ class _BodyPaintEstimateTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         leading: const CircleAvatar(
-          backgroundColor: AppColors.serviceRoseSoft,
+          backgroundColor: AppColors.accentSoft,
           child: Icon(
             Icons.format_paint_outlined,
-            color: AppColors.serviceRose,
+            color: AppColors.accent,
           ),
         ),
         title: Text(

@@ -26,37 +26,37 @@ class AdminPanelScreen extends ConsumerWidget {
         (
           icon: Icons.manage_accounts_outlined,
           title: l10n.adminUserAccessTitle,
-          color: AppColors.brandTeal,
+          color: AppColors.accent,
           path: adminUsersPath,
         ),
       (
         icon: Icons.price_check_rounded,
         title: l10n.serviceAppraisalTitle,
-        color: AppColors.appraisalBlue,
+        color: AppColors.accent,
         path: null,
       ),
       (
         icon: Icons.car_repair_rounded,
         title: l10n.serviceToyotaTitle,
-        color: AppColors.serviceOrange,
+        color: AppColors.accent,
         path: adminToyotaServiceQueuePath,
       ),
       (
         icon: Icons.handyman_rounded,
         title: l10n.serviceOtoxpertTitle,
-        color: AppColors.serviceViolet,
+        color: AppColors.accent,
         path: adminOtoxpertQueuePath,
       ),
       (
         icon: Icons.calculate_rounded,
         title: l10n.serviceCreditTitle,
-        color: AppColors.serviceGreen,
+        color: AppColors.accent,
         path: null,
       ),
       (
         icon: Icons.format_paint_rounded,
         title: l10n.serviceBodyPaintTitle,
-        color: AppColors.serviceRose,
+        color: AppColors.accent,
         path: adminBodyPaintQueuePath,
       ),
     ];
@@ -192,7 +192,7 @@ class AdminToyotaServiceQueueScreen extends ConsumerWidget {
                                     : Icons.car_repair_outlined,
                                 color: item.slaOverdue
                                     ? Theme.of(context).colorScheme.error
-                                    : AppColors.serviceOrange,
+                                    : AppColors.accent,
                               ),
                               title: Text(
                                 item.vehicle == null

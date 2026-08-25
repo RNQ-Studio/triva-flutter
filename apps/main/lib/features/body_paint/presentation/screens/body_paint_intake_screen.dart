@@ -122,7 +122,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.serviceRoseSoft,
+            color: AppColors.accentSoft,
             borderRadius: AppRadius.large,
           ),
           child: Padding(
@@ -132,7 +132,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
               children: [
                 const Icon(
                   Icons.format_paint_rounded,
-                  color: AppColors.serviceRose,
+                  color: AppColors.accent,
                 ),
                 const SizedBox(width: AppSpacing.medium),
                 Expanded(
@@ -143,7 +143,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
                         l10n.bodyPaintFlowTitle,
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.serviceRose,
+                                  color: AppColors.accent,
                                   fontWeight: FontWeight.w700,
                                 ),
                       ),
@@ -272,14 +272,14 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
             leading: CircleAvatar(
               backgroundColor: state.draft.contextPhotoAssetId == null
                   ? Theme.of(context).colorScheme.surfaceContainerHighest
-                  : AppColors.serviceRoseSoft,
+                  : AppColors.accentSoft,
               child: Icon(
                 state.draft.contextPhotoAssetId == null
                     ? Icons.add_a_photo_outlined
                     : Icons.check_rounded,
                 color: state.draft.contextPhotoAssetId == null
                     ? null
-                    : AppColors.serviceRose,
+                    : AppColors.accent,
               ),
             ),
             title: Text(l10n.bodyPaintContextPhoto),
@@ -322,7 +322,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
         const SizedBox(height: AppSpacing.large),
         FilledButton.icon(
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.serviceRose,
+            backgroundColor: AppColors.accent,
           ),
           onPressed: state.isSubmitting || state.isUploading
               ? null
@@ -360,7 +360,7 @@ class _BodyPaintIntakeScreenState extends ConsumerState<BodyPaintIntakeScreen> {
       builder: (dialogContext) => AlertDialog(
         icon: const Icon(
           Icons.check_circle_rounded,
-          color: AppColors.serviceRose,
+          color: AppColors.accent,
         ),
         title: Text(l10n.bodyPaintSubmittedTitle),
         content: Text(l10n.bodyPaintSubmittedDescription),
@@ -387,7 +387,7 @@ class _SectionTitle extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 14,
-            backgroundColor: AppColors.serviceRose,
+            backgroundColor: AppColors.accent,
             foregroundColor: Colors.white,
             child: Text(
               '$number',
@@ -529,14 +529,14 @@ class _DamageCard extends ConsumerWidget {
               leading: CircleAvatar(
                 backgroundColor: damage.closePhotoAssetId == null
                     ? Theme.of(context).colorScheme.surfaceContainerHighest
-                    : AppColors.serviceRoseSoft,
+                    : AppColors.accentSoft,
                 child: Icon(
                   damage.closePhotoAssetId == null
                       ? Icons.add_a_photo_outlined
                       : Icons.check_rounded,
                   color: damage.closePhotoAssetId == null
                       ? null
-                      : AppColors.serviceRose,
+                      : AppColors.accent,
                 ),
               ),
               title: Text(l10n.bodyPaintClosePhoto),

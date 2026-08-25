@@ -58,20 +58,27 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
-                SizedBox(width: 12),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
                 Text(
                   'Profil berhasil diperbarui!',
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ],
             ),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.green,
-            margin: EdgeInsets.all(16),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            margin: const EdgeInsets.all(16),
           ),
         );
         context.pop(); // Go back to ProfileScreen
@@ -82,16 +89,24 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error_outline_rounded,
-                    color: Colors.white, size: 20),
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: Theme.of(context).colorScheme.onError,
+                  size: 20,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Gagal memperbarui profil: $e'),
+                  child: Text(
+                    'Gagal memperbarui profil: $e',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
+                  ),
                 ),
               ],
             ),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
             margin: const EdgeInsets.all(16),
           ),
         );

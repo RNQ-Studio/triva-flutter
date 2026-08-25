@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../branding/partner_brands.dart';
 import '../../appraisal/domain/appraisal_models.dart';
 import '../../appraisal/presentation/appraisal_controller.dart';
 import '../../appraisal/presentation/appraisal_paths.dart';
@@ -46,7 +47,7 @@ class HomeScreen extends ConsumerWidget {
                         AppSpacing.large,
                         AppSpacing.medium,
                         AppSpacing.large,
-                        AppSpacing.xLarge,
+                        AppSpacing.xxLarge,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,13 +76,10 @@ class HomeScreen extends ConsumerWidget {
                           _AppraisalHero(
                             onTap: () => context.push(startPath),
                           ),
-                          const SizedBox(height: AppSpacing.xLarge),
-                          Text(
-                            l10n.homeServicesTitle,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
+                          const SizedBox(height: AppSpacing.xxLarge),
+                          _SectionHeading(title: l10n.homeServicesTitle),
                           const SizedBox(height: AppSpacing.medium),
-                          _ServiceGrid(
+                          _ServiceList(
                             onToyotaService: () async {
                               final activeDraft =
                                   serviceDraft ?? const ToyotaServiceDraft();
@@ -108,11 +106,8 @@ class HomeScreen extends ConsumerWidget {
                             onCredit: () => context.push(creditPath),
                             onBodyPaint: () => context.push(bodyPaintPath),
                           ),
-                          const SizedBox(height: AppSpacing.xLarge),
-                          Text(
-                            l10n.myVehicle,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
+                          const SizedBox(height: AppSpacing.xxLarge),
+                          _SectionHeading(title: l10n.myVehicle),
                           const SizedBox(height: AppSpacing.medium),
                           vehicles.when(
                             data: (items) => items.isEmpty
@@ -126,6 +121,8 @@ class HomeScreen extends ConsumerWidget {
                                   ref.invalidate(toyotaServiceVehiclesProvider),
                             ),
                           ),
+                          const SizedBox(height: AppSpacing.xxLarge),
+                          const _PartnerStrip(),
                         ],
                       ),
                     ),
@@ -147,14 +144,56 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Row(
       children: [
-        const TrivaLogo(width: 122),
+        const Flexible(child: TrivaLogo(width: 122)),
         const Spacer(),
-        IconButton(
-          onPressed: onNotifications,
-          icon: const Icon(Icons.notifications_none_rounded),
-          tooltip: AppLocalizations.of(context)!.notifications,
+        Material(
+          color: colors.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: AppRadius.pill,
+            side: BorderSide(color: colors.outlineVariant),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: IconButton(
+            onPressed: onNotifications,
+            icon: const Icon(Icons.notifications_none_rounded),
+            color: colors.primary,
+            iconSize: AppIconSize.medium,
+            tooltip: AppLocalizations.of(context)!.notifications,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionHeading extends StatelessWidget {
+  const _SectionHeading({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 3,
+          height: 18,
+          decoration: BoxDecoration(
+            color: colors.primary,
+            borderRadius: AppRadius.pill,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.small),
+        Expanded(
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
       ],
     );
@@ -170,51 +209,63 @@ class _AppraisalHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.primary,
-        borderRadius: AppRadius.large,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xLarge),
-        child: Row(
+    final onHero = AppColors.surfaceLight;
+    return ClipRRect(
+      borderRadius: AppRadius.xLarge,
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.blue800, AppColors.blue600],
+          ),
+        ),
+        child: Stack(
           children: [
-            Expanded(
+            Positioned(
+              right: -20,
+              bottom: -24,
+              child: Icon(
+                Icons.directions_car_filled_rounded,
+                size: 150,
+                color: onHero.withValues(alpha: 0.10),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.xLarge),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.price_check_rounded,
-                    color: colors.onPrimary,
-                    size: AppIconSize.large,
-                  ),
-                  const SizedBox(height: AppSpacing.medium),
+                  _MarketSourceBadge(label: l10n.homeMarketSourceBadge),
+                  const SizedBox(height: AppSpacing.large),
                   Text(
                     l10n.serviceAppraisalTitle,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: colors.onPrimary,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: onHero,
+                          fontWeight: FontWeight.w700,
                         ),
                   ),
                   const SizedBox(height: AppSpacing.small),
                   Text(
                     l10n.serviceAppraisalDescription,
-                    style: TextStyle(
-                      color: colors.onPrimary.withValues(alpha: 0.82),
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: onHero.withValues(alpha: 0.82),
+                        ),
                   ),
                   const SizedBox(height: AppSpacing.large),
-                  FilledButton.tonal(
+                  FilledButton.icon(
                     onPressed: onTap,
-                    child: Text(l10n.startAppraisal),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: onHero,
+                      foregroundColor: colors.primary,
+                    ),
+                    icon: const Icon(Icons.arrow_forward_rounded,
+                        size: AppIconSize.small),
+                    iconAlignment: IconAlignment.end,
+                    label: Text(l10n.startAppraisal),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(width: AppSpacing.medium),
-            Icon(
-              Icons.directions_car_filled_rounded,
-              size: AppIconSize.hero,
-              color: colors.onPrimary.withValues(alpha: 0.22),
             ),
           ],
         ),
@@ -223,8 +274,53 @@ class _AppraisalHero extends StatelessWidget {
   }
 }
 
-class _ServiceGrid extends StatelessWidget {
-  const _ServiceGrid({
+/// Menandai sumber pembanding harga di hero appraisal.
+class _MarketSourceBadge extends StatelessWidget {
+  const _MarketSourceBadge({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: AppColors.surfaceLight,
+        borderRadius: AppRadius.pill,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.medium,
+          AppSpacing.small,
+          AppSpacing.medium,
+          AppSpacing.small,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const PartnerLogo(
+              brand: PartnerBrand.olx,
+              boxHeight: 18,
+              boxWidth: 34,
+            ),
+            const SizedBox(width: AppSpacing.small),
+            Flexible(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.accentStrong,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ServiceList extends StatelessWidget {
+  const _ServiceList({
     required this.onToyotaService,
     required this.onOtoxpert,
     required this.onCredit,
@@ -239,152 +335,162 @@ class _ServiceGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final services = [
-      (
-        Icons.car_repair_rounded,
-        l10n.serviceToyotaTitle,
-        AppColors.serviceOrange,
-        AppColors.serviceOrangeSoft,
+    // Setiap layanan lanjutan dijalankan oleh mitra, jadi logo mitralah yang
+    // menjadi penanda barisnya. Auto2000 muncul dua kali karena memang
+    // mengoperasikan servis berkala sekaligus Body & Paint.
+    final services = <_ServiceEntry>[
+      _ServiceEntry(
+        brand: PartnerBrand.auto2000,
+        title: l10n.serviceToyotaTitle,
+        description: l10n.serviceToyotaDescription,
+        onTap: onToyotaService,
       ),
-      (
-        Icons.handyman_rounded,
-        l10n.serviceOtoxpertTitle,
-        AppColors.serviceViolet,
-        AppColors.serviceVioletSoft,
+      _ServiceEntry(
+        brand: PartnerBrand.otoxpert,
+        title: l10n.serviceOtoxpertTitle,
+        description: l10n.serviceOtoxpertDescription,
+        onTap: onOtoxpert,
       ),
-      (
-        Icons.calculate_rounded,
-        l10n.serviceCreditTitle,
-        AppColors.serviceGreen,
-        AppColors.serviceGreenSoft,
+      _ServiceEntry(
+        brand: PartnerBrand.acc,
+        title: l10n.serviceCreditTitle,
+        description: l10n.serviceCreditDescription,
+        onTap: onCredit,
       ),
-      (
-        Icons.format_paint_rounded,
-        l10n.serviceBodyPaintTitle,
-        AppColors.serviceRose,
-        AppColors.serviceRoseSoft,
+      _ServiceEntry(
+        brand: PartnerBrand.auto2000,
+        title: l10n.serviceBodyPaintTitle,
+        description: l10n.serviceBodyPaintDescription,
+        onTap: onBodyPaint,
       ),
     ];
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final textScale = MediaQuery.textScalerOf(context).scale(1);
-        final columns = textScale < 1.6 ? 2 : 1;
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            crossAxisSpacing: AppSpacing.medium,
-            mainAxisSpacing: AppSpacing.medium,
-            mainAxisExtent: columns == 1 ? 112 : 168,
-          ),
-          itemCount: services.length,
-          itemBuilder: (context, index) {
-            final service = services[index];
-            return Material(
-              color: service.$4,
-              borderRadius: AppRadius.large,
-              clipBehavior: Clip.antiAlias,
-              child: InkWell(
-                onTap: switch (index) {
-                  0 => onToyotaService,
-                  1 => onOtoxpert,
-                  2 => onCredit,
-                  _ => onBodyPaint,
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.large),
-                  child: columns == 1
-                      ? Row(
-                          children: [
-                            _ServiceIcon(
-                              icon: service.$1,
-                              foreground: AppColors.surfaceLight,
-                              background: service.$3,
-                            ),
-                            const SizedBox(width: AppSpacing.medium),
-                            Expanded(
-                              child: _ServiceLabel(
-                                label: service.$2,
-                                color: service.$3,
-                              ),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _ServiceIcon(
-                              icon: service.$1,
-                              foreground: AppColors.surfaceLight,
-                              background: service.$3,
-                            ),
-                            _ServiceLabel(
-                              label: service.$2,
-                              color: service.$3,
-                            ),
-                          ],
-                        ),
-                ),
-              ),
-            );
-          },
-        );
-      },
+
+    return Column(
+      children: [
+        for (final service in services) ...[
+          _ServiceRow(entry: service),
+          if (service != services.last)
+            const SizedBox(height: AppSpacing.medium),
+        ],
+      ],
     );
   }
 }
 
-class _ServiceIcon extends StatelessWidget {
-  const _ServiceIcon({
-    required this.icon,
-    required this.foreground,
-    required this.background,
+class _ServiceEntry {
+  const _ServiceEntry({
+    required this.brand,
+    required this.title,
+    required this.description,
+    required this.onTap,
   });
 
-  final IconData icon;
-  final Color foreground;
-  final Color background;
+  final PartnerBrand brand;
+  final String title;
+  final String description;
+  final VoidCallback onTap;
+}
+
+class _ServiceRow extends StatelessWidget {
+  const _ServiceRow({required this.entry});
+
+  final _ServiceEntry entry;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: background,
+    final colors = Theme.of(context).colorScheme;
+    return Material(
+      color: colors.surface,
+      shape: RoundedRectangleBorder(
         borderRadius: AppRadius.large,
+        side: BorderSide(color: colors.outlineVariant),
       ),
-      child: SizedBox.square(
-        dimension: 56,
-        child: Icon(
-          icon,
-          color: foreground,
-          size: AppIconSize.service,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: entry.onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.medium),
+          child: Row(
+            children: [
+              PartnerLogoPlate(brand: entry.brand),
+              const SizedBox(width: AppSpacing.medium),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      entry.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: AppSpacing.xSmall),
+                    Text(
+                      entry.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.small),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: colors.onSurfaceVariant,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _ServiceLabel extends StatelessWidget {
-  const _ServiceLabel({
-    required this.label,
-    required this.color,
-  });
+class _PartnerStrip extends StatelessWidget {
+  const _PartnerStrip();
 
-  final String label;
-  final Color color;
+  static const _brands = [
+    PartnerBrand.auto2000,
+    PartnerBrand.otoxpert,
+    PartnerBrand.acc,
+    PartnerBrand.taf,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: color,
-            fontWeight: FontWeight.w700,
-          ),
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.homePartnersTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: AppSpacing.xSmall),
+        Text(
+          l10n.homePartnersSubtitle,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        Wrap(
+          spacing: AppSpacing.small,
+          runSpacing: AppSpacing.small,
+          children: [
+            for (final brand in _brands)
+              PartnerLogoPlate(brand: brand, width: 72, height: 46),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -403,11 +509,15 @@ class _EmptyVehicle extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.large),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius: 28,
-              backgroundColor: colors.surfaceContainerHighest,
-              child: const Icon(Icons.garage_outlined),
+              radius: 24,
+              backgroundColor: colors.primaryContainer,
+              child: Icon(
+                Icons.garage_outlined,
+                color: colors.onPrimaryContainer,
+              ),
             ),
             const SizedBox(width: AppSpacing.medium),
             Expanded(
@@ -419,8 +529,13 @@ class _EmptyVehicle extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: AppSpacing.xSmall),
-                  Text(l10n.emptyVehicleDescription),
-                  const SizedBox(height: AppSpacing.medium),
+                  Text(
+                    l10n.emptyVehicleDescription,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.small),
                   TextButton(
                     onPressed: onStart,
                     child: Text(l10n.startAppraisal),
@@ -442,13 +557,18 @@ class _LatestVehicle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         contentPadding: const EdgeInsets.all(AppSpacing.medium),
-        leading: const CircleAvatar(
-          child: Icon(Icons.directions_car_outlined),
+        leading: CircleAvatar(
+          backgroundColor: colors.primaryContainer,
+          child: Icon(
+            Icons.directions_car_outlined,
+            color: colors.onPrimaryContainer,
+          ),
         ),
         title: Text('${vehicle.make} ${vehicle.model} ${vehicle.year}'),
         subtitle: Text(

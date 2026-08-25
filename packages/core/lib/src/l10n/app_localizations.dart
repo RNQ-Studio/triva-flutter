@@ -668,6 +668,24 @@ abstract class AppLocalizations {
   /// **'Apa kebutuhan kendaraan Anda hari ini?'**
   String get homeGreetingSubtitle;
 
+  /// No description provided for @homeMarketSourceBadge.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembanding harga OLX'**
+  String get homeMarketSourceBadge;
+
+  /// No description provided for @homePartnersTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mitra resmi'**
+  String get homePartnersTitle;
+
+  /// No description provided for @homePartnersSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan lanjutan dijalankan oleh jaringan mitra Astra.'**
+  String get homePartnersSubtitle;
+
   /// No description provided for @myVehicle.
   ///
   /// In id, this message translates to:

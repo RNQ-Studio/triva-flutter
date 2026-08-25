@@ -78,14 +78,14 @@ class _EstimateContent extends ConsumerWidget {
               leading: CircleAvatar(
                 backgroundColor: damage.isHighRisk
                     ? Theme.of(context).colorScheme.errorContainer
-                    : AppColors.serviceRoseSoft,
+                    : AppColors.accentSoft,
                 child: Icon(
                   damage.isHighRisk
                       ? Icons.warning_amber_rounded
                       : Icons.format_paint_outlined,
                   color: damage.isHighRisk
                       ? Theme.of(context).colorScheme.error
-                      : AppColors.serviceRose,
+                      : AppColors.accent,
                 ),
               ),
               title: Text(damage.panelLabel),
@@ -153,7 +153,7 @@ class _EstimateContent extends ConsumerWidget {
         if (estimate.allows('request_booking'))
           FilledButton.icon(
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.serviceRose,
+              backgroundColor: AppColors.accent,
             ),
             onPressed: mutation.isLoading
                 ? null
@@ -235,7 +235,7 @@ class _StatusCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.serviceRoseSoft,
+        color: AppColors.accentSoft,
         borderRadius: AppRadius.large,
       ),
       child: Padding(
@@ -247,7 +247,7 @@ class _StatusCard extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.format_paint_rounded,
-                  color: AppColors.serviceRose,
+                  color: AppColors.accent,
                 ),
                 const SizedBox(width: AppSpacing.small),
                 Expanded(
@@ -315,7 +315,7 @@ class _ResultCard extends StatelessWidget {
               child: Text(
                 '${money.format(result.low)} - ${money.format(result.high)}',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: AppColors.serviceRose,
+                      color: AppColors.accent,
                       fontWeight: FontWeight.w800,
                     ),
               ),

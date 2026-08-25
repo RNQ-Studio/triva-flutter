@@ -92,7 +92,7 @@ class _StatusHeader extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.serviceVioletSoft,
+        color: AppColors.accentSoft,
         borderRadius: AppRadius.large,
       ),
       child: Padding(
@@ -100,7 +100,7 @@ class _StatusHeader extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.serviceViolet,
+              backgroundColor: AppColors.accent,
               foregroundColor: colors.onPrimary,
               child: Icon(_statusIcon(booking.status)),
             ),
@@ -289,7 +289,7 @@ class _PriceSummary extends StatelessWidget {
         : '${formatter.format(price.minimumAmount)} – '
             '${formatter.format(price.maximumAmount)}';
     return Card(
-      color: AppColors.serviceVioletSoft,
+      color: AppColors.accentSoft,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.large),

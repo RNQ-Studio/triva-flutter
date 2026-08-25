@@ -323,6 +323,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeGreetingSubtitle => 'What does your vehicle need today?';
 
   @override
+  String get homeMarketSourceBadge => 'OLX price comparables';
+
+  @override
+  String get homePartnersTitle => 'Official partners';
+
+  @override
+  String get homePartnersSubtitle =>
+      'Follow-up services are delivered by the Astra partner network.';
+
+  @override
   String get myVehicle => 'My Vehicle';
 
   @override

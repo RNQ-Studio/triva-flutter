@@ -155,14 +155,14 @@ class _AdminBookingTile extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: booking.slaOverdue
                 ? Theme.of(context).colorScheme.errorContainer
-                : AppColors.serviceVioletSoft,
+                : AppColors.accentSoft,
             child: Icon(
               booking.slaOverdue
                   ? Icons.timer_off_outlined
                   : Icons.handyman_outlined,
               color: booking.slaOverdue
                   ? Theme.of(context).colorScheme.onErrorContainer
-                  : AppColors.serviceViolet,
+                  : AppColors.accent,
             ),
           ),
           title: Text(
@@ -588,7 +588,7 @@ class _AdminHeader extends StatelessWidget {
         decoration: BoxDecoration(
           color: booking.slaOverdue
               ? Theme.of(context).colorScheme.errorContainer
-              : AppColors.serviceVioletSoft,
+              : AppColors.accentSoft,
           borderRadius: AppRadius.large,
         ),
         child: Padding(

@@ -322,6 +322,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get homeGreetingSubtitle => 'Apa kebutuhan kendaraan Anda hari ini?';
 
   @override
+  String get homeMarketSourceBadge => 'Pembanding harga OLX';
+
+  @override
+  String get homePartnersTitle => 'Mitra resmi';
+
+  @override
+  String get homePartnersSubtitle =>
+      'Layanan lanjutan dijalankan oleh jaringan mitra Astra.';
+
+  @override
   String get myVehicle => 'Kendaraan Saya';
 
   @override
