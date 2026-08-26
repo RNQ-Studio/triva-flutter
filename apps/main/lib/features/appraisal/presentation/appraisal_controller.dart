@@ -262,8 +262,13 @@ class AppraisalFlowController extends AsyncNotifier<AppraisalFlowState> {
         !draft.hasDetails ||
         !draft.hasCondition ||
         !draft.hasAllPhotos) {
+      // Foto yang hilang dari penyimpanan lokal bukan data yang belum diisi:
+      // pelanggan sudah memilihnya, lalu browser membuang byte-nya. Pesannya
+      // harus menyuruh mengambil ulang, bukan "lengkapi data".
       state = AsyncData(
-        current.copyWith(error: 'incomplete'),
+        current.copyWith(
+          error: missingLocalPhotos.isEmpty ? 'incomplete' : 'photos_expired',
+        ),
       );
       return null;
     }

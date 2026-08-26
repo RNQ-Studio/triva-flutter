@@ -57,16 +57,22 @@ class _VehiclePhotosScreenState extends ConsumerState<VehiclePhotosScreen> {
         await ref.read(appraisalFlowProvider.notifier).savePhoto(angle, photo);
       }
     } on PlatformException {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.photoPermissionError),
-          ),
-        );
-      }
+      _showError(l10n.photoPermissionError);
+    } on Object {
+      // Di browser foto bisa gagal dibaca walau pemilihannya sukses, misalnya
+      // saat URL blob sudah dicabut. Tanpa pesan, layar terlihat seperti tidak
+      // merespons sama sekali.
+      _showError(l10n.photoReadError);
     } finally {
       if (mounted) setState(() => _busyAngle = null);
     }
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override

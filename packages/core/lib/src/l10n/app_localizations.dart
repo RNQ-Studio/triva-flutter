@@ -1928,6 +1928,12 @@ abstract class AppLocalizations {
   /// **'Kamera atau galeri tidak dapat dibuka. Periksa izin aplikasi.'**
   String get photoPermissionError;
 
+  /// No description provided for @photoReadError.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto tidak dapat dibaca. Silakan ambil atau pilih ulang.'**
+  String get photoReadError;
+
   /// No description provided for @uploadPreparingVehicle.
   ///
   /// In id, this message translates to:
@@ -1969,6 +1975,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lengkapi seluruh data sebelum mengirim.'**
   String get incompleteDraftError;
+
+  /// No description provided for @photosExpiredError.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebagian foto tidak lagi tersimpan di perangkat ini. Ambil ulang sebelum mengirim.'**
+  String get photosExpiredError;
 
   /// No description provided for @submissionNetworkError.
   ///

@@ -23,14 +23,20 @@ class _IoAppraisalPhotoStore implements AppraisalPhotoStore {
     final extension = photo.name.contains('.')
         ? photo.name.substring(photo.name.lastIndexOf('.')).toLowerCase()
         : '.jpg';
+    // Nama berkas dibuat unik per pengambilan. Nama yang dipakai ulang membuat
+    // cache gambar Flutter menyajikan foto lama ketika pelanggan mengganti
+    // foto sudut yang sama.
     final target = File(
-      '${directory.path}${Platform.pathSeparator}$angle$extension',
+      '${directory.path}${Platform.pathSeparator}'
+      '$angle-${DateTime.now().microsecondsSinceEpoch}$extension',
     );
-    if (previousPath != null && previousPath != target.path) {
-      final previous = File(previousPath);
-      if (await previous.exists()) await previous.delete();
-    }
     await File(photo.path).copy(target.path);
+    await _removeStale(
+      directory,
+      angle: angle,
+      keep: target.path,
+      previousPath: previousPath,
+    );
 
     return target.path;
   }
@@ -58,6 +64,28 @@ class _IoAppraisalPhotoStore implements AppraisalPhotoStore {
       // Foto baru selalu berada di subdirektori milik akun. Hanya berkas yang
       // tergeletak langsung di direktori lama yang dibuang.
       if (entity is File) await entity.delete();
+    }
+  }
+
+  /// Membuang berkas lain untuk sudut yang sama, termasuk jalur sebelumnya
+  /// dari draft. Menyapu berdasarkan awalan sudut membuat foto yatim dari sesi
+  /// yang terputus ikut terbuang, bukan menumpuk di penyimpanan perangkat.
+  Future<void> _removeStale(
+    Directory directory, {
+    required String angle,
+    required String keep,
+    String? previousPath,
+  }) async {
+    if (previousPath != null && previousPath != keep) {
+      final previous = File(previousPath);
+      if (await previous.exists()) await previous.delete();
+    }
+    await for (final entity in directory.list(followLinks: false)) {
+      if (entity is! File || entity.path == keep) continue;
+      final name = entity.path.split(Platform.pathSeparator).last;
+      if (name.startsWith('$angle-') || name.startsWith('$angle.')) {
+        await entity.delete();
+      }
     }
   }
 

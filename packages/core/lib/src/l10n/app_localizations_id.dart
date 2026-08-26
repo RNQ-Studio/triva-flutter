@@ -1005,6 +1005,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Kamera atau galeri tidak dapat dibuka. Periksa izin aplikasi.';
 
   @override
+  String get photoReadError =>
+      'Foto tidak dapat dibaca. Silakan ambil atau pilih ulang.';
+
+  @override
   String get uploadPreparingVehicle => 'Menyiapkan data kendaraan';
 
   @override
@@ -1026,6 +1030,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get incompleteDraftError => 'Lengkapi seluruh data sebelum mengirim.';
+
+  @override
+  String get photosExpiredError =>
+      'Sebagian foto tidak lagi tersimpan di perangkat ini. Ambil ulang sebelum mengirim.';
 
   @override
   String get submissionNetworkError =>

@@ -1010,6 +1010,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Camera or gallery could not be opened. Check the app permissions.';
 
   @override
+  String get photoReadError =>
+      'The photo could not be read. Please take or choose it again.';
+
+  @override
   String get uploadPreparingVehicle => 'Preparing vehicle details';
 
   @override
@@ -1032,6 +1036,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get incompleteDraftError =>
       'Complete all required information before submitting.';
+
+  @override
+  String get photosExpiredError =>
+      'Some photos are no longer stored on this device. Take them again before submitting.';
 
   @override
   String get submissionNetworkError =>

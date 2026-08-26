@@ -81,6 +81,65 @@ void main() {
     expect(await store.exists(first), isTrue);
   });
 
+  test('replacing a photo yields a fresh path and leaves no stale file',
+      () async {
+    // Jalur yang dipakai ulang membuat cache gambar Flutter menyajikan foto
+    // lama, sehingga preview terlihat tidak berubah setelah foto diganti.
+    final store = createAppraisalPhotoStore();
+    final source = File('${root.path}/picked.jpg');
+    await source.writeAsBytes([1]);
+    final replacement = File('${root.path}/replacement.jpg');
+    await replacement.writeAsBytes([2]);
+
+    final first = await store.save(
+      owner: 'user-1',
+      angle: 'front',
+      photo: XFile(source.path),
+    );
+    final second = await store.save(
+      owner: 'user-1',
+      angle: 'front',
+      photo: XFile(replacement.path),
+      previousPath: first,
+    );
+
+    expect(second, isNot(first));
+    expect(await store.exists(first), isFalse);
+    expect(await store.readBytes(second), [2]);
+
+    final stored = Directory(
+      '${root.path}${Platform.pathSeparator}triva_appraisal_draft'
+      '${Platform.pathSeparator}user-1',
+    ).listSync().whereType<File>();
+    expect(stored, hasLength(1));
+  });
+
+  test('a stale photo left by an interrupted session is swept on replace',
+      () async {
+    final store = createAppraisalPhotoStore();
+    final source = File('${root.path}/picked.jpg');
+    await source.writeAsBytes([3]);
+    final directory = Directory(
+      '${root.path}${Platform.pathSeparator}triva_appraisal_draft'
+      '${Platform.pathSeparator}user-1',
+    );
+    await directory.create(recursive: true);
+    // Bentuk nama versi lama, sebelum jalurnya dibuat unik per pengambilan.
+    final orphan = File(
+      '${directory.path}${Platform.pathSeparator}front.jpg',
+    );
+    await orphan.writeAsBytes([9]);
+
+    await store.save(
+      owner: 'user-1',
+      angle: 'front',
+      photo: XFile(source.path),
+    );
+
+    expect(await orphan.exists(), isFalse);
+    expect(directory.listSync().whereType<File>(), hasLength(1));
+  });
+
   test('the preview goes through the platform provider, not a raw file', () {
     // Di browser jalur foto berupa URL blob dan `Image.file` tidak akan pernah
     // memunculkan preview -- keluhan notulensi 19 Agustus 2026.

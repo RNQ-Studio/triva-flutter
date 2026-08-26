@@ -201,6 +201,7 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
   String _errorLabel(AppLocalizations l10n, String error) {
     return switch (error) {
       'incomplete' => l10n.incompleteDraftError,
+      'photos_expired' => l10n.photosExpiredError,
       'network' => l10n.submissionNetworkError,
       'auth' => l10n.submissionAuthError,
       _ => l10n.submissionGeneralError,
