@@ -1,8 +1,24 @@
 import 'package:core/core.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triva_app/features/visit_analytics/data/menu_usage_reporter.dart';
+import 'package:triva_app/features/visit_analytics/presentation/visit_analytics_controller.dart';
 import 'package:triva_app/router/customer_shell.dart';
+
+/// Pelapor menu yang tidak menyentuh jaringan: `source` null membuat setiap
+/// pelaporan berhenti sebelum request dibuat.
+final _silentMenuUsage = [
+  menuUsageReporterProvider.overrideWithValue(
+    MenuUsageReporter(
+      Dio(),
+      source: null,
+      appInfo: () async => (version: '', build: ''),
+    ),
+  ),
+];
 
 void main() {
   testWidgets('keeps bottom navigation visible across customer tabs',
@@ -27,12 +43,15 @@ void main() {
     addTearDown(router.dispose);
 
     await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        locale: const Locale('id'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+      ProviderScope(
+        overrides: _silentMenuUsage,
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -77,12 +96,15 @@ void main() {
     addTearDown(router.dispose);
 
     await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        locale: const Locale('id'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+      ProviderScope(
+        overrides: _silentMenuUsage,
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -118,12 +140,15 @@ void main() {
     addTearDown(router.dispose);
 
     await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        locale: const Locale('id'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+      ProviderScope(
+        overrides: _silentMenuUsage,
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -185,12 +210,15 @@ void main() {
     addTearDown(router.dispose);
 
     await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        locale: const Locale('id'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+      ProviderScope(
+        overrides: _silentMenuUsage,
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     );
     await tester.pumpAndSettle();

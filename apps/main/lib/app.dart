@@ -16,7 +16,6 @@ import 'features/body_paint/presentation/body_paint_controller.dart';
 import 'features/credit/presentation/credit_controller.dart';
 import 'features/toyota_service/presentation/toyota_service_controller.dart';
 import 'features/otoxpert/presentation/otoxpert_controller.dart';
-import 'features/visit_analytics/domain/visit_analytics_models.dart';
 import 'features/visit_analytics/presentation/visit_analytics_controller.dart';
 
 String? notificationTarget(Map<String, dynamic> data) {
@@ -165,11 +164,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
 
   Future<void> _reportApplicationVisit() async {
     if (AppConfig.instance.environment != Environment.prod) return;
-    final source = kIsWeb
-        ? VisitSource.web
-        : defaultTargetPlatform == TargetPlatform.android
-            ? VisitSource.android
-            : null;
+    final source = currentVisitSource();
     if (source == null) return;
 
     try {

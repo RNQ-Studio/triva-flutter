@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../visit_analytics/domain/menu_usage_models.dart';
+import '../../visit_analytics/presentation/visit_analytics_controller.dart';
 import '../domain/promotion_models.dart';
 
 /// Banner promo berjalan di halaman depan.
@@ -105,7 +108,10 @@ class PromotionBanner extends StatelessWidget {
       borderRadius: AppRadius.large,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => openPromotion(promotion),
+        onTap: () {
+          _trackPromotionOpen(context);
+          openPromotion(promotion);
+        },
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -250,6 +256,7 @@ Future<void> showPromotionPopup(
             FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _trackPromotionOpen(context);
                 openPromotion(promotion);
               },
               child: Text(promotion.ctaLabel ?? l10n.promoPopupCta),
@@ -258,6 +265,15 @@ Future<void> showPromotionPopup(
       );
     },
   );
+}
+
+/// Mencatat pembukaan promo dari widget yang tidak memegang `WidgetRef`.
+///
+/// Pemakaian menu dilaporkan best-effort, jadi ketiadaan `ProviderScope`
+/// di pohon widget cukup diabaikan.
+void _trackPromotionOpen(BuildContext context) {
+  final container = ProviderScope.containerOf(context, listen: false);
+  unawaited(container.read(menuUsageReporterProvider).track(MenuKey.promotion));
 }
 
 /// Membuka tautan promo bila cabang mengisinya. Promo tanpa tautan hanya

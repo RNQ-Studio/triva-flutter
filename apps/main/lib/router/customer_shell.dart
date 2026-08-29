@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:features_shared/features_shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../features/visit_analytics/domain/menu_usage_models.dart';
+import '../features/visit_analytics/presentation/visit_analytics_controller.dart';
+
 class CustomerShell extends ConsumerWidget {
   const CustomerShell({
     required this.navigationShell,
@@ -76,6 +79,12 @@ class CustomerShell extends ConsumerWidget {
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             selectedIndex: navigationShell.currentIndex,
             onDestinationSelected: (index) {
+              final menu = switch (index) {
+                2 => MenuKey.notification,
+                3 => MenuKey.profile,
+                _ => null,
+              };
+              if (menu != null) trackMenuUsage(ref, menu);
               navigationShell.goBranch(
                 index,
                 initialLocation: index == navigationShell.currentIndex,

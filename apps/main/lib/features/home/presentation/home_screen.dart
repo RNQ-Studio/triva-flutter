@@ -19,6 +19,8 @@ import '../../promotion/presentation/promotion_widgets.dart';
 import '../../maintenance_estimate/presentation/maintenance_estimate_paths.dart';
 import '../../vehicle_benefit/presentation/vehicle_benefit_paths.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
+import '../../visit_analytics/domain/menu_usage_models.dart';
+import '../../visit_analytics/presentation/visit_analytics_controller.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -86,7 +88,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _Header(
-                            onNotifications: () => context.go('/notifications'),
+                            onNotifications: () {
+                              trackMenuUsage(ref, MenuKey.notification);
+                              context.go('/notifications');
+                            },
                           ),
                           const SizedBox(height: AppSpacing.xLarge),
                           Text(
@@ -113,27 +118,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                           const SizedBox(height: AppSpacing.xLarge),
                           _AppraisalHero(
-                            onTap: () => context.push(startPath),
+                            onTap: () {
+                              trackMenuUsage(ref, MenuKey.appraisal);
+                              context.push(startPath);
+                            },
                           ),
                           const SizedBox(height: AppSpacing.medium),
                           _ToolTile(
                             icon: Icons.pin_outlined,
                             title: l10n.benefitCheckTitle,
                             description: l10n.benefitCheckSubtitle,
-                            onTap: () => context.push(vehicleBenefitCheckPath),
+                            onTap: () {
+                              trackMenuUsage(ref, MenuKey.vehicleBenefit);
+                              context.push(vehicleBenefitCheckPath);
+                            },
                           ),
                           const SizedBox(height: AppSpacing.medium),
                           _ToolTile(
                             icon: Icons.receipt_long_outlined,
                             title: l10n.maintenanceEstimateTitle,
                             description: l10n.maintenanceEstimateSubtitle,
-                            onTap: () => context.push(maintenanceEstimatePath),
+                            onTap: () {
+                              trackMenuUsage(ref, MenuKey.maintenanceEstimate);
+                              context.push(maintenanceEstimatePath);
+                            },
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
                           _SectionHeading(title: l10n.homeServicesTitle),
                           const SizedBox(height: AppSpacing.medium),
                           _ServiceList(
                             onToyotaService: () async {
+                              trackMenuUsage(ref, MenuKey.toyotaService);
                               final activeDraft =
                                   serviceDraft ?? const ToyotaServiceDraft();
                               ToyotaServiceOptions? options;
@@ -155,9 +170,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       ),
                               );
                             },
-                            onOtoxpert: () => context.push(otoxpertPath),
-                            onCredit: () => context.push(creditPath),
-                            onBodyPaint: () => context.push(bodyPaintPath),
+                            onOtoxpert: () {
+                              trackMenuUsage(ref, MenuKey.otoxpert);
+                              context.push(otoxpertPath);
+                            },
+                            onCredit: () {
+                              trackMenuUsage(ref, MenuKey.credit);
+                              context.push(creditPath);
+                            },
+                            onBodyPaint: () {
+                              trackMenuUsage(ref, MenuKey.bodyPaint);
+                              context.push(bodyPaintPath);
+                            },
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
                           _SectionHeading(title: l10n.myVehicle),
@@ -165,7 +189,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           vehicles.when(
                             data: (items) => items.isEmpty
                                 ? _EmptyVehicle(
-                                    onStart: () => context.push(startPath),
+                                    onStart: () {
+                                      trackMenuUsage(ref, MenuKey.appraisal);
+                                      context.push(startPath);
+                                    },
                                   )
                                 : _LatestVehicle(vehicle: items.first),
                             loading: () => const LinearProgressIndicator(),
