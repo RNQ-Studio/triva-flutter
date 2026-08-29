@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../domain/visit_analytics_models.dart';
+import 'admin_analytics_widgets.dart';
 import 'visit_analytics_controller.dart';
 
 class AdminVisitDashboardSection extends ConsumerWidget {
@@ -18,42 +18,19 @@ class AdminVisitDashboardSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.adminVisitDashboardTitle,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: AppSpacing.xSmall),
-                  Text(
-                    l10n.adminVisitDashboardDescription,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: AppSpacing.small),
-            IconButton(
-              onPressed: statistics.isLoading
-                  ? null
-                  : () => ref.invalidate(adminVisitStatisticsProvider),
-              icon: const Icon(Icons.refresh_rounded),
-              tooltip: l10n.adminVisitRefresh,
-            ),
-          ],
+        AdminAnalyticsHeader(
+          title: l10n.adminVisitDashboardTitle,
+          description: l10n.adminVisitDashboardDescription,
+          refreshTooltip: l10n.adminVisitRefresh,
+          onRefresh: statistics.isLoading
+              ? null
+              : () => ref.invalidate(adminVisitStatisticsProvider),
         ),
         const SizedBox(height: AppSpacing.medium),
         statistics.when(
           loading: _VisitDashboardLoading.new,
           error: (error, _) => _VisitDashboardError(
-            offline: _isOffline(error),
+            offline: isAnalyticsOffline(error),
             onRetry: () => ref.invalidate(adminVisitStatisticsProvider),
           ),
           data: (snapshot) => snapshot.isEmpty
@@ -277,7 +254,7 @@ class _VisitDashboardEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return _VisitMessageCard(
+    return AdminAnalyticsMessageCard(
       icon: Icons.query_stats_rounded,
       title: l10n.adminVisitEmptyTitle,
       description: l10n.adminVisitEmptyDescription,
@@ -297,7 +274,7 @@ class _VisitDashboardError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return _VisitMessageCard(
+    return AdminAnalyticsMessageCard(
       icon: offline ? Icons.wifi_off_rounded : Icons.error_outline_rounded,
       title: offline ? l10n.adminVisitOfflineTitle : l10n.adminVisitErrorTitle,
       description: offline
@@ -310,64 +287,4 @@ class _VisitDashboardError extends StatelessWidget {
       ),
     );
   }
-}
-
-class _VisitMessageCard extends StatelessWidget {
-  const _VisitMessageCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    this.action,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-  final Widget? action;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.large),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, color: colors.primary),
-            const SizedBox(width: AppSpacing.medium),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: AppSpacing.xSmall),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurfaceVariant,
-                        ),
-                  ),
-                  if (action != null) ...[
-                    const SizedBox(height: AppSpacing.medium),
-                    action!,
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-bool _isOffline(Object error) {
-  if (error is NetworkException) return true;
-  if (error is! DioException) return false;
-  return error.type == DioExceptionType.connectionError ||
-      error.type == DioExceptionType.connectionTimeout ||
-      error.type == DioExceptionType.receiveTimeout ||
-      error.type == DioExceptionType.sendTimeout;
 }

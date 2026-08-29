@@ -5,7 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_routes.dart';
+import 'package:triva_app/features/visit_analytics/data/admin_demographics_repository.dart';
+import 'package:triva_app/features/visit_analytics/data/admin_menu_usage_repository.dart';
 import 'package:triva_app/features/visit_analytics/data/admin_visit_statistics_repository.dart';
+import 'package:triva_app/features/visit_analytics/domain/demographics_models.dart';
+import 'package:triva_app/features/visit_analytics/domain/menu_usage_models.dart';
 import 'package:triva_app/features/visit_analytics/domain/visit_analytics_models.dart';
 import 'package:triva_app/features/visit_analytics/presentation/visit_analytics_controller.dart';
 
@@ -18,13 +22,43 @@ class _AnalyticsAuthNotifier extends AuthNotifier {
           email: 'analytics@example.com',
           profileCompleted: true,
           roles: ['admin'],
-          permissions: ['analytics.viewAny'],
+          permissions: ['analytics.viewAny', 'appraisals.viewAny'],
         ),
       );
 }
 
 class _MockStatisticsRepository extends Mock
     implements AdminVisitStatisticsRepository {}
+
+/// Bagian demografi dan menu ikut termuat di panel yang sama; keduanya
+/// dikosongkan supaya test ini tetap menguji statistik kunjungan saja.
+class _EmptyDemographicsRepository implements AdminDemographicsRepository {
+  @override
+  Future<DemographicsSnapshot> fetch() async => DemographicsSnapshot(
+        generatedAt: DateTime.parse('2026-08-19T03:00:00Z'),
+        totalUsers: 0,
+        completedProfiles: 0,
+        completionRate: 0,
+        gender: const [],
+        ageGroups: const [],
+      );
+}
+
+class _EmptyMenuUsageRepository implements AdminMenuUsageRepository {
+  @override
+  Future<MenuUsageSnapshot> fetch() async => MenuUsageSnapshot(
+        timezone: 'Asia/Jakarta',
+        generatedAt: DateTime.parse('2026-08-19T03:00:00Z'),
+        periods: {
+          for (final period in VisitPeriod.values)
+            period: const MenuUsagePeriod(
+              total: 0,
+              distinctMenus: 0,
+              menus: [],
+            ),
+        },
+      );
+}
 
 void main() {
   late _MockStatisticsRepository repository;
@@ -47,6 +81,10 @@ void main() {
         overrides: [
           authProvider.overrideWith(_AnalyticsAuthNotifier.new),
           adminVisitStatisticsRepositoryProvider.overrideWithValue(repository),
+          adminDemographicsRepositoryProvider
+              .overrideWithValue(_EmptyDemographicsRepository()),
+          adminMenuUsageRepositoryProvider
+              .overrideWithValue(_EmptyMenuUsageRepository()),
         ],
         child: MaterialApp(
           theme: theme,
@@ -117,16 +155,18 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Statistik sedang offline'), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0, -320));
-    await tester.pumpAndSettle();
-    expect(find.text('Appraisal trade-in'), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0, 320));
+    await tester.ensureVisible(find.text('Coba lagi'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Coba lagi'));
     await tester.pumpAndSettle();
 
     expect(find.text('Hari ini'), findsOneWidget);
     expect(attempt, 2);
+
+    // Menu operasional tetap terjangkau meski statistik sempat gagal.
+    await tester.drag(find.byType(ListView), const Offset(0, -1600));
+    await tester.pumpAndSettle();
+    expect(find.text('Daftar appraisal'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }
