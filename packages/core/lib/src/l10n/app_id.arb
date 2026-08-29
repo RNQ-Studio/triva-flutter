@@ -816,5 +816,12 @@
   "bodyPaintLight": "Ringan",
   "bodyPaintMedium": "Sedang",
   "bodyPaintHeavy": "Berat",
-  "bodyPaintInspect": "Inspeksi"
+  "bodyPaintInspect": "Inspeksi",
+  "gender": "Jenis kelamin",
+  "chooseGender": "Pilih jenis kelamin",
+  "genderMale": "Laki-laki",
+  "genderFemale": "Perempuan",
+  "genderUndisclosed": "Tidak ingin menyebutkan",
+  "birthDate": "Tanggal lahir",
+  "chooseBirthDate": "Pilih tanggal lahir"
 }

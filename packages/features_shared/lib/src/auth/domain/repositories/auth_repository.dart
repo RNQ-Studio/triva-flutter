@@ -20,6 +20,8 @@ abstract class AuthRepository {
     String? city,
     int? provinceId,
     int? cityId,
+    Gender? gender,
+    DateTime? birthDate,
     bool? serviceConsent,
     bool? marketingConsent,
   });

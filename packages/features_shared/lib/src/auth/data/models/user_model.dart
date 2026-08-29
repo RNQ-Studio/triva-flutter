@@ -7,8 +7,11 @@ class UserModel extends User {
     required super.email,
     super.phone,
     super.city,
+    super.gender,
+    super.birthDate,
     super.avatarUrl,
     super.profileCompleted,
+    super.demographicsCompleted,
     super.serviceConsentAt,
     super.marketingConsent,
     super.roles,
@@ -26,8 +29,13 @@ class UserModel extends User {
         email: json['email'] as String,
         phone: json['phone'] as String?,
         city: json['city'] as String?,
+        gender: Gender.fromApiValue(json['gender'] as String?),
+        birthDate: json['birth_date'] == null
+            ? null
+            : DateTime.tryParse(json['birth_date'].toString()),
         avatarUrl: json['avatar_url'] as String?,
         profileCompleted: json['profile_completed'] as bool? ?? false,
+        demographicsCompleted: json['demographics_completed'] as bool? ?? false,
         serviceConsentAt: json['service_consent_at'] == null
             ? null
             : DateTime.tryParse(json['service_consent_at'].toString()),
@@ -50,8 +58,11 @@ class UserModel extends User {
         'email': email,
         if (phone != null) 'phone': phone,
         if (city != null) 'city': city,
+        if (gender != null) 'gender': gender!.apiValue,
+        if (birthDate != null) 'birth_date': _formatBirthDate(birthDate!),
         if (avatarUrl != null) 'avatar_url': avatarUrl,
         'profile_completed': profileCompleted,
+        'demographics_completed': demographicsCompleted,
         if (serviceConsentAt != null)
           'service_consent_at': serviceConsentAt!.toIso8601String(),
         'marketing_consent': marketingConsent,
@@ -60,4 +71,10 @@ class UserModel extends User {
         if (token != null) 'token': token,
         if (refreshToken != null) 'refresh_token': refreshToken,
       };
+}
+
+String _formatBirthDate(DateTime value) {
+  final month = value.month.toString().padLeft(2, '0');
+  final day = value.day.toString().padLeft(2, '0');
+  return '${value.year.toString().padLeft(4, '0')}-$month-$day';
 }

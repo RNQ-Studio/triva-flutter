@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/biometric_auth_service.dart';
+import '../domain/entities/user.dart';
 import '../domain/usecases/get_current_user_use_case.dart';
 import '../domain/usecases/login_use_case.dart';
 import '../domain/usecases/login_with_google_use_case.dart';
@@ -102,6 +103,8 @@ class AuthNotifier extends _$AuthNotifier {
     String? city,
     int? provinceId,
     int? cityId,
+    Gender? gender,
+    DateTime? birthDate,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
@@ -116,6 +119,8 @@ class AuthNotifier extends _$AuthNotifier {
         city: city,
         provinceId: provinceId,
         cityId: cityId,
+        gender: gender,
+        birthDate: birthDate,
         serviceConsent: serviceConsent,
         marketingConsent: marketingConsent,
       );

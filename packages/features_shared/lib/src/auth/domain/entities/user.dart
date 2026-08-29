@@ -1,3 +1,22 @@
+/// Gender pelanggan sebagaimana disimpan backend.
+enum Gender {
+  male('male'),
+  female('female'),
+  undisclosed('undisclosed');
+
+  const Gender(this.apiValue);
+
+  final String apiValue;
+
+  static Gender? fromApiValue(String? value) {
+    if (value == null) return null;
+    for (final gender in values) {
+      if (gender.apiValue == value) return gender;
+    }
+    return null;
+  }
+}
+
 class User {
   const User({
     required this.id,
@@ -5,8 +24,11 @@ class User {
     required this.email,
     this.phone,
     this.city,
+    this.gender,
+    this.birthDate,
     this.avatarUrl,
     this.profileCompleted = false,
+    this.demographicsCompleted = false,
     this.serviceConsentAt,
     this.marketingConsent = false,
     this.roles = const [],
@@ -18,12 +40,35 @@ class User {
   final String email;
   final String? phone;
   final String? city;
+  final Gender? gender;
+  final DateTime? birthDate;
   final String? avatarUrl;
   final bool profileCompleted;
+
+  /// Gender dan tanggal lahir sudah terisi.
+  ///
+  /// Dipisahkan dari [profileCompleted] karena backend sengaja tidak
+  /// memperketat flag lama demi pemasangan aplikasi versi sebelumnya.
+  final bool demographicsCompleted;
   final DateTime? serviceConsentAt;
   final bool marketingConsent;
   final List<String> roles;
   final List<String> permissions;
+
+  /// Semua isian wajib pra-pemakaian sudah terisi.
+  bool get hasCompleteProfile => profileCompleted && demographicsCompleted;
+
+  /// Umur dalam tahun penuh, atau null bila tanggal lahir belum diisi.
+  int? age({DateTime? now}) {
+    final birth = birthDate;
+    if (birth == null) return null;
+    final reference = now ?? DateTime.now();
+    var years = reference.year - birth.year;
+    final hadBirthday = reference.month > birth.month ||
+        (reference.month == birth.month && reference.day >= birth.day);
+    if (!hadBirthday) years -= 1;
+    return years < 0 ? null : years;
+  }
 
   bool get isAdmin => roles.any(
         (role) =>

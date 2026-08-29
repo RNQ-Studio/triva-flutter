@@ -2547,4 +2547,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodyPaintInspect => 'Inspection';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get chooseGender => 'Choose gender';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get genderUndisclosed => 'Prefer not to say';
+
+  @override
+  String get birthDate => 'Date of birth';
+
+  @override
+  String get chooseBirthDate => 'Choose date of birth';
 }

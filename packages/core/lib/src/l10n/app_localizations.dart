@@ -4735,6 +4735,48 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Inspeksi'**
   String get bodyPaintInspect;
+
+  /// No description provided for @gender.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis kelamin'**
+  String get gender;
+
+  /// No description provided for @chooseGender.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jenis kelamin'**
+  String get chooseGender;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In id, this message translates to:
+  /// **'Laki-laki'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In id, this message translates to:
+  /// **'Perempuan'**
+  String get genderFemale;
+
+  /// No description provided for @genderUndisclosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ingin menyebutkan'**
+  String get genderUndisclosed;
+
+  /// No description provided for @birthDate.
+  ///
+  /// In id, this message translates to:
+  /// **'Tanggal lahir'**
+  String get birthDate;
+
+  /// No description provided for @chooseBirthDate.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih tanggal lahir'**
+  String get chooseBirthDate;
 }
 
 class _AppLocalizationsDelegate

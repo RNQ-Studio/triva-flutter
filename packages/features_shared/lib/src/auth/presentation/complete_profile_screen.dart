@@ -8,6 +8,7 @@ import 'auth_guard.dart';
 import 'auth_provider.dart';
 import 'auth_state.dart';
 import '../domain/entities/region_option.dart';
+import '../domain/entities/user.dart';
 import 'region_provider.dart';
 
 class CompleteProfileScreen extends ConsumerStatefulWidget {
@@ -26,8 +27,12 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
   final _phoneFocusNode = FocusNode();
   final _provinceFocusNode = FocusNode();
   final _cityFocusNode = FocusNode();
+  final _genderFocusNode = FocusNode();
   int? _selectedProvinceId;
   int? _selectedCityId;
+  Gender? _selectedGender;
+  DateTime? _birthDate;
+  bool _birthDateTouched = false;
   bool _serviceConsent = false;
   bool _marketingConsent = false;
   bool _submitting = false;
@@ -40,6 +45,8 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     final state = ref.read(authProvider);
     final user = state is AuthAuthenticated ? state.user : null;
     _phoneController = TextEditingController(text: user?.phone);
+    _selectedGender = user?.gender;
+    _birthDate = user?.birthDate;
     _serviceConsent = user?.serviceConsentAt != null;
     _marketingConsent = user?.marketingConsent ?? false;
   }
@@ -50,13 +57,18 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     _phoneFocusNode.dispose();
     _provinceFocusNode.dispose();
     _cityFocusNode.dispose();
+    _genderFocusNode.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     final l10n = AppLocalizations.of(context)!;
-    setState(() => _error = null);
-    if (!_formKey.currentState!.validate()) {
+    setState(() {
+      _error = null;
+      _birthDateTouched = true;
+    });
+    final formValid = _formKey.currentState!.validate();
+    if (!formValid || _birthDate == null) {
       setState(
         () => _autovalidateMode = AutovalidateMode.onUserInteraction,
       );
@@ -64,8 +76,10 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
         _phoneFocusNode.requestFocus();
       } else if (_selectedProvinceId == null) {
         _provinceFocusNode.requestFocus();
-      } else {
+      } else if (_selectedCityId == null) {
         _cityFocusNode.requestFocus();
+      } else if (_selectedGender == null) {
+        _genderFocusNode.requestFocus();
       }
       return;
     }
@@ -85,6 +99,8 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
             phone: _phoneController.text.trim(),
             provinceId: _selectedProvinceId,
             cityId: _selectedCityId,
+            gender: _selectedGender,
+            birthDate: _birthDate,
             serviceConsent: true,
             marketingConsent: _marketingConsent,
           );
@@ -96,6 +112,25 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
+  }
+
+  Future<void> _pickBirthDate() async {
+    final now = DateTime.now();
+    // Batasnya menyamai validasi server: minimal 17 tahun, maksimal 100 tahun.
+    final latest = DateTime(now.year - 17, now.month, now.day);
+    final earliest = DateTime(now.year - 100, now.month, now.day);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _birthDate ?? DateTime(now.year - 30, now.month, now.day),
+      firstDate: earliest,
+      lastDate: latest,
+      helpText: AppLocalizations.of(context)!.birthDate,
+    );
+    if (picked == null || !mounted) return;
+    setState(() {
+      _birthDate = DateTime(picked.year, picked.month, picked.day);
+      _birthDateTouched = true;
+    });
   }
 
   String? _validatePhone(String? value) {
@@ -214,6 +249,38 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                         setState(() => _selectedCityId = value);
                       },
                       onRetry: () => ref.invalidate(provinceOptionsProvider),
+                    ),
+                    const SizedBox(height: AppSpacing.medium),
+                    DropdownButtonFormField<Gender>(
+                      key: const ValueKey('profile-gender-field'),
+                      initialValue: _selectedGender,
+                      focusNode: _genderFocusNode,
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        labelText: l10n.gender,
+                        prefixIcon: const Icon(Icons.wc_outlined),
+                      ),
+                      hint: Text(l10n.chooseGender),
+                      items: [
+                        for (final gender in Gender.values)
+                          DropdownMenuItem(
+                            value: gender,
+                            child: Text(genderLabel(l10n, gender)),
+                          ),
+                      ],
+                      onChanged: _submitting
+                          ? null
+                          : (value) => setState(() => _selectedGender = value),
+                      validator: (value) =>
+                          value == null ? l10n.fieldRequired : null,
+                    ),
+                    const SizedBox(height: AppSpacing.medium),
+                    _BirthDateField(
+                      value: _birthDate,
+                      errorText: _birthDateTouched && _birthDate == null
+                          ? l10n.fieldRequired
+                          : null,
+                      onTap: _submitting ? null : _pickBirthDate,
                     ),
                     const SizedBox(height: AppSpacing.large),
                     CheckboxListTile(
@@ -486,6 +553,51 @@ class _RegionUnavailable extends StatelessWidget {
               label: Text(l10n.retry),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+String genderLabel(AppLocalizations l10n, Gender gender) => switch (gender) {
+      Gender.male => l10n.genderMale,
+      Gender.female => l10n.genderFemale,
+      Gender.undisclosed => l10n.genderUndisclosed,
+    };
+
+class _BirthDateField extends StatelessWidget {
+  const _BirthDateField({
+    required this.value,
+    required this.errorText,
+    required this.onTap,
+  });
+
+  final DateTime? value;
+  final String? errorText;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return InkWell(
+      key: const ValueKey('profile-birth-date-field'),
+      onTap: onTap,
+      borderRadius: AppRadius.medium,
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: l10n.birthDate,
+          prefixIcon: const Icon(Icons.cake_outlined),
+          suffixIcon: const Icon(Icons.calendar_today_outlined),
+          errorText: errorText,
+        ),
+        child: Text(
+          value == null ? l10n.chooseBirthDate : AppDateUtils.format(value!),
+          style: value == null
+              ? Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  )
+              : Theme.of(context).textTheme.bodyLarge,
         ),
       ),
     );

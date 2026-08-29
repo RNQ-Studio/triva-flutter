@@ -147,7 +147,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
       if (next is AuthAuthenticated) {
         unawaited(_syncPushToken());
         final pending =
-            next.user.profileCompleted ? _pendingNotificationRoute : null;
+            next.user.hasCompleteProfile ? _pendingNotificationRoute : null;
         if (pending != null) {
           _pendingNotificationRoute = null;
           _openNotificationFromAppRoot(pending);
@@ -261,7 +261,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     if (target == null) return;
     if (appRouter.state.uri.toString() == target) return;
     final auth = ref.read(authProvider);
-    if (auth is AuthAuthenticated && auth.user.profileCompleted) {
+    if (auth is AuthAuthenticated && auth.user.hasCompleteProfile) {
       // Keep the page the customer was using underneath a notification opened
       // while the app is alive. If an initial notification arrives while an
       // app-root screen is still active, first create Home as a safe anchor.
@@ -280,7 +280,7 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final auth = ref.read(authProvider);
-      if (auth is! AuthAuthenticated || !auth.user.profileCompleted) {
+      if (auth is! AuthAuthenticated || !auth.user.hasCompleteProfile) {
         _pendingNotificationRoute = target;
         return;
       }

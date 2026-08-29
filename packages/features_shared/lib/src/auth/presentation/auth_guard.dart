@@ -78,13 +78,16 @@ String? authRedirect(BuildContext context, GoRouterState state) {
   }
 
   final user = authState.user;
-  if (!user.profileCompleted && !isOnProfileSetup) {
+  // Gender dan tanggal lahir wajib sejak rilis ini, jadi profil dianggap
+  // belum lengkap selama salah satunya kosong.
+  final profileReady = user.hasCompleteProfile;
+  if (!profileReady && !isOnProfileSetup) {
     final destination = isOnLoginPage
         ? state.uri.queryParameters['from']
         : state.uri.toString();
     return _authLocationWithReturnTo(completeProfilePath, destination);
   }
-  if (user.profileCompleted && (isOnLoginPage || isOnProfileSetup)) {
+  if (profileReady && (isOnLoginPage || isOnProfileSetup)) {
     return safeAuthReturnLocation(state.uri.queryParameters['from']) ?? '/';
   }
   return null;

@@ -27,6 +27,7 @@ class _LoginFlowAuthNotifier extends AuthNotifier {
         name: 'TRIVA Customer',
         email: 'customer@example.com',
         profileCompleted: true,
+        demographicsCompleted: true,
       ),
     );
   }

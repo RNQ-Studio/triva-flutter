@@ -2544,4 +2544,25 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get bodyPaintInspect => 'Inspeksi';
+
+  @override
+  String get gender => 'Jenis kelamin';
+
+  @override
+  String get chooseGender => 'Pilih jenis kelamin';
+
+  @override
+  String get genderMale => 'Laki-laki';
+
+  @override
+  String get genderFemale => 'Perempuan';
+
+  @override
+  String get genderUndisclosed => 'Tidak ingin menyebutkan';
+
+  @override
+  String get birthDate => 'Tanggal lahir';
+
+  @override
+  String get chooseBirthDate => 'Pilih tanggal lahir';
 }

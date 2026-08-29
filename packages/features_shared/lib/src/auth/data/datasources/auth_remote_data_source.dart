@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 
+import '../../domain/entities/user.dart';
 import '../models/user_model.dart';
 import '../../domain/entities/region_option.dart';
 import '../models/region_option_model.dart';
@@ -156,6 +157,8 @@ class AuthRemoteDataSource {
     String? city,
     int? provinceId,
     int? cityId,
+    Gender? gender,
+    DateTime? birthDate,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
@@ -167,6 +170,8 @@ class AuthRemoteDataSource {
           'email': email,
           if (phone != null) 'phone': phone,
           if (city != null) 'city': city,
+          if (gender != null) 'gender': gender.apiValue,
+          if (birthDate != null) 'birth_date': _formatDate(birthDate),
           if (provinceId != null) 'province_id': provinceId,
           if (cityId != null) 'city_id': cityId,
           if (serviceConsent != null) 'service_consent': serviceConsent,
@@ -221,4 +226,10 @@ class AuthRemoteDataSource {
       throw e.error ?? ServerException(e.message ?? 'Logout failed');
     }
   }
+}
+
+String _formatDate(DateTime value) {
+  final month = value.month.toString().padLeft(2, '0');
+  final day = value.day.toString().padLeft(2, '0');
+  return '${value.year.toString().padLeft(4, '0')}-$month-$day';
 }

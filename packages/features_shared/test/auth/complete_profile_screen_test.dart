@@ -6,15 +6,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 class _ProfileAuthNotifier extends AuthNotifier {
+  _ProfileAuthNotifier({this.gender, this.birthDate});
+
+  final Gender? gender;
+  final DateTime? birthDate;
+
   int? submittedProvinceId;
   int? submittedCityId;
+  Gender? submittedGender;
+  DateTime? submittedBirthDate;
+  int submissions = 0;
 
   @override
-  AuthState build() => const AuthAuthenticated(
+  AuthState build() => AuthAuthenticated(
         User(
           id: 'user-1',
           name: 'Ramadhan Rosihadi',
           email: 'ramadhan@example.com',
+          gender: gender,
+          birthDate: birthDate,
         ),
       );
 
@@ -26,13 +36,23 @@ class _ProfileAuthNotifier extends AuthNotifier {
     String? city,
     int? provinceId,
     int? cityId,
+    Gender? gender,
+    DateTime? birthDate,
     bool? serviceConsent,
     bool? marketingConsent,
   }) async {
+    submissions++;
     submittedProvinceId = provinceId;
     submittedCityId = cityId;
+    submittedGender = gender;
+    submittedBirthDate = birthDate;
   }
 }
+
+_ProfileAuthNotifier _prefilledNotifier() => _ProfileAuthNotifier(
+      gender: Gender.male,
+      birthDate: DateTime(1994, 3, 12),
+    );
 
 const _regionOptions = [
   ProvinceOption(
@@ -64,7 +84,7 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               overrides: [
-                authProvider.overrideWith(_ProfileAuthNotifier.new),
+                authProvider.overrideWith(_prefilledNotifier),
                 provinceOptionsProvider.overrideWith(
                   (ref) async => _regionOptions,
                 ),
@@ -135,7 +155,7 @@ void main() {
       ProviderScope(
         overrides: [
           authProvider.overrideWith(() {
-            notifier = _ProfileAuthNotifier();
+            notifier = _prefilledNotifier();
             return notifier;
           }),
           provinceOptionsProvider.overrideWith(
@@ -185,8 +205,98 @@ void main() {
 
     expect(notifier.submittedProvinceId, 35);
     expect(notifier.submittedCityId, 3578);
+    expect(notifier.submittedGender, Gender.male);
+    expect(notifier.submittedBirthDate, DateTime(1994, 3, 12));
     expect(find.text('Aktivitas'), findsOneWidget);
     expect(router.state.uri.toString(), '/activity?filter=pending');
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('profile setup refuses to submit before gender and birth date',
+      (tester) async {
+    tester.view
+      ..physicalSize = const Size(360, 900)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    late _ProfileAuthNotifier notifier;
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authProvider.overrideWith(() {
+            notifier = _ProfileAuthNotifier();
+            return notifier;
+          }),
+          provinceOptionsProvider.overrideWith((ref) async => _regionOptions),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const CompleteProfileScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byType(TextFormField).first,
+      '+6281234567890',
+    );
+    final provinceDropdown = find.byType(DropdownButtonFormField<int>).first;
+    await tester.ensureVisible(provinceDropdown);
+    await tester.tap(provinceDropdown);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('JAWA TIMUR').last);
+    await tester.pumpAndSettle();
+    final cityDropdown = find.byType(DropdownButtonFormField<int>).last;
+    await tester.ensureVisible(cityDropdown);
+    await tester.tap(cityDropdown);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('KOTA SURABAYA').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Checkbox).first);
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Simpan dan lanjutkan'));
+    await tester.tap(find.text('Simpan dan lanjutkan'));
+    await tester.pumpAndSettle();
+
+    expect(notifier.submissions, 0);
+    expect(find.text('Kolom ini wajib diisi.'), findsWidgets);
+
+    final genderField = find.byKey(const ValueKey('profile-gender-field'));
+    await tester.ensureVisible(genderField);
+    await tester.tap(genderField);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Perempuan').last);
+    await tester.pumpAndSettle();
+
+    final birthDateField = find.byKey(
+      const ValueKey('profile-birth-date-field'),
+    );
+    await tester.ensureVisible(birthDateField);
+    await tester.tap(birthDateField);
+    await tester.pumpAndSettle();
+    // Label tombol konfirmasi ikut lokal, jadi dialognya yang dijadikan acuan.
+    await tester.tap(
+      find
+          .descendant(
+            of: find.byType(DatePickerDialog),
+            matching: find.byType(TextButton),
+          )
+          .last,
+    );
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Simpan dan lanjutkan'));
+    await tester.tap(find.text('Simpan dan lanjutkan'));
+    await tester.pumpAndSettle();
+
+    expect(notifier.submissions, 1);
+    expect(notifier.submittedGender, Gender.female);
+    expect(notifier.submittedBirthDate, isNotNull);
     expect(tester.takeException(), isNull);
   });
 
@@ -195,7 +305,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          authProvider.overrideWith(_ProfileAuthNotifier.new),
+          authProvider.overrideWith(_prefilledNotifier),
           provinceOptionsProvider.overrideWith(
             (ref) => Future<List<ProvinceOption>>.error(
               const NetworkException('offline'),
@@ -229,7 +339,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          authProvider.overrideWith(_ProfileAuthNotifier.new),
+          authProvider.overrideWith(_prefilledNotifier),
           provinceOptionsProvider.overrideWith(
             (ref) async => const <ProvinceOption>[],
           ),

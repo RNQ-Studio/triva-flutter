@@ -816,5 +816,12 @@
   "bodyPaintLight": "Light",
   "bodyPaintMedium": "Medium",
   "bodyPaintHeavy": "Heavy",
-  "bodyPaintInspect": "Inspection"
+  "bodyPaintInspect": "Inspection",
+  "gender": "Gender",
+  "chooseGender": "Choose gender",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderUndisclosed": "Prefer not to say",
+  "birthDate": "Date of birth",
+  "chooseBirthDate": "Choose date of birth"
 }
