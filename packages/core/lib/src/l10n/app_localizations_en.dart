@@ -1161,7 +1161,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminUserAlreadyAdmin => 'Already has admin access';
 
   @override
-  String get adminUserInactive => 'Inactive account';
+  String get adminUserInactive => 'Inactive';
 
   @override
   String get adminUserGrantAction => 'Make admin';
@@ -2568,4 +2568,281 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseBirthDate => 'Choose date of birth';
+
+  @override
+  String get adminDemographicsTitle => 'User gender & age';
+
+  @override
+  String get adminDemographicsDescription =>
+      'Registered customers grouped by gender and age range.';
+
+  @override
+  String get adminDemographicsRegistered => 'Registered users';
+
+  @override
+  String adminDemographicsCompleted(String count, String percent) {
+    return '$count have completed their data ($percent)';
+  }
+
+  @override
+  String get adminDemographicsGender => 'Gender';
+
+  @override
+  String get adminDemographicsAge => 'Age range';
+
+  @override
+  String get adminDemographicsEmptyTitle => 'No users yet';
+
+  @override
+  String get adminDemographicsEmptyDescription =>
+      'Gender and age breakdowns appear once customers register.';
+
+  @override
+  String get adminMenuUsageTitle => 'Most used menus';
+
+  @override
+  String get adminMenuUsageDescription =>
+      'Menus ranked by how often customers tap them.';
+
+  @override
+  String get adminMenuUsageTotal => 'Total menu taps';
+
+  @override
+  String get adminMenuUsageEmptyTitle => 'No menu taps yet';
+
+  @override
+  String get adminMenuUsageEmptyDescription =>
+      'Data appears once customers start opening menus in the app.';
+
+  @override
+  String get adminMenuUsagePeriodEmpty =>
+      'No menus were opened in this period.';
+
+  @override
+  String get adminFilterAll => 'All';
+
+  @override
+  String get adminValueYes => 'Yes';
+
+  @override
+  String get adminValueNo => 'No';
+
+  @override
+  String get adminValueNotSet => 'Not provided';
+
+  @override
+  String adminAgeYears(int years) {
+    return '$years years old';
+  }
+
+  @override
+  String get adminUserActive => 'Active';
+
+  @override
+  String get adminRoleCustomer => 'Customer';
+
+  @override
+  String get adminReferenceOrCustomerHint =>
+      'Search reference number or customer';
+
+  @override
+  String get adminUserDirectoryTitle => 'Registered users';
+
+  @override
+  String get adminUserDirectoryDescription =>
+      'Every registered account with its full data';
+
+  @override
+  String get adminUserDirectorySearchHint =>
+      'Search name, email, or phone number';
+
+  @override
+  String get adminUserDirectoryEmptyTitle => 'No users';
+
+  @override
+  String get adminUserDirectoryEmptyDescription =>
+      'No user matches this search or filter.';
+
+  @override
+  String get adminUserDetailTitle => 'User detail';
+
+  @override
+  String get adminSectionAccount => 'Account';
+
+  @override
+  String get adminSectionDemographics => 'Demographics';
+
+  @override
+  String get adminSectionConsent => 'Consent';
+
+  @override
+  String get adminSectionActivity => 'Activity';
+
+  @override
+  String get adminSectionDevices => 'Devices';
+
+  @override
+  String get adminSectionCustomer => 'Customer';
+
+  @override
+  String get adminSectionSummary => 'Summary';
+
+  @override
+  String get adminSectionValuation => 'Valuation';
+
+  @override
+  String get adminSectionCondition => 'Vehicle condition';
+
+  @override
+  String get adminSectionTimeline => 'Status history';
+
+  @override
+  String get adminSectionSimulation => 'Simulation details';
+
+  @override
+  String get adminFieldAccountStatus => 'Account status';
+
+  @override
+  String get adminFieldRoles => 'Roles';
+
+  @override
+  String get adminFieldRegisteredAt => 'Registered';
+
+  @override
+  String get adminFieldLastActive => 'Last active';
+
+  @override
+  String get adminFieldAge => 'Age';
+
+  @override
+  String get adminFieldServiceConsent => 'Service consent';
+
+  @override
+  String get adminFieldMarketingConsent => 'Marketing consent';
+
+  @override
+  String get adminFieldEmailVerified => 'Email verified';
+
+  @override
+  String get adminFieldPhoneVerified => 'Phone verified';
+
+  @override
+  String get adminFieldReference => 'Reference number';
+
+  @override
+  String get adminFieldSubmittedAt => 'Submitted';
+
+  @override
+  String get adminFieldUpdatedAt => 'Updated';
+
+  @override
+  String get adminFieldExpectedPrice => 'Customer expected price';
+
+  @override
+  String get adminFieldTradeInEstimate => 'Trade-in estimate';
+
+  @override
+  String get adminFieldDecision => 'Customer decision';
+
+  @override
+  String get adminAppraisalQueueTitle => 'Appraisal list';
+
+  @override
+  String get adminAppraisalEmptyTitle => 'No appraisals yet';
+
+  @override
+  String get adminAppraisalEmptyDescription =>
+      'Customer appraisals appear here once created.';
+
+  @override
+  String get adminAppraisalDetailTitle => 'Appraisal detail';
+
+  @override
+  String get adminConditionTaxStatus => 'Tax status';
+
+  @override
+  String get adminConditionFlood => 'Flood history';
+
+  @override
+  String get adminConditionAccident => 'Major accident history';
+
+  @override
+  String get adminConditionService => 'Service history';
+
+  @override
+  String get adminConditionOwnership => 'Ownership';
+
+  @override
+  String get adminConditionGrade => 'Condition grade';
+
+  @override
+  String get adminConditionEngine => 'Engine condition';
+
+  @override
+  String get adminConditionTyre => 'Tyre condition';
+
+  @override
+  String get adminCreditQueueTitle => 'Credit simulations';
+
+  @override
+  String get adminCreditEmptyTitle => 'No simulations yet';
+
+  @override
+  String get adminCreditEmptyDescription =>
+      'Customer credit simulations appear here once saved.';
+
+  @override
+  String get adminCreditDetailTitle => 'Credit simulation detail';
+
+  @override
+  String adminCreditInstallmentPerMonth(String amount, int months) {
+    return '$amount per month · $months months';
+  }
+
+  @override
+  String get adminFieldProgram => 'Program';
+
+  @override
+  String get adminFieldSavedAt => 'Saved';
+
+  @override
+  String get adminFieldFollowUp => 'Follow-up';
+
+  @override
+  String get adminFieldOtr => 'OTR price';
+
+  @override
+  String get adminFieldDownPayment => 'Total down payment';
+
+  @override
+  String get adminFieldTradeIn => 'Trade-in value';
+
+  @override
+  String get adminFieldTenor => 'Tenor';
+
+  @override
+  String adminTenorMonths(int months) {
+    return '$months months';
+  }
+
+  @override
+  String get adminFieldMonthlyInstallment => 'Monthly installment';
+
+  @override
+  String get adminFieldInitialPayment => 'Initial payment';
+
+  @override
+  String get adminFieldTotalPayment => 'Total payment';
+
+  @override
+  String get adminPanelUserDirectoryDescription =>
+      'Browse every user and their data';
+
+  @override
+  String get adminPanelAppraisalDescription =>
+      'Browse every customer appraisal';
+
+  @override
+  String get adminPanelCreditDescription =>
+      'Browse every customer credit simulation';
 }

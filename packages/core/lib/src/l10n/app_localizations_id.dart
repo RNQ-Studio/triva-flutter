@@ -1155,7 +1155,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get adminUserAlreadyAdmin => 'Sudah memiliki akses admin';
 
   @override
-  String get adminUserInactive => 'Akun tidak aktif';
+  String get adminUserInactive => 'Nonaktif';
 
   @override
   String get adminUserGrantAction => 'Jadikan admin';
@@ -2565,4 +2565,281 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get chooseBirthDate => 'Pilih tanggal lahir';
+
+  @override
+  String get adminDemographicsTitle => 'Gender & usia pengguna';
+
+  @override
+  String get adminDemographicsDescription =>
+      'Sebaran pelanggan terdaftar berdasarkan jenis kelamin dan rentang usia.';
+
+  @override
+  String get adminDemographicsRegistered => 'Pengguna terdaftar';
+
+  @override
+  String adminDemographicsCompleted(String count, String percent) {
+    return '$count sudah melengkapi data ($percent)';
+  }
+
+  @override
+  String get adminDemographicsGender => 'Jenis kelamin';
+
+  @override
+  String get adminDemographicsAge => 'Rentang usia';
+
+  @override
+  String get adminDemographicsEmptyTitle => 'Belum ada pengguna';
+
+  @override
+  String get adminDemographicsEmptyDescription =>
+      'Sebaran gender dan usia muncul setelah ada pelanggan yang terdaftar.';
+
+  @override
+  String get adminMenuUsageTitle => 'Menu yang sering dipilih';
+
+  @override
+  String get adminMenuUsageDescription =>
+      'Urutan menu berdasarkan jumlah ketukan pelanggan.';
+
+  @override
+  String get adminMenuUsageTotal => 'Total ketukan menu';
+
+  @override
+  String get adminMenuUsageEmptyTitle => 'Belum ada ketukan menu';
+
+  @override
+  String get adminMenuUsageEmptyDescription =>
+      'Data muncul setelah pelanggan mulai membuka menu di aplikasi.';
+
+  @override
+  String get adminMenuUsagePeriodEmpty =>
+      'Belum ada menu yang dibuka pada periode ini.';
+
+  @override
+  String get adminFilterAll => 'Semua';
+
+  @override
+  String get adminValueYes => 'Ya';
+
+  @override
+  String get adminValueNo => 'Tidak';
+
+  @override
+  String get adminValueNotSet => 'Belum diisi';
+
+  @override
+  String adminAgeYears(int years) {
+    return '$years tahun';
+  }
+
+  @override
+  String get adminUserActive => 'Aktif';
+
+  @override
+  String get adminRoleCustomer => 'Pelanggan';
+
+  @override
+  String get adminReferenceOrCustomerHint =>
+      'Cari nomor referensi atau pelanggan';
+
+  @override
+  String get adminUserDirectoryTitle => 'Daftar pengguna';
+
+  @override
+  String get adminUserDirectoryDescription =>
+      'Semua akun terdaftar beserta data lengkapnya';
+
+  @override
+  String get adminUserDirectorySearchHint =>
+      'Cari nama, email, atau nomor ponsel';
+
+  @override
+  String get adminUserDirectoryEmptyTitle => 'Tidak ada pengguna';
+
+  @override
+  String get adminUserDirectoryEmptyDescription =>
+      'Tidak ada pengguna yang cocok dengan pencarian atau saringan ini.';
+
+  @override
+  String get adminUserDetailTitle => 'Detail pengguna';
+
+  @override
+  String get adminSectionAccount => 'Akun';
+
+  @override
+  String get adminSectionDemographics => 'Demografi';
+
+  @override
+  String get adminSectionConsent => 'Persetujuan';
+
+  @override
+  String get adminSectionActivity => 'Aktivitas';
+
+  @override
+  String get adminSectionDevices => 'Perangkat';
+
+  @override
+  String get adminSectionCustomer => 'Pelanggan';
+
+  @override
+  String get adminSectionSummary => 'Ringkasan';
+
+  @override
+  String get adminSectionValuation => 'Taksiran';
+
+  @override
+  String get adminSectionCondition => 'Kondisi kendaraan';
+
+  @override
+  String get adminSectionTimeline => 'Riwayat status';
+
+  @override
+  String get adminSectionSimulation => 'Rincian simulasi';
+
+  @override
+  String get adminFieldAccountStatus => 'Status akun';
+
+  @override
+  String get adminFieldRoles => 'Peran';
+
+  @override
+  String get adminFieldRegisteredAt => 'Terdaftar';
+
+  @override
+  String get adminFieldLastActive => 'Terakhir aktif';
+
+  @override
+  String get adminFieldAge => 'Usia';
+
+  @override
+  String get adminFieldServiceConsent => 'Persetujuan layanan';
+
+  @override
+  String get adminFieldMarketingConsent => 'Persetujuan pemasaran';
+
+  @override
+  String get adminFieldEmailVerified => 'Email terverifikasi';
+
+  @override
+  String get adminFieldPhoneVerified => 'Ponsel terverifikasi';
+
+  @override
+  String get adminFieldReference => 'Nomor referensi';
+
+  @override
+  String get adminFieldSubmittedAt => 'Dikirim';
+
+  @override
+  String get adminFieldUpdatedAt => 'Diperbarui';
+
+  @override
+  String get adminFieldExpectedPrice => 'Harga harapan pelanggan';
+
+  @override
+  String get adminFieldTradeInEstimate => 'Estimasi tukar tambah';
+
+  @override
+  String get adminFieldDecision => 'Keputusan pelanggan';
+
+  @override
+  String get adminAppraisalQueueTitle => 'Daftar appraisal';
+
+  @override
+  String get adminAppraisalEmptyTitle => 'Belum ada appraisal';
+
+  @override
+  String get adminAppraisalEmptyDescription =>
+      'Appraisal pelanggan akan muncul di sini setelah dibuat.';
+
+  @override
+  String get adminAppraisalDetailTitle => 'Detail appraisal';
+
+  @override
+  String get adminConditionTaxStatus => 'Status pajak';
+
+  @override
+  String get adminConditionFlood => 'Riwayat banjir';
+
+  @override
+  String get adminConditionAccident => 'Riwayat kecelakaan besar';
+
+  @override
+  String get adminConditionService => 'Riwayat servis';
+
+  @override
+  String get adminConditionOwnership => 'Kepemilikan';
+
+  @override
+  String get adminConditionGrade => 'Grade kondisi';
+
+  @override
+  String get adminConditionEngine => 'Kondisi mesin';
+
+  @override
+  String get adminConditionTyre => 'Kondisi ban';
+
+  @override
+  String get adminCreditQueueTitle => 'Daftar simulasi kredit';
+
+  @override
+  String get adminCreditEmptyTitle => 'Belum ada simulasi';
+
+  @override
+  String get adminCreditEmptyDescription =>
+      'Simulasi kredit pelanggan akan muncul di sini setelah disimpan.';
+
+  @override
+  String get adminCreditDetailTitle => 'Detail simulasi kredit';
+
+  @override
+  String adminCreditInstallmentPerMonth(String amount, int months) {
+    return '$amount per bulan · $months bulan';
+  }
+
+  @override
+  String get adminFieldProgram => 'Program';
+
+  @override
+  String get adminFieldSavedAt => 'Disimpan';
+
+  @override
+  String get adminFieldFollowUp => 'Follow-up';
+
+  @override
+  String get adminFieldOtr => 'Harga OTR';
+
+  @override
+  String get adminFieldDownPayment => 'Total uang muka';
+
+  @override
+  String get adminFieldTradeIn => 'Nilai tukar tambah';
+
+  @override
+  String get adminFieldTenor => 'Tenor';
+
+  @override
+  String adminTenorMonths(int months) {
+    return '$months bulan';
+  }
+
+  @override
+  String get adminFieldMonthlyInstallment => 'Angsuran per bulan';
+
+  @override
+  String get adminFieldInitialPayment => 'Pembayaran awal';
+
+  @override
+  String get adminFieldTotalPayment => 'Total pembayaran';
+
+  @override
+  String get adminPanelUserDirectoryDescription =>
+      'Lihat seluruh pengguna dan datanya';
+
+  @override
+  String get adminPanelAppraisalDescription =>
+      'Lihat semua appraisal pelanggan';
+
+  @override
+  String get adminPanelCreditDescription =>
+      'Lihat semua simulasi kredit pelanggan';
 }

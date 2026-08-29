@@ -80,6 +80,9 @@ class User {
       canViewAnyServiceBookings ||
       canViewAnyBodyPaintEstimates ||
       canManageUsers ||
+      canViewAnyUsers ||
+      canViewAnyAppraisals ||
+      canViewAnyCreditSimulations ||
       canViewVisitAnalytics;
 
   bool get canViewVisitAnalytics =>
@@ -89,6 +92,15 @@ class User {
       _isSuperAdmin ||
       (permissions.contains('users.viewAny') &&
           permissions.contains('users.update'));
+
+  bool get canViewAnyUsers =>
+      _isSuperAdmin || permissions.contains('users.viewAny');
+
+  bool get canViewAnyAppraisals =>
+      _isSuperAdmin || permissions.contains('appraisals.viewAny');
+
+  bool get canViewAnyCreditSimulations =>
+      _isSuperAdmin || permissions.contains('credit_leads.viewAny');
 
   bool get canViewAnyServiceBookings =>
       _isSuperAdmin || permissions.contains('service_bookings.viewAny');

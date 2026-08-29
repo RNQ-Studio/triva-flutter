@@ -12,7 +12,10 @@ import '../toyota_service_paths.dart';
 import '../widgets/toyota_service_widgets.dart';
 import '../../../otoxpert/presentation/otoxpert_paths.dart';
 import '../../../body_paint/presentation/body_paint_paths.dart';
+import '../../../admin_directory/presentation/admin_directory_paths.dart';
 import '../../../admin_users/presentation/admin_user_paths.dart';
+import '../../../visit_analytics/presentation/admin_demographics_section.dart';
+import '../../../visit_analytics/presentation/admin_menu_usage_section.dart';
 import '../../../visit_analytics/presentation/admin_visit_dashboard_section.dart';
 import '../../../visit_analytics/presentation/visit_analytics_controller.dart';
 

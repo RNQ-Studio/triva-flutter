@@ -22,6 +22,7 @@ class _MutableAuthNotifier extends AuthNotifier {
         name: initialUser.name,
         email: initialUser.email,
         profileCompleted: true,
+        demographicsCompleted: true,
         permissions: permissions,
       ),
     );
@@ -201,6 +202,7 @@ User _user(List<String> permissions) => User(
       name: 'Admin',
       email: 'admin@example.com',
       profileCompleted: true,
+      demographicsCompleted: true,
       permissions: permissions,
     );
 

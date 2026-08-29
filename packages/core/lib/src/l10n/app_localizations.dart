@@ -2189,7 +2189,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminUserInactive.
   ///
   /// In id, this message translates to:
-  /// **'Akun tidak aktif'**
+  /// **'Nonaktif'**
   String get adminUserInactive;
 
   /// No description provided for @adminUserGrantAction.
@@ -4777,6 +4777,516 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Pilih tanggal lahir'**
   String get chooseBirthDate;
+
+  /// No description provided for @adminDemographicsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Gender & usia pengguna'**
+  String get adminDemographicsTitle;
+
+  /// No description provided for @adminDemographicsDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebaran pelanggan terdaftar berdasarkan jenis kelamin dan rentang usia.'**
+  String get adminDemographicsDescription;
+
+  /// No description provided for @adminDemographicsRegistered.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengguna terdaftar'**
+  String get adminDemographicsRegistered;
+
+  /// No description provided for @adminDemographicsCompleted.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} sudah melengkapi data ({percent})'**
+  String adminDemographicsCompleted(String count, String percent);
+
+  /// No description provided for @adminDemographicsGender.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis kelamin'**
+  String get adminDemographicsGender;
+
+  /// No description provided for @adminDemographicsAge.
+  ///
+  /// In id, this message translates to:
+  /// **'Rentang usia'**
+  String get adminDemographicsAge;
+
+  /// No description provided for @adminDemographicsEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada pengguna'**
+  String get adminDemographicsEmptyTitle;
+
+  /// No description provided for @adminDemographicsEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebaran gender dan usia muncul setelah ada pelanggan yang terdaftar.'**
+  String get adminDemographicsEmptyDescription;
+
+  /// No description provided for @adminMenuUsageTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Menu yang sering dipilih'**
+  String get adminMenuUsageTitle;
+
+  /// No description provided for @adminMenuUsageDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Urutan menu berdasarkan jumlah ketukan pelanggan.'**
+  String get adminMenuUsageDescription;
+
+  /// No description provided for @adminMenuUsageTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Total ketukan menu'**
+  String get adminMenuUsageTotal;
+
+  /// No description provided for @adminMenuUsageEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada ketukan menu'**
+  String get adminMenuUsageEmptyTitle;
+
+  /// No description provided for @adminMenuUsageEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Data muncul setelah pelanggan mulai membuka menu di aplikasi.'**
+  String get adminMenuUsageEmptyDescription;
+
+  /// No description provided for @adminMenuUsagePeriodEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada menu yang dibuka pada periode ini.'**
+  String get adminMenuUsagePeriodEmpty;
+
+  /// No description provided for @adminFilterAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua'**
+  String get adminFilterAll;
+
+  /// No description provided for @adminValueYes.
+  ///
+  /// In id, this message translates to:
+  /// **'Ya'**
+  String get adminValueYes;
+
+  /// No description provided for @adminValueNo.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak'**
+  String get adminValueNo;
+
+  /// No description provided for @adminValueNotSet.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum diisi'**
+  String get adminValueNotSet;
+
+  /// No description provided for @adminAgeYears.
+  ///
+  /// In id, this message translates to:
+  /// **'{years} tahun'**
+  String adminAgeYears(int years);
+
+  /// No description provided for @adminUserActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get adminUserActive;
+
+  /// No description provided for @adminRoleCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan'**
+  String get adminRoleCustomer;
+
+  /// No description provided for @adminReferenceOrCustomerHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari nomor referensi atau pelanggan'**
+  String get adminReferenceOrCustomerHint;
+
+  /// No description provided for @adminUserDirectoryTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Daftar pengguna'**
+  String get adminUserDirectoryTitle;
+
+  /// No description provided for @adminUserDirectoryDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua akun terdaftar beserta data lengkapnya'**
+  String get adminUserDirectoryDescription;
+
+  /// No description provided for @adminUserDirectorySearchHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari nama, email, atau nomor ponsel'**
+  String get adminUserDirectorySearchHint;
+
+  /// No description provided for @adminUserDirectoryEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada pengguna'**
+  String get adminUserDirectoryEmptyTitle;
+
+  /// No description provided for @adminUserDirectoryEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada pengguna yang cocok dengan pencarian atau saringan ini.'**
+  String get adminUserDirectoryEmptyDescription;
+
+  /// No description provided for @adminUserDetailTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail pengguna'**
+  String get adminUserDetailTitle;
+
+  /// No description provided for @adminSectionAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun'**
+  String get adminSectionAccount;
+
+  /// No description provided for @adminSectionDemographics.
+  ///
+  /// In id, this message translates to:
+  /// **'Demografi'**
+  String get adminSectionDemographics;
+
+  /// No description provided for @adminSectionConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Persetujuan'**
+  String get adminSectionConsent;
+
+  /// No description provided for @adminSectionActivity.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas'**
+  String get adminSectionActivity;
+
+  /// No description provided for @adminSectionDevices.
+  ///
+  /// In id, this message translates to:
+  /// **'Perangkat'**
+  String get adminSectionDevices;
+
+  /// No description provided for @adminSectionCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan'**
+  String get adminSectionCustomer;
+
+  /// No description provided for @adminSectionSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Ringkasan'**
+  String get adminSectionSummary;
+
+  /// No description provided for @adminSectionValuation.
+  ///
+  /// In id, this message translates to:
+  /// **'Taksiran'**
+  String get adminSectionValuation;
+
+  /// No description provided for @adminSectionCondition.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi kendaraan'**
+  String get adminSectionCondition;
+
+  /// No description provided for @adminSectionTimeline.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat status'**
+  String get adminSectionTimeline;
+
+  /// No description provided for @adminSectionSimulation.
+  ///
+  /// In id, this message translates to:
+  /// **'Rincian simulasi'**
+  String get adminSectionSimulation;
+
+  /// No description provided for @adminFieldAccountStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Status akun'**
+  String get adminFieldAccountStatus;
+
+  /// No description provided for @adminFieldRoles.
+  ///
+  /// In id, this message translates to:
+  /// **'Peran'**
+  String get adminFieldRoles;
+
+  /// No description provided for @adminFieldRegisteredAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Terdaftar'**
+  String get adminFieldRegisteredAt;
+
+  /// No description provided for @adminFieldLastActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Terakhir aktif'**
+  String get adminFieldLastActive;
+
+  /// No description provided for @adminFieldAge.
+  ///
+  /// In id, this message translates to:
+  /// **'Usia'**
+  String get adminFieldAge;
+
+  /// No description provided for @adminFieldServiceConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Persetujuan layanan'**
+  String get adminFieldServiceConsent;
+
+  /// No description provided for @adminFieldMarketingConsent.
+  ///
+  /// In id, this message translates to:
+  /// **'Persetujuan pemasaran'**
+  String get adminFieldMarketingConsent;
+
+  /// No description provided for @adminFieldEmailVerified.
+  ///
+  /// In id, this message translates to:
+  /// **'Email terverifikasi'**
+  String get adminFieldEmailVerified;
+
+  /// No description provided for @adminFieldPhoneVerified.
+  ///
+  /// In id, this message translates to:
+  /// **'Ponsel terverifikasi'**
+  String get adminFieldPhoneVerified;
+
+  /// No description provided for @adminFieldReference.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor referensi'**
+  String get adminFieldReference;
+
+  /// No description provided for @adminFieldSubmittedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Dikirim'**
+  String get adminFieldSubmittedAt;
+
+  /// No description provided for @adminFieldUpdatedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Diperbarui'**
+  String get adminFieldUpdatedAt;
+
+  /// No description provided for @adminFieldExpectedPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga harapan pelanggan'**
+  String get adminFieldExpectedPrice;
+
+  /// No description provided for @adminFieldTradeInEstimate.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi tukar tambah'**
+  String get adminFieldTradeInEstimate;
+
+  /// No description provided for @adminFieldDecision.
+  ///
+  /// In id, this message translates to:
+  /// **'Keputusan pelanggan'**
+  String get adminFieldDecision;
+
+  /// No description provided for @adminAppraisalQueueTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Daftar appraisal'**
+  String get adminAppraisalQueueTitle;
+
+  /// No description provided for @adminAppraisalEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada appraisal'**
+  String get adminAppraisalEmptyTitle;
+
+  /// No description provided for @adminAppraisalEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Appraisal pelanggan akan muncul di sini setelah dibuat.'**
+  String get adminAppraisalEmptyDescription;
+
+  /// No description provided for @adminAppraisalDetailTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail appraisal'**
+  String get adminAppraisalDetailTitle;
+
+  /// No description provided for @adminConditionTaxStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Status pajak'**
+  String get adminConditionTaxStatus;
+
+  /// No description provided for @adminConditionFlood.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat banjir'**
+  String get adminConditionFlood;
+
+  /// No description provided for @adminConditionAccident.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat kecelakaan besar'**
+  String get adminConditionAccident;
+
+  /// No description provided for @adminConditionService.
+  ///
+  /// In id, this message translates to:
+  /// **'Riwayat servis'**
+  String get adminConditionService;
+
+  /// No description provided for @adminConditionOwnership.
+  ///
+  /// In id, this message translates to:
+  /// **'Kepemilikan'**
+  String get adminConditionOwnership;
+
+  /// No description provided for @adminConditionGrade.
+  ///
+  /// In id, this message translates to:
+  /// **'Grade kondisi'**
+  String get adminConditionGrade;
+
+  /// No description provided for @adminConditionEngine.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi mesin'**
+  String get adminConditionEngine;
+
+  /// No description provided for @adminConditionTyre.
+  ///
+  /// In id, this message translates to:
+  /// **'Kondisi ban'**
+  String get adminConditionTyre;
+
+  /// No description provided for @adminCreditQueueTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Daftar simulasi kredit'**
+  String get adminCreditQueueTitle;
+
+  /// No description provided for @adminCreditEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada simulasi'**
+  String get adminCreditEmptyTitle;
+
+  /// No description provided for @adminCreditEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi kredit pelanggan akan muncul di sini setelah disimpan.'**
+  String get adminCreditEmptyDescription;
+
+  /// No description provided for @adminCreditDetailTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail simulasi kredit'**
+  String get adminCreditDetailTitle;
+
+  /// No description provided for @adminCreditInstallmentPerMonth.
+  ///
+  /// In id, this message translates to:
+  /// **'{amount} per bulan · {months} bulan'**
+  String adminCreditInstallmentPerMonth(String amount, int months);
+
+  /// No description provided for @adminFieldProgram.
+  ///
+  /// In id, this message translates to:
+  /// **'Program'**
+  String get adminFieldProgram;
+
+  /// No description provided for @adminFieldSavedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Disimpan'**
+  String get adminFieldSavedAt;
+
+  /// No description provided for @adminFieldFollowUp.
+  ///
+  /// In id, this message translates to:
+  /// **'Follow-up'**
+  String get adminFieldFollowUp;
+
+  /// No description provided for @adminFieldOtr.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga OTR'**
+  String get adminFieldOtr;
+
+  /// No description provided for @adminFieldDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Total uang muka'**
+  String get adminFieldDownPayment;
+
+  /// No description provided for @adminFieldTradeIn.
+  ///
+  /// In id, this message translates to:
+  /// **'Nilai tukar tambah'**
+  String get adminFieldTradeIn;
+
+  /// No description provided for @adminFieldTenor.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenor'**
+  String get adminFieldTenor;
+
+  /// No description provided for @adminTenorMonths.
+  ///
+  /// In id, this message translates to:
+  /// **'{months} bulan'**
+  String adminTenorMonths(int months);
+
+  /// No description provided for @adminFieldMonthlyInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Angsuran per bulan'**
+  String get adminFieldMonthlyInstallment;
+
+  /// No description provided for @adminFieldInitialPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembayaran awal'**
+  String get adminFieldInitialPayment;
+
+  /// No description provided for @adminFieldTotalPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Total pembayaran'**
+  String get adminFieldTotalPayment;
+
+  /// No description provided for @adminPanelUserDirectoryDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat seluruh pengguna dan datanya'**
+  String get adminPanelUserDirectoryDescription;
+
+  /// No description provided for @adminPanelAppraisalDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat semua appraisal pelanggan'**
+  String get adminPanelAppraisalDescription;
+
+  /// No description provided for @adminPanelCreditDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat semua simulasi kredit pelanggan'**
+  String get adminPanelCreditDescription;
 }
 
 class _AppLocalizationsDelegate

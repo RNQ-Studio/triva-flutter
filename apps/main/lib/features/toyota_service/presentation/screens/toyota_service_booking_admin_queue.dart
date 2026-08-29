@@ -20,45 +20,56 @@ class AdminPanelScreen extends ConsumerWidget {
         ),
       );
     }
-    final entries =
-        <({IconData icon, String title, Color color, String? path})>[
+    final entries = <_AdminPanelEntry>[
       if (auth.user.canManageUsers)
         (
           icon: Icons.manage_accounts_outlined,
           title: l10n.adminUserAccessTitle,
-          color: AppColors.accent,
+          subtitle: l10n.adminUserAccessDescription,
           path: adminUsersPath,
         ),
-      (
-        icon: Icons.price_check_rounded,
-        title: l10n.serviceAppraisalTitle,
-        color: AppColors.accent,
-        path: null,
-      ),
-      (
-        icon: Icons.car_repair_rounded,
-        title: l10n.serviceToyotaTitle,
-        color: AppColors.accent,
-        path: adminToyotaServiceQueuePath,
-      ),
-      (
-        icon: Icons.handyman_rounded,
-        title: l10n.serviceOtoxpertTitle,
-        color: AppColors.accent,
-        path: adminOtoxpertQueuePath,
-      ),
-      (
-        icon: Icons.calculate_rounded,
-        title: l10n.serviceCreditTitle,
-        color: AppColors.accent,
-        path: null,
-      ),
-      (
-        icon: Icons.format_paint_rounded,
-        title: l10n.serviceBodyPaintTitle,
-        color: AppColors.accent,
-        path: adminBodyPaintQueuePath,
-      ),
+      if (auth.user.canViewAnyUsers)
+        (
+          icon: Icons.groups_outlined,
+          title: l10n.adminUserDirectoryTitle,
+          subtitle: l10n.adminPanelUserDirectoryDescription,
+          path: adminUserDirectoryPath,
+        ),
+      if (auth.user.canViewAnyAppraisals)
+        (
+          icon: Icons.price_check_rounded,
+          title: l10n.adminAppraisalQueueTitle,
+          subtitle: l10n.adminPanelAppraisalDescription,
+          path: adminAppraisalQueuePath,
+        ),
+      if (auth.user.canViewAnyServiceBookings) ...[
+        (
+          icon: Icons.car_repair_rounded,
+          title: l10n.serviceToyotaTitle,
+          subtitle: l10n.adminBookingQueueDescription,
+          path: adminToyotaServiceQueuePath,
+        ),
+        (
+          icon: Icons.handyman_rounded,
+          title: l10n.serviceOtoxpertTitle,
+          subtitle: l10n.adminBookingQueueDescription,
+          path: adminOtoxpertQueuePath,
+        ),
+      ],
+      if (auth.user.canViewAnyCreditSimulations)
+        (
+          icon: Icons.calculate_rounded,
+          title: l10n.adminCreditQueueTitle,
+          subtitle: l10n.adminPanelCreditDescription,
+          path: adminCreditSimulationQueuePath,
+        ),
+      if (auth.user.canViewAnyBodyPaintEstimates)
+        (
+          icon: Icons.format_paint_rounded,
+          title: l10n.serviceBodyPaintTitle,
+          subtitle: l10n.adminBookingQueueDescription,
+          path: adminBodyPaintQueuePath,
+        ),
     ];
     final content = ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -70,6 +81,10 @@ class AdminPanelScreen extends ConsumerWidget {
       children: [
         if (auth.user.canViewVisitAnalytics) ...[
           const AdminVisitDashboardSection(),
+          const SizedBox(height: AppSpacing.xLarge),
+          const AdminDemographicsSection(),
+          const SizedBox(height: AppSpacing.xLarge),
+          const AdminMenuUsageSection(),
           const SizedBox(height: AppSpacing.xLarge),
         ],
         Text(
@@ -116,31 +131,29 @@ class AdminPanelScreen extends ConsumerWidget {
   }
 }
 
+typedef _AdminPanelEntry = ({
+  IconData icon,
+  String title,
+  String subtitle,
+  String path,
+});
+
 class _AdminPanelEntryTile extends StatelessWidget {
   const _AdminPanelEntryTile({required this.entry});
 
-  final ({IconData icon, String title, Color color, String? path}) entry;
+  final _AdminPanelEntry entry;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: entry.color.withValues(alpha: .12),
-        child: Icon(entry.icon, color: entry.color),
+        backgroundColor: AppColors.accent.withValues(alpha: .12),
+        child: Icon(entry.icon, color: AppColors.accent),
       ),
       title: Text(entry.title),
-      subtitle: Text(
-        entry.path == adminUsersPath
-            ? l10n.adminUserAccessDescription
-            : entry.path != null
-                ? l10n.adminBookingQueueDescription
-                : l10n.comingSoon,
-      ),
-      trailing: entry.path != null
-          ? const Icon(Icons.chevron_right_rounded)
-          : const Icon(Icons.lock_clock_outlined),
-      onTap: entry.path != null ? () => context.push(entry.path!) : null,
+      subtitle: Text(entry.subtitle),
+      trailing: const Icon(Icons.chevron_right_rounded),
+      onTap: () => context.push(entry.path),
     );
   }
 }

@@ -17,6 +17,8 @@ import '../features/otoxpert/presentation/otoxpert_paths.dart';
 import '../features/credit/presentation/credit_routes.dart';
 import '../features/body_paint/presentation/body_paint_routes.dart';
 import '../features/body_paint/presentation/body_paint_paths.dart';
+import '../features/admin_directory/presentation/admin_directory_paths.dart';
+import '../features/admin_directory/presentation/admin_directory_routes.dart';
 import '../features/admin_users/presentation/admin_user_paths.dart';
 import '../features/admin_users/presentation/admin_user_routes.dart';
 import '../features/maintenance_estimate/presentation/maintenance_estimate_routes.dart';
@@ -33,22 +35,39 @@ String? trivaAppRedirect(BuildContext context, GoRouterState state) {
   final authState = ProviderScope.containerOf(context).read(authProvider);
   if (authState is! AuthAuthenticated) return null;
 
-  final canAccess = location == adminPanelPath
-      ? authState.user.canAccessAdminPanel
-      : location == adminUsersPath
-          ? authState.user.canManageUsers
-          : location == adminBodyPaintQueuePath
-              ? authState.user.canViewAnyBodyPaintEstimates
-              : location.startsWith('$adminBodyPaintQueuePath/')
-                  ? authState.user.canViewBodyPaintEstimate
-                  : location == adminToyotaServiceQueuePath ||
-                          location == adminOtoxpertQueuePath
-                      ? authState.user.canViewAnyServiceBookings
-                      : location.startsWith('$adminToyotaServiceQueuePath/') ||
-                              location.startsWith('$adminOtoxpertQueuePath/')
-                          ? authState.user.canViewServiceBooking
-                          : false;
-  return canAccess ? null : '/';
+  return _canAccessAdminLocation(authState.user, location) ? null : '/';
+}
+
+bool _canAccessAdminLocation(User user, String location) {
+  if (location == adminPanelPath) return user.canAccessAdminPanel;
+  if (location == adminUsersPath) return user.canManageUsers;
+  if (location == adminUserDirectoryPath ||
+      location.startsWith('$adminUserDirectoryPath/')) {
+    return user.canViewAnyUsers;
+  }
+  if (location == adminAppraisalQueuePath ||
+      location.startsWith('$adminAppraisalQueuePath/')) {
+    return user.canViewAnyAppraisals;
+  }
+  if (location == adminCreditSimulationQueuePath ||
+      location.startsWith('$adminCreditSimulationQueuePath/')) {
+    return user.canViewAnyCreditSimulations;
+  }
+  if (location == adminBodyPaintQueuePath) {
+    return user.canViewAnyBodyPaintEstimates;
+  }
+  if (location.startsWith('$adminBodyPaintQueuePath/')) {
+    return user.canViewBodyPaintEstimate;
+  }
+  if (location == adminToyotaServiceQueuePath ||
+      location == adminOtoxpertQueuePath) {
+    return user.canViewAnyServiceBookings;
+  }
+  if (location.startsWith('$adminToyotaServiceQueuePath/') ||
+      location.startsWith('$adminOtoxpertQueuePath/')) {
+    return user.canViewServiceBooking;
+  }
+  return false;
 }
 
 final appRouter = GoRouter(
@@ -63,6 +82,7 @@ final appRouter = GoRouter(
     ...creditRoutes,
     ...bodyPaintRoutes,
     ...adminUserRoutes,
+    ...adminDirectoryRoutes,
     ...vehicleBenefitRoutes,
     ...maintenanceEstimateRoutes,
     StatefulShellRoute.indexedStack(
