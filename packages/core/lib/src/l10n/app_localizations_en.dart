@@ -2619,6 +2619,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'No menus were opened in this period.';
 
   @override
+  String get adminPlayStoreTitle => 'Play Store downloads';
+
+  @override
+  String get adminPlayStoreDescription =>
+      'How many people have installed TRIVA from Google Play.';
+
+  @override
+  String get adminPlayStoreRefresh => 'Refresh Play Store downloads';
+
+  @override
+  String get adminPlayStoreTotal => 'Total downloads';
+
+  @override
+  String get adminPlayStoreSourceManual => 'Entered by hand from Play Console.';
+
+  @override
+  String get adminPlayStoreSourceReports =>
+      'Read automatically from Play Console reports.';
+
+  @override
+  String adminPlayStoreReportedAt(String date) {
+    return 'Figure as of $date.';
+  }
+
+  @override
+  String get adminPlayStoreEmptyTitle => 'Downloads not filled in yet';
+
+  @override
+  String get adminPlayStoreEmptyDescription =>
+      'Google Play has no installs API. Copy the Total user installs figure from Play Console into the play_store_total_installs app config on the web panel.';
+
+  @override
   String get adminFilterAll => 'All';
 
   @override

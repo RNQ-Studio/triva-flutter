@@ -7,9 +7,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_routes.dart';
 import 'package:triva_app/features/visit_analytics/data/admin_demographics_repository.dart';
 import 'package:triva_app/features/visit_analytics/data/admin_menu_usage_repository.dart';
+import 'package:triva_app/features/visit_analytics/data/admin_play_store_installs_repository.dart';
 import 'package:triva_app/features/visit_analytics/data/admin_visit_statistics_repository.dart';
 import 'package:triva_app/features/visit_analytics/domain/demographics_models.dart';
 import 'package:triva_app/features/visit_analytics/domain/menu_usage_models.dart';
+import 'package:triva_app/features/visit_analytics/domain/play_store_installs_models.dart';
 import 'package:triva_app/features/visit_analytics/domain/visit_analytics_models.dart';
 import 'package:triva_app/features/visit_analytics/presentation/visit_analytics_controller.dart';
 
@@ -41,6 +43,15 @@ class _EmptyDemographicsRepository implements AdminDemographicsRepository {
         completionRate: 0,
         gender: const [],
         ageGroups: const [],
+      );
+}
+
+class _UnsetPlayStoreInstallsRepository
+    implements AdminPlayStoreInstallsRepository {
+  @override
+  Future<PlayStoreInstallsSnapshot> fetch() async => PlayStoreInstallsSnapshot(
+        packageName: 'id.rnq.triva',
+        generatedAt: DateTime.parse('2026-08-19T03:00:00Z'),
       );
 }
 
@@ -85,6 +96,8 @@ void main() {
               .overrideWithValue(_EmptyDemographicsRepository()),
           adminMenuUsageRepositoryProvider
               .overrideWithValue(_EmptyMenuUsageRepository()),
+          adminPlayStoreInstallsRepositoryProvider
+              .overrideWithValue(_UnsetPlayStoreInstallsRepository()),
         ],
         child: MaterialApp(
           theme: theme,
@@ -164,7 +177,13 @@ void main() {
     expect(attempt, 2);
 
     // Menu operasional tetap terjangkau meski statistik sempat gagal.
-    await tester.drag(find.byType(ListView), const Offset(0, -1600));
+    // Digulir sampai ketemu, bukan sejauh jarak tetap, supaya test ini tidak
+    // patah setiap kali ada bagian analitik baru di atas daftar menu.
+    await tester.scrollUntilVisible(
+      find.text('Daftar appraisal'),
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.pumpAndSettle();
     expect(find.text('Daftar appraisal'), findsOneWidget);
     expect(tester.takeException(), isNull);

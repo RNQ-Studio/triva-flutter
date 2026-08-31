@@ -4862,6 +4862,60 @@ abstract class AppLocalizations {
   /// **'Belum ada menu yang dibuka pada periode ini.'**
   String get adminMenuUsagePeriodEmpty;
 
+  /// No description provided for @adminPlayStoreTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Total download Play Store'**
+  String get adminPlayStoreTitle;
+
+  /// No description provided for @adminPlayStoreDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Jumlah pengguna yang pernah memasang TRIVA dari Google Play.'**
+  String get adminPlayStoreDescription;
+
+  /// No description provided for @adminPlayStoreRefresh.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbarui total download'**
+  String get adminPlayStoreRefresh;
+
+  /// No description provided for @adminPlayStoreTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Total download'**
+  String get adminPlayStoreTotal;
+
+  /// No description provided for @adminPlayStoreSourceManual.
+  ///
+  /// In id, this message translates to:
+  /// **'Diisi manual dari Play Console.'**
+  String get adminPlayStoreSourceManual;
+
+  /// No description provided for @adminPlayStoreSourceReports.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibaca otomatis dari laporan Play Console.'**
+  String get adminPlayStoreSourceReports;
+
+  /// No description provided for @adminPlayStoreReportedAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Angka per {date}.'**
+  String adminPlayStoreReportedAt(String date);
+
+  /// No description provided for @adminPlayStoreEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Total download belum diisi'**
+  String get adminPlayStoreEmptyTitle;
+
+  /// No description provided for @adminPlayStoreEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Google Play tidak menyediakan API jumlah instal. Salin angka Total user installs dari Play Console ke App Config play_store_total_installs di panel web.'**
+  String get adminPlayStoreEmptyDescription;
+
   /// No description provided for @adminFilterAll.
   ///
   /// In id, this message translates to:

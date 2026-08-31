@@ -82,6 +82,8 @@ class AdminPanelScreen extends ConsumerWidget {
         if (auth.user.canViewVisitAnalytics) ...[
           const AdminVisitDashboardSection(),
           const SizedBox(height: AppSpacing.xLarge),
+          const AdminPlayStoreSection(),
+          const SizedBox(height: AppSpacing.xLarge),
           const AdminDemographicsSection(),
           const SizedBox(height: AppSpacing.xLarge),
           const AdminMenuUsageSection(),

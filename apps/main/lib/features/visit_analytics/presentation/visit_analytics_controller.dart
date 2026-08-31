@@ -8,11 +8,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../data/admin_demographics_repository.dart';
 import '../data/admin_menu_usage_repository.dart';
+import '../data/admin_play_store_installs_repository.dart';
 import '../data/admin_visit_statistics_repository.dart';
 import '../data/menu_usage_reporter.dart';
 import '../data/visit_launch_reporter.dart';
 import '../domain/demographics_models.dart';
 import '../domain/menu_usage_models.dart';
+import '../domain/play_store_installs_models.dart';
 import '../domain/visit_analytics_models.dart';
 
 final visitLaunchReporterProvider = Provider<VisitLaunchReporter>(
@@ -102,4 +104,20 @@ final adminDemographicsRepositoryProvider =
 final adminDemographicsProvider =
     FutureProvider.autoDispose<DemographicsSnapshot>((ref) {
   return ref.watch(adminDemographicsRepositoryProvider).fetch();
+}, retry: (_, __) => null);
+
+final adminPlayStoreInstallsRepositoryProvider =
+    Provider<AdminPlayStoreInstallsRepository>((ref) {
+  final storage = ref.watch(storageServiceProvider);
+  return AdminPlayStoreInstallsRepository(
+    DioClient(
+      storage,
+      onLogout: () => ref.read(authProvider.notifier).expireSession(),
+    ).dio,
+  );
+});
+
+final adminPlayStoreInstallsProvider =
+    FutureProvider.autoDispose<PlayStoreInstallsSnapshot>((ref) {
+  return ref.watch(adminPlayStoreInstallsRepositoryProvider).fetch();
 }, retry: (_, __) => null);
