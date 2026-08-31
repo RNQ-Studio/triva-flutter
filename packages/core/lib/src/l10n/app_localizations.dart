@@ -4865,13 +4865,13 @@ abstract class AppLocalizations {
   /// No description provided for @adminPlayStoreTitle.
   ///
   /// In id, this message translates to:
-  /// **'Total download Play Store'**
+  /// **'Total download aplikasi'**
   String get adminPlayStoreTitle;
 
   /// No description provided for @adminPlayStoreDescription.
   ///
   /// In id, this message translates to:
-  /// **'Jumlah pengguna yang pernah memasang TRIVA dari Google Play.'**
+  /// **'Perangkat unik yang pernah membuka TRIVA.'**
   String get adminPlayStoreDescription;
 
   /// No description provided for @adminPlayStoreRefresh.
@@ -4879,6 +4879,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Perbarui total download'**
   String get adminPlayStoreRefresh;
+
+  /// No description provided for @adminPlayStoreSourceUniqueDevices.
+  ///
+  /// In id, this message translates to:
+  /// **'Dihitung dari perangkat unik yang pernah membuka aplikasi. Perangkat yang memasang tetapi belum pernah masuk tidak terhitung, jadi angkanya lebih rendah daripada unduhan Play Store.'**
+  String get adminPlayStoreSourceUniqueDevices;
 
   /// No description provided for @adminPlayStoreTotal.
   ///
@@ -4913,7 +4919,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminPlayStoreEmptyDescription.
   ///
   /// In id, this message translates to:
-  /// **'Google Play tidak menyediakan API jumlah instal. Salin angka Total user installs dari Play Console ke App Config play_store_total_installs di panel web.'**
+  /// **'Belum ada perangkat yang tercatat membuka aplikasi. Angka muncul setelah pengguna pertama masuk dari perangkatnya.'**
   String get adminPlayStoreEmptyDescription;
 
   /// No description provided for @adminFilterAll.

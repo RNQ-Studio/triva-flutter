@@ -2619,14 +2619,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'No menus were opened in this period.';
 
   @override
-  String get adminPlayStoreTitle => 'Play Store downloads';
+  String get adminPlayStoreTitle => 'Total app downloads';
 
   @override
   String get adminPlayStoreDescription =>
-      'How many people have installed TRIVA from Google Play.';
+      'Unique devices that have opened TRIVA.';
 
   @override
   String get adminPlayStoreRefresh => 'Refresh Play Store downloads';
+
+  @override
+  String get adminPlayStoreSourceUniqueDevices =>
+      'Counted from unique devices that have opened the app. Devices that installed but never signed in are not counted, so this reads lower than Play Store downloads.';
 
   @override
   String get adminPlayStoreTotal => 'Total downloads';
@@ -2648,7 +2652,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminPlayStoreEmptyDescription =>
-      'Google Play has no installs API. Copy the Total user installs figure from Play Console into the play_store_total_installs app config on the web panel.';
+      'No device has opened the app yet. The figure appears once the first person signs in from their device.';
 
   @override
   String get adminFilterAll => 'All';

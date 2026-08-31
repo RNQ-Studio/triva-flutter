@@ -104,6 +104,8 @@ class _PlayStoreContent extends StatelessWidget {
           switch (snapshot.source) {
             PlayStoreInstallsSource.playReports =>
               l10n.adminPlayStoreSourceReports,
+            PlayStoreInstallsSource.uniqueDevices =>
+              l10n.adminPlayStoreSourceUniqueDevices,
             _ => l10n.adminPlayStoreSourceManual,
           },
           style: Theme.of(context).textTheme.bodySmall?.copyWith(

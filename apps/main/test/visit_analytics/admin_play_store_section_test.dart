@@ -66,6 +66,23 @@ void main() {
       expect(snapshot.packageName, 'id.rnq.triva');
     });
 
+    test('parses the unique-device source', () async {
+      respond({
+        'package_name': 'id.rnq.triva',
+        'configured': true,
+        'total_installs': 42,
+        'source': 'unique_devices',
+        'reported_at': null,
+        'generated_at': '2026-08-31T04:00:00+00:00',
+      });
+
+      final snapshot = await AdminPlayStoreInstallsRepository(dio).fetch();
+
+      expect(snapshot.totalInstalls, 42);
+      expect(snapshot.source, PlayStoreInstallsSource.uniqueDevices);
+      expect(snapshot.reportedAt, isNull);
+    });
+
     test('treats a null total as not yet configured', () async {
       respond({
         'package_name': 'id.rnq.triva',
@@ -172,7 +189,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('Total download Play Store'), findsOneWidget);
+        expect(find.text('Total download aplikasi'), findsOneWidget);
         expect(
           find.byKey(const ValueKey('admin-play-store-content')),
           findsOneWidget,
@@ -183,6 +200,30 @@ void main() {
         expect(tester.takeException(), isNull);
       });
     }
+
+    testWidgets('a unique-device figure says what it actually counts',
+        (tester) async {
+      when(() => repository.fetch()).thenAnswer(
+        (_) async => PlayStoreInstallsSnapshot(
+          packageName: 'id.rnq.triva',
+          generatedAt: DateTime.parse('2026-08-31T04:00:00Z'),
+          totalInstalls: 42,
+          source: PlayStoreInstallsSource.uniqueDevices,
+        ),
+      );
+
+      await pumpSection(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('42'), findsOneWidget);
+      // Angkanya tidak boleh diklaim sebagai unduhan Play Store.
+      expect(
+        find.textContaining('perangkat unik yang pernah membuka aplikasi'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Diisi manual'), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
 
     testWidgets('an unfilled number explains where to enter it',
         (tester) async {
@@ -202,7 +243,7 @@ void main() {
       );
       expect(find.text('Total download belum diisi'), findsOneWidget);
       expect(
-        find.textContaining('play_store_total_installs'),
+        find.textContaining('Belum ada perangkat yang tercatat'),
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);

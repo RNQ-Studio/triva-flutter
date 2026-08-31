@@ -1,12 +1,13 @@
 /// Asal angka total download yang dilaporkan backend.
 ///
-/// Google Play tidak menyediakan API jumlah instal, jadi backend boleh
-/// mengambil angkanya dari App Config yang diisi admin atau dari ekspor
-/// laporan Play Console. Panel admin menyebutkan asalnya supaya pembaca tahu
-/// seberapa segar angka yang dilihatnya.
+/// Google Play tidak menyediakan API jumlah instal, jadi backend menghitungnya
+/// dari perangkat unik yang pernah membuka aplikasi, atau mengambilnya dari
+/// App Config yang diisi admin maupun ekspor laporan Play Console. Panel admin
+/// menyebutkan asalnya supaya pembaca tahu angka apa yang sedang dilihat.
 enum PlayStoreInstallsSource {
   manual('manual'),
-  playReports('play_reports');
+  playReports('play_reports'),
+  uniqueDevices('unique_devices');
 
   const PlayStoreInstallsSource(this.apiValue);
 

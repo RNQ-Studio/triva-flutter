@@ -2616,14 +2616,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Belum ada menu yang dibuka pada periode ini.';
 
   @override
-  String get adminPlayStoreTitle => 'Total download Play Store';
+  String get adminPlayStoreTitle => 'Total download aplikasi';
 
   @override
   String get adminPlayStoreDescription =>
-      'Jumlah pengguna yang pernah memasang TRIVA dari Google Play.';
+      'Perangkat unik yang pernah membuka TRIVA.';
 
   @override
   String get adminPlayStoreRefresh => 'Perbarui total download';
+
+  @override
+  String get adminPlayStoreSourceUniqueDevices =>
+      'Dihitung dari perangkat unik yang pernah membuka aplikasi. Perangkat yang memasang tetapi belum pernah masuk tidak terhitung, jadi angkanya lebih rendah daripada unduhan Play Store.';
 
   @override
   String get adminPlayStoreTotal => 'Total download';
@@ -2645,7 +2649,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get adminPlayStoreEmptyDescription =>
-      'Google Play tidak menyediakan API jumlah instal. Salin angka Total user installs dari Play Console ke App Config play_store_total_installs di panel web.';
+      'Belum ada perangkat yang tercatat membuka aplikasi. Angka muncul setelah pengguna pertama masuk dari perangkatnya.';
 
   @override
   String get adminFilterAll => 'Semua';
