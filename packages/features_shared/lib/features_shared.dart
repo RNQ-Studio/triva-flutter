@@ -65,5 +65,10 @@ export 'src/settings/presentation/settings_providers.dart';
 export 'src/settings/presentation/theme_notifier.dart';
 export 'src/settings/presentation/locale_notifier.dart';
 
+// maintenance
+export 'src/maintenance/data/maintenance_repository.dart';
+export 'src/maintenance/presentation/maintenance_gate.dart';
+export 'src/maintenance/presentation/maintenance_screen.dart';
+
 // branding
 export 'src/branding/triva_logo.dart';

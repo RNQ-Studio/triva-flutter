@@ -2878,4 +2878,26 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get adminPanelCreditDescription =>
       'Lihat semua simulasi kredit pelanggan';
+
+  @override
+  String get maintenanceBadge => 'Status Layanan';
+
+  @override
+  String get maintenanceTitle => 'Sistem Sedang Dalam Perawatan';
+
+  @override
+  String get maintenanceDefaultMessage =>
+      'TRIVA sedang dalam perawatan terjadwal. Silakan coba lagi beberapa saat lagi.';
+
+  @override
+  String maintenanceEstimate(String time) {
+    return 'Diperkirakan kembali normal pada $time';
+  }
+
+  @override
+  String get maintenanceStillDown =>
+      'Sistem masih dalam perawatan. Silakan coba lagi nanti.';
+
+  @override
+  String get maintenanceThanks => 'Terima kasih atas kesabaran Anda.';
 }

@@ -15,6 +15,15 @@ final class UnauthorizedException extends AppException {
   const UnauthorizedException() : super('Unauthorized');
 }
 
+/// Backend menolak request karena sistem sedang dimatikan.
+///
+/// Dipisahkan dari [ServerException] supaya UI dapat membedakan "sistem
+/// sengaja dimatikan" dari "server bermasalah", dan tidak menampilkan pesan
+/// error generik untuk keadaan yang punya layar sendiri.
+final class MaintenanceException extends AppException {
+  const MaintenanceException(super.message);
+}
+
 final class ServerException extends AppException {
   const ServerException(
     super.message, {

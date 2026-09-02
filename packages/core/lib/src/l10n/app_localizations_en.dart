@@ -2881,4 +2881,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adminPanelCreditDescription =>
       'Browse every customer credit simulation';
+
+  @override
+  String get maintenanceBadge => 'Service Status';
+
+  @override
+  String get maintenanceTitle => 'System Under Maintenance';
+
+  @override
+  String get maintenanceDefaultMessage =>
+      'TRIVA is undergoing scheduled maintenance. Please try again shortly.';
+
+  @override
+  String maintenanceEstimate(String time) {
+    return 'Expected to be back at $time';
+  }
+
+  @override
+  String get maintenanceStillDown =>
+      'The system is still under maintenance. Please try again later.';
+
+  @override
+  String get maintenanceThanks => 'Thank you for your patience.';
 }

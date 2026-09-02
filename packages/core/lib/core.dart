@@ -15,6 +15,10 @@ export 'src/extensions/string_extensions.dart';
 // l10n
 export 'src/l10n/app_localizations.dart';
 
+// maintenance
+export 'src/maintenance/maintenance_status.dart';
+export 'src/maintenance/maintenance_signal.dart';
+
 // network
 export 'src/network/dio_client.dart';
 export 'src/network/token_refresh_interceptor.dart';

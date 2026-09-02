@@ -924,5 +924,12 @@
   "adminPanelCreditDescription": "Lihat semua simulasi kredit pelanggan",
   "@adminAgeYears": {"placeholders": {"years": {"type": "int"}}},
   "@adminTenorMonths": {"placeholders": {"months": {"type": "int"}}},
-  "@adminCreditInstallmentPerMonth": {"placeholders": {"amount": {"type": "String"}, "months": {"type": "int"}}}
+  "@adminCreditInstallmentPerMonth": {"placeholders": {"amount": {"type": "String"}, "months": {"type": "int"}}},
+  "maintenanceBadge": "Status Layanan",
+  "maintenanceTitle": "Sistem Sedang Dalam Perawatan",
+  "maintenanceDefaultMessage": "TRIVA sedang dalam perawatan terjadwal. Silakan coba lagi beberapa saat lagi.",
+  "maintenanceEstimate": "Diperkirakan kembali normal pada {time}",
+  "maintenanceStillDown": "Sistem masih dalam perawatan. Silakan coba lagi nanti.",
+  "maintenanceThanks": "Terima kasih atas kesabaran Anda.",
+  "@maintenanceEstimate": {"placeholders": {"time": {"type": "String"}}}
 }

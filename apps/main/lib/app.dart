@@ -365,9 +365,14 @@ class _AppRouterState extends ConsumerState<_AppRouter> {
         notification,
         currentUri: appRouter.state.uri,
       ),
+      // Gate dipasang di `builder`, bukan sebagai route, supaya layar
+      // maintenance menutupi halaman apa pun tanpa mengubah state router —
+      // sesi user kembali ke tempat semula begitu sistem hidup lagi.
       builder: (context, child) => WebMobileViewport(
         enabled: kIsWeb,
-        child: child ?? const SizedBox.shrink(),
+        child: MaintenanceGate(
+          child: child ?? const SizedBox.shrink(),
+        ),
       ),
     );
   }

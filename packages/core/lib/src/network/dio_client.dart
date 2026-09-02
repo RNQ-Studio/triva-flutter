@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import '../config/app_config.dart';
 import '../errors/app_exception.dart';
+import '../maintenance/maintenance_signal.dart';
+import '../maintenance/maintenance_status.dart';
 import '../storage/storage_service.dart';
 import 'auth_interceptor.dart';
 import 'token_refresh_interceptor.dart';
@@ -72,6 +74,24 @@ class DioClient {
         final body = responseData is Map<String, dynamic>
             ? responseData
             : const <String, dynamic>{};
+        // Sakelar maintenance backend menjawab 503 dengan kode ini pada
+        // request apa pun. Ditangkap di sini, bukan di tiap controller, supaya
+        // sistem yang mati di tengah pemakaian langsung memunculkan layar
+        // maintenance dari mana pun request-nya berasal.
+        if (statusCode == 503 && body['code'] == 'MAINTENANCE_MODE') {
+          MaintenanceSignal.instance.report(
+            MaintenanceStatus.fromErrorBody(body),
+          );
+          handler.reject(
+            err.copyWith(
+              error: MaintenanceException(
+                body['message']?.toString() ?? 'Sistem sedang dalam perawatan.',
+              ),
+            ),
+          );
+          return;
+        }
+
         final rawErrors = body['errors'];
         final validationErrors = <String, List<String>>{
           if (rawErrors is Map)

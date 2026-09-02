@@ -5347,6 +5347,42 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lihat semua simulasi kredit pelanggan'**
   String get adminPanelCreditDescription;
+
+  /// No description provided for @maintenanceBadge.
+  ///
+  /// In id, this message translates to:
+  /// **'Status Layanan'**
+  String get maintenanceBadge;
+
+  /// No description provided for @maintenanceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Sistem Sedang Dalam Perawatan'**
+  String get maintenanceTitle;
+
+  /// No description provided for @maintenanceDefaultMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'TRIVA sedang dalam perawatan terjadwal. Silakan coba lagi beberapa saat lagi.'**
+  String get maintenanceDefaultMessage;
+
+  /// No description provided for @maintenanceEstimate.
+  ///
+  /// In id, this message translates to:
+  /// **'Diperkirakan kembali normal pada {time}'**
+  String maintenanceEstimate(String time);
+
+  /// No description provided for @maintenanceStillDown.
+  ///
+  /// In id, this message translates to:
+  /// **'Sistem masih dalam perawatan. Silakan coba lagi nanti.'**
+  String get maintenanceStillDown;
+
+  /// No description provided for @maintenanceThanks.
+  ///
+  /// In id, this message translates to:
+  /// **'Terima kasih atas kesabaran Anda.'**
+  String get maintenanceThanks;
 }
 
 class _AppLocalizationsDelegate

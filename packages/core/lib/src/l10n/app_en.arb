@@ -924,5 +924,12 @@
   "adminPanelCreditDescription": "Browse every customer credit simulation",
   "@adminAgeYears": {"placeholders": {"years": {"type": "int"}}},
   "@adminTenorMonths": {"placeholders": {"months": {"type": "int"}}},
-  "@adminCreditInstallmentPerMonth": {"placeholders": {"amount": {"type": "String"}, "months": {"type": "int"}}}
+  "@adminCreditInstallmentPerMonth": {"placeholders": {"amount": {"type": "String"}, "months": {"type": "int"}}},
+  "maintenanceBadge": "Service Status",
+  "maintenanceTitle": "System Under Maintenance",
+  "maintenanceDefaultMessage": "TRIVA is undergoing scheduled maintenance. Please try again shortly.",
+  "maintenanceEstimate": "Expected to be back at {time}",
+  "maintenanceStillDown": "The system is still under maintenance. Please try again later.",
+  "maintenanceThanks": "Thank you for your patience.",
+  "@maintenanceEstimate": {"placeholders": {"time": {"type": "String"}}}
 }
