@@ -278,6 +278,8 @@ class _ResultContent extends StatelessWidget {
       };
 
   String _serviceLabel(AppLocalizations l10n, String value) => switch (value) {
+        'authorized' => l10n.serviceAuthorized,
+        'general' => l10n.serviceGeneral,
         'complete' => l10n.serviceComplete,
         'partial' => l10n.servicePartial,
         'none' => l10n.serviceNone,
@@ -311,6 +313,7 @@ class _ResultContent extends StatelessWidget {
   String _ownershipLabel(AppLocalizations l10n, String value) =>
       switch (value) {
         'first' => l10n.ownershipFirst,
+        'second_or_more' => l10n.ownershipSecondOrMore,
         'second' => l10n.ownershipSecond,
         'more' => l10n.ownershipMore,
         'unknown' => l10n.unknown,

@@ -1019,19 +1019,19 @@ abstract class AppLocalizations {
   /// No description provided for @conditionGradeB.
   ///
   /// In id, this message translates to:
-  /// **'Baik, perlu perawatan ringan'**
+  /// **'Perlu perbaikan ringan'**
   String get conditionGradeB;
 
   /// No description provided for @conditionGradeC.
   ///
   /// In id, this message translates to:
-  /// **'Cukup, ada perbaikan yang perlu dikerjakan'**
+  /// **'Perlu perbaikan mesin dan transmisi'**
   String get conditionGradeC;
 
   /// No description provided for @conditionGradeD.
   ///
   /// In id, this message translates to:
-  /// **'Perlu perbaikan menyeluruh'**
+  /// **'Perlu perbaikan berat dan rangka body kendaraan'**
   String get conditionGradeD;
 
   /// No description provided for @engineCondition.
@@ -1067,7 +1067,7 @@ abstract class AppLocalizations {
   /// No description provided for @tyreConditionDamaged.
   ///
   /// In id, this message translates to:
-  /// **'Rusak'**
+  /// **'Aus'**
   String get tyreConditionDamaged;
 
   /// No description provided for @taxStatus.
@@ -1165,6 +1165,24 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Lebih dari dua'**
   String get ownershipMore;
+
+  /// No description provided for @serviceAuthorized.
+  ///
+  /// In id, this message translates to:
+  /// **'Bengkel authorized'**
+  String get serviceAuthorized;
+
+  /// No description provided for @serviceGeneral.
+  ///
+  /// In id, this message translates to:
+  /// **'Bengkel umum'**
+  String get serviceGeneral;
+
+  /// No description provided for @ownershipSecondOrMore.
+  ///
+  /// In id, this message translates to:
+  /// **'Tangan kedua atau lebih'**
+  String get ownershipSecondOrMore;
 
   /// No description provided for @photosTitle.
   ///
@@ -5219,7 +5237,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminConditionGrade.
   ///
   /// In id, this message translates to:
-  /// **'Grade kondisi'**
+  /// **'Kondisi kendaraan'**
   String get adminConditionGrade;
 
   /// No description provided for @adminConditionEngine.

@@ -520,10 +520,7 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('90%'), findsNothing);
-    expect(
-      find.text('Cukup, ada perbaikan yang perlu dikerjakan'),
-      findsOneWidget,
-    );
+    expect(find.text('Perlu perbaikan mesin dan transmisi'), findsOneWidget);
     expect(find.text('Basah / rembes'), findsOneWidget);
     expect(find.text('Tampak depan'), findsOneWidget);
     expect(find.text('Tampak belakang'), findsOneWidget);
@@ -698,9 +695,9 @@ void main() {
     expect(find.text('Kondisi umum mobil'), findsOneWidget);
     for (final label in const [
       'Istimewa, siap pakai',
-      'Baik, perlu perawatan ringan',
-      'Cukup, ada perbaikan yang perlu dikerjakan',
-      'Perlu perbaikan menyeluruh',
+      'Perlu perbaikan ringan',
+      'Perlu perbaikan mesin dan transmisi',
+      'Perlu perbaikan berat dan rangka body kendaraan',
     ]) {
       expect(find.text(label), findsOneWidget);
     }
@@ -709,10 +706,55 @@ void main() {
       expect(find.text(code), findsNothing);
     }
 
-    await tester.tap(find.text('Cukup, ada perbaikan yang perlu dikerjakan'));
+    await tester.tap(find.text('Perlu perbaikan mesin dan transmisi'));
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+      'condition step no longer offers "tidak tahu" and uses simplified '
+      'service and ownership answers', (tester) async {
+    await _pump(
+      tester,
+      widget: const VehicleConditionScreen(),
+      brightness: Brightness.light,
+    );
+
+    Finder dropdown(String label) => find.ancestor(
+          of: find.text(label),
+          matching: find.byType(DropdownButtonFormField<String>),
+        );
+    Future<void> open(String label) async {
+      await tester.ensureVisible(dropdown(label));
+      await tester.pumpAndSettle();
+      await tester.tap(dropdown(label));
+      await tester.pumpAndSettle();
+    }
+
+    expect(find.text('Tidak tahu'), findsNothing);
+
+    await open('Riwayat servis');
+    expect(find.text('Bengkel authorized'), findsWidgets);
+    expect(find.text('Bengkel umum'), findsWidgets);
+    expect(find.text('Sebagian'), findsNothing);
+    expect(find.text('Tidak tahu'), findsNothing);
+    await tester.tap(find.text('Bengkel umum').last);
+    await tester.pumpAndSettle();
+
+    await open('Kepemilikan');
+    expect(find.text('Tangan pertama'), findsWidgets);
+    expect(find.text('Tangan kedua atau lebih'), findsWidgets);
+    expect(find.text('Lebih dari dua'), findsNothing);
+    await tester.tap(find.text('Tangan pertama').last);
+    await tester.pumpAndSettle();
+
+    await open('Kondisi ban');
+    expect(find.text('Aus'), findsWidgets);
+    expect(find.text('Rusak'), findsNothing);
+    await tester.tap(find.text('Aus').last);
+    await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });
 

@@ -517,13 +517,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conditionGradeA => 'Excellent, ready to drive';
 
   @override
-  String get conditionGradeB => 'Good, light servicing only';
+  String get conditionGradeB => 'Needs light repairs';
 
   @override
-  String get conditionGradeC => 'Fair, some repairs needed';
+  String get conditionGradeC => 'Needs engine and transmission repairs';
 
   @override
-  String get conditionGradeD => 'Needs major repairs';
+  String get conditionGradeD => 'Needs major repairs including frame and body';
 
   @override
   String get engineCondition => 'Engine condition';
@@ -541,7 +541,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tyreConditionNormal => 'Normal';
 
   @override
-  String get tyreConditionDamaged => 'Damaged';
+  String get tyreConditionDamaged => 'Worn';
 
   @override
   String get taxStatus => 'Tax status';
@@ -590,6 +590,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownershipMore => 'More than two';
+
+  @override
+  String get serviceAuthorized => 'Authorized workshop';
+
+  @override
+  String get serviceGeneral => 'General workshop';
+
+  @override
+  String get ownershipSecondOrMore => 'Second owner or later';
 
   @override
   String get photosTitle => 'Vehicle photos';
@@ -2809,7 +2818,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminConditionOwnership => 'Ownership';
 
   @override
-  String get adminConditionGrade => 'Condition grade';
+  String get adminConditionGrade => 'Vehicle condition';
 
   @override
   String get adminConditionEngine => 'Engine condition';

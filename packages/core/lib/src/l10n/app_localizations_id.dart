@@ -513,13 +513,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get conditionGradeA => 'Istimewa, siap pakai';
 
   @override
-  String get conditionGradeB => 'Baik, perlu perawatan ringan';
+  String get conditionGradeB => 'Perlu perbaikan ringan';
 
   @override
-  String get conditionGradeC => 'Cukup, ada perbaikan yang perlu dikerjakan';
+  String get conditionGradeC => 'Perlu perbaikan mesin dan transmisi';
 
   @override
-  String get conditionGradeD => 'Perlu perbaikan menyeluruh';
+  String get conditionGradeD =>
+      'Perlu perbaikan berat dan rangka body kendaraan';
 
   @override
   String get engineCondition => 'Kondisi mesin';
@@ -537,7 +538,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get tyreConditionNormal => 'Normal';
 
   @override
-  String get tyreConditionDamaged => 'Rusak';
+  String get tyreConditionDamaged => 'Aus';
 
   @override
   String get taxStatus => 'Status pajak';
@@ -586,6 +587,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get ownershipMore => 'Lebih dari dua';
+
+  @override
+  String get serviceAuthorized => 'Bengkel authorized';
+
+  @override
+  String get serviceGeneral => 'Bengkel umum';
+
+  @override
+  String get ownershipSecondOrMore => 'Tangan kedua atau lebih';
 
   @override
   String get photosTitle => 'Foto kendaraan';
@@ -2805,7 +2815,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get adminConditionOwnership => 'Kepemilikan';
 
   @override
-  String get adminConditionGrade => 'Grade kondisi';
+  String get adminConditionGrade => 'Kondisi kendaraan';
 
   @override
   String get adminConditionEngine => 'Kondisi mesin';

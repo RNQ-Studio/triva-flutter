@@ -59,13 +59,14 @@ class _VehicleConditionScreenState
     if (!_initialized) {
       _initialized = true;
       final draft = value.draft;
-      _tax = draft.taxStatus.isEmpty ? null : draft.taxStatus;
-      _flood = draft.floodHistory.isEmpty ? null : draft.floodHistory;
-      _accident = draft.majorAccidentHistory.isEmpty
-          ? null
-          : draft.majorAccidentHistory;
-      _service = draft.serviceHistory.isEmpty ? null : draft.serviceHistory;
-      _ownership = draft.ownership.isEmpty ? null : draft.ownership;
+      // Draft lama bisa menyimpan jawaban yang sudah tidak ditawarkan
+      // (mis. "tidak tahu"); jawaban seperti itu dikosongkan supaya dropdown
+      // tidak memegang nilai di luar daftar pilihannya.
+      _tax = _pick(draft.taxStatus, const {'active', 'overdue'});
+      _flood = _pick(draft.floodHistory, const {'no', 'yes'});
+      _accident = _pick(draft.majorAccidentHistory, const {'no', 'yes'});
+      _service = _pick(draft.serviceHistory, const {'authorized', 'general'});
+      _ownership = _pick(draft.ownership, const {'first', 'second_or_more'});
       _grade = draft.conditionGrade.isEmpty ? null : draft.conditionGrade;
       _engine = draft.engineCondition.isEmpty ? null : draft.engineCondition;
       _tyre = draft.tyreCondition.isEmpty ? null : draft.tyreCondition;
@@ -119,7 +120,6 @@ class _VehicleConditionScreenState
                 options: {
                   'active': l10n.taxActive,
                   'overdue': l10n.taxOverdue,
-                  'unknown': l10n.unknown,
                 },
                 onChanged: (value) => _tax = value,
               ),
@@ -130,7 +130,6 @@ class _VehicleConditionScreenState
                 options: {
                   'no': l10n.answerNo,
                   'yes': l10n.answerYes,
-                  'unknown': l10n.unknown,
                 },
                 onChanged: (value) => _flood = value,
               ),
@@ -141,7 +140,6 @@ class _VehicleConditionScreenState
                 options: {
                   'no': l10n.answerNo,
                   'yes': l10n.answerYes,
-                  'unknown': l10n.unknown,
                 },
                 onChanged: (value) => _accident = value,
               ),
@@ -150,10 +148,8 @@ class _VehicleConditionScreenState
                 label: l10n.serviceHistory,
                 value: _service,
                 options: {
-                  'complete': l10n.serviceComplete,
-                  'partial': l10n.servicePartial,
-                  'none': l10n.serviceNone,
-                  'unknown': l10n.unknown,
+                  'authorized': l10n.serviceAuthorized,
+                  'general': l10n.serviceGeneral,
                 },
                 onChanged: (value) => _service = value,
               ),
@@ -163,9 +159,7 @@ class _VehicleConditionScreenState
                 value: _ownership,
                 options: {
                   'first': l10n.ownershipFirst,
-                  'second': l10n.ownershipSecond,
-                  'more': l10n.ownershipMore,
-                  'unknown': l10n.unknown,
+                  'second_or_more': l10n.ownershipSecondOrMore,
                 },
                 onChanged: (value) => _ownership = value,
               ),
@@ -175,6 +169,9 @@ class _VehicleConditionScreenState
       ),
     );
   }
+
+  String? _pick(String value, Set<String> allowed) =>
+      allowed.contains(value) ? value : null;
 
   Widget _choice({
     required String label,
@@ -201,9 +198,9 @@ class _VehicleConditionScreenState
   }
 }
 
-/// Kondisi umum memakai empat tier yang sama dengan OLX (A-D), tetapi hanya
-/// deskripsinya yang ditampilkan: label huruf grade sengaja disembunyikan
-/// supaya pelanggan memilih berdasarkan kondisi nyata, bukan menebak grade.
+/// Kondisi umum memakai empat tier (kode internal `a`-`d`), tetapi hanya
+/// deskripsinya yang ditampilkan: kode tier sengaja disembunyikan supaya
+/// pelanggan memilih berdasarkan kondisi nyata.
 class _ConditionGradeField extends StatelessWidget {
   const _ConditionGradeField({
     required this.value,

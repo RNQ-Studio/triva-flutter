@@ -45,10 +45,19 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
       _ => l10n.unknown,
     };
     final serviceLabel = switch (draft.serviceHistory) {
+      'authorized' => l10n.serviceAuthorized,
+      'general' => l10n.serviceGeneral,
       'complete' => l10n.serviceComplete,
       'partial' => l10n.servicePartial,
       'none' => l10n.serviceNone,
       _ => l10n.unknown,
+    };
+    final conditionLabel = switch (draft.conditionGrade) {
+      'a' => l10n.conditionGradeA,
+      'b' => l10n.conditionGradeB,
+      'c' => l10n.conditionGradeC,
+      'd' => l10n.conditionGradeD,
+      _ => draft.conditionGrade,
     };
 
     return AppraisalFlowScaffold(
@@ -74,8 +83,7 @@ class _AppraisalReviewScreenState extends ConsumerState<AppraisalReviewScreen> {
           _SummaryCard(
             icon: Icons.fact_check_outlined,
             title: l10n.reviewCondition,
-            value: '${l10n.conditionGrade}: '
-                '${draft.conditionGrade.toUpperCase()}\n'
+            value: '${l10n.conditionGrade}: $conditionLabel\n'
                 '${l10n.taxStatus}: $taxLabel\n'
                 '${l10n.serviceHistory}: $serviceLabel',
             onEdit: () => context.push(appraisalConditionPath),
