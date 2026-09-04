@@ -541,53 +541,9 @@ class _DamageCard extends ConsumerWidget {
                       )
                   : null,
             ),
-            const SizedBox(height: AppSpacing.small),
-            DropdownButtonFormField<String>(
-              key: ValueKey('${damage.key}-type-${damage.damageType}'),
-              initialValue:
-                  damage.damageType.isEmpty ? null : damage.damageType,
-              isExpanded: true,
-              decoration: InputDecoration(labelText: l10n.bodyPaintDamageType),
-              items: [
-                for (final item in options.damageTypes)
-                  DropdownMenuItem(
-                    value: item.value,
-                    child: Row(
-                      children: [
-                        Expanded(child: Text(item.label)),
-                        if (item.isHighRisk)
-                          const Icon(
-                            Icons.warning_amber_rounded,
-                            size: AppIconSize.medium,
-                          ),
-                      ],
-                    ),
-                  ),
-              ],
-              onChanged: enabled
-                  ? (value) => controller.updateDamage(
-                        damage.key,
-                        damageType: value,
-                      )
-                  : null,
-            ),
-            const SizedBox(height: AppSpacing.small),
-            DropdownButtonFormField<String>(
-              key: ValueKey('${damage.key}-severity-${damage.severity}'),
-              initialValue: damage.severity,
-              isExpanded: true,
-              decoration: InputDecoration(labelText: l10n.bodyPaintSeverity),
-              items: [
-                for (final item in options.severities)
-                  DropdownMenuItem(value: item.value, child: Text(item.label)),
-              ],
-              onChanged: enabled
-                  ? (value) => controller.updateDamage(
-                        damage.key,
-                        severity: value,
-                      )
-                  : null,
-            ),
+            // Revisi 4 September 2026: jenis dan tingkat kerusakan tidak lagi
+            // ditanyakan; cukup panel, catatan, dan foto. Estimator yang
+            // menilai jenis dan tingkatnya dari foto.
             const SizedBox(height: AppSpacing.small),
             TextFormField(
               initialValue: damage.note,

@@ -9,6 +9,16 @@ import 'package:triva_app/features/body_paint/presentation/screens/body_paint_ad
 import 'package:triva_app/features/body_paint/presentation/screens/body_paint_intake_screen.dart';
 import 'package:triva_app/features/toyota_service/domain/toyota_service_models.dart';
 
+class _FakeBodyPaintFlowWithDamage extends BodyPaintFlowController {
+  @override
+  Future<BodyPaintFlowState> build() async => const BodyPaintFlowState(
+        draft: BodyPaintDraft(
+          vehicle: _vehicle,
+          damages: [BodyPaintDraftDamage(key: 'damage-1')],
+        ),
+      );
+}
+
 class _FakeBodyPaintFlowController extends BodyPaintFlowController {
   @override
   Future<BodyPaintFlowState> build() async =>
@@ -16,6 +26,38 @@ class _FakeBodyPaintFlowController extends BodyPaintFlowController {
 }
 
 void main() {
+  testWidgets('damage card no longer asks for damage type or severity',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          bodyPaintFlowProvider.overrideWith(
+            _FakeBodyPaintFlowWithDamage.new,
+          ),
+          bodyPaintOptionsProvider.overrideWith((_) async => _options()),
+          bodyPaintVehiclesProvider.overrideWith(
+            (_) async => const [_vehicle],
+          ),
+        ],
+        child: _app(const BodyPaintIntakeScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('Panel kendaraan'),
+      250,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Panel kendaraan'), findsWidgets);
+    expect(find.text('Jenis kerusakan'), findsNothing);
+    expect(find.text('Tingkat kerusakan'), findsNothing);
+    expect(find.byIcon(Icons.warning_amber_rounded), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   for (final brightness in Brightness.values) {
     testWidgets(
       'compact intake is usable in ${brightness.name} theme',

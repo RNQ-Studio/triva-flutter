@@ -64,13 +64,19 @@ class BodyPaintOptions {
   }
 }
 
+/// Jenis dan tingkat kerusakan tidak lagi ditanyakan ke pelanggan (revisi
+/// 4 September 2026); estimator menilainya dari foto. Nilai bawaan ini tetap
+/// dikirim karena kontrak server masih mewajibkannya.
+const defaultDamageType = 'other';
+const defaultSeverity = 'unsure';
+
 class BodyPaintDraftDamage {
   const BodyPaintDraftDamage({
     required this.key,
     this.remoteId,
     this.panelCode = '',
-    this.damageType = '',
-    this.severity = 'unsure',
+    this.damageType = defaultDamageType,
+    this.severity = defaultSeverity,
     this.note = '',
     this.closePhotoAssetId,
     this.closePhotoName,
@@ -119,8 +125,8 @@ class BodyPaintDraftDamage {
         key: json['key']?.toString() ?? '',
         remoteId: json['remote_id']?.toString(),
         panelCode: json['panel_code']?.toString() ?? '',
-        damageType: json['damage_type']?.toString() ?? '',
-        severity: json['severity']?.toString() ?? 'unsure',
+        damageType: json['damage_type']?.toString() ?? defaultDamageType,
+        severity: json['severity']?.toString() ?? defaultSeverity,
         note: json['note']?.toString() ?? '',
         closePhotoAssetId: json['close_photo_asset_id']?.toString(),
         closePhotoName: json['close_photo_name']?.toString(),
