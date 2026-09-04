@@ -67,6 +67,8 @@ class CreditProgram {
     this.effectiveTo,
     this.packageCode,
     this.recommendedDpAmount,
+    this.unitKey,
+    this.imageUrl,
   });
 
   final String id;
@@ -96,6 +98,11 @@ class CreditProgram {
   /// Uang muka anjuran paket. SPEKTA memakai 20% dari OTR, dan angka inilah
   /// yang diisikan otomatis ke form alih-alih DP minimum.
   final int? recommendedDpAmount;
+
+  /// Kunci unit rekomendasi (mis. `veloz_hybrid`) dan gambar unit yang
+  /// diunggah cabang; keduanya opsional.
+  final String? unitKey;
+  final String? imageUrl;
 
   bool get isSpekta => packageCode == 'spekta';
 
@@ -163,6 +170,8 @@ class CreditProgram {
       isDemo: json['is_demo'] == true,
       packageCode: json['package_code']?.toString(),
       recommendedDpAmount: _nullableInt(json['recommended_dp_amount']),
+      unitKey: json['unit_key']?.toString(),
+      imageUrl: json['image_url']?.toString(),
     );
   }
 }

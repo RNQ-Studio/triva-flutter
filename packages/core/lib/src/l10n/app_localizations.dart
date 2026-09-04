@@ -1586,6 +1586,264 @@ abstract class AppLocalizations {
   /// **'Angka cicilan bersifat estimasi, bukan persetujuan kredit.'**
   String get upgradeOfferEstimateNotice;
 
+  /// No description provided for @recommendedUnitsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mobil yang cocok untuk Anda'**
+  String get recommendedUnitsTitle;
+
+  /// No description provided for @recommendedUnitsSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga appraisal Anda menjadi uang muka. Ketuk unit untuk menghubungi sales.'**
+  String get recommendedUnitsSubtitle;
+
+  /// No description provided for @recommendedUnitDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'DP'**
+  String get recommendedUnitDownPayment;
+
+  /// No description provided for @recommendedUnitInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Angsuran/bulan'**
+  String get recommendedUnitInstallment;
+
+  /// No description provided for @salesPickerTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi sales'**
+  String get salesPickerTitle;
+
+  /// No description provided for @salesPickerSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih sales yang ingin Anda hubungi lewat WhatsApp.'**
+  String get salesPickerSubtitle;
+
+  /// No description provided for @salesPickerNoSales.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada sales'**
+  String get salesPickerNoSales;
+
+  /// No description provided for @salesPickerNoSalesSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungkan saya dengan supervisor ({name})'**
+  String salesPickerNoSalesSubtitle(String name);
+
+  /// No description provided for @salesRoleSales.
+  ///
+  /// In id, this message translates to:
+  /// **'Sales'**
+  String get salesRoleSales;
+
+  /// No description provided for @whatsappSpvAppraisalTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo, saya ingin menindaklanjuti hasil appraisal TRIVA saya.'**
+  String get whatsappSpvAppraisalTitle;
+
+  /// No description provided for @whatsappUnitInterestTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo, saya tertarik dengan unit berikut dari hasil appraisal TRIVA.'**
+  String get whatsappUnitInterestTitle;
+
+  /// No description provided for @whatsappHandoffAppraisalPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga appraisal'**
+  String get whatsappHandoffAppraisalPrice;
+
+  /// No description provided for @whatsappHandoffIntent.
+  ///
+  /// In id, this message translates to:
+  /// **'Keperluan'**
+  String get whatsappHandoffIntent;
+
+  /// No description provided for @whatsappHandoffUnit.
+  ///
+  /// In id, this message translates to:
+  /// **'Unit'**
+  String get whatsappHandoffUnit;
+
+  /// No description provided for @whatsappHandoffDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'DP'**
+  String get whatsappHandoffDownPayment;
+
+  /// No description provided for @whatsappHandoffInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Angsuran per bulan'**
+  String get whatsappHandoffInstallment;
+
+  /// No description provided for @whatsappHandoffOtr.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga OTR'**
+  String get whatsappHandoffOtr;
+
+  /// No description provided for @whatsappHandoffTenor.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenor'**
+  String get whatsappHandoffTenor;
+
+  /// No description provided for @intentAcceptPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Terima harga appraisal'**
+  String get intentAcceptPrice;
+
+  /// No description provided for @intentScheduleInspection.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadwalkan inspeksi'**
+  String get intentScheduleInspection;
+
+  /// No description provided for @freeCheckupCta.
+  ///
+  /// In id, this message translates to:
+  /// **'Klik tombol ini untuk mendapatkan free checkup'**
+  String get freeCheckupCta;
+
+  /// No description provided for @freeCheckupDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga belum cocok? Dapatkan pemeriksaan kendaraan gratis di Auto2000 Kertajaya.'**
+  String get freeCheckupDescription;
+
+  /// No description provided for @whatsappFreeCheckupTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Admin Booking Auto2000 Kertajaya, saya ingin mendapatkan free checkup dari aplikasi TRIVA.'**
+  String get whatsappFreeCheckupTitle;
+
+  /// No description provided for @creditQuickSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih unit, isi harga OTR, lalu pilih uang muka dan tenor. Angsuran per bulan langsung terlihat.'**
+  String get creditQuickSubtitle;
+
+  /// No description provided for @creditQuickUnit.
+  ///
+  /// In id, this message translates to:
+  /// **'Unit'**
+  String get creditQuickUnit;
+
+  /// No description provided for @creditQuickDpPercent.
+  ///
+  /// In id, this message translates to:
+  /// **'Uang muka'**
+  String get creditQuickDpPercent;
+
+  /// No description provided for @creditQuickTenorYears.
+  ///
+  /// In id, this message translates to:
+  /// **'Tenor'**
+  String get creditQuickTenorYears;
+
+  /// No description provided for @creditQuickYears.
+  ///
+  /// In id, this message translates to:
+  /// **'{years} tahun'**
+  String creditQuickYears(int years);
+
+  /// No description provided for @creditQuickInstallmentTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Angsuran per bulan'**
+  String get creditQuickInstallmentTitle;
+
+  /// No description provided for @creditQuickDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'DP murni'**
+  String get creditQuickDownPayment;
+
+  /// No description provided for @creditQuickInsurance.
+  ///
+  /// In id, this message translates to:
+  /// **'Asuransi kredit'**
+  String get creditQuickInsurance;
+
+  /// No description provided for @creditQuickAdminFee.
+  ///
+  /// In id, this message translates to:
+  /// **'Administrasi'**
+  String get creditQuickAdminFee;
+
+  /// No description provided for @creditQuickLiabilityFee.
+  ///
+  /// In id, this message translates to:
+  /// **'TJH & polis'**
+  String get creditQuickLiabilityFee;
+
+  /// No description provided for @creditQuickFirstInstallment.
+  ///
+  /// In id, this message translates to:
+  /// **'Angsuran pertama'**
+  String get creditQuickFirstInstallment;
+
+  /// No description provided for @creditQuickTotalDownPayment.
+  ///
+  /// In id, this message translates to:
+  /// **'Total DP (TDP)'**
+  String get creditQuickTotalDownPayment;
+
+  /// No description provided for @creditQuickRate.
+  ///
+  /// In id, this message translates to:
+  /// **'Bunga flat {rate}% per tahun'**
+  String creditQuickRate(String rate);
+
+  /// No description provided for @creditQuickSubmitting.
+  ///
+  /// In id, this message translates to:
+  /// **'Mengirim...'**
+  String get creditQuickSubmitting;
+
+  /// No description provided for @creditQuickSubmitted.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi tersimpan. Admin kami sudah menerima notifikasinya.'**
+  String get creditQuickSubmitted;
+
+  /// No description provided for @creditQuickConsult.
+  ///
+  /// In id, this message translates to:
+  /// **'Konsultasi lebih lanjut'**
+  String get creditQuickConsult;
+
+  /// No description provided for @creditQuickAdvanced.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi lengkap dengan trade-in'**
+  String get creditQuickAdvanced;
+
+  /// No description provided for @creditQuickRateCardError.
+  ///
+  /// In id, this message translates to:
+  /// **'Rate card belum bisa dimuat. Periksa koneksi lalu coba lagi.'**
+  String get creditQuickRateCardError;
+
+  /// No description provided for @creditQuickOtrInvalid.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi harga OTR minimal Rp 10.000.000.'**
+  String get creditQuickOtrInvalid;
+
+  /// No description provided for @whatsappCreditTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo, saya ingin konsultasi simulasi kredit dari aplikasi TRIVA.'**
+  String get whatsappCreditTitle;
+
   /// No description provided for @whatsappHandoffOpening.
   ///
   /// In id, this message translates to:

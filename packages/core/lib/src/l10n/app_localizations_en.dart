@@ -822,6 +822,151 @@ class AppLocalizationsEn extends AppLocalizations {
       'Instalment figures are estimates, not credit approval.';
 
   @override
+  String get recommendedUnitsTitle => 'Cars that suit you';
+
+  @override
+  String get recommendedUnitsSubtitle =>
+      'Your appraisal price becomes the down payment. Tap a unit to contact a salesperson.';
+
+  @override
+  String get recommendedUnitDownPayment => 'Down payment';
+
+  @override
+  String get recommendedUnitInstallment => 'Installment/month';
+
+  @override
+  String get salesPickerTitle => 'Contact a salesperson';
+
+  @override
+  String get salesPickerSubtitle => 'Choose who you want to reach on WhatsApp.';
+
+  @override
+  String get salesPickerNoSales => 'No salesperson yet';
+
+  @override
+  String salesPickerNoSalesSubtitle(String name) {
+    return 'Connect me with the supervisor ($name)';
+  }
+
+  @override
+  String get salesRoleSales => 'Sales';
+
+  @override
+  String get whatsappSpvAppraisalTitle =>
+      'Hello, I would like to follow up on my TRIVA appraisal result.';
+
+  @override
+  String get whatsappUnitInterestTitle =>
+      'Hello, I am interested in this unit from my TRIVA appraisal result.';
+
+  @override
+  String get whatsappHandoffAppraisalPrice => 'Appraisal price';
+
+  @override
+  String get whatsappHandoffIntent => 'Purpose';
+
+  @override
+  String get whatsappHandoffUnit => 'Unit';
+
+  @override
+  String get whatsappHandoffDownPayment => 'Down payment';
+
+  @override
+  String get whatsappHandoffInstallment => 'Monthly installment';
+
+  @override
+  String get whatsappHandoffOtr => 'OTR price';
+
+  @override
+  String get whatsappHandoffTenor => 'Tenor';
+
+  @override
+  String get intentAcceptPrice => 'Accept the appraisal price';
+
+  @override
+  String get intentScheduleInspection => 'Schedule an inspection';
+
+  @override
+  String get freeCheckupCta => 'Tap here to get a free checkup';
+
+  @override
+  String get freeCheckupDescription =>
+      'Price not right yet? Get a free vehicle checkup at Auto2000 Kertajaya.';
+
+  @override
+  String get whatsappFreeCheckupTitle =>
+      'Hello Auto2000 Kertajaya Booking Admin, I would like a free checkup via the TRIVA app.';
+
+  @override
+  String get creditQuickSubtitle =>
+      'Pick a unit, enter the OTR price, then choose the down payment and tenor. The monthly installment shows instantly.';
+
+  @override
+  String get creditQuickUnit => 'Unit';
+
+  @override
+  String get creditQuickDpPercent => 'Down payment';
+
+  @override
+  String get creditQuickTenorYears => 'Tenor';
+
+  @override
+  String creditQuickYears(int years) {
+    return '$years years';
+  }
+
+  @override
+  String get creditQuickInstallmentTitle => 'Monthly installment';
+
+  @override
+  String get creditQuickDownPayment => 'Net down payment';
+
+  @override
+  String get creditQuickInsurance => 'Credit insurance';
+
+  @override
+  String get creditQuickAdminFee => 'Administration';
+
+  @override
+  String get creditQuickLiabilityFee => 'Liability & policy';
+
+  @override
+  String get creditQuickFirstInstallment => 'First installment';
+
+  @override
+  String get creditQuickTotalDownPayment => 'Total down payment (TDP)';
+
+  @override
+  String creditQuickRate(String rate) {
+    return 'Flat rate $rate% per year';
+  }
+
+  @override
+  String get creditQuickSubmitting => 'Sending...';
+
+  @override
+  String get creditQuickSubmitted =>
+      'Simulation saved. Our admin has been notified.';
+
+  @override
+  String get creditQuickConsult => 'Consult further';
+
+  @override
+  String get creditQuickAdvanced => 'Full simulation with trade-in';
+
+  @override
+  String get creditQuickRateCardError =>
+      'The rate card could not be loaded. Check your connection and retry.';
+
+  @override
+  String get creditQuickOtrInvalid =>
+      'Enter an OTR price of at least Rp 10,000,000.';
+
+  @override
+  String get whatsappCreditTitle =>
+      'Hello, I would like to consult about a credit simulation from the TRIVA app.';
+
+  @override
   String get whatsappHandoffOpening => 'Opening the branch WhatsApp...';
 
   @override

@@ -729,6 +729,8 @@ class AppraisalUpgradeOption {
     this.modelYear,
     this.packageCode,
     this.isDemo = false,
+    this.unitKey,
+    this.imageUrl,
   });
 
   final String programId;
@@ -744,6 +746,8 @@ class AppraisalUpgradeOption {
   final int monthlyInstallment;
   final String? packageCode;
   final bool isDemo;
+  final String? unitKey;
+  final String? imageUrl;
 
   String get vehicleLabel {
     final year = modelYear == null ? '' : ' $modelYear';
@@ -766,6 +770,8 @@ class AppraisalUpgradeOption {
         monthlyInstallment: (json['monthly_installment'] as num?)?.toInt() ?? 0,
         packageCode: json['package_code']?.toString(),
         isDemo: json['is_demo'] == true,
+        unitKey: json['unit_key']?.toString(),
+        imageUrl: json['image_url']?.toString(),
       );
 }
 

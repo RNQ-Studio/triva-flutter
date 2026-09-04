@@ -6,12 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../body_paint/presentation/body_paint_paths.dart';
+import '../../../contact/presentation/whatsapp_handoff.dart';
 import '../../../credit/presentation/credit_paths.dart';
+import '../../../sales_contact/presentation/sales_contact_picker.dart';
 import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
 import '../widgets/expected_price_dialog.dart';
-import '../widgets/upgrade_offer_sheet.dart';
 
 class AppraisalResultScreen extends ConsumerStatefulWidget {
   const AppraisalResultScreen({super.key, required this.appraisalId});
@@ -26,34 +27,81 @@ class AppraisalResultScreen extends ConsumerStatefulWidget {
 class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
   bool _busy = false;
 
-  /// Pop-up upgrade hanya muncul sekali per kunjungan halaman, supaya tidak
-  /// menutupi hasil setiap kali daftar di-refresh.
-  bool _upgradeOfferShown = false;
+  AppraisalData? _latest;
 
-  /// Menampilkan dua opsi unit baru yang uang mukanya tertutup harga
-  /// appraisal, sesuai permintaan notulensi 19 Agustus 2026.
-  Future<void> _offerUpgrade() async {
-    if (_upgradeOfferShown) return;
-    _upgradeOfferShown = true;
-    final AppraisalUpgradeOffer offer;
-    try {
-      offer = await ref.read(
-        appraisalUpgradeOptionsProvider(widget.appraisalId).future,
-      );
-    } on Object {
-      // Pop-up ini pelengkap, bukan syarat. Kegagalan memuatnya tidak boleh
-      // mengganggu pembacaan hasil appraisal.
-      return;
-    }
-    if (!mounted || !offer.hasOptions) return;
-    final chosen = await showUpgradeOfferSheet(context, offer: offer);
-    if (chosen == null || !mounted) return;
-    await context.push(
-      creditUpgradePath(
-        programId: chosen.programId,
-        appraisalId: widget.appraisalId,
+  Map<String, String?> _vehicleDetails(AppLocalizations l10n) {
+    final appraisal = _latest;
+    final vehicle = appraisal?.vehicle;
+    return {
+      l10n.whatsappHandoffReference: appraisal?.referenceNo,
+      l10n.whatsappHandoffVehicle: vehicle == null
+          ? null
+          : '${vehicle.make} ${vehicle.model} ${vehicle.variant} '
+              '${vehicle.year}',
+      l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+      l10n.whatsappHandoffAppraisalPrice: appraisal?.result == null
+          ? null
+          : _formatMoney(appraisal!.result!.tradeInHigh),
+    };
+  }
+
+  /// Revisi 4 September 2026: jadwal inspeksi dan tindak lanjut hasil
+  /// appraisal selalu diarahkan ke WhatsApp supervisor.
+  Future<void> _contactSupervisor(String intent) async {
+    final l10n = AppLocalizations.of(context)!;
+    final opened = await openSupervisorWhatsApp(
+      ref,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappSpvAppraisalTitle,
+        details: {
+          ..._vehicleDetails(l10n),
+          l10n.whatsappHandoffIntent: intent,
+        },
       ),
     );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
+  }
+
+  Future<void> _accept() async {
+    final l10n = AppLocalizations.of(context)!;
+    await _decide('accepted');
+    if (!mounted) return;
+    await _contactSupervisor(l10n.intentAcceptPrice);
+  }
+
+  Future<void> _scheduleInspection() => _contactSupervisor(
+      AppLocalizations.of(context)!.intentScheduleInspection);
+
+  /// Unit rekomendasi diketuk: pelanggan memilih sales (atau SPV bila belum
+  /// ada sales) lalu WhatsApp terbuka dengan ringkasan unit dan appraisal.
+  Future<void> _contactSalesForUnit(AppraisalUpgradeOption option) async {
+    final l10n = AppLocalizations.of(context)!;
+    final opened = await pickSalesAndOpenWhatsApp(
+      context,
+      ref,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappUnitInterestTitle,
+        details: {
+          l10n.whatsappHandoffUnit: option.vehicleLabel,
+          l10n.whatsappHandoffOtr: _formatMoney(option.otrPrice),
+          l10n.whatsappHandoffDownPayment:
+              _formatMoney(option.downPaymentFromAppraisal),
+          l10n.whatsappHandoffInstallment:
+              '${_formatMoney(option.monthlyInstallment)} '
+                  '(${option.tenorMonths} ${l10n.creditMonths})',
+          ..._vehicleDetails(l10n),
+        },
+      ),
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 
   void _goBack() {
@@ -116,49 +164,6 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     context.go(appraisalCompletePath(widget.appraisalId, decision));
   }
 
-  Future<void> _schedule() async {
-    final now = DateTime.now();
-    final date = await showDatePicker(
-      context: context,
-      initialDate: now.add(const Duration(days: 1)),
-      firstDate: now.add(const Duration(days: 1)),
-      lastDate: now.add(const Duration(days: 60)),
-    );
-    if (date == null || !mounted) return;
-    final time = await showTimePicker(
-      context: context,
-      initialTime: const TimeOfDay(hour: 10, minute: 0),
-    );
-    if (time == null || !mounted) return;
-    final scheduled = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      time.hour,
-      time.minute,
-    );
-
-    setState(() => _busy = true);
-    try {
-      await ref.read(appraisalRepositoryProvider).scheduleInspection(
-            widget.appraisalId,
-            scheduled,
-          );
-      ref.invalidate(appraisalsProvider);
-      if (mounted) {
-        context.go(appraisalCompletePath(widget.appraisalId, 'inspection'));
-      }
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.errorGeneral)),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -181,11 +186,7 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
               if (result == null) {
                 return Center(child: Text(l10n.loadFailed));
               }
-              if (appraisal.resultReady && !_upgradeOfferShown) {
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _offerUpgrade(),
-                );
-              }
+              _latest = appraisal;
               String? provinceName;
               final provinceId = appraisal.vehicle?.provinceId;
               if (provinceId != null) {
@@ -202,9 +203,17 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
                 result: result,
                 provinceName: provinceName,
                 busy: _busy,
-                onAccept: () => _decide('accepted'),
+                offer: appraisal.resultReady
+                    ? ref.watch(
+                        appraisalUpgradeOptionsProvider(widget.appraisalId),
+                      )
+                    : const AsyncValue.data(
+                        AppraisalUpgradeOffer(tradeInValue: 0, options: []),
+                      ),
+                onAccept: _accept,
                 onReject: _reject,
-                onSchedule: _schedule,
+                onSchedule: _scheduleInspection,
+                onUnitTap: _contactSalesForUnit,
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
@@ -229,18 +238,22 @@ class _ResultContent extends StatelessWidget {
     required this.result,
     required this.provinceName,
     required this.busy,
+    required this.offer,
     required this.onAccept,
     required this.onReject,
     required this.onSchedule,
+    required this.onUnitTap,
   });
 
   final AppraisalData appraisal;
   final AppraisalResultData result;
   final String? provinceName;
   final bool busy;
+  final AsyncValue<AppraisalUpgradeOffer> offer;
   final VoidCallback onAccept;
   final VoidCallback onReject;
   final VoidCallback onSchedule;
+  final ValueChanged<AppraisalUpgradeOption> onUnitTap;
 
   String _money(int value) => NumberFormat.currency(
         locale: 'id_ID',
@@ -400,6 +413,14 @@ class _ResultContent extends StatelessWidget {
                 color: colors.onSurfaceVariant,
               ),
         ),
+        if (appraisal.resultReady && (offer.value?.hasOptions ?? false)) ...[
+          const SizedBox(height: AppSpacing.xLarge),
+          _RecommendedUnits(
+            offer: offer.value!,
+            busy: busy,
+            onUnitTap: onUnitTap,
+          ),
+        ],
         if (vehicle != null) ...[
           const SizedBox(height: AppSpacing.xLarge),
           _SectionCard(
@@ -503,14 +524,13 @@ class _ResultContent extends StatelessWidget {
             child: Text(l10n.acceptPrice),
           ),
           const SizedBox(height: AppSpacing.small),
-          if (result.requiresPhysicalInspection) ...[
-            OutlinedButton.icon(
-              onPressed: busy ? null : onSchedule,
-              icon: const Icon(Icons.event_available_outlined),
-              label: Text(l10n.scheduleInspection),
-            ),
-            const SizedBox(height: AppSpacing.small),
-          ],
+          // Revisi 4 September 2026: jadwal inspeksi selalu lewat WhatsApp SPV.
+          OutlinedButton.icon(
+            onPressed: busy ? null : onSchedule,
+            icon: const Icon(Icons.chat_outlined),
+            label: Text(l10n.scheduleInspection),
+          ),
+          const SizedBox(height: AppSpacing.small),
           OutlinedButton(
             onPressed: busy ? null : onReject,
             child: Text(l10n.declinePrice),
@@ -532,6 +552,172 @@ class _ResultContent extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+String _formatMoney(int value) => NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    ).format(value);
+
+/// "Mobil yang cocok untuk Anda": dua unit (harga bawah dan harga atas)
+/// dengan gambar, DP dari harga appraisal, dan angsuran per bulan.
+class _RecommendedUnits extends StatelessWidget {
+  const _RecommendedUnits({
+    required this.offer,
+    required this.busy,
+    required this.onUnitTap,
+  });
+
+  final AppraisalUpgradeOffer offer;
+  final bool busy;
+  final ValueChanged<AppraisalUpgradeOption> onUnitTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.recommendedUnitsTitle,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: AppSpacing.xSmall),
+        Text(
+          l10n.recommendedUnitsSubtitle,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var index = 0; index < offer.options.length; index++) ...[
+              if (index > 0) const SizedBox(width: AppSpacing.medium),
+              Expanded(
+                child: _UnitCard(
+                  option: offer.options[index],
+                  onTap: busy ? null : () => onUnitTap(offer.options[index]),
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: AppSpacing.small),
+        Text(
+          l10n.upgradeOfferEstimateNotice,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UnitCard extends StatelessWidget {
+  const _UnitCard({required this.option, required this.onTap});
+
+  final AppraisalUpgradeOption option;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final image = option.imageUrl;
+    return Material(
+      key: ValueKey('recommended-unit-${option.programId}'),
+      color: colors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.large,
+        side: BorderSide(color: colors.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child: ColoredBox(
+                color: colors.surfaceContainerHighest,
+                child: image != null && image.isNotEmpty
+                    ? Image.network(
+                        image,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.directions_car_filled_outlined,
+                          size: 40,
+                          color: colors.onSurfaceVariant,
+                        ),
+                      )
+                    : Icon(
+                        Icons.directions_car_filled_outlined,
+                        size: 40,
+                        color: colors.onSurfaceVariant,
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.medium),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    option.vehicleLabel,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.small),
+                  Text(
+                    l10n.recommendedUnitDownPayment,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      _formatMoney(option.downPaymentFromAppraisal),
+                      style: textTheme.titleSmall,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xSmall),
+                  Text(
+                    l10n.recommendedUnitInstallment,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      _formatMoney(option.monthlyInstallment),
+                      style: textTheme.titleMedium?.copyWith(
+                        color: colors.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

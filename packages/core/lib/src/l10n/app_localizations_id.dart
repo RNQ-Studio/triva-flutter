@@ -818,6 +818,151 @@ class AppLocalizationsId extends AppLocalizations {
       'Angka cicilan bersifat estimasi, bukan persetujuan kredit.';
 
   @override
+  String get recommendedUnitsTitle => 'Mobil yang cocok untuk Anda';
+
+  @override
+  String get recommendedUnitsSubtitle =>
+      'Harga appraisal Anda menjadi uang muka. Ketuk unit untuk menghubungi sales.';
+
+  @override
+  String get recommendedUnitDownPayment => 'DP';
+
+  @override
+  String get recommendedUnitInstallment => 'Angsuran/bulan';
+
+  @override
+  String get salesPickerTitle => 'Hubungi sales';
+
+  @override
+  String get salesPickerSubtitle =>
+      'Pilih sales yang ingin Anda hubungi lewat WhatsApp.';
+
+  @override
+  String get salesPickerNoSales => 'Belum ada sales';
+
+  @override
+  String salesPickerNoSalesSubtitle(String name) {
+    return 'Hubungkan saya dengan supervisor ($name)';
+  }
+
+  @override
+  String get salesRoleSales => 'Sales';
+
+  @override
+  String get whatsappSpvAppraisalTitle =>
+      'Halo, saya ingin menindaklanjuti hasil appraisal TRIVA saya.';
+
+  @override
+  String get whatsappUnitInterestTitle =>
+      'Halo, saya tertarik dengan unit berikut dari hasil appraisal TRIVA.';
+
+  @override
+  String get whatsappHandoffAppraisalPrice => 'Harga appraisal';
+
+  @override
+  String get whatsappHandoffIntent => 'Keperluan';
+
+  @override
+  String get whatsappHandoffUnit => 'Unit';
+
+  @override
+  String get whatsappHandoffDownPayment => 'DP';
+
+  @override
+  String get whatsappHandoffInstallment => 'Angsuran per bulan';
+
+  @override
+  String get whatsappHandoffOtr => 'Harga OTR';
+
+  @override
+  String get whatsappHandoffTenor => 'Tenor';
+
+  @override
+  String get intentAcceptPrice => 'Terima harga appraisal';
+
+  @override
+  String get intentScheduleInspection => 'Jadwalkan inspeksi';
+
+  @override
+  String get freeCheckupCta => 'Klik tombol ini untuk mendapatkan free checkup';
+
+  @override
+  String get freeCheckupDescription =>
+      'Harga belum cocok? Dapatkan pemeriksaan kendaraan gratis di Auto2000 Kertajaya.';
+
+  @override
+  String get whatsappFreeCheckupTitle =>
+      'Halo Admin Booking Auto2000 Kertajaya, saya ingin mendapatkan free checkup dari aplikasi TRIVA.';
+
+  @override
+  String get creditQuickSubtitle =>
+      'Pilih unit, isi harga OTR, lalu pilih uang muka dan tenor. Angsuran per bulan langsung terlihat.';
+
+  @override
+  String get creditQuickUnit => 'Unit';
+
+  @override
+  String get creditQuickDpPercent => 'Uang muka';
+
+  @override
+  String get creditQuickTenorYears => 'Tenor';
+
+  @override
+  String creditQuickYears(int years) {
+    return '$years tahun';
+  }
+
+  @override
+  String get creditQuickInstallmentTitle => 'Angsuran per bulan';
+
+  @override
+  String get creditQuickDownPayment => 'DP murni';
+
+  @override
+  String get creditQuickInsurance => 'Asuransi kredit';
+
+  @override
+  String get creditQuickAdminFee => 'Administrasi';
+
+  @override
+  String get creditQuickLiabilityFee => 'TJH & polis';
+
+  @override
+  String get creditQuickFirstInstallment => 'Angsuran pertama';
+
+  @override
+  String get creditQuickTotalDownPayment => 'Total DP (TDP)';
+
+  @override
+  String creditQuickRate(String rate) {
+    return 'Bunga flat $rate% per tahun';
+  }
+
+  @override
+  String get creditQuickSubmitting => 'Mengirim...';
+
+  @override
+  String get creditQuickSubmitted =>
+      'Simulasi tersimpan. Admin kami sudah menerima notifikasinya.';
+
+  @override
+  String get creditQuickConsult => 'Konsultasi lebih lanjut';
+
+  @override
+  String get creditQuickAdvanced => 'Simulasi lengkap dengan trade-in';
+
+  @override
+  String get creditQuickRateCardError =>
+      'Rate card belum bisa dimuat. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get creditQuickOtrInvalid => 'Isi harga OTR minimal Rp 10.000.000.';
+
+  @override
+  String get whatsappCreditTitle =>
+      'Halo, saya ingin konsultasi simulasi kredit dari aplikasi TRIVA.';
+
+  @override
   String get whatsappHandoffOpening => 'Membuka WhatsApp cabang...';
 
   @override

@@ -6,6 +6,7 @@ import 'package:features_shared/features_shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/credit_repository.dart';
+import '../domain/acc_credit_formula.dart';
 import '../domain/credit_models.dart';
 
 final creditRepositoryProvider = Provider<CreditRepository>((ref) {
@@ -23,6 +24,10 @@ final creditRepositoryProvider = Provider<CreditRepository>((ref) {
 
 final creditProgramsProvider = FutureProvider<List<CreditProgram>>((ref) {
   return ref.watch(creditRepositoryProvider).listPrograms();
+}, retry: (_, __) => null);
+
+final creditRateCardProvider = FutureProvider<AccRateCard>((ref) {
+  return ref.watch(creditRepositoryProvider).rateCard();
 }, retry: (_, __) => null);
 
 final creditSimulationsProvider = FutureProvider<List<CreditSimulation>>((ref) {

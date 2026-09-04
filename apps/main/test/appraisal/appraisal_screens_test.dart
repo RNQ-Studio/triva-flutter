@@ -17,6 +17,8 @@ import 'package:triva_app/features/appraisal/presentation/screens/vehicle_condit
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_details_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_identity_screen.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/vehicle_photos_screen.dart';
+import 'package:triva_app/features/sales_contact/domain/sales_contact_models.dart';
+import 'package:triva_app/features/sales_contact/presentation/sales_contact_controller.dart';
 import 'package:triva_app/features/credit/presentation/credit_controller.dart';
 import 'package:triva_app/features/body_paint/presentation/body_paint_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
@@ -940,7 +942,8 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('a ready result offers two new units funded by the appraisal',
+  testWidgets(
+      'a ready result shows two recommended units inline and opens the sales picker',
       (tester) async {
     await _pump(
       tester,
@@ -951,44 +954,81 @@ void main() {
         options: [
           AppraisalUpgradeOption(
             programId: 'program-veloz',
-            programCode: 'SPEKTA-VELOZ-2026',
+            programCode: 'UNIT-VELOZ-HYBRID',
             partnerName: 'ACC',
-            programName: 'SPEKTA DP 20%',
-            vehicleModel: 'Veloz',
-            vehicleVariant: '1.5 Q CVT TSS',
+            programName: 'Unit rekomendasi',
+            vehicleModel: 'Veloz Hybrid',
+            vehicleVariant: '1.5 Q HEV CVT TSS',
             modelYear: 2026,
-            otrPrice: 360000000,
+            otrPrice: 405000000,
             tenorMonths: 60,
             downPaymentFromAppraisal: 176000000,
             monthlyInstallment: 3900000,
+            unitKey: 'veloz_hybrid',
           ),
           AppraisalUpgradeOption(
             programId: 'program-zenix',
-            programCode: 'SPEKTA-INNOVA-2026',
-            partnerName: 'TAF',
-            programName: 'SPEKTA DP 20%',
-            vehicleModel: 'Kijang Innova Zenix',
-            vehicleVariant: '2.0 V CVT',
+            programCode: 'UNIT-ZENIX-HYBRID',
+            partnerName: 'ACC',
+            programName: 'Unit rekomendasi',
+            vehicleModel: 'Kijang Innova Zenix Hybrid',
+            vehicleVariant: '2.0 G HV CVT',
             modelYear: 2026,
-            otrPrice: 470000000,
+            otrPrice: 490000000,
             tenorMonths: 60,
             downPaymentFromAppraisal: 176000000,
             monthlyInstallment: 6100000,
+            unitKey: 'zenix_hybrid',
           ),
         ],
       ),
     );
 
-    expect(find.text('Tukar tambah ke unit baru'), findsOneWidget);
-    expect(find.text('Veloz 1.5 Q CVT TSS 2026'), findsOneWidget);
-    expect(find.text('Kijang Innova Zenix 2.0 V CVT 2026'), findsOneWidget);
+    // Tidak ada lagi pop-up; unit tampil di bawah harga appraisal.
+    expect(find.text('Tukar tambah ke unit baru'), findsNothing);
+    await tester.scrollUntilVisible(
+      find.text('Mobil yang cocok untuk Anda'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Mobil yang cocok untuk Anda'), findsOneWidget);
+    expect(find.text('Veloz Hybrid 1.5 Q HEV CVT TSS 2026'), findsOneWidget);
+    expect(
+      find.text('Kijang Innova Zenix Hybrid 2.0 G HV CVT 2026'),
+      findsOneWidget,
+    );
     expect(find.text('Rp 3.900.000'), findsOneWidget);
-    expect(find.text('Simulasikan'), findsNWidgets(2));
+    expect(find.text('Rp 176.000.000'), findsWidgets);
 
-    await tester.tap(find.text('Nanti saja'));
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('recommended-unit-program-veloz')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const ValueKey('recommended-unit-program-veloz')),
+    );
     await tester.pumpAndSettle();
 
-    expect(find.text('Tukar tambah ke unit baru'), findsNothing);
+    expect(find.text('Hubungi sales'), findsOneWidget);
+    expect(find.text('Budi Sales'), findsOneWidget);
+    expect(find.text('Belum ada sales'), findsOneWidget);
+    await tester.tap(find.text('Batal'));
+    await tester.pumpAndSettle();
+
+    // Jadwalkan inspeksi selalu tersedia (menuju WhatsApp SPV).
+    await tester.scrollUntilVisible(
+      find.text('Jadwalkan inspeksi'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(
+      tester
+          .widget<OutlinedButton>(
+            find.widgetWithText(OutlinedButton, 'Jadwalkan inspeksi'),
+          )
+          .onPressed,
+      isNotNull,
+    );
     expect(tester.takeException(), isNull);
   });
 
@@ -1023,6 +1063,43 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('210.000.000'), findsOneWidget);
 
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('rejected appraisal offers the free checkup WhatsApp button',
+      (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appraisalDetailProvider.overrideWith((ref, id) async => _appraisal),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const AppraisalCompleteScreen(
+            appraisalId: 'appraisal-1',
+            outcome: 'rejected',
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Klik tombol ini untuk mendapatkan free checkup'),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<FilledButton>(
+            find.byKey(const ValueKey('free-checkup-button')),
+          )
+          .onPressed,
+      isNotNull,
+    );
+    expect(find.text('Estimasi Body & Paint'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -1101,6 +1178,24 @@ Future<void> _pump(
         ),
         appraisalUpgradeOptionsProvider.overrideWith(
           (ref, id) async => upgradeOffer,
+        ),
+        salesDirectoryProvider.overrideWith(
+          (ref) async => const SalesDirectory([
+            SalesContact(
+              id: 'spv-1',
+              name: 'Sari SPV',
+              role: 'spv',
+              roleLabel: 'Supervisor (SPV)',
+              whatsappNumber: '6281300001111',
+            ),
+            SalesContact(
+              id: 'sales-1',
+              name: 'Budi Sales',
+              role: 'sales',
+              roleLabel: 'Sales',
+              whatsappNumber: '6281234567890',
+            ),
+          ]),
         ),
         toyotaServiceBookingsProvider.overrideWith((ref) async => const []),
         otoxpertBookingsProvider.overrideWith((ref) async => const []),

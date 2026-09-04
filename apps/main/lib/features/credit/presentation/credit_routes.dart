@@ -1,12 +1,19 @@
 import 'package:go_router/go_router.dart';
 
 import 'credit_paths.dart';
+import 'screens/credit_quick_screen.dart';
 import 'screens/credit_simulation_detail_screen.dart';
 import 'screens/credit_simulation_screen.dart';
 
 final creditRoutes = <RouteBase>[
   GoRoute(
     path: creditPath,
+    builder: (_, state) => CreditQuickScreen(
+      sourceProgramId: state.uri.queryParameters['program_id'],
+    ),
+  ),
+  GoRoute(
+    path: creditAdvancedPath,
     builder: (_, state) => CreditSimulationScreen(
       sourceAppraisalId: state.uri.queryParameters['appraisal_id'],
       sourceProgramId: state.uri.queryParameters['program_id'],

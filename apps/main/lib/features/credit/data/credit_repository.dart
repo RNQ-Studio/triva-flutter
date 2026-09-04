@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 
+import '../domain/acc_credit_formula.dart';
 import '../domain/credit_models.dart';
 
 class CreditRepository {
@@ -45,6 +46,32 @@ class CreditRepository {
       queryParameters: const {'per_page': 100},
     );
     return maps.map(CreditProgram.fromJson).toList(growable: false);
+  }
+
+  /// Rate card simulasi cepat ACC (revisi 4 September 2026).
+  Future<AccRateCard> rateCard() async {
+    final response = await _dio.get<dynamic>('v1/credit/quick/rate-card');
+    return AccRateCard.fromJson(_mapData(response));
+  }
+
+  /// Menyimpan simulasi cepat di server; admin cabang ikut diberi notifikasi.
+  Future<CreditSimulation> quickSimulate({
+    required String programId,
+    required int otrPrice,
+    required int dpPercent,
+    required int tenorYears,
+  }) async {
+    final response = await _dio.post<dynamic>(
+      'v1/credit/quick',
+      data: {
+        'program_id': programId,
+        'otr_price': otrPrice,
+        'dp_percent': dpPercent,
+        'tenor_years': tenorYears,
+        'campaign_source': 'triva_quick_credit',
+      },
+    );
+    return CreditSimulation.fromJson(_mapData(response));
   }
 
   Future<CreditCalculation> calculate(CreditSimulationDraft draft) async {

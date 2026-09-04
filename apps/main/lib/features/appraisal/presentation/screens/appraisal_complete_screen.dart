@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../body_paint/presentation/body_paint_paths.dart';
+import '../../../contact/presentation/whatsapp_handoff.dart';
 import '../appraisal_paths.dart';
+import '../../domain/appraisal_models.dart';
 import '../appraisal_controller.dart';
 import '../../../credit/presentation/credit_paths.dart';
 
@@ -74,6 +76,34 @@ class AppraisalCompleteScreen extends ConsumerWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppSpacing.xLarge),
+                  if (rejected) ...[
+                    // Revisi 4 September 2026: harga belum cocok -> tawaran
+                    // free checkup ke WhatsApp admin booking servis Toyota,
+                    // dengan data kendaraan terlampir.
+                    Text(
+                      l10n.freeCheckupDescription,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppSpacing.small),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        key: const ValueKey('free-checkup-button'),
+                        onPressed: () => _requestFreeCheckup(
+                          context,
+                          ref,
+                          l10n,
+                          rejectedDetail?.value,
+                        ),
+                        icon: const Icon(Icons.chat_outlined),
+                        label: Text(l10n.freeCheckupCta),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.small),
+                  ],
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
@@ -127,5 +157,35 @@ class AppraisalCompleteScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _requestFreeCheckup(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    AppraisalData? appraisal,
+  ) async {
+    final vehicle = appraisal?.vehicle;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.toyotaService,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappFreeCheckupTitle,
+        details: {
+          l10n.whatsappHandoffReference: appraisal?.referenceNo,
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.variant} '
+                  '${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+          l10n.mileage: vehicle == null ? null : '${vehicle.mileage} km',
+        },
+      ),
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 }
