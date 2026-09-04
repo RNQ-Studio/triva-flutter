@@ -106,12 +106,17 @@ class ToyotaServiceBooking {
     this.slaOverdue = false,
     this.benefitChecks = const [],
     this.photos = const [],
+    this.statusUpdateUrl,
   });
 
   final String id;
   final String referenceNo;
   final String status;
   final String statusLabel;
+
+  /// Tautan web publik (tanpa login) bagi PIC cabang untuk memperbarui
+  /// status booking; disertakan di pesan WhatsApp booking.
+  final String? statusUpdateUrl;
   final ToyotaServiceFulfillment fulfillmentType;
   final ToyotaServiceVehicle? vehicle;
   final ToyotaServiceLocation? serviceLocation;
@@ -305,6 +310,7 @@ class ToyotaServiceBooking {
           .whereType<Map<String, dynamic>>()
           .map(ToyotaServicePhoto.fromJson)
           .toList(growable: false),
+      statusUpdateUrl: json['status_update_url']?.toString(),
     );
   }
 

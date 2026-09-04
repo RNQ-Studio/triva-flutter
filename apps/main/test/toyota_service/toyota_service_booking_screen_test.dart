@@ -62,7 +62,65 @@ void main() {
     expect(find.text('Sari Proposal'), findsOneWidget);
     expect(find.text('Masuk melalui gate timur'), findsOneWidget);
     expect(find.text('Sari Active'), findsOneWidget);
-    expect(find.byIcon(Icons.phone_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.chat_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.phone_outlined), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('detail offers the TAM SSC check and drops T-Care and Warranty',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final booking = ToyotaServiceBooking(
+      id: 'booking-2',
+      referenceNo: 'TS-002',
+      status: 'awaiting_confirmation',
+      statusLabel: 'Menunggu konfirmasi petugas',
+      fulfillmentType: ToyotaServiceFulfillment.workshop,
+      currentMileage: 10000,
+      complaint: 'Servis berkala',
+      contactChannel: 'whatsapp',
+      allowedCustomerActions: const ['cancel'],
+      timeline: const [],
+      isConfirmed: false,
+      benefitChecks: const [
+        ToyotaServiceBenefitCheck(type: 't_care', status: 'active'),
+        ToyotaServiceBenefitCheck(type: 'warranty', status: 'active'),
+        ToyotaServiceBenefitCheck(
+          type: 'ssc',
+          status: 'pending_verification',
+        ),
+      ],
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          toyotaServiceBookingDetailProvider('booking-2').overrideWith(
+            (_) async => booking,
+          ),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light,
+          locale: const Locale('id'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const ToyotaServiceBookingDetailScreen(
+            bookingId: 'booking-2',
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Cek SSC (Special Service Campaign)'), findsOneWidget);
+    expect(find.text('Buka halaman cek SSC'), findsOneWidget);
+    expect(find.text('SSC'), findsOneWidget);
+    expect(find.text('T_CARE'), findsNothing);
+    expect(find.text('WARRANTY'), findsNothing);
+    expect(find.text('Benefit kendaraan'), findsNothing);
+    // Kontak selalu tersedia walau belum ada Service Advisor: ke WA admin.
+    expect(find.text('Hubungi Admin Booking via WhatsApp'), findsOneWidget);
+    expect(toyotaSscLookupUri.toString(), 'https://ssc.toyota.astra.co.id/');
     expect(tester.takeException(), isNull);
   });
 

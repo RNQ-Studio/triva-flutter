@@ -47,6 +47,7 @@ class _ToyotaServiceDetailsScreenState
       _mileageController.text = draft.currentMileage?.toString() ?? '';
       _complaintController.text = draft.complaint;
     }
+    final photosAllowed = draft.serviceType?.isBodyPaint ?? false;
     final mileage = int.tryParse(_mileageController.text);
     final valid = mileage != null &&
         mileage >= 0 &&
@@ -109,88 +110,92 @@ class _ToyotaServiceDetailsScreenState
               _save();
             },
           ),
-          const SizedBox(height: AppSpacing.medium),
-          Text(
-            '${l10n.supportingPhotoOptional} ($totalPhotos/$maxPhotos)',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: AppSpacing.small),
-          for (final photo in draft.photos) ...[
-            BookingSection(
-              child: ListTile(
-                key: ValueKey('supporting-photo-${photo.assetId}'),
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.verified_user_outlined),
-                title: Text(photo.name),
-                subtitle: Text(l10n.supportingPhotoPrivacy),
-                trailing: IconButton(
-                  onPressed: () => ref
-                      .read(toyotaServiceFlowProvider.notifier)
-                      .removePhoto(photo.assetId),
-                  icon: const Icon(Icons.delete_outline_rounded),
-                  tooltip: l10n.removeSupportingPhoto,
+          // Revisi 4 September 2026: foto pendukung hanya diminta untuk
+          // Body & Paint; jenis servis lain cukup dengan keluhan tertulis.
+          if (photosAllowed) ...[
+            const SizedBox(height: AppSpacing.medium),
+            Text(
+              '${l10n.supportingPhotoOptional} ($totalPhotos/$maxPhotos)',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: AppSpacing.small),
+            for (final photo in draft.photos) ...[
+              BookingSection(
+                child: ListTile(
+                  key: ValueKey('supporting-photo-${photo.assetId}'),
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.verified_user_outlined),
+                  title: Text(photo.name),
+                  subtitle: Text(l10n.supportingPhotoPrivacy),
+                  trailing: IconButton(
+                    onPressed: () => ref
+                        .read(toyotaServiceFlowProvider.notifier)
+                        .removePhoto(photo.assetId),
+                    icon: const Icon(Icons.delete_outline_rounded),
+                    tooltip: l10n.removeSupportingPhoto,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.small),
-          ],
-          for (final entry in _pendingPhotos.entries) ...[
-            BookingSection(
-              child: ListTile(
-                key: ValueKey('pending-supporting-photo-${entry.key}'),
-                contentPadding: EdgeInsets.zero,
-                leading: _uploadingPhotos.contains(entry.key)
-                    ? CircularProgressIndicator(
-                        value: _photoProgress[entry.key],
-                      )
-                    : const Icon(Icons.sync_problem_rounded),
-                title: Text(entry.value.name),
-                subtitle: _photoErrors[entry.key] == null
-                    ? Text(l10n.uploadSending)
-                    : Text(
-                        _photoErrors[entry.key]!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+              const SizedBox(height: AppSpacing.small),
+            ],
+            for (final entry in _pendingPhotos.entries) ...[
+              BookingSection(
+                child: ListTile(
+                  key: ValueKey('pending-supporting-photo-${entry.key}'),
+                  contentPadding: EdgeInsets.zero,
+                  leading: _uploadingPhotos.contains(entry.key)
+                      ? CircularProgressIndicator(
+                          value: _photoProgress[entry.key],
+                        )
+                      : const Icon(Icons.sync_problem_rounded),
+                  title: Text(entry.value.name),
+                  subtitle: _photoErrors[entry.key] == null
+                      ? Text(l10n.uploadSending)
+                      : Text(
+                          _photoErrors[entry.key]!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                         ),
-                      ),
-                trailing: _uploadingPhotos.contains(entry.key)
-                    ? null
-                    : Wrap(
-                        children: [
-                          IconButton(
-                            onPressed: () => _uploadPhoto(
-                              entry.key,
-                              entry.value,
-                              options,
+                  trailing: _uploadingPhotos.contains(entry.key)
+                      ? null
+                      : Wrap(
+                          children: [
+                            IconButton(
+                              onPressed: () => _uploadPhoto(
+                                entry.key,
+                                entry.value,
+                                options,
+                              ),
+                              icon: const Icon(Icons.refresh_rounded),
+                              tooltip: l10n.retry,
                             ),
-                            icon: const Icon(Icons.refresh_rounded),
-                            tooltip: l10n.retry,
-                          ),
-                          IconButton(
-                            onPressed: () => setState(() {
-                              _pendingPhotos.remove(entry.key);
-                              _photoErrors.remove(entry.key);
-                              _photoProgress.remove(entry.key);
-                            }),
-                            icon: const Icon(Icons.delete_outline_rounded),
-                            tooltip: l10n.removeSupportingPhoto,
-                          ),
-                        ],
-                      ),
+                            IconButton(
+                              onPressed: () => setState(() {
+                                _pendingPhotos.remove(entry.key);
+                                _photoErrors.remove(entry.key);
+                                _photoProgress.remove(entry.key);
+                              }),
+                              icon: const Icon(Icons.delete_outline_rounded),
+                              tooltip: l10n.removeSupportingPhoto,
+                            ),
+                          ],
+                        ),
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.small),
+              const SizedBox(height: AppSpacing.small),
+            ],
+            if (totalPhotos < maxPhotos)
+              OutlinedButton.icon(
+                onPressed: () => _pickPhotos(
+                  options,
+                  maxPhotos - totalPhotos,
+                ),
+                icon: const Icon(Icons.add_a_photo_outlined),
+                label: Text(l10n.addSupportingPhoto),
+              ),
+            const SizedBox(height: AppSpacing.medium),
           ],
-          if (totalPhotos < maxPhotos)
-            OutlinedButton.icon(
-              onPressed: () => _pickPhotos(
-                options,
-                maxPhotos - totalPhotos,
-              ),
-              icon: const Icon(Icons.add_a_photo_outlined),
-              label: Text(l10n.addSupportingPhoto),
-            ),
-          const SizedBox(height: AppSpacing.medium),
           if (_pickerError != null) ...[
             BookingNotice(
               message: _pickerError!,

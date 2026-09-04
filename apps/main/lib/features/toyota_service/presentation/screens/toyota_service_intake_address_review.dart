@@ -292,7 +292,12 @@ class _ToyotaServiceReviewScreenState
     _consent ??= draft.serviceConsent;
     final channels = options?.contactChannels.isNotEmpty == true
         ? options!.contactChannels
-        : const ['whatsapp', 'phone', 'email'];
+        : const ['whatsapp'];
+    // Revisi 4 September 2026: konfirmasi hanya lewat WhatsApp. Kalau server
+    // hanya menawarkan satu channel, pilihannya dikunci tanpa dropdown.
+    if (channels.length == 1 && _contactChannel != channels.first) {
+      _contactChannel = channels.first;
+    }
     return ToyotaServiceFlowScaffold(
       step: 3,
       fallbackLocation: draft.fulfillmentType == ToyotaServiceFulfillment.ths
@@ -403,26 +408,37 @@ class _ToyotaServiceReviewScreenState
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
-          DropdownButtonFormField<String>(
-            initialValue: _contactChannel,
-            decoration: InputDecoration(labelText: l10n.contactChannel),
-            items: channels
-                .map(
-                  (channel) => DropdownMenuItem(
-                    value: channel,
-                    child: Text(_channelLabel(channel)),
-                  ),
-                )
-                .toList(growable: false),
-            onChanged: (value) async {
-              if (value == null) return;
-              setState(() => _contactChannel = value);
-              await ref.read(toyotaServiceFlowProvider.notifier).saveReview(
-                    contactChannel: value,
-                    serviceConsent: _consent ?? false,
-                  );
-            },
-          ),
+          if (channels.length == 1)
+            BookingSection(
+              child: _ReviewRow(
+                icon: Icons.chat_outlined,
+                label: l10n.contactChannel,
+                value: '${_channelLabel(channels.first)}\n'
+                    '${l10n.contactChannelWhatsappOnly}',
+                showDivider: false,
+              ),
+            )
+          else
+            DropdownButtonFormField<String>(
+              initialValue: _contactChannel,
+              decoration: InputDecoration(labelText: l10n.contactChannel),
+              items: channels
+                  .map(
+                    (channel) => DropdownMenuItem(
+                      value: channel,
+                      child: Text(_channelLabel(channel)),
+                    ),
+                  )
+                  .toList(growable: false),
+              onChanged: (value) async {
+                if (value == null) return;
+                setState(() => _contactChannel = value);
+                await ref.read(toyotaServiceFlowProvider.notifier).saveReview(
+                      contactChannel: value,
+                      serviceConsent: _consent ?? false,
+                    );
+              },
+            ),
           const SizedBox(height: AppSpacing.medium),
           BookingNotice(message: l10n.requestToConfirmNotice),
           const SizedBox(height: AppSpacing.medium),
@@ -496,6 +512,7 @@ class _ToyotaServiceReviewScreenState
           l10n.whatsappHandoffSchedule:
               slot == null ? null : '${slot.date} ${slot.timeWindow}',
           l10n.whatsappHandoffComplaint: booking.complaint,
+          l10n.whatsappHandoffStatusLink: booking.statusUpdateUrl,
         },
       ),
     );

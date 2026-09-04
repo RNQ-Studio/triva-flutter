@@ -861,6 +861,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get whatsappHandoffInsurance => 'Asuransi';
 
   @override
+  String get whatsappHandoffStatusLink => 'Update status booking (tanpa login)';
+
+  @override
   String get whatsappContactBranch => 'Hubungi lewat WhatsApp';
 
   @override
@@ -1594,7 +1597,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get vehicleBeingServiced => 'Kendaraan Anda sedang ditangani';
 
   @override
-  String get contactServiceAdvisor => 'Hubungi Service Advisor';
+  String get contactServiceAdvisor => 'Hubungi Admin Booking via WhatsApp';
+
+  @override
+  String get contactBookingAdminMessage =>
+      'Halo Admin Booking Auto2000 Kertajaya, saya ingin menanyakan booking servis saya.';
+
+  @override
+  String get sscCheckTitle => 'Cek SSC (Special Service Campaign)';
+
+  @override
+  String get sscCheckDescription =>
+      'Periksa apakah kendaraan Anda termasuk program perbaikan khusus Toyota Astra Motor.';
+
+  @override
+  String get sscCheckAction => 'Buka halaman cek SSC';
+
+  @override
+  String get contactChannelWhatsappOnly =>
+      'Konfirmasi booking dikirim lewat WhatsApp ke nomor akun Anda.';
 
   @override
   String get viewServiceDetails => 'Lihat detail layanan';

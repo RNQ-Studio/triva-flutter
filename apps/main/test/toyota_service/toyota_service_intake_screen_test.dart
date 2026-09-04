@@ -141,6 +141,7 @@ void main() {
     await _useTallSurface(tester);
     final flow = _FakeFlowController(
       const ToyotaServiceDraft(
+        serviceType: _bodyPaintType,
         currentMileage: 10000,
         complaint: 'Servis berkala',
       ),
@@ -192,6 +193,7 @@ void main() {
     final uploadGate = Completer<void>();
     final flow = _FakeFlowController(
       const ToyotaServiceDraft(
+        serviceType: _bodyPaintType,
         currentMileage: 10000,
         complaint: 'Servis berkala',
       ),
@@ -232,6 +234,7 @@ void main() {
     await _useTallSurface(tester);
     final flow = _FakeFlowController(
       const ToyotaServiceDraft(
+        serviceType: _bodyPaintType,
         currentMileage: 10000,
         complaint: 'Servis berkala',
       ),
@@ -310,6 +313,59 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('supporting photos are only offered for Body & Paint',
+      (tester) async {
+    await _useTallSurface(tester);
+    final flow = _FakeFlowController(
+      ToyotaServiceDraft(
+        serviceType: _options().serviceTypes.single,
+        currentMileage: 10000,
+        complaint: 'Servis berkala',
+      ),
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          toyotaServiceFlowProvider.overrideWith(() => flow),
+          toyotaServiceOptionsProvider.overrideWith((_) async => _options()),
+          toyotaServicePhotoPickerProvider.overrideWithValue(
+            _FakePhotoPicker(),
+          ),
+        ],
+        child: _app(const ToyotaServiceDetailsScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tambah foto'), findsNothing);
+    expect(find.textContaining('Foto pendukung'), findsNothing);
+    expect(_chooseScheduleButton(tester).onPressed, isNotNull);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('review locks the confirmation channel to WhatsApp',
+      (tester) async {
+    await _useTallSurface(tester);
+    final flow = _FakeFlowController(_completeWorkshopDraft());
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authProvider.overrideWith(_AuthenticatedUserNotifier.new),
+          toyotaServiceFlowProvider.overrideWith(() => flow),
+          toyotaServiceOptionsProvider.overrideWith((_) async => _options()),
+        ],
+        child: _app(const ToyotaServiceReviewScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(DropdownButtonFormField<String>), findsNothing);
+    expect(find.text('Channel konfirmasi'), findsOneWidget);
+    expect(find.textContaining('WhatsApp'), findsWidgets);
+    expect(flow.draft.contactChannel, 'whatsapp');
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets(
       'review shows booking-specific rate limit copy on compact light and dark themes',
       (tester) async {
@@ -357,6 +413,15 @@ void main() {
     }
   });
 }
+
+/// Foto pendukung hanya diminta pada Body & Paint (revisi 4 September 2026).
+const _bodyPaintType = ToyotaServiceType(
+  id: 'service-bp',
+  code: 'body-paint',
+  name: 'Body & Paint',
+  description: 'Perbaikan bodi dan cat',
+  allowedFulfillments: [ToyotaServiceFulfillment.workshop],
+);
 
 Widget _app(Widget home) => MaterialApp(
       theme: AppTheme.light,

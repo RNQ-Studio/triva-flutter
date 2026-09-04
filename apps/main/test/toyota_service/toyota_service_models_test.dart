@@ -2,6 +2,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:triva_app/features/toyota_service/domain/toyota_service_models.dart';
 
 void main() {
+  test('booking parses the public status update link for the WhatsApp text',
+      () {
+    final booking = ToyotaServiceBooking.fromJson({
+      'id': 'b-1',
+      'reference_no': 'BTS-1',
+      'status': 'awaiting_confirmation',
+      'status_label': 'Menunggu',
+      'fulfillment_type': 'workshop',
+      'current_mileage': 1,
+      'complaint': 'Servis',
+      'contact_channel': 'whatsapp',
+      'status_update_url': 'https://triva.test/booking-servis/abc',
+    });
+
+    expect(
+      booking.statusUpdateUrl,
+      'https://triva.test/booking-servis/abc',
+    );
+    expect(
+      ToyotaServiceBooking.fromJson({
+        'id': 'b-2',
+        'status': 'awaiting_confirmation',
+        'fulfillment_type': 'workshop',
+      }).statusUpdateUrl,
+      isNull,
+    );
+  });
+
   group('Toyota service API models', () {
     test('parses canonical options fields and operational THS coverage', () {
       final options = ToyotaServiceOptions.fromJson({

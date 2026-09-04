@@ -157,83 +157,97 @@ class _BookingDetailBody extends ConsumerWidget {
             ],
           ),
         ),
-        if (booking.serviceAdvisorName != null ||
-            booking.serviceAdvisorPhone != null ||
-            booking.serviceLocation?.phone != null) ...[
-          const SizedBox(height: AppSpacing.medium),
-          BookingSection(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.serviceAdvisor,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: AppSpacing.small),
-                Text(
-                  booking.serviceAdvisorName ??
-                      booking.picName ??
-                      booking.serviceLocation?.name ??
-                      '-',
-                ),
-                Wrap(
-                  spacing: AppSpacing.small,
-                  children: [
-                    if (booking.serviceAdvisorPhone != null ||
-                        booking.serviceLocation?.phone != null)
-                      TextButton.icon(
-                        onPressed: () => _launchPhone(
-                          booking.serviceAdvisorPhone ??
-                              booking.serviceLocation!.phone!,
-                        ),
-                        icon: const Icon(Icons.phone_outlined),
-                        label: Text(l10n.contactServiceAdvisor),
-                      ),
-                    if (booking.serviceLocation?.directionsUrl != null)
-                      TextButton.icon(
-                        onPressed: () => launchUrl(
-                          Uri.parse(booking.serviceLocation!.directionsUrl!),
-                          mode: LaunchMode.externalApplication,
-                        ),
-                        icon: const Icon(Icons.directions_outlined),
-                        label: Text(l10n.location),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-        if (booking.benefitChecks.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.medium),
-          BookingSection(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(l10n.benefitVehicleTitle,
-                    style: Theme.of(context).textTheme.titleMedium),
-                for (final benefit in booking.benefitChecks)
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: Icon(
-                      benefit.status == 'active'
-                          ? Icons.verified_outlined
-                          : benefit.status == 'inactive'
-                              ? Icons.block_outlined
-                              : Icons.hourglass_top_rounded,
-                    ),
-                    title: Text(benefit.type.toUpperCase()),
-                    subtitle: Text(
-                      benefit.status == 'pending_verification'
-                          ? l10n.pendingVerificationLabel
-                          : '${benefit.status}'
-                              '${benefit.notes == null ? '' : ' • ${benefit.notes}'}',
-                    ),
+        const SizedBox(height: AppSpacing.medium),
+        BookingSection(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.serviceAdvisor,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: AppSpacing.small),
+              Text(
+                booking.serviceAdvisorName ??
+                    booking.picName ??
+                    booking.serviceLocation?.name ??
+                    '-',
+              ),
+              Wrap(
+                spacing: AppSpacing.small,
+                children: [
+                  // Revisi 4 September 2026: kontak diarahkan ke WhatsApp PIC
+                  // Admin Booking (nomor yang sama dengan handoff booking),
+                  // bukan telepon Service Advisor.
+                  TextButton.icon(
+                    onPressed: () => _contactBookingAdmin(context, ref, l10n),
+                    icon: const Icon(Icons.chat_outlined),
+                    label: Text(l10n.contactServiceAdvisor),
                   ),
-              ],
-            ),
+                  if (booking.serviceLocation?.directionsUrl != null)
+                    TextButton.icon(
+                      onPressed: () => launchUrl(
+                        Uri.parse(booking.serviceLocation!.directionsUrl!),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      icon: const Icon(Icons.directions_outlined),
+                      label: Text(l10n.location),
+                    ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
+        const SizedBox(height: AppSpacing.medium),
+        // Revisi 4 September 2026: T-Care dan Warranty tidak ditampilkan lagi;
+        // SSC mengarah ke halaman resmi Toyota Astra Motor.
+        BookingSection(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.sscCheckTitle,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: AppSpacing.xSmall),
+              Text(
+                l10n.sscCheckDescription,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              for (final benefit in booking.benefitChecks.where(
+                (item) => item.type.toLowerCase() == 'ssc',
+              ))
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    benefit.status == 'active'
+                        ? Icons.verified_outlined
+                        : benefit.status == 'inactive'
+                            ? Icons.block_outlined
+                            : Icons.hourglass_top_rounded,
+                  ),
+                  title: Text(benefit.type.toUpperCase()),
+                  subtitle: Text(
+                    benefit.status == 'pending_verification'
+                        ? l10n.pendingVerificationLabel
+                        : '${benefit.status}'
+                            '${benefit.notes == null ? '' : ' • ${benefit.notes}'}',
+                  ),
+                ),
+              const SizedBox(height: AppSpacing.small),
+              OutlinedButton.icon(
+                onPressed: () => launchUrl(
+                  toyotaSscLookupUri,
+                  mode: LaunchMode.externalApplication,
+                ),
+                icon: const Icon(Icons.open_in_new_rounded),
+                label: Text(l10n.sscCheckAction),
+              ),
+            ],
+          ),
+        ),
         if (booking.photos.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.medium),
           BookingSection(
@@ -310,9 +324,37 @@ class _BookingDetailBody extends ConsumerWidget {
     );
   }
 
-  Future<void> _launchPhone(String phone) =>
-      launchUrl(Uri(scheme: 'tel', path: phone));
+  Future<void> _contactBookingAdmin(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) async {
+    final vehicle = booking.vehicle;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.toyotaService,
+      message: branchWhatsAppMessage(
+        title: l10n.contactBookingAdminMessage,
+        details: {
+          l10n.whatsappHandoffReference: booking.referenceNo,
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+        },
+      ),
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
+  }
 }
+
+/// Halaman resmi Toyota Astra Motor untuk memeriksa keterlibatan kendaraan
+/// dalam Special Service Campaign berdasarkan nomor rangka.
+final Uri toyotaSscLookupUri = Uri.https('ssc.toyota.astra.co.id', '/');
 
 class _BookingStatusContext extends StatelessWidget {
   const _BookingStatusContext({required this.booking});

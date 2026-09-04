@@ -146,6 +146,11 @@ class ToyotaServiceType {
   bool supports(ToyotaServiceFulfillment fulfillment) =>
       allowedFulfillments.contains(fulfillment);
 
+  /// Jenis servis Body & Paint -- satu-satunya yang masih meminta foto
+  /// pendukung pada langkah detail.
+  bool get isBodyPaint =>
+      const {'body_paint', 'body-paint'}.contains(code.toLowerCase());
+
   int leadDaysFor(ToyotaServiceFulfillment fulfillment) =>
       fulfillment == ToyotaServiceFulfillment.ths
           ? thsLeadDays

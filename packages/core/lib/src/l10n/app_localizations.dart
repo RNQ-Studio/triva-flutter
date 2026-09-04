@@ -1664,6 +1664,12 @@ abstract class AppLocalizations {
   /// **'Asuransi'**
   String get whatsappHandoffInsurance;
 
+  /// No description provided for @whatsappHandoffStatusLink.
+  ///
+  /// In id, this message translates to:
+  /// **'Update status booking (tanpa login)'**
+  String get whatsappHandoffStatusLink;
+
   /// No description provided for @whatsappContactBranch.
   ///
   /// In id, this message translates to:
@@ -2993,8 +2999,38 @@ abstract class AppLocalizations {
   /// No description provided for @contactServiceAdvisor.
   ///
   /// In id, this message translates to:
-  /// **'Hubungi Service Advisor'**
+  /// **'Hubungi Admin Booking via WhatsApp'**
   String get contactServiceAdvisor;
+
+  /// No description provided for @contactBookingAdminMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Admin Booking Auto2000 Kertajaya, saya ingin menanyakan booking servis saya.'**
+  String get contactBookingAdminMessage;
+
+  /// No description provided for @sscCheckTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Cek SSC (Special Service Campaign)'**
+  String get sscCheckTitle;
+
+  /// No description provided for @sscCheckDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Periksa apakah kendaraan Anda termasuk program perbaikan khusus Toyota Astra Motor.'**
+  String get sscCheckDescription;
+
+  /// No description provided for @sscCheckAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka halaman cek SSC'**
+  String get sscCheckAction;
+
+  /// No description provided for @contactChannelWhatsappOnly.
+  ///
+  /// In id, this message translates to:
+  /// **'Konfirmasi booking dikirim lewat WhatsApp ke nomor akun Anda.'**
+  String get contactChannelWhatsappOnly;
 
   /// No description provided for @viewServiceDetails.
   ///
