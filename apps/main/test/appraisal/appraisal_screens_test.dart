@@ -521,7 +521,7 @@ void main() {
     );
     expect(find.text('90%'), findsNothing);
     expect(
-      find.text('Grade C - Cukup, ada perbaikan yang perlu dikerjakan'),
+      find.text('Cukup, ada perbaikan yang perlu dikerjakan'),
       findsOneWidget,
     );
     expect(find.text('Basah / rembes'), findsOneWidget);
@@ -682,29 +682,34 @@ void main() {
 
     expect(find.byType(Slider), findsNothing);
     expect(find.text('Kondisi kendaraan saat ini'), findsNothing);
-    expect(find.text('Grade kondisi kendaraan'), findsOneWidget);
+    expect(find.text('Kondisi umum mobil'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('condition step offers the four OLX grades', (tester) async {
+  testWidgets(
+      'condition step offers four condition descriptions without grade labels',
+      (tester) async {
     await _pump(
       tester,
       widget: const VehicleConditionScreen(),
       brightness: Brightness.light,
     );
 
-    expect(find.text('Grade kondisi kendaraan'), findsOneWidget);
+    expect(find.text('Kondisi umum mobil'), findsOneWidget);
     for (final label in const [
-      'Grade A - Istimewa, siap pakai',
-      'Grade B - Baik, perlu perawatan ringan',
-      'Grade C - Cukup, ada perbaikan yang perlu dikerjakan',
-      'Grade D - Perlu perbaikan menyeluruh',
+      'Istimewa, siap pakai',
+      'Baik, perlu perawatan ringan',
+      'Cukup, ada perbaikan yang perlu dikerjakan',
+      'Perlu perbaikan menyeluruh',
     ]) {
       expect(find.text(label), findsOneWidget);
     }
+    expect(find.textContaining('Grade'), findsNothing);
+    for (final code in const ['A', 'B', 'C', 'D']) {
+      expect(find.text(code), findsNothing);
+    }
 
-    await tester
-        .tap(find.text('Grade C - Cukup, ada perbaikan yang perlu dikerjakan'));
+    await tester.tap(find.text('Cukup, ada perbaikan yang perlu dikerjakan'));
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);

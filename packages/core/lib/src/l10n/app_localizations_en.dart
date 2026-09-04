@@ -507,23 +507,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Answer truthfully so the engine can adjust the indicative value.';
 
   @override
-  String get conditionGrade => 'Vehicle condition grade';
+  String get conditionGrade => 'Overall car condition';
 
   @override
   String get conditionGradeDescription =>
-      'Pick the grade closest to your car. OLX and dealers use these same grades when valuing a unit.';
+      'Pick the one closest to your car\'s current condition.';
 
   @override
-  String get conditionGradeA => 'Grade A - Excellent, ready to drive';
+  String get conditionGradeA => 'Excellent, ready to drive';
 
   @override
-  String get conditionGradeB => 'Grade B - Good, light servicing only';
+  String get conditionGradeB => 'Good, light servicing only';
 
   @override
-  String get conditionGradeC => 'Grade C - Fair, some repairs needed';
+  String get conditionGradeC => 'Fair, some repairs needed';
 
   @override
-  String get conditionGradeD => 'Grade D - Needs major repairs';
+  String get conditionGradeD => 'Needs major repairs';
 
   @override
   String get engineCondition => 'Engine condition';

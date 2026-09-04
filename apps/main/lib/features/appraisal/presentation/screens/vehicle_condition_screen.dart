@@ -201,9 +201,9 @@ class _VehicleConditionScreenState
   }
 }
 
-/// Grade kondisi memakai tier yang sama dengan OLX, lengkap dengan penjelasan
-/// tiap pilihan supaya pelanggan tidak menebak-nebak seperti saat memakai
-/// persentase.
+/// Kondisi umum memakai empat tier yang sama dengan OLX (A-D), tetapi hanya
+/// deskripsinya yang ditampilkan: label huruf grade sengaja disembunyikan
+/// supaya pelanggan memilih berdasarkan kondisi nyata, bukan menebak grade.
 class _ConditionGradeField extends StatelessWidget {
   const _ConditionGradeField({
     required this.value,
@@ -273,6 +273,7 @@ class _GradeOption extends StatelessWidget {
     required this.onTap,
   });
 
+  /// Kode grade internal (`a`-`d`) yang dikirim ke server; tidak ditampilkan.
   final String code;
   final String label;
   final bool selected;
@@ -282,6 +283,7 @@ class _GradeOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return Material(
+      key: ValueKey('condition-grade-$code'),
       color: selected ? colors.primaryContainer : colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: AppRadius.large,
@@ -297,21 +299,6 @@ class _GradeOption extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.medium),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 16,
-                backgroundColor:
-                    selected ? colors.primary : colors.surfaceContainerHighest,
-                child: Text(
-                  code.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: selected
-                            ? colors.onPrimary
-                            : colors.onSurfaceVariant,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.medium),
               Expanded(
                 child: Text(
                   label,
@@ -319,11 +306,18 @@ class _GradeOption extends StatelessWidget {
                         color: selected
                             ? colors.onPrimaryContainer
                             : colors.onSurface,
+                        fontWeight:
+                            selected ? FontWeight.w600 : FontWeight.w400,
                       ),
                 ),
               ),
-              if (selected)
-                Icon(Icons.check_circle_rounded, color: colors.primary),
+              const SizedBox(width: AppSpacing.small),
+              Icon(
+                selected
+                    ? Icons.check_circle_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                color: selected ? colors.primary : colors.outline,
+              ),
             ],
           ),
         ),
