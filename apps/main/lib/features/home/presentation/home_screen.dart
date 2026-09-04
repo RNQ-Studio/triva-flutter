@@ -16,8 +16,9 @@ import '../../credit/presentation/credit_paths.dart';
 import '../../promotion/domain/promotion_models.dart';
 import '../../promotion/presentation/promotion_controller.dart';
 import '../../promotion/presentation/promotion_widgets.dart';
-import '../../maintenance_estimate/presentation/maintenance_estimate_paths.dart';
-import '../../vehicle_benefit/presentation/vehicle_benefit_paths.dart';
+import '../../home_banner/domain/home_banner_models.dart';
+import '../../home_banner/presentation/home_banner_controller.dart';
+import '../../home_banner/presentation/home_banner_slider.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
 import '../../visit_analytics/domain/menu_usage_models.dart';
 import '../../visit_analytics/presentation/visit_analytics_controller.dart';
@@ -60,6 +61,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.watch(toyotaServiceOptionsProvider);
     final promotions =
         ref.watch(runningPromotionsProvider).value ?? const <Promotion>[];
+    final banners =
+        ref.watch(runningHomeBannersProvider).value ?? const <HomeBanner>[];
     if (promotions.isNotEmpty && !_popupHandled) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _maybeShowPromotionPopup(promotions),
@@ -110,6 +113,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           .onSurfaceVariant,
                                     ),
                           ),
+                          if (banners.isNotEmpty) ...[
+                            const SizedBox(height: AppSpacing.large),
+                            HomeBannerSlider(banners: banners),
+                          ],
                           if (promotions.isNotEmpty) ...[
                             const SizedBox(height: AppSpacing.large),
                             _SectionHeading(title: l10n.promoSectionTitle),
@@ -121,26 +128,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             onTap: () {
                               trackMenuUsage(ref, MenuKey.appraisal);
                               context.push(startPath);
-                            },
-                          ),
-                          const SizedBox(height: AppSpacing.medium),
-                          _ToolTile(
-                            icon: Icons.pin_outlined,
-                            title: l10n.benefitCheckTitle,
-                            description: l10n.benefitCheckSubtitle,
-                            onTap: () {
-                              trackMenuUsage(ref, MenuKey.vehicleBenefit);
-                              context.push(vehicleBenefitCheckPath);
-                            },
-                          ),
-                          const SizedBox(height: AppSpacing.medium),
-                          _ToolTile(
-                            icon: Icons.receipt_long_outlined,
-                            title: l10n.maintenanceEstimateTitle,
-                            description: l10n.maintenanceEstimateSubtitle,
-                            onTap: () {
-                              trackMenuUsage(ref, MenuKey.maintenanceEstimate);
-                              context.push(maintenanceEstimatePath);
                             },
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
@@ -245,80 +232,6 @@ class _Header extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Pintu masuk alat bantu mandiri di halaman depan: cek No. Rangka dan
-/// simulasi biaya servis. Notulensi 19 Agustus 2026 meminta keduanya tersedia
-/// sebelum pelanggan memutuskan booking.
-class _ToolTile extends StatelessWidget {
-  const _ToolTile({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    return Material(
-      color: colors.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: AppRadius.large,
-        side: BorderSide(color: colors.outlineVariant),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.medium),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: colors.primaryContainer,
-                child: Icon(icon, color: colors.onPrimaryContainer),
-              ),
-              const SizedBox(width: AppSpacing.medium),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.xSmall),
-                    Text(
-                      description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: AppSpacing.small),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 14,
-                color: colors.onSurfaceVariant,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

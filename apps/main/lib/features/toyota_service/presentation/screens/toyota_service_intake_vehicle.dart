@@ -184,7 +184,7 @@ class ToyotaServiceNonToyotaScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.xLarge),
                   FilledButton.icon(
-                    onPressed: () => context.go(otoxpertPath),
+                    onPressed: () => context.go(otoxpertBookingIntakePath),
                     icon: const Icon(Icons.handyman_outlined),
                     label: Text(l10n.continueOtoxpert),
                   ),

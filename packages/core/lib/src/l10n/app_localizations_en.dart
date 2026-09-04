@@ -1975,6 +1975,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otoxpertFlowTitle => 'OtoXpert Booking';
 
   @override
+  String get otoxpertMenuTitle => 'OtoXpert';
+
+  @override
+  String get otoxpertMenuDescription =>
+      'OtoXpert Auto2000 workshop services for every brand: service booking, frame number check, and service cost simulation.';
+
+  @override
+  String get otoxpertBookingSubtitle =>
+      'Book a service at an OtoXpert workshop for Toyota and non-Toyota vehicles.';
+
+  @override
   String get otoxpertSelectVehicle => 'Select a vehicle';
 
   @override

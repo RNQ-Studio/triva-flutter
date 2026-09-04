@@ -3668,6 +3668,24 @@ abstract class AppLocalizations {
   /// **'Booking OtoXpert'**
   String get otoxpertFlowTitle;
 
+  /// No description provided for @otoxpertMenuTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'OtoXpert'**
+  String get otoxpertMenuTitle;
+
+  /// No description provided for @otoxpertMenuDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan bengkel OtoXpert Auto2000 untuk semua merek: booking servis, cek No. Rangka, dan simulasi biaya servis.'**
+  String get otoxpertMenuDescription;
+
+  /// No description provided for @otoxpertBookingSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan servis di bengkel OtoXpert untuk kendaraan Toyota maupun non-Toyota.'**
+  String get otoxpertBookingSubtitle;
+
   /// No description provided for @otoxpertSelectVehicle.
   ///
   /// In id, this message translates to:

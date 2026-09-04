@@ -132,7 +132,7 @@ class _VehicleBenefitCheckScreenState
                 onBook: () => context.push(
                   state.result!.recommendation.isToyotaService
                       ? toyotaServiceVehiclePath
-                      : otoxpertPath,
+                      : otoxpertBookingIntakePath,
                 ),
               ),
             ],

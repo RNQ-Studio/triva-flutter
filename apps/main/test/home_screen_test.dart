@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:triva_app/branding/partner_brands.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
+import 'package:triva_app/features/home_banner/domain/home_banner_models.dart';
+import 'package:triva_app/features/home_banner/presentation/home_banner_controller.dart';
+import 'package:triva_app/features/home_banner/presentation/home_banner_slider.dart';
 import 'package:triva_app/features/promotion/domain/promotion_models.dart';
 import 'package:triva_app/features/promotion/presentation/promotion_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
@@ -26,6 +29,7 @@ void main() {
     double textScale = 1.3,
     bool vehicleLoadFails = false,
     List<Promotion> promotions = const [],
+    List<HomeBanner> banners = const [],
   }) async {
     tester.view
       ..physicalSize = const Size(360, 690)
@@ -43,6 +47,7 @@ void main() {
             return const [];
           }),
           runningPromotionsProvider.overrideWith((ref) async => promotions),
+          runningHomeBannersProvider.overrideWith((ref) async => banners),
         ],
         child: MaterialApp(
           theme: theme,
@@ -63,6 +68,48 @@ void main() {
     );
     await tester.pump();
   }
+
+  testWidgets('tool tiles moved out of home and banner slider shows',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      banners: const [
+        HomeBanner(
+          id: 'b1',
+          title: 'Banner satu',
+          imageUrl: 'https://example.test/b1.jpg',
+        ),
+        HomeBanner(
+          id: 'b2',
+          title: 'Banner dua',
+          imageUrl: 'https://example.test/b2.jpg',
+          linkUrl: 'https://auto2000.co.id',
+        ),
+      ],
+    );
+    await tester.pump();
+
+    expect(find.text('Cek No. Rangka'), findsNothing);
+    expect(find.text('Simulasi biaya servis'), findsNothing);
+    expect(find.byType(HomeBannerSlider), findsOneWidget);
+    expect(find.text('Booking OtoXpert'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('banner slider is hidden when no banner is running',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+    );
+    await tester.pump();
+
+    expect(find.byType(HomeBannerSlider), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 
   for (final brightness in Brightness.values) {
     testWidgets(

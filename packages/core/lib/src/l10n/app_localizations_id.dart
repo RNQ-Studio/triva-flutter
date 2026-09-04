@@ -1971,6 +1971,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get otoxpertFlowTitle => 'Booking OtoXpert';
 
   @override
+  String get otoxpertMenuTitle => 'OtoXpert';
+
+  @override
+  String get otoxpertMenuDescription =>
+      'Layanan bengkel OtoXpert Auto2000 untuk semua merek: booking servis, cek No. Rangka, dan simulasi biaya servis.';
+
+  @override
+  String get otoxpertBookingSubtitle =>
+      'Pesan servis di bengkel OtoXpert untuk kendaraan Toyota maupun non-Toyota.';
+
+  @override
   String get otoxpertSelectVehicle => 'Pilih kendaraan';
 
   @override
