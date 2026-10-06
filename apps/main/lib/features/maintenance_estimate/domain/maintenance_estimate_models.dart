@@ -81,7 +81,7 @@ class MaintenanceEstimate {
   /// Model yang punya paket khusus, untuk saran isian model kendaraan.
   final List<String> availableModels;
 
-  bool get hasPackages => packages.isNotEmpty;
+  bool get hasPackages => packages.isNotEmpty || recommended != null;
 
   factory MaintenanceEstimate.fromJson(Map<String, dynamic> json) =>
       MaintenanceEstimate(
