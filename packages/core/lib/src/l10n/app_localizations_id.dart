@@ -1093,13 +1093,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get maintenanceEstimateSubmit => 'Hitung perkiraan';
 
   @override
-  String get maintenanceEstimateParts => 'Biaya part';
+  String get maintenanceEstimateParts => 'Budget part';
 
   @override
-  String get maintenanceEstimateLabor => 'Biaya jasa';
+  String get maintenanceEstimateLabor => 'Budget jasa';
 
   @override
-  String get maintenanceEstimateTotal => 'Perkiraan total';
+  String get maintenanceEstimateTotal => 'Total budget';
 
   @override
   String get maintenanceEstimateIncludes => 'Cakupan pekerjaan';
@@ -3086,4 +3086,302 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get maintenanceThanks => 'Terima kasih atas kesabaran Anda.';
+
+  @override
+  String get maintenanceEstimateBudgetHeading =>
+      'Estimasi budget servis T-Care';
+
+  @override
+  String get maintenanceEstimateModelHint =>
+      'Pilih dari daftar atau ketik model Toyota Anda.';
+
+  @override
+  String get infoPopupClose => 'Tutup';
+
+  @override
+  String infoPopupPage(int current, int total) {
+    return 'Informasi $current dari $total';
+  }
+
+  @override
+  String get adminInfoPopupTitle => 'Popup informasi';
+
+  @override
+  String get adminInfoPopupDescription =>
+      'Gambar pop-up beranda, tombol tautan, urutan, dan jadwal tayang';
+
+  @override
+  String get adminPartnerLogoTitle => 'Mitra resmi';
+
+  @override
+  String get adminPartnerLogoDescription =>
+      'Logo mitra di beranda beserta tautannya';
+
+  @override
+  String get adminServicePackageTitle => 'Paket servis T-Care';
+
+  @override
+  String get adminServicePackageDescription =>
+      'Budget jasa dan part untuk simulasi biaya servis';
+
+  @override
+  String get adminContentAdd => 'Tambah';
+
+  @override
+  String get adminContentDelete => 'Hapus';
+
+  @override
+  String adminContentDeleteConfirmTitle(String name) {
+    return 'Hapus $name?';
+  }
+
+  @override
+  String get adminContentDeleteConfirmDescription =>
+      'Data yang dihapus tidak dapat dikembalikan.';
+
+  @override
+  String get adminContentSaved => 'Perubahan tersimpan.';
+
+  @override
+  String get adminContentDeleted => 'Data berhasil dihapus.';
+
+  @override
+  String get adminContentSaveFailed => 'Data belum dapat disimpan. Coba lagi.';
+
+  @override
+  String get adminContentNotFoundTitle => 'Data tidak ditemukan';
+
+  @override
+  String get adminContentNotFoundDescription =>
+      'Data mungkin sudah dihapus. Kembali ke daftar lalu muat ulang.';
+
+  @override
+  String get adminContentActive => 'Aktif';
+
+  @override
+  String get adminContentInactive => 'Nonaktif';
+
+  @override
+  String get adminContentActiveHint =>
+      'Matikan untuk menyembunyikan tanpa menghapus.';
+
+  @override
+  String get adminContentSortOrder => 'Urutan tampil';
+
+  @override
+  String get adminContentSortOrderHint =>
+      'Angka lebih kecil tampil lebih dulu.';
+
+  @override
+  String get adminContentPickImage => 'Pilih gambar';
+
+  @override
+  String get adminContentReplaceImage => 'Ganti gambar';
+
+  @override
+  String get adminContentImageRequired => 'Gambar wajib dipilih.';
+
+  @override
+  String get adminContentInvalidUrl =>
+      'Masukkan tautan lengkap yang diawali http:// atau https://.';
+
+  @override
+  String adminContentNumberRange(int min, int max) {
+    return 'Masukkan angka $min sampai $max.';
+  }
+
+  @override
+  String adminContentOrderSummary(int order) {
+    return 'Urutan $order';
+  }
+
+  @override
+  String get adminInfoPopupEmptyTitle => 'Belum ada popup informasi';
+
+  @override
+  String get adminInfoPopupEmptyDescription =>
+      'Tambahkan gambar pop-up untuk menyambut pelanggan di beranda.';
+
+  @override
+  String get adminInfoPopupNew => 'Popup baru';
+
+  @override
+  String get adminInfoPopupEdit => 'Ubah popup';
+
+  @override
+  String get adminInfoPopupFieldTitle => 'Judul';
+
+  @override
+  String get adminInfoPopupFieldTitleHint =>
+      'Penanda untuk admin dan pembaca layar; tidak tampil di atas gambar.';
+
+  @override
+  String get adminInfoPopupFieldImage => 'Gambar popup';
+
+  @override
+  String get adminInfoPopupImageHint =>
+      'Rasio 4:5 (mis. 1080×1350 px). JPG, PNG, atau WEBP, maksimal 5 MB.';
+
+  @override
+  String get adminInfoPopupButtonSection => 'Tombol (opsional)';
+
+  @override
+  String get adminInfoPopupButtonLabel => 'Label tombol';
+
+  @override
+  String get adminInfoPopupButtonLabelHint => 'Mis. Lihat promo';
+
+  @override
+  String get adminInfoPopupButtonUrl => 'Tautan tombol';
+
+  @override
+  String get adminInfoPopupButtonUrlHint =>
+      'Dibuka di browser saat tombol diketuk.';
+
+  @override
+  String get adminInfoPopupButtonPair =>
+      'Isi label dan tautan tombol sekaligus, atau kosongkan keduanya.';
+
+  @override
+  String get adminInfoPopupInterval => 'Tampil setiap';
+
+  @override
+  String get adminInfoPopupIntervalSuffix => 'jam';
+
+  @override
+  String get adminInfoPopupIntervalHint =>
+      'Popup muncul lagi di perangkat yang sama setelah jeda ini (1–720 jam).';
+
+  @override
+  String get adminInfoPopupStartsOn => 'Mulai tayang';
+
+  @override
+  String get adminInfoPopupEndsOn => 'Berakhir tayang';
+
+  @override
+  String get adminInfoPopupDateUnset => 'Tidak dibatasi';
+
+  @override
+  String get adminInfoPopupEndsBeforeStart =>
+      'Tanggal berakhir tidak boleh sebelum tanggal mulai.';
+
+  @override
+  String adminInfoPopupSummary(int order, int hours) {
+    return 'Urutan $order · setiap $hours jam';
+  }
+
+  @override
+  String get adminInfoPopupStatusRunning => 'Tayang';
+
+  @override
+  String get adminInfoPopupStatusScheduled => 'Terjadwal';
+
+  @override
+  String get adminInfoPopupStatusEnded => 'Selesai';
+
+  @override
+  String get adminInfoPopupPreview => 'Pratinjau popup';
+
+  @override
+  String get adminInfoPopupPreviewEmpty =>
+      'Belum ada popup aktif untuk dipratinjau.';
+
+  @override
+  String get adminPartnerLogoEmptyTitle => 'Belum ada logo mitra';
+
+  @override
+  String get adminPartnerLogoEmptyDescription =>
+      'Bagian Mitra resmi di beranda disembunyikan sampai ada logo aktif.';
+
+  @override
+  String get adminPartnerLogoNew => 'Mitra baru';
+
+  @override
+  String get adminPartnerLogoEdit => 'Ubah mitra';
+
+  @override
+  String get adminPartnerLogoFieldName => 'Nama mitra';
+
+  @override
+  String get adminPartnerLogoFieldLogo => 'Logo';
+
+  @override
+  String get adminPartnerLogoLogoHint =>
+      'PNG berlatar transparan atau putih dengan margin dipangkas, maksimal 5 MB.';
+
+  @override
+  String get adminPartnerLogoFieldUrl => 'Tautan saat diketuk';
+
+  @override
+  String get adminPartnerLogoUrlHint => 'Opsional. Dibuka di browser.';
+
+  @override
+  String get adminPartnerLogoNoLink => 'Tanpa tautan';
+
+  @override
+  String get adminServicePackageEmptyTitle => 'Belum ada paket servis';
+
+  @override
+  String get adminServicePackageEmptyDescription =>
+      'Simulasi biaya servis pelanggan tetap kosong sampai paket pertama ditambahkan.';
+
+  @override
+  String get adminServicePackageNew => 'Paket baru';
+
+  @override
+  String get adminServicePackageEdit => 'Ubah paket';
+
+  @override
+  String get adminServicePackageAllModels => 'Semua model';
+
+  @override
+  String get adminServicePackageFieldModel => 'Model kendaraan';
+
+  @override
+  String get adminServicePackageModelHint =>
+      'Kosongkan bila berlaku untuk semua model Toyota.';
+
+  @override
+  String get adminServicePackageFieldKm => 'Kelipatan kilometer';
+
+  @override
+  String get adminServicePackageKmHint => 'Mis. 10000 untuk servis 10.000 km.';
+
+  @override
+  String get adminServicePackageFieldLabor => 'Budget jasa';
+
+  @override
+  String get adminServicePackageFieldParts => 'Budget part';
+
+  @override
+  String adminServicePackageTotal(String amount) {
+    return 'Total budget $amount';
+  }
+
+  @override
+  String get adminServicePackageFieldName => 'Nama paket';
+
+  @override
+  String get adminServicePackageNameHint =>
+      'Opsional. Otomatis \"Servis Berkala … km\" bila dikosongkan.';
+
+  @override
+  String get adminServicePackageFieldIncludes => 'Cakupan pekerjaan';
+
+  @override
+  String get adminServicePackageIncludesHint =>
+      'Satu pekerjaan per baris, mis. Ganti oli mesin.';
+
+  @override
+  String adminServicePackageKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String adminServicePackageCostSummary(String labor, String parts) {
+    return 'Jasa $labor · Part $parts';
+  }
+
+  @override
+  String get adminServicePackageOutsidePeriod => 'Di luar masa berlaku';
 }

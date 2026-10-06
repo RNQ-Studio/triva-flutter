@@ -100,6 +100,9 @@ void main() {
     expect(find.text('Rp 1.800.000'), findsOneWidget);
     expect(find.text('Rp 900.000'), findsOneWidget);
     expect(find.text('Rp 2.700.000'), findsOneWidget);
+    expect(find.text('Estimasi budget servis T-Care'), findsNWidgets(2));
+    expect(find.text('Budget jasa'), findsNWidgets(2));
+    expect(find.text('Budget part'), findsNWidgets(2));
     expect(find.text('Paket lainnya'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -125,7 +128,40 @@ void main() {
       find.textContaining('Data paket servis belum tersedia'),
       findsOneWidget,
     );
-    expect(find.text('Perkiraan total'), findsNothing);
+    expect(find.text('Total budget'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('models that have packages are offered as suggestions',
+      (tester) async {
+    final repository = _FakeRepository({
+      'vehicle_model': null,
+      'mileage': null,
+      'recommended': null,
+      'packages': <Map<String, dynamic>>[],
+      'available_models': ['Avanza', 'Innova Zenix', 'Raize'],
+    });
+    await _pump(tester, repository);
+
+    expect(
+      find.text('Pilih dari daftar atau ketik model Toyota Anda.'),
+      findsOneWidget,
+    );
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Model kendaraan'),
+      'in',
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.widgetWithText(ListTile, 'Innova Zenix'), findsOneWidget);
+    expect(find.widgetWithText(ListTile, 'Raize'), findsNothing);
+
+    await tester.tap(find.widgetWithText(ListTile, 'Innova Zenix'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Hitung perkiraan'));
+    await tester.pumpAndSettle();
+
+    expect(repository.lastModel, 'Innova Zenix');
     expect(tester.takeException(), isNull);
   });
 }

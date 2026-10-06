@@ -70,6 +70,27 @@ class AdminPanelScreen extends ConsumerWidget {
           subtitle: l10n.adminBookingQueueDescription,
           path: adminBodyPaintQueuePath,
         ),
+      if (auth.user.canManageHomeContent) ...[
+        (
+          icon: Icons.web_asset_outlined,
+          title: l10n.adminInfoPopupTitle,
+          subtitle: l10n.adminInfoPopupDescription,
+          path: adminInfoPopupsPath,
+        ),
+        (
+          icon: Icons.handshake_outlined,
+          title: l10n.adminPartnerLogoTitle,
+          subtitle: l10n.adminPartnerLogoDescription,
+          path: adminPartnerLogosPath,
+        ),
+      ],
+      if (auth.user.canManageServicePackages)
+        (
+          icon: Icons.build_circle_outlined,
+          title: l10n.adminServicePackageTitle,
+          subtitle: l10n.adminServicePackageDescription,
+          path: adminServicePackagesPath,
+        ),
     ];
     final content = ListView(
       padding: const EdgeInsets.fromLTRB(

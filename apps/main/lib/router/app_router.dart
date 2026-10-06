@@ -21,6 +21,8 @@ import '../features/admin_directory/presentation/admin_directory_paths.dart';
 import '../features/admin_directory/presentation/admin_directory_routes.dart';
 import '../features/admin_users/presentation/admin_user_paths.dart';
 import '../features/admin_users/presentation/admin_user_routes.dart';
+import '../features/admin_content/presentation/admin_content_paths.dart';
+import '../features/admin_content/presentation/admin_content_routes.dart';
 import '../features/maintenance_estimate/presentation/maintenance_estimate_routes.dart';
 import '../features/vehicle_benefit/presentation/vehicle_benefit_routes.dart';
 import 'customer_shell.dart';
@@ -67,8 +69,18 @@ bool _canAccessAdminLocation(User user, String location) {
       location.startsWith('$adminOtoxpertQueuePath/')) {
     return user.canViewServiceBooking;
   }
+  if (_isUnder(location, adminInfoPopupsPath) ||
+      _isUnder(location, adminPartnerLogosPath)) {
+    return user.canManageHomeContent;
+  }
+  if (_isUnder(location, adminServicePackagesPath)) {
+    return user.canManageServicePackages;
+  }
   return false;
 }
+
+bool _isUnder(String location, String path) =>
+    location == path || location.startsWith('$path/');
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
@@ -83,6 +95,7 @@ final appRouter = GoRouter(
     ...bodyPaintRoutes,
     ...adminUserRoutes,
     ...adminDirectoryRoutes,
+    ...adminContentRoutes,
     ...vehicleBenefitRoutes,
     ...maintenanceEstimateRoutes,
     StatefulShellRoute.indexedStack(

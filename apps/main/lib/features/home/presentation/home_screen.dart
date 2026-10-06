@@ -19,6 +19,10 @@ import '../../promotion/presentation/promotion_widgets.dart';
 import '../../home_banner/domain/home_banner_models.dart';
 import '../../home_banner/presentation/home_banner_controller.dart';
 import '../../home_banner/presentation/home_banner_slider.dart';
+import '../../info_popup/domain/info_popup_models.dart';
+import '../../info_popup/presentation/info_popup_controller.dart';
+import '../../info_popup/presentation/info_popup_dialog.dart';
+import '../../partner_logo/presentation/partner_logo_strip.dart';
 import '../../body_paint/presentation/body_paint_paths.dart';
 import '../../visit_analytics/domain/menu_usage_models.dart';
 import '../../visit_analytics/presentation/visit_analytics_controller.dart';
@@ -31,18 +35,88 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool _popupHandled = false;
+  bool _startupPopupsHandled = false;
+  bool _showingPopup = false;
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(onResume: _recheckInfoPopups);
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
+  }
+
+  /// Popup informasi didahulukan; pop-up promo hanya muncul bila tidak ada
+  /// popup informasi yang jatuh tempo, supaya pelanggan tidak disambut dua
+  /// dialog bertumpuk.
+  void _scheduleStartupPopups(
+    AsyncValue<List<InfoPopup>> infoPopups,
+    AsyncValue<List<Promotion>> promotions,
+  ) {
+    if (_startupPopupsHandled) return;
+    if (infoPopups.isLoading || promotions.isLoading) return;
+    _startupPopupsHandled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final shown = await _showDueInfoPopups(
+        infoPopups.value ?? const <InfoPopup>[],
+      );
+      if (shown || !mounted) return;
+      await _maybeShowPromotionPopup(
+        promotions.value ?? const <Promotion>[],
+      );
+    });
+  }
+
+  /// Jeda tayang popup dihitung dalam jam, jadi aplikasi yang lama tertahan
+  /// di latar belakang juga perlu memeriksa ulang saat kembali dibuka.
+  Future<void> _recheckInfoPopups() async {
+    if (!_startupPopupsHandled || _showingPopup) return;
+    ref.invalidate(runningInfoPopupsProvider);
+    try {
+      final popups = await ref.read(runningInfoPopupsProvider.future);
+      if (!mounted) return;
+      await _showDueInfoPopups(popups);
+    } on Object {
+      // Luring: diperiksa lagi pada kesempatan berikutnya.
+    }
+  }
+
+  Future<bool> _showDueInfoPopups(List<InfoPopup> popups) async {
+    if (_showingPopup || popups.isEmpty) return false;
+    final schedule = ref.read(infoPopupScheduleProvider);
+    final due = await schedule.due(popups);
+    if (due.isEmpty || !mounted || !_canPresentPopup()) return false;
+    _showingPopup = true;
+    try {
+      await schedule.markShown(due);
+      if (!mounted) return false;
+      await showInfoPopupDialog(context, popups: due);
+      return true;
+    } finally {
+      _showingPopup = false;
+    }
+  }
+
+  /// Beranda tetap hidup di balik tab lain dan layar yang di-push, jadi
+  /// dialog hanya boleh muncul saat beranda benar-benar sedang dilihat.
+  bool _canPresentPopup() {
+    final route = ModalRoute.of(context);
+    return (route?.isCurrent ?? true) && TickerMode.valuesOf(context).enabled;
+  }
 
   /// Menampilkan pop-up promo unggulan sekali per periode tayang, sesuai
   /// permintaan notulensi 19 Agustus 2026 ("Update per Month").
   Future<void> _maybeShowPromotionPopup(List<Promotion> promotions) async {
-    if (_popupHandled) return;
-    _popupHandled = true;
     final featured = promotions.where((promo) => promo.showAsPopup).firstOrNull;
     if (featured == null) return;
     final seen = ref.read(seenPromotionPopupsProvider);
     if (await seen.hasSeen(featured.periodKey)) return;
-    if (!mounted) return;
+    if (!mounted || !_canPresentPopup()) return;
     await showPromotionPopup(context, promotion: featured);
     await seen.markSeen(featured.periodKey);
   }
@@ -59,15 +133,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
     final serviceDraft = ref.watch(toyotaServiceFlowProvider).value?.draft;
     ref.watch(toyotaServiceOptionsProvider);
-    final promotions =
-        ref.watch(runningPromotionsProvider).value ?? const <Promotion>[];
+    final promotionsValue = ref.watch(runningPromotionsProvider);
+    final promotions = promotionsValue.value ?? const <Promotion>[];
     final banners =
         ref.watch(runningHomeBannersProvider).value ?? const <HomeBanner>[];
-    if (promotions.isNotEmpty && !_popupHandled) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _maybeShowPromotionPopup(promotions),
-      );
-    }
+    _scheduleStartupPopups(
+      ref.watch(runningInfoPopupsProvider),
+      promotionsValue,
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -189,7 +262,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
-                          const _PartnerStrip(),
+                          const PartnerLogoStrip(),
                         ],
                       ),
                     ),
@@ -527,51 +600,6 @@ class _ServiceRow extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _PartnerStrip extends StatelessWidget {
-  const _PartnerStrip();
-
-  // Notulensi 19 Agustus 2026 meminta kelima mitra tampil di halaman depan:
-  // Auto2000 Kertajaya, OtoXpert, OLX, TAFS, dan ACC.
-  static const _brands = [
-    PartnerBrand.auto2000,
-    PartnerBrand.otoxpert,
-    PartnerBrand.olx,
-    PartnerBrand.acc,
-    PartnerBrand.taf,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final colors = Theme.of(context).colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.homePartnersTitle,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(height: AppSpacing.xSmall),
-        Text(
-          l10n.homePartnersSubtitle,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: colors.onSurfaceVariant,
-              ),
-        ),
-        const SizedBox(height: AppSpacing.medium),
-        Wrap(
-          spacing: AppSpacing.small,
-          runSpacing: AppSpacing.small,
-          children: [
-            for (final brand in _brands)
-              PartnerLogoPlate(brand: brand, width: 72, height: 46),
-          ],
-        ),
-      ],
     );
   }
 }

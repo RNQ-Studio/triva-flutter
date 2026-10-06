@@ -47,6 +47,32 @@ void main() {
       userWith(const ['users.viewAny'], roles: const ['staff']).canManageUsers,
       isFalse,
     );
+    final contentEditor = userWith(
+      const ['articles.viewAny', 'articles.update', 'articles.create'],
+      roles: const ['staff'],
+    );
+    expect(contentEditor.canManageHomeContent, isTrue);
+    expect(contentEditor.canCreateHomeContent, isTrue);
+    expect(contentEditor.canDeleteHomeContent, isFalse);
+    expect(contentEditor.canAccessAdminPanel, isTrue);
+    expect(
+      userWith(const ['articles.viewAny']).canManageHomeContent,
+      isFalse,
+    );
+    final packageEditor = userWith(
+      const ['toyota_service_config.viewAny', 'toyota_service_config.update'],
+    );
+    expect(packageEditor.canManageServicePackages, isTrue);
+    expect(packageEditor.canCreateServicePackages, isFalse);
+    expect(packageEditor.canAccessAdminPanel, isTrue);
+    expect(
+      userWith(const ['toyota_service_config.viewAny'])
+          .canManageServicePackages,
+      isFalse,
+    );
+    final superAdmin = userWith(const [], roles: const ['super-admin']);
+    expect(superAdmin.canDeleteHomeContent, isTrue);
+    expect(superAdmin.canDeleteServicePackages, isTrue);
     expect(
       userWith(const [], roles: const ['admin']).isAdmin,
       isTrue,

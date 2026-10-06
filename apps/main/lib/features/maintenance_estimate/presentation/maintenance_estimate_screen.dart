@@ -31,11 +31,13 @@ class _MaintenanceEstimateScreenState
     extends ConsumerState<MaintenanceEstimateScreen> {
   final _mileage = TextEditingController();
   final _model = TextEditingController();
+  final _modelFocus = FocusNode();
 
   @override
   void dispose() {
     _mileage.dispose();
     _model.dispose();
+    _modelFocus.dispose();
     super.dispose();
   }
 
@@ -67,11 +69,11 @@ class _MaintenanceEstimateScreenState
                   ),
             ),
             const SizedBox(height: AppSpacing.large),
-            TextField(
+            _ModelField(
               controller: _model,
-              decoration: InputDecoration(
-                labelText: l10n.maintenanceEstimateModel,
-              ),
+              focusNode: _modelFocus,
+              models: ref.watch(maintenanceModelOptionsProvider).value ??
+                  const <String>[],
             ),
             const SizedBox(height: AppSpacing.medium),
             TextField(
@@ -167,13 +169,20 @@ class _PackageCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: AppSpacing.medium),
-            _CostRow(
-              label: l10n.maintenanceEstimateParts,
-              value: _money(package.partsCost),
+            Text(
+              l10n.maintenanceEstimateBudgetHeading,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: highlighted ? colors.onPrimaryContainer : null,
+                  ),
             ),
+            const SizedBox(height: AppSpacing.xSmall),
             _CostRow(
               label: l10n.maintenanceEstimateLabor,
               value: _money(package.laborCost),
+            ),
+            _CostRow(
+              label: l10n.maintenanceEstimateParts,
+              value: _money(package.partsCost),
             ),
             const Divider(height: AppSpacing.xLarge),
             _CostRow(
@@ -208,6 +217,73 @@ class _PackageCard extends StatelessWidget {
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Isian model kendaraan dengan saran dari model yang punya paket khusus.
+///
+/// Pencocokan paket di server memakai nama model persis, jadi memilih dari
+/// saran menghindari salah eja; mengetik bebas tetap diterima dan jatuh ke
+/// paket umum.
+class _ModelField extends StatelessWidget {
+  const _ModelField({
+    required this.controller,
+    required this.focusNode,
+    required this.models,
+  });
+
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final List<String> models;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return RawAutocomplete<String>(
+      textEditingController: controller,
+      focusNode: focusNode,
+      optionsBuilder: (value) {
+        final query = value.text.trim().toLowerCase();
+        if (query.isEmpty) return models;
+        return models.where((model) => model.toLowerCase().contains(query));
+      },
+      fieldViewBuilder: (context, controller, focusNode, onSubmitted) =>
+          TextField(
+        controller: controller,
+        focusNode: focusNode,
+        textCapitalization: TextCapitalization.words,
+        onSubmitted: (_) => onSubmitted(),
+        decoration: InputDecoration(
+          labelText: l10n.maintenanceEstimateModel,
+          helperText: models.isEmpty ? null : l10n.maintenanceEstimateModelHint,
+          suffixIcon:
+              models.isEmpty ? null : const Icon(Icons.arrow_drop_down_rounded),
+        ),
+      ),
+      optionsViewBuilder: (context, onSelected, options) => Align(
+        alignment: AlignmentDirectional.topStart,
+        child: Material(
+          elevation: 4,
+          borderRadius: AppRadius.medium,
+          clipBehavior: Clip.antiAlias,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 240, maxWidth: 480),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: [
+                for (final option in options)
+                  ListTile(
+                    dense: true,
+                    title: Text(option),
+                    onTap: () => onSelected(option),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );

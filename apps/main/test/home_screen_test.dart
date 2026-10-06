@@ -8,9 +8,35 @@ import 'package:triva_app/features/home/presentation/home_screen.dart';
 import 'package:triva_app/features/home_banner/domain/home_banner_models.dart';
 import 'package:triva_app/features/home_banner/presentation/home_banner_controller.dart';
 import 'package:triva_app/features/home_banner/presentation/home_banner_slider.dart';
+import 'package:triva_app/features/info_popup/domain/info_popup_models.dart';
+import 'package:triva_app/features/info_popup/presentation/info_popup_controller.dart';
+import 'package:triva_app/features/info_popup/presentation/info_popup_dialog.dart';
+import 'package:triva_app/features/partner_logo/domain/partner_logo_models.dart'
+    as partner;
+import 'package:triva_app/features/partner_logo/presentation/partner_logo_controller.dart';
+import 'package:triva_app/features/partner_logo/presentation/partner_logo_strip.dart';
 import 'package:triva_app/features/promotion/domain/promotion_models.dart';
 import 'package:triva_app/features/promotion/presentation/promotion_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
+
+class _MemoryStorage implements StorageService {
+  final values = <String, String>{};
+
+  @override
+  Future<void> init() async {}
+
+  @override
+  Future<void> write(String key, String value) async => values[key] = value;
+
+  @override
+  Future<String?> read(String key) async => values[key];
+
+  @override
+  Future<void> delete(String key) async => values.remove(key);
+
+  @override
+  Future<void> clear() async => values.clear();
+}
 
 class _FakeAuthNotifier extends AuthNotifier {
   _FakeAuthNotifier(this.initialState);
@@ -30,7 +56,12 @@ void main() {
     bool vehicleLoadFails = false,
     List<Promotion> promotions = const [],
     List<HomeBanner> banners = const [],
+    List<InfoPopup> infoPopups = const [],
+    // null meniru server Mitra resmi yang tidak terjangkau.
+    List<partner.PartnerLogo>? partnerLogos,
+    StorageService? storage,
   }) async {
+    final popupStorage = storage ?? _MemoryStorage();
     tester.view
       ..physicalSize = const Size(360, 690)
       ..devicePixelRatio = 1;
@@ -48,6 +79,17 @@ void main() {
           }),
           runningPromotionsProvider.overrideWith((ref) async => promotions),
           runningHomeBannersProvider.overrideWith((ref) async => banners),
+          runningInfoPopupsProvider.overrideWith((ref) async => infoPopups),
+          activePartnerLogosProvider.overrideWith((ref) async {
+            if (partnerLogos == null) throw StateError('offline');
+            return partnerLogos;
+          }),
+          infoPopupScheduleProvider.overrideWithValue(
+            InfoPopupSchedule(popupStorage),
+          ),
+          seenPromotionPopupsProvider.overrideWithValue(
+            SeenPromotionPopups(popupStorage),
+          ),
         ],
         child: MaterialApp(
           theme: theme,
@@ -184,8 +226,9 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('partner strip carries all five partners including OLX',
-      (tester) async {
+  testWidgets(
+      'partner strip falls back to all five partners including OLX '
+      'when the partner list cannot be loaded', (tester) async {
     await pumpHome(
       tester,
       theme: AppTheme.light,
@@ -269,6 +312,138 @@ void main() {
     await tester.pump();
 
     expect(find.text('Promo bulan ini'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('partner strip shows the logos managed from the admin panel',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      partnerLogos: const [
+        partner.PartnerLogo(
+          id: 'p1',
+          name: 'Auto2000',
+          logoUrl: 'https://example.test/auto2000.png',
+          linkUrl: 'https://auto2000.co.id',
+        ),
+        partner.PartnerLogo(
+          id: 'p2',
+          name: 'Mitra Baru',
+          logoUrl: 'https://example.test/baru.png',
+        ),
+      ],
+    );
+    await tester.pump();
+    await tester.scrollUntilVisible(
+      find.text('Mitra resmi'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+
+    expect(find.byType(PartnerNetworkLogoPlate), findsNWidgets(2));
+    final strip = find.byType(PartnerLogoStrip);
+    expect(
+      find.descendant(of: strip, matching: find.byType(PartnerLogo)),
+      findsNothing,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('partner section hides when every logo is deactivated',
+      (tester) async {
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      partnerLogos: const [],
+    );
+    await tester.pump();
+
+    expect(find.text('Mitra resmi'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+      'due info pop-ups open as slides once and take priority over the promo '
+      'pop-up', (tester) async {
+    final storage = _MemoryStorage();
+    const promo = Promotion(
+      id: 'promo-1',
+      category: 'sales',
+      categoryLabel: 'Sales',
+      title: 'Promo pop-up',
+      startsOn: '2026-10-01',
+      showAsPopup: true,
+    );
+    final popups = [
+      InfoPopup.fromJson({
+        'id': 'second',
+        'title': 'Info kedua',
+        'image_url': 'https://example.test/second.jpg',
+        'sort_order': 2,
+        'interval_hours': 24,
+        'updated_at': '2026-10-06T01:00:00.000Z',
+      }),
+      InfoPopup.fromJson({
+        'id': 'first',
+        'title': 'Info pertama',
+        'image_url': 'https://example.test/first.jpg',
+        'button_label': 'Lihat promo',
+        'button_url': 'https://auto2000.co.id/promo',
+        'sort_order': 1,
+        'interval_hours': 24,
+        'updated_at': '2026-10-06T01:00:00.000Z',
+      }),
+    ];
+
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      infoPopups: popups,
+      promotions: const [promo],
+      storage: storage,
+    );
+    await tester.pumpAndSettle();
+
+    final dialog = tester.widget<InfoPopupDialog>(find.byType(InfoPopupDialog));
+    expect(dialog.popups.map((popup) => popup.id), ['first', 'second']);
+    expect(find.text('Lihat promo'), findsOneWidget);
+    // Pop-up promo memakai AlertDialog; judulnya sendiri juga tampil di
+    // carousel beranda.
+    expect(find.byType(AlertDialog), findsNothing);
+
+    await tester.tap(find.text('Tutup'));
+    await tester.pumpAndSettle();
+    expect(find.byType(InfoPopupDialog), findsNothing);
+    expect(storage.values.keys, contains('info_popup_last_shown_v1'));
+
+    // Masih dalam jeda 24 jam: membuka beranda lagi tidak memunculkan
+    // popup yang sama, dan promo pop-up mendapat gilirannya.
+    await tester.pumpWidget(const SizedBox());
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      infoPopups: popups,
+      promotions: const [promo],
+      storage: storage,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InfoPopupDialog), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text('Promo pop-up'),
+      ),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 

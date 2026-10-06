@@ -83,7 +83,35 @@ class User {
       canViewAnyUsers ||
       canViewAnyAppraisals ||
       canViewAnyCreditSimulations ||
-      canViewVisitAnalytics;
+      canViewVisitAnalytics ||
+      canManageHomeContent ||
+      canManageServicePackages;
+
+  /// Popup informasi dan logo Mitra resmi di beranda. Izinnya menumpang
+  /// kelompok konten `articles.*`, sama seperti banner dan promo di backend.
+  bool get canManageHomeContent =>
+      _isSuperAdmin ||
+      (permissions.contains('articles.viewAny') &&
+          permissions.contains('articles.update'));
+
+  bool get canCreateHomeContent =>
+      _isSuperAdmin || permissions.contains('articles.create');
+
+  bool get canDeleteHomeContent =>
+      _isSuperAdmin || permissions.contains('articles.delete');
+
+  /// Tabel budget jasa dan part paket servis yang dipakai simulasi biaya
+  /// servis.
+  bool get canManageServicePackages =>
+      _isSuperAdmin ||
+      (permissions.contains('toyota_service_config.viewAny') &&
+          permissions.contains('toyota_service_config.update'));
+
+  bool get canCreateServicePackages =>
+      _isSuperAdmin || permissions.contains('toyota_service_config.create');
+
+  bool get canDeleteServicePackages =>
+      _isSuperAdmin || permissions.contains('toyota_service_config.delete');
 
   bool get canViewVisitAnalytics =>
       _isSuperAdmin || permissions.contains('analytics.viewAny');

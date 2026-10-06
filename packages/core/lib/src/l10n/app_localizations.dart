@@ -2087,19 +2087,19 @@ abstract class AppLocalizations {
   /// No description provided for @maintenanceEstimateParts.
   ///
   /// In id, this message translates to:
-  /// **'Biaya part'**
+  /// **'Budget part'**
   String get maintenanceEstimateParts;
 
   /// No description provided for @maintenanceEstimateLabor.
   ///
   /// In id, this message translates to:
-  /// **'Biaya jasa'**
+  /// **'Budget jasa'**
   String get maintenanceEstimateLabor;
 
   /// No description provided for @maintenanceEstimateTotal.
   ///
   /// In id, this message translates to:
-  /// **'Perkiraan total'**
+  /// **'Total budget'**
   String get maintenanceEstimateTotal;
 
   /// No description provided for @maintenanceEstimateIncludes.
@@ -5713,6 +5713,522 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Terima kasih atas kesabaran Anda.'**
   String get maintenanceThanks;
+
+  /// No description provided for @maintenanceEstimateBudgetHeading.
+  ///
+  /// In id, this message translates to:
+  /// **'Estimasi budget servis T-Care'**
+  String get maintenanceEstimateBudgetHeading;
+
+  /// No description provided for @maintenanceEstimateModelHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih dari daftar atau ketik model Toyota Anda.'**
+  String get maintenanceEstimateModelHint;
+
+  /// No description provided for @infoPopupClose.
+  ///
+  /// In id, this message translates to:
+  /// **'Tutup'**
+  String get infoPopupClose;
+
+  /// No description provided for @infoPopupPage.
+  ///
+  /// In id, this message translates to:
+  /// **'Informasi {current} dari {total}'**
+  String infoPopupPage(int current, int total);
+
+  /// No description provided for @adminInfoPopupTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Popup informasi'**
+  String get adminInfoPopupTitle;
+
+  /// No description provided for @adminInfoPopupDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar pop-up beranda, tombol tautan, urutan, dan jadwal tayang'**
+  String get adminInfoPopupDescription;
+
+  /// No description provided for @adminPartnerLogoTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mitra resmi'**
+  String get adminPartnerLogoTitle;
+
+  /// No description provided for @adminPartnerLogoDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Logo mitra di beranda beserta tautannya'**
+  String get adminPartnerLogoDescription;
+
+  /// No description provided for @adminServicePackageTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Paket servis T-Care'**
+  String get adminServicePackageTitle;
+
+  /// No description provided for @adminServicePackageDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Budget jasa dan part untuk simulasi biaya servis'**
+  String get adminServicePackageDescription;
+
+  /// No description provided for @adminContentAdd.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah'**
+  String get adminContentAdd;
+
+  /// No description provided for @adminContentDelete.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus'**
+  String get adminContentDelete;
+
+  /// No description provided for @adminContentDeleteConfirmTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus {name}?'**
+  String adminContentDeleteConfirmTitle(String name);
+
+  /// No description provided for @adminContentDeleteConfirmDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Data yang dihapus tidak dapat dikembalikan.'**
+  String get adminContentDeleteConfirmDescription;
+
+  /// No description provided for @adminContentSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Perubahan tersimpan.'**
+  String get adminContentSaved;
+
+  /// No description provided for @adminContentDeleted.
+  ///
+  /// In id, this message translates to:
+  /// **'Data berhasil dihapus.'**
+  String get adminContentDeleted;
+
+  /// No description provided for @adminContentSaveFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Data belum dapat disimpan. Coba lagi.'**
+  String get adminContentSaveFailed;
+
+  /// No description provided for @adminContentNotFoundTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Data tidak ditemukan'**
+  String get adminContentNotFoundTitle;
+
+  /// No description provided for @adminContentNotFoundDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Data mungkin sudah dihapus. Kembali ke daftar lalu muat ulang.'**
+  String get adminContentNotFoundDescription;
+
+  /// No description provided for @adminContentActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get adminContentActive;
+
+  /// No description provided for @adminContentInactive.
+  ///
+  /// In id, this message translates to:
+  /// **'Nonaktif'**
+  String get adminContentInactive;
+
+  /// No description provided for @adminContentActiveHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Matikan untuk menyembunyikan tanpa menghapus.'**
+  String get adminContentActiveHint;
+
+  /// No description provided for @adminContentSortOrder.
+  ///
+  /// In id, this message translates to:
+  /// **'Urutan tampil'**
+  String get adminContentSortOrder;
+
+  /// No description provided for @adminContentSortOrderHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Angka lebih kecil tampil lebih dulu.'**
+  String get adminContentSortOrderHint;
+
+  /// No description provided for @adminContentPickImage.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih gambar'**
+  String get adminContentPickImage;
+
+  /// No description provided for @adminContentReplaceImage.
+  ///
+  /// In id, this message translates to:
+  /// **'Ganti gambar'**
+  String get adminContentReplaceImage;
+
+  /// No description provided for @adminContentImageRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar wajib dipilih.'**
+  String get adminContentImageRequired;
+
+  /// No description provided for @adminContentInvalidUrl.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan tautan lengkap yang diawali http:// atau https://.'**
+  String get adminContentInvalidUrl;
+
+  /// No description provided for @adminContentNumberRange.
+  ///
+  /// In id, this message translates to:
+  /// **'Masukkan angka {min} sampai {max}.'**
+  String adminContentNumberRange(int min, int max);
+
+  /// No description provided for @adminContentOrderSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Urutan {order}'**
+  String adminContentOrderSummary(int order);
+
+  /// No description provided for @adminInfoPopupEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada popup informasi'**
+  String get adminInfoPopupEmptyTitle;
+
+  /// No description provided for @adminInfoPopupEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahkan gambar pop-up untuk menyambut pelanggan di beranda.'**
+  String get adminInfoPopupEmptyDescription;
+
+  /// No description provided for @adminInfoPopupNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Popup baru'**
+  String get adminInfoPopupNew;
+
+  /// No description provided for @adminInfoPopupEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah popup'**
+  String get adminInfoPopupEdit;
+
+  /// No description provided for @adminInfoPopupFieldTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Judul'**
+  String get adminInfoPopupFieldTitle;
+
+  /// No description provided for @adminInfoPopupFieldTitleHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Penanda untuk admin dan pembaca layar; tidak tampil di atas gambar.'**
+  String get adminInfoPopupFieldTitleHint;
+
+  /// No description provided for @adminInfoPopupFieldImage.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar popup'**
+  String get adminInfoPopupFieldImage;
+
+  /// No description provided for @adminInfoPopupImageHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Rasio 4:5 (mis. 1080×1350 px). JPG, PNG, atau WEBP, maksimal 5 MB.'**
+  String get adminInfoPopupImageHint;
+
+  /// No description provided for @adminInfoPopupButtonSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Tombol (opsional)'**
+  String get adminInfoPopupButtonSection;
+
+  /// No description provided for @adminInfoPopupButtonLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Label tombol'**
+  String get adminInfoPopupButtonLabel;
+
+  /// No description provided for @adminInfoPopupButtonLabelHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Mis. Lihat promo'**
+  String get adminInfoPopupButtonLabelHint;
+
+  /// No description provided for @adminInfoPopupButtonUrl.
+  ///
+  /// In id, this message translates to:
+  /// **'Tautan tombol'**
+  String get adminInfoPopupButtonUrl;
+
+  /// No description provided for @adminInfoPopupButtonUrlHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibuka di browser saat tombol diketuk.'**
+  String get adminInfoPopupButtonUrlHint;
+
+  /// No description provided for @adminInfoPopupButtonPair.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi label dan tautan tombol sekaligus, atau kosongkan keduanya.'**
+  String get adminInfoPopupButtonPair;
+
+  /// No description provided for @adminInfoPopupInterval.
+  ///
+  /// In id, this message translates to:
+  /// **'Tampil setiap'**
+  String get adminInfoPopupInterval;
+
+  /// No description provided for @adminInfoPopupIntervalSuffix.
+  ///
+  /// In id, this message translates to:
+  /// **'jam'**
+  String get adminInfoPopupIntervalSuffix;
+
+  /// No description provided for @adminInfoPopupIntervalHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Popup muncul lagi di perangkat yang sama setelah jeda ini (1–720 jam).'**
+  String get adminInfoPopupIntervalHint;
+
+  /// No description provided for @adminInfoPopupStartsOn.
+  ///
+  /// In id, this message translates to:
+  /// **'Mulai tayang'**
+  String get adminInfoPopupStartsOn;
+
+  /// No description provided for @adminInfoPopupEndsOn.
+  ///
+  /// In id, this message translates to:
+  /// **'Berakhir tayang'**
+  String get adminInfoPopupEndsOn;
+
+  /// No description provided for @adminInfoPopupDateUnset.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak dibatasi'**
+  String get adminInfoPopupDateUnset;
+
+  /// No description provided for @adminInfoPopupEndsBeforeStart.
+  ///
+  /// In id, this message translates to:
+  /// **'Tanggal berakhir tidak boleh sebelum tanggal mulai.'**
+  String get adminInfoPopupEndsBeforeStart;
+
+  /// No description provided for @adminInfoPopupSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Urutan {order} · setiap {hours} jam'**
+  String adminInfoPopupSummary(int order, int hours);
+
+  /// No description provided for @adminInfoPopupStatusRunning.
+  ///
+  /// In id, this message translates to:
+  /// **'Tayang'**
+  String get adminInfoPopupStatusRunning;
+
+  /// No description provided for @adminInfoPopupStatusScheduled.
+  ///
+  /// In id, this message translates to:
+  /// **'Terjadwal'**
+  String get adminInfoPopupStatusScheduled;
+
+  /// No description provided for @adminInfoPopupStatusEnded.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesai'**
+  String get adminInfoPopupStatusEnded;
+
+  /// No description provided for @adminInfoPopupPreview.
+  ///
+  /// In id, this message translates to:
+  /// **'Pratinjau popup'**
+  String get adminInfoPopupPreview;
+
+  /// No description provided for @adminInfoPopupPreviewEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada popup aktif untuk dipratinjau.'**
+  String get adminInfoPopupPreviewEmpty;
+
+  /// No description provided for @adminPartnerLogoEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada logo mitra'**
+  String get adminPartnerLogoEmptyTitle;
+
+  /// No description provided for @adminPartnerLogoEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Bagian Mitra resmi di beranda disembunyikan sampai ada logo aktif.'**
+  String get adminPartnerLogoEmptyDescription;
+
+  /// No description provided for @adminPartnerLogoNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Mitra baru'**
+  String get adminPartnerLogoNew;
+
+  /// No description provided for @adminPartnerLogoEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah mitra'**
+  String get adminPartnerLogoEdit;
+
+  /// No description provided for @adminPartnerLogoFieldName.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama mitra'**
+  String get adminPartnerLogoFieldName;
+
+  /// No description provided for @adminPartnerLogoFieldLogo.
+  ///
+  /// In id, this message translates to:
+  /// **'Logo'**
+  String get adminPartnerLogoFieldLogo;
+
+  /// No description provided for @adminPartnerLogoLogoHint.
+  ///
+  /// In id, this message translates to:
+  /// **'PNG berlatar transparan atau putih dengan margin dipangkas, maksimal 5 MB.'**
+  String get adminPartnerLogoLogoHint;
+
+  /// No description provided for @adminPartnerLogoFieldUrl.
+  ///
+  /// In id, this message translates to:
+  /// **'Tautan saat diketuk'**
+  String get adminPartnerLogoFieldUrl;
+
+  /// No description provided for @adminPartnerLogoUrlHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Opsional. Dibuka di browser.'**
+  String get adminPartnerLogoUrlHint;
+
+  /// No description provided for @adminPartnerLogoNoLink.
+  ///
+  /// In id, this message translates to:
+  /// **'Tanpa tautan'**
+  String get adminPartnerLogoNoLink;
+
+  /// No description provided for @adminServicePackageEmptyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada paket servis'**
+  String get adminServicePackageEmptyTitle;
+
+  /// No description provided for @adminServicePackageEmptyDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Simulasi biaya servis pelanggan tetap kosong sampai paket pertama ditambahkan.'**
+  String get adminServicePackageEmptyDescription;
+
+  /// No description provided for @adminServicePackageNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Paket baru'**
+  String get adminServicePackageNew;
+
+  /// No description provided for @adminServicePackageEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah paket'**
+  String get adminServicePackageEdit;
+
+  /// No description provided for @adminServicePackageAllModels.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua model'**
+  String get adminServicePackageAllModels;
+
+  /// No description provided for @adminServicePackageFieldModel.
+  ///
+  /// In id, this message translates to:
+  /// **'Model kendaraan'**
+  String get adminServicePackageFieldModel;
+
+  /// No description provided for @adminServicePackageModelHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Kosongkan bila berlaku untuk semua model Toyota.'**
+  String get adminServicePackageModelHint;
+
+  /// No description provided for @adminServicePackageFieldKm.
+  ///
+  /// In id, this message translates to:
+  /// **'Kelipatan kilometer'**
+  String get adminServicePackageFieldKm;
+
+  /// No description provided for @adminServicePackageKmHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Mis. 10000 untuk servis 10.000 km.'**
+  String get adminServicePackageKmHint;
+
+  /// No description provided for @adminServicePackageFieldLabor.
+  ///
+  /// In id, this message translates to:
+  /// **'Budget jasa'**
+  String get adminServicePackageFieldLabor;
+
+  /// No description provided for @adminServicePackageFieldParts.
+  ///
+  /// In id, this message translates to:
+  /// **'Budget part'**
+  String get adminServicePackageFieldParts;
+
+  /// No description provided for @adminServicePackageTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Total budget {amount}'**
+  String adminServicePackageTotal(String amount);
+
+  /// No description provided for @adminServicePackageFieldName.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama paket'**
+  String get adminServicePackageFieldName;
+
+  /// No description provided for @adminServicePackageNameHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Opsional. Otomatis \"Servis Berkala … km\" bila dikosongkan.'**
+  String get adminServicePackageNameHint;
+
+  /// No description provided for @adminServicePackageFieldIncludes.
+  ///
+  /// In id, this message translates to:
+  /// **'Cakupan pekerjaan'**
+  String get adminServicePackageFieldIncludes;
+
+  /// No description provided for @adminServicePackageIncludesHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Satu pekerjaan per baris, mis. Ganti oli mesin.'**
+  String get adminServicePackageIncludesHint;
+
+  /// No description provided for @adminServicePackageKm.
+  ///
+  /// In id, this message translates to:
+  /// **'{km} km'**
+  String adminServicePackageKm(String km);
+
+  /// No description provided for @adminServicePackageCostSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Jasa {labor} · Part {parts}'**
+  String adminServicePackageCostSummary(String labor, String parts);
+
+  /// No description provided for @adminServicePackageOutsidePeriod.
+  ///
+  /// In id, this message translates to:
+  /// **'Di luar masa berlaku'**
+  String get adminServicePackageOutsidePeriod;
 }
 
 class _AppLocalizationsDelegate

@@ -1098,13 +1098,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get maintenanceEstimateSubmit => 'Calculate estimate';
 
   @override
-  String get maintenanceEstimateParts => 'Parts cost';
+  String get maintenanceEstimateParts => 'Parts budget';
 
   @override
-  String get maintenanceEstimateLabor => 'Labour cost';
+  String get maintenanceEstimateLabor => 'Labour budget';
 
   @override
-  String get maintenanceEstimateTotal => 'Estimated total';
+  String get maintenanceEstimateTotal => 'Total budget';
 
   @override
   String get maintenanceEstimateIncludes => 'What is covered';
@@ -3089,4 +3089,302 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get maintenanceThanks => 'Thank you for your patience.';
+
+  @override
+  String get maintenanceEstimateBudgetHeading =>
+      'T-Care service budget estimate';
+
+  @override
+  String get maintenanceEstimateModelHint =>
+      'Pick from the list or type your Toyota model.';
+
+  @override
+  String get infoPopupClose => 'Close';
+
+  @override
+  String infoPopupPage(int current, int total) {
+    return 'Notice $current of $total';
+  }
+
+  @override
+  String get adminInfoPopupTitle => 'Information pop-ups';
+
+  @override
+  String get adminInfoPopupDescription =>
+      'Home pop-up images, link buttons, order, and schedule';
+
+  @override
+  String get adminPartnerLogoTitle => 'Official partners';
+
+  @override
+  String get adminPartnerLogoDescription =>
+      'Partner logos on the home page and their links';
+
+  @override
+  String get adminServicePackageTitle => 'T-Care service packages';
+
+  @override
+  String get adminServicePackageDescription =>
+      'Labour and parts budgets for the service cost simulation';
+
+  @override
+  String get adminContentAdd => 'Add';
+
+  @override
+  String get adminContentDelete => 'Delete';
+
+  @override
+  String adminContentDeleteConfirmTitle(String name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get adminContentDeleteConfirmDescription =>
+      'Deleted data cannot be restored.';
+
+  @override
+  String get adminContentSaved => 'Changes saved.';
+
+  @override
+  String get adminContentDeleted => 'Deleted successfully.';
+
+  @override
+  String get adminContentSaveFailed =>
+      'The data could not be saved. Please try again.';
+
+  @override
+  String get adminContentNotFoundTitle => 'Item not found';
+
+  @override
+  String get adminContentNotFoundDescription =>
+      'It may have been deleted. Go back to the list and refresh.';
+
+  @override
+  String get adminContentActive => 'Active';
+
+  @override
+  String get adminContentInactive => 'Inactive';
+
+  @override
+  String get adminContentActiveHint => 'Turn off to hide it without deleting.';
+
+  @override
+  String get adminContentSortOrder => 'Display order';
+
+  @override
+  String get adminContentSortOrderHint => 'Lower numbers appear first.';
+
+  @override
+  String get adminContentPickImage => 'Choose image';
+
+  @override
+  String get adminContentReplaceImage => 'Replace image';
+
+  @override
+  String get adminContentImageRequired => 'Please choose an image.';
+
+  @override
+  String get adminContentInvalidUrl =>
+      'Enter a full link starting with http:// or https://.';
+
+  @override
+  String adminContentNumberRange(int min, int max) {
+    return 'Enter a number from $min to $max.';
+  }
+
+  @override
+  String adminContentOrderSummary(int order) {
+    return 'Order $order';
+  }
+
+  @override
+  String get adminInfoPopupEmptyTitle => 'No information pop-ups yet';
+
+  @override
+  String get adminInfoPopupEmptyDescription =>
+      'Add a pop-up image to greet customers on the home page.';
+
+  @override
+  String get adminInfoPopupNew => 'New pop-up';
+
+  @override
+  String get adminInfoPopupEdit => 'Edit pop-up';
+
+  @override
+  String get adminInfoPopupFieldTitle => 'Title';
+
+  @override
+  String get adminInfoPopupFieldTitleHint =>
+      'A label for admins and screen readers; not shown over the image.';
+
+  @override
+  String get adminInfoPopupFieldImage => 'Pop-up image';
+
+  @override
+  String get adminInfoPopupImageHint =>
+      'A 4:5 ratio (e.g. 1080×1350 px). JPG, PNG, or WEBP, up to 5 MB.';
+
+  @override
+  String get adminInfoPopupButtonSection => 'Button (optional)';
+
+  @override
+  String get adminInfoPopupButtonLabel => 'Button label';
+
+  @override
+  String get adminInfoPopupButtonLabelHint => 'E.g. See the offer';
+
+  @override
+  String get adminInfoPopupButtonUrl => 'Button link';
+
+  @override
+  String get adminInfoPopupButtonUrlHint =>
+      'Opens in the browser when the button is tapped.';
+
+  @override
+  String get adminInfoPopupButtonPair =>
+      'Fill in both the button label and link, or leave both empty.';
+
+  @override
+  String get adminInfoPopupInterval => 'Show every';
+
+  @override
+  String get adminInfoPopupIntervalSuffix => 'hours';
+
+  @override
+  String get adminInfoPopupIntervalHint =>
+      'The pop-up shows again on the same device after this gap (1–720 hours).';
+
+  @override
+  String get adminInfoPopupStartsOn => 'Starts on';
+
+  @override
+  String get adminInfoPopupEndsOn => 'Ends on';
+
+  @override
+  String get adminInfoPopupDateUnset => 'No limit';
+
+  @override
+  String get adminInfoPopupEndsBeforeStart =>
+      'The end date cannot be before the start date.';
+
+  @override
+  String adminInfoPopupSummary(int order, int hours) {
+    return 'Order $order · every $hours h';
+  }
+
+  @override
+  String get adminInfoPopupStatusRunning => 'Live';
+
+  @override
+  String get adminInfoPopupStatusScheduled => 'Scheduled';
+
+  @override
+  String get adminInfoPopupStatusEnded => 'Ended';
+
+  @override
+  String get adminInfoPopupPreview => 'Preview pop-ups';
+
+  @override
+  String get adminInfoPopupPreviewEmpty =>
+      'There is no active pop-up to preview yet.';
+
+  @override
+  String get adminPartnerLogoEmptyTitle => 'No partner logos yet';
+
+  @override
+  String get adminPartnerLogoEmptyDescription =>
+      'The Official partners section stays hidden until a logo is active.';
+
+  @override
+  String get adminPartnerLogoNew => 'New partner';
+
+  @override
+  String get adminPartnerLogoEdit => 'Edit partner';
+
+  @override
+  String get adminPartnerLogoFieldName => 'Partner name';
+
+  @override
+  String get adminPartnerLogoFieldLogo => 'Logo';
+
+  @override
+  String get adminPartnerLogoLogoHint =>
+      'A PNG with a transparent or white background and trimmed margins, up to 5 MB.';
+
+  @override
+  String get adminPartnerLogoFieldUrl => 'Link when tapped';
+
+  @override
+  String get adminPartnerLogoUrlHint => 'Optional. Opens in the browser.';
+
+  @override
+  String get adminPartnerLogoNoLink => 'No link';
+
+  @override
+  String get adminServicePackageEmptyTitle => 'No service packages yet';
+
+  @override
+  String get adminServicePackageEmptyDescription =>
+      'The customer service cost simulation stays empty until the first package is added.';
+
+  @override
+  String get adminServicePackageNew => 'New package';
+
+  @override
+  String get adminServicePackageEdit => 'Edit package';
+
+  @override
+  String get adminServicePackageAllModels => 'All models';
+
+  @override
+  String get adminServicePackageFieldModel => 'Vehicle model';
+
+  @override
+  String get adminServicePackageModelHint =>
+      'Leave empty if it applies to every Toyota model.';
+
+  @override
+  String get adminServicePackageFieldKm => 'Kilometre interval';
+
+  @override
+  String get adminServicePackageKmHint =>
+      'E.g. 10000 for the 10,000 km service.';
+
+  @override
+  String get adminServicePackageFieldLabor => 'Labour budget';
+
+  @override
+  String get adminServicePackageFieldParts => 'Parts budget';
+
+  @override
+  String adminServicePackageTotal(String amount) {
+    return 'Total budget $amount';
+  }
+
+  @override
+  String get adminServicePackageFieldName => 'Package name';
+
+  @override
+  String get adminServicePackageNameHint =>
+      'Optional. Defaults to \"Servis Berkala … km\" when empty.';
+
+  @override
+  String get adminServicePackageFieldIncludes => 'Work included';
+
+  @override
+  String get adminServicePackageIncludesHint =>
+      'One job per line, e.g. Replace engine oil.';
+
+  @override
+  String adminServicePackageKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String adminServicePackageCostSummary(String labor, String parts) {
+    return 'Labour $labor · Parts $parts';
+  }
+
+  @override
+  String get adminServicePackageOutsidePeriod => 'Outside its validity period';
 }

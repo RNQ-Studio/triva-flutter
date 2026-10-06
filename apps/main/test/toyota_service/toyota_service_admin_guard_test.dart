@@ -195,6 +195,30 @@ void main() {
     expect(find.text('HOME'), findsOneWidget);
     expect(find.text('USERS'), findsNothing);
   });
+
+  testWidgets('content routes follow the content and package permissions',
+      (tester) async {
+    final contentHarness = _RouterHarness(
+      initialLocation: '/admin/info-popups/popup-1',
+      user: _user(const ['articles.viewAny', 'articles.update']),
+    );
+    addTearDown(contentHarness.dispose);
+
+    await tester.pumpWidget(contentHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('POPUP'), findsOneWidget);
+
+    final packageHarness = _RouterHarness(
+      initialLocation: '/admin/service-packages',
+      user: _user(const ['articles.viewAny', 'articles.update']),
+    );
+    addTearDown(packageHarness.dispose);
+
+    await tester.pumpWidget(packageHarness.app);
+    await tester.pumpAndSettle();
+    expect(find.text('HOME'), findsOneWidget);
+    expect(find.text('PACKAGES'), findsNothing);
+  });
 }
 
 User _user(List<String> permissions) => User(
@@ -246,6 +270,14 @@ class _RouterHarness {
         GoRoute(
           path: '/admin/users',
           builder: (_, __) => const Text('USERS'),
+        ),
+        GoRoute(
+          path: '/admin/info-popups/:id',
+          builder: (_, __) => const Text('POPUP'),
+        ),
+        GoRoute(
+          path: '/admin/service-packages',
+          builder: (_, __) => const Text('PACKAGES'),
         ),
       ],
     );
