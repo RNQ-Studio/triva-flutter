@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../contact/presentation/whatsapp_handoff.dart';
 import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../domain/maintenance_estimate_models.dart';
 import 'maintenance_estimate_controller.dart';
@@ -18,7 +19,10 @@ String _money(int value) => NumberFormat.currency(
 /// Simulasi biaya servis berkala sebelum pelanggan memutuskan booking.
 ///
 /// Diminta notulensi 19 Agustus 2026: "simulasi penghitungan biaya service -
-/// khusus berkala saja misalnya / just ganti oli".
+/// khusus berkala saja misalnya / just ganti oli". Revisi 13 Oktober 2026:
+/// setiap "Hitung perkiraan" juga langsung membuka WhatsApp cabang
+/// (0857-1311-2000) supaya tim bisa menindaklanjuti; bila hitungan gagal,
+/// WhatsApp tetap dibuka dengan model dan kilometer saja.
 class MaintenanceEstimateScreen extends ConsumerStatefulWidget {
   const MaintenanceEstimateScreen({super.key});
 
@@ -42,11 +46,42 @@ class _MaintenanceEstimateScreenState
   }
 
   Future<void> _estimate() async {
+    final l10n = AppLocalizations.of(context)!;
+    final model = _model.text.trim();
+    final mileage =
+        int.tryParse(_mileage.text.replaceAll(RegExp(r'[^0-9]'), ''));
     await ref.read(maintenanceEstimateProvider.notifier).estimate(
-          vehicleModel: _model.text,
-          mileage:
-              int.tryParse(_mileage.text.replaceAll(RegExp(r'[^0-9]'), '')),
+          vehicleModel: model,
+          mileage: mileage,
         );
+    if (!mounted) return;
+
+    // Hitungan yang gagal tidak menahan pelanggan: WhatsApp tetap terbuka
+    // dengan isian yang sudah ada, hanya tanpa ringkasan paket.
+    final state = ref.read(maintenanceEstimateProvider);
+    final recommended =
+        state.error == null ? state.estimate?.recommended : null;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.serviceEstimate,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappServiceEstimateTitle,
+        details: {
+          l10n.maintenanceEstimateModel: model,
+          l10n.maintenanceEstimateMileage: mileage == null
+              ? null
+              : '${NumberFormat.decimalPattern('id_ID').format(mileage)} km',
+          l10n.whatsappHandoffPackage: recommended?.name,
+          l10n.whatsappHandoffEstimateTotal:
+              recommended == null ? null : _money(recommended.totalCost),
+        },
+      ),
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
   }
 
   @override
@@ -94,6 +129,13 @@ class _MaintenanceEstimateScreenState
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Text(l10n.maintenanceEstimateSubmit),
+            ),
+            const SizedBox(height: AppSpacing.small),
+            Text(
+              l10n.maintenanceEstimateWhatsAppNotice,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
             ),
             if (state.error != null) ...[
               const SizedBox(height: AppSpacing.large),

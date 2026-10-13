@@ -2,15 +2,23 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:triva_app/features/contact/domain/branch_contacts.dart';
+import 'package:triva_app/features/contact/presentation/whatsapp_handoff.dart';
 import 'package:triva_app/features/maintenance_estimate/data/maintenance_estimate_repository.dart';
 import 'package:triva_app/features/maintenance_estimate/domain/maintenance_estimate_models.dart';
 import 'package:triva_app/features/maintenance_estimate/presentation/maintenance_estimate_controller.dart';
 import 'package:triva_app/features/maintenance_estimate/presentation/maintenance_estimate_screen.dart';
 
+import '../support/fake_url_launcher.dart';
+
 class _FakeRepository implements MaintenanceEstimateRepository {
-  _FakeRepository(this.payload);
+  _FakeRepository(this.payload, {this.failEstimate = false});
 
   final Map<String, dynamic> payload;
+
+  /// Meniru server yang gagal menghitung saat tombol ditekan. Panggilan
+  /// tanpa isian (saran model) tetap berhasil.
+  final bool failEstimate;
   int? lastMileage;
   String? lastModel;
 
@@ -21,6 +29,9 @@ class _FakeRepository implements MaintenanceEstimateRepository {
   }) async {
     lastModel = vehicleModel;
     lastMileage = mileage;
+    if (failEstimate && (vehicleModel != null || mileage != null)) {
+      throw StateError('offline');
+    }
     return MaintenanceEstimate.fromJson(payload);
   }
 }
@@ -56,6 +67,9 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
     ProviderScope(
       overrides: [
         maintenanceEstimateRepositoryProvider.overrideWithValue(repository),
+        branchContactsProvider.overrideWith(
+          (ref) async => BranchContacts.fallback,
+        ),
       ],
       child: MaterialApp(
         theme: AppTheme.light,
@@ -72,6 +86,7 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
 void main() {
   testWidgets('the recommended package shows its parts, labour, and total',
       (tester) async {
+    final launcher = FakeUrlLauncher.install();
     final repository = _FakeRepository({
       'vehicle_model': 'Avanza',
       'mileage': 23000,
@@ -104,11 +119,86 @@ void main() {
     expect(find.text('Budget jasa'), findsNWidgets(2));
     expect(find.text('Budget part'), findsNWidgets(2));
     expect(find.text('Paket lainnya'), findsOneWidget);
+
+    // Revisi 13 Oktober 2026: hasil hitungan langsung diteruskan ke WhatsApp
+    // cabang.
+    expect(launcher.launched, hasLength(1));
+    final uri = launcher.launched.single;
+    expect(uri.host, 'wa.me');
+    expect(uri.path, '/6285713112000');
+    final text = uri.queryParameters['text']!;
+    expect(text, startsWith('Halo Auto2000 Kertajaya, saya ingin konsultasi'));
+    expect(text, contains('Model kendaraan: Avanza'));
+    expect(text, contains('Kilometer saat ini: 23.000 km'));
+    expect(text, contains('Paket: Servis berkala 40000 km'));
+    expect(text, contains('Perkiraan total: Rp 2.700.000'));
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a failed calculation still opens WhatsApp with the inputs',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install();
+    final repository = _FakeRepository(
+      {
+        'vehicle_model': null,
+        'mileage': null,
+        'recommended': null,
+        'packages': <Map<String, dynamic>>[],
+      },
+      failEstimate: true,
+    );
+    await _pump(tester, repository);
+
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Model kendaraan'),
+      'Raize',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Kilometer saat ini'),
+      '45000',
+    );
+    await tester.tap(find.text('Hitung perkiraan'));
+    await tester.pumpAndSettle();
+
+    expect(launcher.launched, hasLength(1));
+    final text = launcher.launched.single.queryParameters['text']!;
+    expect(text, contains('Model kendaraan: Raize'));
+    expect(text, contains('Kilometer saat ini: 45.000 km'));
+    expect(text, isNot(contains('Paket:')));
+    expect(text, isNot(contains('Perkiraan total')));
+    expect(launcher.launched.single.path, '/6285713112000');
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a device without WhatsApp keeps the estimate and explains',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install()..result = false;
+    final repository = _FakeRepository({
+      'vehicle_model': null,
+      'mileage': 15000,
+      'recommended': null,
+      'packages': <Map<String, dynamic>>[],
+    });
+    await _pump(tester, repository);
+
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Kilometer saat ini'),
+      '15000',
+    );
+    await tester.tap(find.text('Hitung perkiraan'));
+    await tester.pumpAndSettle();
+
+    expect(launcher.launched, hasLength(1));
+    expect(
+      find.textContaining('Data paket servis belum tersedia'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('WhatsApp tidak dapat dibuka'), findsOneWidget);
   });
 
   testWidgets('an empty catalogue says so instead of showing a fake total',
       (tester) async {
+    FakeUrlLauncher.install();
     final repository = _FakeRepository({
       'vehicle_model': null,
       'mileage': 15000,
