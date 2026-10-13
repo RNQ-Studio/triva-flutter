@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../contact/presentation/whatsapp_handoff.dart';
-import '../../../sales_contact/presentation/sales_contact_picker.dart';
 import '../../domain/acc_credit_formula.dart';
 import '../../domain/credit_models.dart';
 import '../credit_controller.dart';
@@ -17,7 +16,7 @@ import 'widgets/credit_result_sections.dart';
 /// Pelanggan memilih unit, mengisi harga OTR, memilih DP 20/25/30% dan tenor
 /// 1-5 tahun; angsuran per bulan langsung terlihat. "Hitung simulasi"
 /// menyimpan hasil di server dan memberi notifikasi admin; "Konsultasi lebih
-/// lanjut" membuka pilihan SPV & sales untuk WhatsApp.
+/// lanjut" langsung membuka WhatsApp PIC a.n. Sam (revisi 13 Oktober 2026).
 class CreditQuickScreen extends ConsumerStatefulWidget {
   const CreditQuickScreen({super.key, this.sourceProgramId});
 
@@ -111,9 +110,9 @@ class _CreditQuickScreenState extends ConsumerState<CreditQuickScreen> {
   Future<void> _consult(AccCreditQuote? quote) async {
     final l10n = AppLocalizations.of(context)!;
     final program = _program;
-    final opened = await pickSalesAndOpenWhatsApp(
-      context,
+    final opened = await openBranchWhatsApp(
       ref,
+      channel: BranchChannel.credit,
       message: branchWhatsAppMessage(
         title: l10n.whatsappCreditTitle,
         details: {

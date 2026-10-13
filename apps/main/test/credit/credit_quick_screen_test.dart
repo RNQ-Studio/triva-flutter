@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:triva_app/features/contact/domain/branch_contacts.dart';
+import 'package:triva_app/features/contact/presentation/whatsapp_handoff.dart';
 import 'package:triva_app/features/credit/data/credit_repository.dart';
 import 'package:triva_app/features/credit/domain/acc_credit_formula.dart';
 import 'package:triva_app/features/credit/domain/credit_models.dart';
 import 'package:triva_app/features/credit/presentation/credit_controller.dart';
 import 'package:triva_app/features/credit/presentation/screens/credit_quick_screen.dart';
-import 'package:triva_app/features/sales_contact/domain/sales_contact_models.dart';
-import 'package:triva_app/features/sales_contact/presentation/sales_contact_controller.dart';
+
+import '../support/fake_url_launcher.dart';
 
 class _MockCreditRepository extends Mock implements CreditRepository {}
 
@@ -133,15 +135,8 @@ void main() {
             ],
           ),
           creditRateCardProvider.overrideWith((_) async => _card()),
-          salesDirectoryProvider.overrideWith(
-            (_) async => const SalesDirectory([
-              SalesContact(
-                id: 'spv',
-                name: 'Sari SPV',
-                role: 'spv',
-                whatsappNumber: '6281300001111',
-              ),
-            ]),
+          branchContactsProvider.overrideWith(
+            (_) async => BranchContacts.fallback,
           ),
         ],
         child: MaterialApp(
@@ -187,6 +182,7 @@ void main() {
 
   testWidgets('calculating sends the simulation and enables consultation',
       (tester) async {
+    final launcher = FakeUrlLauncher.install();
     when(
       () => repository.quickSimulate(
         programId: any(named: 'programId'),
@@ -217,8 +213,21 @@ void main() {
     await tester.ensureVisible(find.byKey(const ValueKey('quick-consult')));
     await tester.tap(find.byKey(const ValueKey('quick-consult')));
     await tester.pumpAndSettle();
-    expect(find.text('Hubungi sales'), findsOneWidget);
-    expect(find.text('Belum ada sales'), findsOneWidget);
+    // Revisi 13 Oktober 2026: langsung ke WhatsApp PIC a.n. Sam, tanpa
+    // lembar pemilihan sales.
+    expect(find.text('Hubungi sales'), findsNothing);
+    expect(launcher.launched, hasLength(1));
+    final uri = launcher.launched.single;
+    expect(uri.host, 'wa.me');
+    expect(uri.path, '/6281555687868');
+    expect(
+      uri.queryParameters['text'],
+      startsWith('Halo, saya ingin konsultasi simulasi kredit'),
+    );
+    expect(
+      uri.queryParameters['text'],
+      contains('Nomor referensi: SK-260904-ABCDEFGH'),
+    );
     expect(tester.takeException(), isNull);
   });
 }
