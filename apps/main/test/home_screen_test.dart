@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:triva_app/branding/partner_brands.dart';
+import 'package:triva_app/features/contact/domain/branch_contacts.dart';
+import 'package:triva_app/features/contact/presentation/whatsapp_handoff.dart';
 import 'package:triva_app/features/home/presentation/home_screen.dart';
 import 'package:triva_app/features/home_banner/domain/home_banner_models.dart';
 import 'package:triva_app/features/home_banner/presentation/home_banner_controller.dart';
@@ -18,6 +20,8 @@ import 'package:triva_app/features/partner_logo/presentation/partner_logo_strip.
 import 'package:triva_app/features/promotion/domain/promotion_models.dart';
 import 'package:triva_app/features/promotion/presentation/promotion_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
+
+import 'support/fake_url_launcher.dart';
 
 class _MemoryStorage implements StorageService {
   final values = <String, String>{};
@@ -77,6 +81,11 @@ void main() {
             if (vehicleLoadFails) throw StateError('offline');
             return const [];
           }),
+          branchContactsProvider.overrideWith(
+            (ref) async => BranchContacts.fromConfig(const {
+              'whatsapp_general': '0857-1311-2000',
+            }),
+          ),
           runningPromotionsProvider.overrideWith((ref) async => promotions),
           runningHomeBannersProvider.overrideWith((ref) async => banners),
           runningInfoPopupsProvider.overrideWith((ref) async => infoPopups),
@@ -460,5 +469,63 @@ void main() {
     expect(find.text('Data belum dapat dimuat.'), findsOneWidget);
     expect(find.byIcon(Icons.refresh_rounded), findsOneWidget);
     expect(find.text('Belum ada kendaraan'), findsNothing);
+  });
+  testWidgets(
+      'the WhatsApp button at the very bottom opens the branch contact number',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install();
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      partnerLogos: const [],
+    );
+    await tester.pump();
+    final button = find.byKey(const ValueKey('home-whatsapp-contact'));
+    await tester.ensureVisible(button);
+    await tester.pumpAndSettle();
+
+    // Tombol WhatsApp menjadi elemen terakhir beranda, di bawah bagian
+    // kendaraan saya.
+    expect(
+      tester.getRect(button).top,
+      greaterThan(tester.getRect(find.text('Kendaraan Saya')).bottom),
+    );
+    expect(find.text('Hubungi kami via WhatsApp'), findsOneWidget);
+
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+
+    expect(launcher.launched, hasLength(1));
+    final uri = launcher.launched.single;
+    expect(uri.host, 'wa.me');
+    expect(uri.path, '/6285713112000');
+    expect(
+      uri.queryParameters['text'],
+      'Halo Auto2000 Kertajaya, saya ingin bertanya lewat aplikasi TRIVA.',
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a device without WhatsApp explains why nothing opened',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install()..result = false;
+    await pumpHome(
+      tester,
+      theme: AppTheme.light,
+      authState: const AuthUnauthenticated(),
+      textScale: 1,
+      partnerLogos: const [],
+    );
+    await tester.pump();
+    final button = find.byKey(const ValueKey('home-whatsapp-contact'));
+    await tester.ensureVisible(button);
+    await tester.pumpAndSettle();
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+
+    expect(launcher.launched, hasLength(1));
+    expect(find.textContaining('WhatsApp tidak dapat dibuka'), findsOneWidget);
   });
 }

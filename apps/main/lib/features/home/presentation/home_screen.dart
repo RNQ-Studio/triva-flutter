@@ -12,6 +12,7 @@ import '../../toyota_service/presentation/toyota_service_controller.dart';
 import '../../toyota_service/presentation/toyota_service_paths.dart';
 import '../../toyota_service/domain/toyota_service_models.dart';
 import '../../otoxpert/presentation/otoxpert_paths.dart';
+import '../../contact/presentation/whatsapp_handoff.dart';
 import '../../credit/presentation/credit_paths.dart';
 import '../../promotion/domain/promotion_models.dart';
 import '../../promotion/presentation/promotion_controller.dart';
@@ -263,6 +264,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                           const SizedBox(height: AppSpacing.xxLarge),
                           const PartnerLogoStrip(),
+                          const SizedBox(height: AppSpacing.xxLarge),
+                          const _WhatsAppContactCard(),
                         ],
                       ),
                     ),
@@ -271,6 +274,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Kontak umum di bagian paling bawah beranda (revisi 13 Oktober 2026): satu
+/// ketukan langsung membuka WhatsApp cabang.
+class _WhatsAppContactCard extends ConsumerWidget {
+  const _WhatsAppContactCard();
+
+  Future<void> _open(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.general,
+      message: l10n.whatsappGeneralTitle,
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.large),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              l10n.homeWhatsAppTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: AppSpacing.xSmall),
+            Text(
+              l10n.homeWhatsAppSubtitle,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+            ),
+            const SizedBox(height: AppSpacing.medium),
+            FilledButton.icon(
+              key: const ValueKey('home-whatsapp-contact'),
+              onPressed: () => _open(context, ref),
+              icon: const Icon(Icons.chat_outlined),
+              label: Text(l10n.homeWhatsAppButton),
+            ),
+          ],
         ),
       ),
     );
