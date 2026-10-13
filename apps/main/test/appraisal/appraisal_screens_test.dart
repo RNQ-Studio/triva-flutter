@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triva_app/features/appraisal/domain/appraisal_models.dart';
+import 'package:triva_app/features/contact/domain/branch_contacts.dart';
+import 'package:triva_app/features/contact/presentation/whatsapp_handoff.dart';
 import 'package:triva_app/features/appraisal/presentation/appraisal_controller.dart';
 import 'package:triva_app/features/appraisal/presentation/appraisal_paths.dart';
 import 'package:triva_app/features/appraisal/presentation/screens/appraisal_activity_screen.dart';
@@ -23,6 +25,8 @@ import 'package:triva_app/features/credit/presentation/credit_controller.dart';
 import 'package:triva_app/features/body_paint/presentation/body_paint_controller.dart';
 import 'package:triva_app/features/toyota_service/presentation/toyota_service_controller.dart';
 import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
+
+import '../support/fake_url_launcher.dart';
 
 class _FakeFlowController extends AppraisalFlowController {
   _FakeFlowController(this.draft);
@@ -1015,7 +1019,7 @@ void main() {
     await tester.tap(find.text('Batal'));
     await tester.pumpAndSettle();
 
-    // Jadwalkan inspeksi selalu tersedia (menuju WhatsApp SPV).
+    // Jadwalkan inspeksi selalu tersedia (menuju WhatsApp PIC appraisal).
     await tester.scrollUntilVisible(
       find.text('Jadwalkan inspeksi'),
       200,
@@ -1027,6 +1031,101 @@ void main() {
             find.widgetWithText(OutlinedButton, 'Jadwalkan inspeksi'),
           )
           .onPressed,
+      isNotNull,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('scheduling an inspection opens WhatsApp of the appraisal PIC',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install();
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+    );
+
+    final schedule = find.widgetWithText(OutlinedButton, 'Jadwalkan inspeksi');
+    // Hasil memakai ListView yang dibangun malas, jadi gulir sampai tombolnya
+    // benar-benar dibangun.
+    await tester.scrollUntilVisible(
+      schedule,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(schedule);
+    await tester.pumpAndSettle();
+
+    // Revisi 13 Oktober 2026: bukan lagi SPV dari daftar sales, tetapi PIC
+    // appraisal a.n. Sam, dan tanpa lembar pemilihan sales.
+    expect(find.text('Hubungi sales'), findsNothing);
+    expect(launcher.launched, hasLength(1));
+    final uri = launcher.launched.single;
+    expect(uri.host, 'wa.me');
+    expect(uri.path, '/6281555687868');
+    expect(
+        uri.queryParameters['text'], contains('Keperluan: Jadwalkan inspeksi'));
+    expect(uri.queryParameters['text'],
+        contains('Harga appraisal: Rp 176.000.000'));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the appraisal PIC button shows the name and opens their chat',
+      (tester) async {
+    final launcher = FakeUrlLauncher.install();
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+    );
+
+    final button = find.byKey(const ValueKey('contact-appraisal-pic'));
+    // Hasil memakai ListView yang dibangun malas, jadi gulir sampai tombolnya
+    // benar-benar dibangun.
+    await tester.scrollUntilVisible(
+      button,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Hubungi PIC Appraisal (Sam)'), findsOneWidget);
+
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+
+    expect(launcher.launched, hasLength(1));
+    final uri = launcher.launched.single;
+    expect(uri.path, '/6281555687868');
+    expect(
+      uri.queryParameters['text'],
+      contains('Keperluan: Konsultasi hasil appraisal'),
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the appraisal PIC stays reachable after the price is accepted',
+      (tester) async {
+    await _pump(
+      tester,
+      widget: const AppraisalResultScreen(appraisalId: 'appraisal-1'),
+      brightness: Brightness.light,
+      detailData: _acceptedAppraisal,
+    );
+
+    final button = find.byKey(const ValueKey('contact-appraisal-pic'));
+    // Hasil memakai ListView yang dibangun malas, jadi gulir sampai tombolnya
+    // benar-benar dibangun.
+    await tester.scrollUntilVisible(
+      button,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Terima harga'), findsNothing);
+    expect(
+      tester.widget<FilledButton>(button).onPressed,
       isNotNull,
     );
     expect(tester.takeException(), isNull);
@@ -1178,6 +1277,9 @@ Future<void> _pump(
         ),
         appraisalUpgradeOptionsProvider.overrideWith(
           (ref, id) async => upgradeOffer,
+        ),
+        branchContactsProvider.overrideWith(
+          (ref) async => BranchContacts.fallback,
         ),
         salesDirectoryProvider.overrideWith(
           (ref) async => const SalesDirectory([

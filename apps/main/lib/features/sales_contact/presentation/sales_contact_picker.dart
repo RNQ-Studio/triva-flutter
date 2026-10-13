@@ -57,24 +57,6 @@ Future<bool> pickSalesAndOpenWhatsApp(
   return openSalesWhatsApp(chosen, message);
 }
 
-/// Membuka WhatsApp supervisor langsung (jadwal inspeksi, terima harga, dan
-/// tindak lanjut appraisal lainnya).
-Future<bool> openSupervisorWhatsApp(
-  WidgetRef ref, {
-  required String message,
-}) async {
-  final directory = await _loadDirectory(ref);
-  final supervisor = directory.defaultSupervisor;
-  if (supervisor == null) {
-    return openBranchWhatsApp(
-      ref,
-      channel: BranchChannel.toyotaService,
-      message: message,
-    );
-  }
-  return openSalesWhatsApp(supervisor, message);
-}
-
 Future<SalesDirectory> _loadDirectory(WidgetRef ref) async {
   try {
     return await ref.read(salesDirectoryProvider.future);

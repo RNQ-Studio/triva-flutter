@@ -45,12 +45,14 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     };
   }
 
-  /// Revisi 4 September 2026: jadwal inspeksi dan tindak lanjut hasil
-  /// appraisal selalu diarahkan ke WhatsApp supervisor.
-  Future<void> _contactSupervisor(String intent) async {
+  /// Revisi 13 Oktober 2026: jadwal inspeksi, terima harga, dan konsultasi
+  /// hasil appraisal diarahkan ke WhatsApp PIC appraisal (a.n. Sam), bukan
+  /// lagi ke supervisor dari daftar sales.
+  Future<void> _contactAppraisalPic(String intent) async {
     final l10n = AppLocalizations.of(context)!;
-    final opened = await openSupervisorWhatsApp(
+    final opened = await openBranchWhatsApp(
       ref,
+      channel: BranchChannel.appraisalPic,
       message: branchWhatsAppMessage(
         title: l10n.whatsappSpvAppraisalTitle,
         details: {
@@ -70,11 +72,14 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
     final l10n = AppLocalizations.of(context)!;
     await _decide('accepted');
     if (!mounted) return;
-    await _contactSupervisor(l10n.intentAcceptPrice);
+    await _contactAppraisalPic(l10n.intentAcceptPrice);
   }
 
-  Future<void> _scheduleInspection() => _contactSupervisor(
+  Future<void> _scheduleInspection() => _contactAppraisalPic(
       AppLocalizations.of(context)!.intentScheduleInspection);
+
+  Future<void> _consultAppraisalPic() => _contactAppraisalPic(
+      AppLocalizations.of(context)!.intentAppraisalConsultation);
 
   /// Unit rekomendasi diketuk: pelanggan memilih sales (atau SPV bila belum
   /// ada sales) lalu WhatsApp terbuka dengan ringkasan unit dan appraisal.
@@ -213,6 +218,8 @@ class _AppraisalResultScreenState extends ConsumerState<AppraisalResultScreen> {
                 onAccept: _accept,
                 onReject: _reject,
                 onSchedule: _scheduleInspection,
+                onContactPic: _consultAppraisalPic,
+                appraisalPicName: ref.watch(appraisalPicNameProvider),
                 onUnitTap: _contactSalesForUnit,
               );
             },
@@ -242,6 +249,8 @@ class _ResultContent extends StatelessWidget {
     required this.onAccept,
     required this.onReject,
     required this.onSchedule,
+    required this.onContactPic,
+    required this.appraisalPicName,
     required this.onUnitTap,
   });
 
@@ -253,6 +262,8 @@ class _ResultContent extends StatelessWidget {
   final VoidCallback onAccept;
   final VoidCallback onReject;
   final VoidCallback onSchedule;
+  final VoidCallback onContactPic;
+  final String appraisalPicName;
   final ValueChanged<AppraisalUpgradeOption> onUnitTap;
 
   String _money(int value) => NumberFormat.currency(
@@ -524,7 +535,8 @@ class _ResultContent extends StatelessWidget {
             child: Text(l10n.acceptPrice),
           ),
           const SizedBox(height: AppSpacing.small),
-          // Revisi 4 September 2026: jadwal inspeksi selalu lewat WhatsApp SPV.
+          // Revisi 13 Oktober 2026: jadwal inspeksi lewat WhatsApp PIC
+          // appraisal.
           OutlinedButton.icon(
             onPressed: busy ? null : onSchedule,
             icon: const Icon(Icons.chat_outlined),
@@ -551,6 +563,15 @@ class _ResultContent extends StatelessWidget {
             ),
           ),
         ],
+        // PIC appraisal selalu bisa dihubungi dari hasil appraisal, termasuk
+        // setelah pelanggan menerima atau menolak harga.
+        const SizedBox(height: AppSpacing.small),
+        FilledButton.tonalIcon(
+          key: const ValueKey('contact-appraisal-pic'),
+          onPressed: busy ? null : onContactPic,
+          icon: const Icon(Icons.support_agent_outlined),
+          label: Text(l10n.contactAppraisalPic(appraisalPicName)),
+        ),
       ],
     );
   }
