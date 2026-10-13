@@ -157,8 +157,10 @@ def main() -> int:
     if args.rollout < 1.0:
         release["userFraction"] = args.rollout
     if args.release_notes:
+        # Listing Play TRIVA hanya punya bahasa "id"; kode "id-ID" ditolak
+        # saat track diperbarui (rilis 30 Agustus 2026).
         release["releaseNotes"] = [
-            {"language": "id-ID", "text": args.release_notes[:500]}
+            {"language": "id", "text": args.release_notes[:500]}
         ]
 
     call(
