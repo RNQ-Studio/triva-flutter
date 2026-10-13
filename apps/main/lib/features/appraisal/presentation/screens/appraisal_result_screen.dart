@@ -10,6 +10,7 @@ import '../../../contact/presentation/whatsapp_handoff.dart';
 import '../../../credit/presentation/credit_paths.dart';
 import '../../../sales_contact/presentation/sales_contact_picker.dart';
 import '../../domain/appraisal_models.dart';
+import '../../domain/recommended_unit_photos.dart';
 import '../appraisal_controller.dart';
 import '../appraisal_paths.dart';
 import '../widgets/expected_price_dialog.dart';
@@ -653,6 +654,28 @@ class _UnitCard extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final image = option.imageUrl;
+    final photo = recommendedUnitPhoto(
+      unitKey: option.unitKey,
+      vehicleModel: option.vehicleModel,
+    );
+    final placeholder = Icon(
+      Icons.directions_car_filled_outlined,
+      size: 40,
+      color: colors.onSurfaceVariant,
+    );
+    // Foto produk berlatar putih, jadi ditampilkan utuh di atas putih alih-
+    // alih dipotong ke rasio kartu.
+    Widget bundledPhoto() => photo == null
+        ? placeholder
+        : ColoredBox(
+            color: Colors.white,
+            child: Image.asset(
+              photo,
+              key: ValueKey('recommended-unit-photo-${option.programId}'),
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => placeholder,
+            ),
+          );
     return Material(
       key: ValueKey('recommended-unit-${option.programId}'),
       color: colors.surface,
@@ -674,17 +697,9 @@ class _UnitCard extends StatelessWidget {
                     ? Image.network(
                         image,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.directions_car_filled_outlined,
-                          size: 40,
-                          color: colors.onSurfaceVariant,
-                        ),
+                        errorBuilder: (_, __, ___) => bundledPhoto(),
                       )
-                    : Icon(
-                        Icons.directions_car_filled_outlined,
-                        size: 40,
-                        color: colors.onSurfaceVariant,
-                      ),
+                    : bundledPhoto(),
               ),
             ),
             Padding(

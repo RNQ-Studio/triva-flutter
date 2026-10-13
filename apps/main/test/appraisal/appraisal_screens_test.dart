@@ -1004,6 +1004,17 @@ void main() {
     expect(find.text('Rp 3.900.000'), findsOneWidget);
     expect(find.text('Rp 176.000.000'), findsWidgets);
 
+    // Revisi 13 Oktober 2026: kartu unit memakai foto sesuai jenis unitnya.
+    for (final (programId, asset) in const [
+      ('program-veloz', 'assets/units/veloz_hybrid.jpg'),
+      ('program-zenix', 'assets/units/zenix_hybrid.jpg'),
+    ]) {
+      final photo = tester.widget<Image>(
+        find.byKey(ValueKey('recommended-unit-photo-$programId')),
+      );
+      expect((photo.image as AssetImage).assetName, asset);
+    }
+
     await tester.ensureVisible(
       find.byKey(const ValueKey('recommended-unit-program-veloz')),
     );
