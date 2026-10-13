@@ -970,6 +970,42 @@ class AppLocalizationsId extends AppLocalizations {
       'WhatsApp tidak dapat dibuka. Data Anda tetap tersimpan dan tim kami akan menghubungi Anda.';
 
   @override
+  String get homeWhatsAppTitle => 'Ada pertanyaan?';
+
+  @override
+  String get homeWhatsAppSubtitle =>
+      'Tim Auto2000 Kertajaya siap membantu lewat WhatsApp.';
+
+  @override
+  String get homeWhatsAppButton => 'Hubungi kami via WhatsApp';
+
+  @override
+  String get whatsappGeneralTitle =>
+      'Halo Auto2000 Kertajaya, saya ingin bertanya lewat aplikasi TRIVA.';
+
+  @override
+  String contactAppraisalPic(String name) {
+    return 'Hubungi PIC Appraisal ($name)';
+  }
+
+  @override
+  String get intentAppraisalConsultation => 'Konsultasi hasil appraisal';
+
+  @override
+  String get whatsappServiceEstimateTitle =>
+      'Halo Auto2000 Kertajaya, saya ingin konsultasi simulasi biaya servis dari aplikasi TRIVA.';
+
+  @override
+  String get whatsappHandoffPackage => 'Paket';
+
+  @override
+  String get whatsappHandoffEstimateTotal => 'Perkiraan total';
+
+  @override
+  String get maintenanceEstimateWhatsAppNotice =>
+      'Hasil perkiraan juga dikirim ke WhatsApp Auto2000 Kertajaya supaya tim kami bisa menindaklanjuti.';
+
+  @override
   String get whatsappHandoffOtoxpertTitle =>
       'Halo OtoXpert Auto2000, saya ingin booking servis lewat aplikasi TRIVA.';
 

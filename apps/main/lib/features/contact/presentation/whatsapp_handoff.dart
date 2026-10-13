@@ -21,15 +21,34 @@ final branchContactsProvider = FutureProvider<BranchContacts>((ref) {
 });
 
 /// Layanan yang punya nomor WhatsApp tujuan sendiri.
-enum BranchChannel { toyotaService, otoxpert, bodyPaint }
+enum BranchChannel {
+  toyotaService,
+  otoxpert,
+  bodyPaint,
+  general,
+  appraisalPic,
+  credit,
+  serviceEstimate,
+}
 
 extension BranchChannelNumber on BranchChannel {
   String numberFrom(BranchContacts contacts) => switch (this) {
         BranchChannel.toyotaService => contacts.toyotaService,
         BranchChannel.otoxpert => contacts.otoxpert,
         BranchChannel.bodyPaint => contacts.bodyPaint,
+        BranchChannel.general => contacts.general,
+        BranchChannel.appraisalPic => contacts.appraisalPic,
+        BranchChannel.credit => contacts.credit,
+        BranchChannel.serviceEstimate => contacts.serviceEstimate,
       };
 }
+
+/// Nama PIC appraisal untuk label tombol. Selama konfigurasi belum termuat,
+/// nama bawaan dipakai supaya tombol tidak berkedip tanpa label.
+final appraisalPicNameProvider = Provider<String>((ref) {
+  return ref.watch(branchContactsProvider).value?.appraisalPicName ??
+      BranchContacts.fallback.appraisalPicName;
+});
 
 /// Membuka WhatsApp cabang dengan ringkasan yang sudah terisi.
 ///

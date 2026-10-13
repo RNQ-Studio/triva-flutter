@@ -42,6 +42,42 @@ void main() {
     expect(BranchChannel.bodyPaint.numberFrom(contacts), '6285713112000');
   });
 
+  test('the October revision destinations default to the agreed numbers', () {
+    const contacts = BranchContacts.fallback;
+
+    // Revisi 13 Oktober 2026: beranda dan simulasi servis ke nomor cabang,
+    // hasil appraisal dan simulasi kredit ke PIC appraisal a.n. Sam.
+    expect(BranchChannel.general.numberFrom(contacts), '6285713112000');
+    expect(BranchChannel.serviceEstimate.numberFrom(contacts), '6285713112000');
+    expect(BranchChannel.appraisalPic.numberFrom(contacts), '6281555687868');
+    expect(BranchChannel.credit.numberFrom(contacts), '6281555687868');
+    expect(contacts.appraisalPicName, 'Sam');
+  });
+
+  test('the branch can change the appraisal PIC from the admin panel', () {
+    final contacts = BranchContacts.fromConfig({
+      'whatsapp_appraisal_pic': '0812-0000-1111',
+      'whatsapp_appraisal_pic_name': '  Budi  ',
+      'whatsapp_credit': '+62 812 0000 2222',
+      'whatsapp_general': '',
+      'whatsapp_service_estimate': null,
+    });
+
+    expect(contacts.appraisalPic, '6281200001111');
+    expect(contacts.appraisalPicName, 'Budi');
+    expect(contacts.credit, '6281200002222');
+    expect(contacts.general, BranchContacts.fallback.general);
+    expect(contacts.serviceEstimate, BranchContacts.fallback.serviceEstimate);
+  });
+
+  test('a blank PIC name keeps the default label', () {
+    final contacts = BranchContacts.fromConfig({
+      'whatsapp_appraisal_pic_name': '   ',
+    });
+
+    expect(contacts.appraisalPicName, 'Sam');
+  });
+
   test('the summary drops empty fields so operators read only real data', () {
     final message = branchWhatsAppMessage(
       title: 'Halo Auto2000',

@@ -1856,6 +1856,66 @@ abstract class AppLocalizations {
   /// **'WhatsApp tidak dapat dibuka. Data Anda tetap tersimpan dan tim kami akan menghubungi Anda.'**
   String get whatsappHandoffFailed;
 
+  /// No description provided for @homeWhatsAppTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Ada pertanyaan?'**
+  String get homeWhatsAppTitle;
+
+  /// No description provided for @homeWhatsAppSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tim Auto2000 Kertajaya siap membantu lewat WhatsApp.'**
+  String get homeWhatsAppSubtitle;
+
+  /// No description provided for @homeWhatsAppButton.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi kami via WhatsApp'**
+  String get homeWhatsAppButton;
+
+  /// No description provided for @whatsappGeneralTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Auto2000 Kertajaya, saya ingin bertanya lewat aplikasi TRIVA.'**
+  String get whatsappGeneralTitle;
+
+  /// No description provided for @contactAppraisalPic.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi PIC Appraisal ({name})'**
+  String contactAppraisalPic(String name);
+
+  /// No description provided for @intentAppraisalConsultation.
+  ///
+  /// In id, this message translates to:
+  /// **'Konsultasi hasil appraisal'**
+  String get intentAppraisalConsultation;
+
+  /// No description provided for @whatsappServiceEstimateTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Halo Auto2000 Kertajaya, saya ingin konsultasi simulasi biaya servis dari aplikasi TRIVA.'**
+  String get whatsappServiceEstimateTitle;
+
+  /// No description provided for @whatsappHandoffPackage.
+  ///
+  /// In id, this message translates to:
+  /// **'Paket'**
+  String get whatsappHandoffPackage;
+
+  /// No description provided for @whatsappHandoffEstimateTotal.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkiraan total'**
+  String get whatsappHandoffEstimateTotal;
+
+  /// No description provided for @maintenanceEstimateWhatsAppNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Hasil perkiraan juga dikirim ke WhatsApp Auto2000 Kertajaya supaya tim kami bisa menindaklanjuti.'**
+  String get maintenanceEstimateWhatsAppNotice;
+
   /// No description provided for @whatsappHandoffOtoxpertTitle.
   ///
   /// In id, this message translates to:

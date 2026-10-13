@@ -974,6 +974,42 @@ class AppLocalizationsEn extends AppLocalizations {
       'WhatsApp could not be opened. Your data is saved and our team will contact you.';
 
   @override
+  String get homeWhatsAppTitle => 'Have a question?';
+
+  @override
+  String get homeWhatsAppSubtitle =>
+      'The Auto2000 Kertajaya team is ready to help on WhatsApp.';
+
+  @override
+  String get homeWhatsAppButton => 'Contact us on WhatsApp';
+
+  @override
+  String get whatsappGeneralTitle =>
+      'Hello Auto2000 Kertajaya, I have a question from the TRIVA app.';
+
+  @override
+  String contactAppraisalPic(String name) {
+    return 'Contact the appraisal PIC ($name)';
+  }
+
+  @override
+  String get intentAppraisalConsultation => 'Discuss the appraisal result';
+
+  @override
+  String get whatsappServiceEstimateTitle =>
+      'Hello Auto2000 Kertajaya, I would like to discuss a service cost simulation from the TRIVA app.';
+
+  @override
+  String get whatsappHandoffPackage => 'Package';
+
+  @override
+  String get whatsappHandoffEstimateTotal => 'Estimated total';
+
+  @override
+  String get maintenanceEstimateWhatsAppNotice =>
+      'The estimate is also sent to Auto2000 Kertajaya on WhatsApp so our team can follow up.';
+
+  @override
   String get whatsappHandoffOtoxpertTitle =>
       'Hello OtoXpert Auto2000, I would like to book a service through the TRIVA app.';
 

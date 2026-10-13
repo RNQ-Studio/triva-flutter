@@ -45,6 +45,9 @@ dev_dependencies:
   # foto appraisal.
   path_provider_platform_interface: ^2.1.2
   plugin_platform_interface: ^2.1.8
+  # Dipakai test untuk menangkap tautan WhatsApp yang dibuka tanpa
+  # benar-benar meluncurkan aplikasi lain.
+  url_launcher_platform_interface: ^2.3.2
   riverpod_generator: ^4.0.3
   build_runner: ^2.4.13
   flutter_launcher_icons: ^0.14.4
