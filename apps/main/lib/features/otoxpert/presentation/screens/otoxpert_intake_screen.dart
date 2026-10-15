@@ -99,6 +99,7 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
           child: flow.when(
             data: (state) {
               _initializeDetails(state.draft);
+              _syncWorkshop(state.draft);
               return options.when(
                 data: (value) => Center(
                   child: ConstrainedBox(
@@ -593,6 +594,27 @@ class _OtoxpertIntakeScreenState extends ConsumerState<OtoxpertIntakeScreen> {
     _partnerConsent = draft.partnerConsent;
   }
 
+  /// Memasang bengkel OtoXpert Kertajaya ke draft tanpa menunggu pelanggan
+  /// membuka step Layanan. Dipantau dari layar, bukan dari isi step, karena
+  /// step yang tidak aktif tidak menerima pembaruan provider.
+  void _syncWorkshop(OtoxpertDraft draft) {
+    final vehicle = draft.vehicle;
+    if (vehicle == null) return;
+    final workshops =
+        ref.watch(otoxpertWorkshopsProvider(vehicle.id)).value ?? const [];
+    if (workshops.isEmpty) return;
+    final workshop = _resolveWorkshop(workshops, draft);
+    if (draft.workshop?.id == workshop.id) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final hadService = draft.service != null;
+      await ref.read(otoxpertFlowProvider.notifier).selectWorkshop(workshop);
+      // Draft lama dengan bengkel yang sudah tidak berlaku kehilangan
+      // layanannya, jadi pelanggan dikembalikan ke step Layanan.
+      if (mounted && hadService && _step > 1) setState(() => _step = 1);
+    });
+  }
+
   int _furthestStep(OtoxpertDraft draft) {
     if (draft.vehicle == null) return 0;
     if (draft.workshop == null || draft.service == null) return 1;
@@ -683,6 +705,9 @@ class _VehicleStep extends ConsumerWidget {
   }
 }
 
+/// Lokasi bengkel OtoXpert untuk TRIVA selalu OtoXpert Kertajaya (revisi
+/// 15 Oktober 2026), jadi pelanggan tidak memilih bengkel: bengkel dari API
+/// langsung dipakai dan hanya ditampilkan sebagai informasi lokasi.
 class _WorkshopServiceStep extends ConsumerWidget {
   const _WorkshopServiceStep({required this.draft});
 
@@ -692,54 +717,101 @@ class _WorkshopServiceStep extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     if (draft.vehicle == null) return Text(l10n.bookingIncompleteError);
-    final workshops = ref.watch(otoxpertWorkshopsProvider(draft.vehicle!.id));
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.otoxpertChooseWorkshop,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        const SizedBox(height: AppSpacing.small),
-        workshops.when(
-          data: (items) => items.isEmpty
-              ? _InlineEmpty(
-                  title: l10n.otoxpertWorkshopEmpty,
-                  description: l10n.availabilityEmptyDescription,
-                )
-              : Column(
-                  children: [
-                    for (final workshop in items)
-                      _SelectionCard(
-                        selected: workshop.id == draft.workshop?.id,
-                        title: workshop.name,
-                        subtitle: '${workshop.address}\n${workshop.city}',
-                        icon: Icons.home_repair_service_outlined,
-                        onTap: () => ref
-                            .read(otoxpertFlowProvider.notifier)
-                            .selectWorkshop(workshop),
-                      ),
-                  ],
+    final provider = otoxpertWorkshopsProvider(draft.vehicle!.id);
+    return ref.watch(provider).when(
+          data: (items) {
+            if (items.isEmpty) {
+              return _InlineEmpty(
+                title: l10n.otoxpertBookingUnavailable,
+                description: l10n.otoxpertBookingUnavailableDescription,
+                action: OutlinedButton.icon(
+                  onPressed: () => _contactOtoxpert(context, ref, l10n),
+                  icon: const Icon(Icons.chat_outlined),
+                  label: Text(l10n.whatsappContactBranch),
                 ),
+              );
+            }
+            final workshop = _resolveWorkshop(items, draft);
+            final synced = draft.workshop?.id == workshop.id;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.otoxpertWorkshopLocation,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.small),
+                _WorkshopLocation(workshop: workshop),
+                const SizedBox(height: AppSpacing.large),
+                Text(
+                  l10n.otoxpertChooseService,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.small),
+                if (synced)
+                  _Services(draft: draft)
+                else
+                  const LinearProgressIndicator(),
+              ],
+            );
+          },
           loading: () => const LinearProgressIndicator(),
           error: (_, __) => _LoadError(
             compact: true,
-            onRetry: () =>
-                ref.invalidate(otoxpertWorkshopsProvider(draft.vehicle!.id)),
+            onRetry: () => ref.invalidate(provider),
+          ),
+        );
+  }
+
+  Future<void> _contactOtoxpert(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) async {
+    final vehicle = draft.vehicle;
+    final opened = await openBranchWhatsApp(
+      ref,
+      channel: BranchChannel.otoxpert,
+      message: branchWhatsAppMessage(
+        title: l10n.whatsappHandoffOtoxpertTitle,
+        details: {
+          l10n.whatsappHandoffVehicle: vehicle == null
+              ? null
+              : '${vehicle.make} ${vehicle.model} ${vehicle.year}',
+          l10n.whatsappHandoffPlate: vehicle?.licensePlate,
+        },
+      ),
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.whatsappHandoffFailed)),
+      );
+    }
+  }
+}
+
+class _WorkshopLocation extends StatelessWidget {
+  const _WorkshopLocation({required this.workshop});
+
+  final OtoxpertWorkshop workshop;
+
+  @override
+  Widget build(BuildContext context) => Card(
+        margin: EdgeInsets.zero,
+        color: AppColors.accentSoft,
+        child: ListTile(
+          leading: const Icon(
+            Icons.location_on_outlined,
+            color: AppColors.accent,
+          ),
+          title: Text(workshop.name),
+          subtitle: Text(
+            [workshop.address, workshop.city]
+                .where((part) => part.trim().isNotEmpty)
+                .join(', '),
           ),
         ),
-        if (draft.workshop != null) ...[
-          const SizedBox(height: AppSpacing.large),
-          Text(
-            l10n.otoxpertChooseService,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          const SizedBox(height: AppSpacing.small),
-          _Services(draft: draft),
-        ],
-      ],
-    );
-  }
+      );
 }
 
 class _Services extends ConsumerWidget {
@@ -978,6 +1050,17 @@ class _LoadError extends StatelessWidget {
     );
   }
 }
+
+/// Bengkel yang sudah ada di draft dipertahankan selama masih berlaku;
+/// selain itu dipakai bengkel pertama dari API, yaitu OtoXpert Kertajaya.
+OtoxpertWorkshop _resolveWorkshop(
+  List<OtoxpertWorkshop> workshops,
+  OtoxpertDraft draft,
+) =>
+    workshops.firstWhere(
+      (item) => item.id == draft.workshop?.id,
+      orElse: () => workshops.first,
+    );
 
 String _formatPrice(BuildContext context, OtoxpertPrice price) {
   final formatter = NumberFormat.currency(

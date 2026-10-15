@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triva_app/features/otoxpert/data/otoxpert_repository.dart';
 import 'package:triva_app/features/otoxpert/domain/otoxpert_models.dart';
 import 'package:triva_app/features/otoxpert/presentation/otoxpert_controller.dart';
 import 'package:triva_app/features/otoxpert/presentation/screens/otoxpert_booking_screen.dart';
@@ -191,6 +192,134 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets(
+      'service step uses the single OtoXpert Kertajaya workshop '
+      'without asking the customer to choose', (tester) async {
+    final repository = _MemoryOtoxpertRepository(
+      const OtoxpertDraft(vehicle: _vehicle, currentMileage: 12000),
+    );
+    final container = await _pumpServiceStep(tester, repository);
+
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+    expect(find.text('Pilih bengkel OtoXpert'), findsNothing);
+    expect(
+      find.text('Belum ada bengkel yang kompatibel untuk kendaraan ini.'),
+      findsNothing,
+    );
+    expect(find.text('Lokasi bengkel'), findsOneWidget);
+    expect(
+      find.widgetWithText(ListTile, 'OtoXpert Kertajaya'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Jl. Kertajaya Indah Timur No. 35, Surabaya'),
+      findsOneWidget,
+    );
+    expect(
+      container.read(otoxpertFlowProvider).value?.draft.workshop?.id,
+      _kertajaya.id,
+    );
+
+    await tester.tap(find.widgetWithText(ListTile, 'Ganti Oli'));
+    await tester.pumpAndSettle();
+    expect(
+      container.read(otoxpertFlowProvider).value?.draft.service?.id,
+      _gantiOli.id,
+    );
+    expect(repository.draft.workshop?.id, _kertajaya.id);
+    expect(repository.draft.service?.id, _gantiOli.id);
+
+    await tester.tap(
+      find.widgetWithText(FilledButton, 'Lanjut').hitTestable(),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 2);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('restored draft with a retired workshop moves to Kertajaya',
+      (tester) async {
+    const retired = OtoxpertWorkshop(
+      id: 'workshop-rungkut',
+      name: 'OtoXpert Rungkut',
+      address: 'Jl. Rungkut Madya No.151',
+      city: 'Surabaya',
+      timezone: 'Asia/Jakarta',
+      supportsPickupDelivery: false,
+      confirmationSlaMinutes: 30,
+    );
+    final repository = _MemoryOtoxpertRepository(
+      const OtoxpertDraft(
+        vehicle: _vehicle,
+        workshop: retired,
+        service: _gantiOli,
+        currentMileage: 12000,
+      ),
+    );
+    final container = await _pumpServiceStep(tester, repository);
+
+    final draft = container.read(otoxpertFlowProvider).value?.draft;
+    expect(draft?.workshop?.id, _kertajaya.id);
+    expect(draft?.service, isNull);
+    expect(repository.draft.workshop?.id, _kertajaya.id);
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+    expect(find.text('OtoXpert Rungkut'), findsNothing);
+    expect(
+      find.widgetWithText(ListTile, 'OtoXpert Kertajaya'),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('selected service survives revisiting the service step',
+      (tester) async {
+    final repository = _MemoryOtoxpertRepository(
+      const OtoxpertDraft(
+        vehicle: _vehicle,
+        workshop: _kertajaya,
+        service: _gantiOli,
+        currentMileage: 12000,
+      ),
+    );
+    final container = await _pumpServiceStep(tester, repository);
+
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 2);
+    await tester.tap(find.byType(TextButton).hitTestable());
+    await tester.pumpAndSettle();
+
+    expect(tester.widget<Stepper>(find.byType(Stepper)).currentStep, 1);
+    expect(
+      container.read(otoxpertFlowProvider).value?.draft.service?.id,
+      _gantiOli.id,
+    );
+    expect(
+      find.descendant(
+        of: find.widgetWithText(ListTile, 'Ganti Oli'),
+        matching: find.byIcon(Icons.check_circle_rounded),
+      ),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('service step offers WhatsApp when no workshop is available',
+      (tester) async {
+    final repository = _MemoryOtoxpertRepository(
+      const OtoxpertDraft(vehicle: _vehicle, currentMileage: 12000),
+    );
+    await _pumpServiceStep(tester, repository, workshops: const []);
+
+    expect(
+        find.text('Booking OtoXpert sedang tidak tersedia.'), findsOneWidget);
+    expect(
+      find.widgetWithText(OutlinedButton, 'Hubungi lewat WhatsApp'),
+      findsOneWidget,
+    );
+    expect(repository.draft.workshop, isNull);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('booking detail exposes alternative lifecycle actions',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 1400));
@@ -307,6 +436,67 @@ Future<GoRouter> _pumpIntakeRouter(
   await tester.pumpAndSettle();
   return router;
 }
+
+class _MemoryOtoxpertRepository extends Fake implements OtoxpertRepository {
+  _MemoryOtoxpertRepository(this.draft);
+
+  OtoxpertDraft draft;
+
+  @override
+  Future<OtoxpertDraft> loadDraft() async => draft;
+
+  @override
+  Future<void> saveDraft(OtoxpertDraft value) async => draft = value;
+}
+
+Future<ProviderContainer> _pumpServiceStep(
+  WidgetTester tester,
+  OtoxpertRepository repository, {
+  List<OtoxpertWorkshop> workshops = const [_kertajaya],
+}) async {
+  await tester.binding.setSurfaceSize(const Size(800, 1400));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
+  final container = ProviderContainer(
+    overrides: [
+      otoxpertRepositoryProvider.overrideWithValue(repository),
+      otoxpertOptionsProvider.overrideWith((_) async => _options()),
+      otoxpertVehiclesProvider.overrideWith((_) async => const [_vehicle]),
+      otoxpertWorkshopsProvider(_vehicle.id).overrideWith(
+        (_) async => workshops,
+      ),
+      otoxpertServicesProvider(_kertajaya.id).overrideWith(
+        (_) async => const [_gantiOli],
+      ),
+    ],
+  );
+  addTearDown(container.dispose);
+  await tester.pumpWidget(
+    UncontrolledProviderScope(
+      container: container,
+      child: _app(const OtoxpertIntakeScreen()),
+    ),
+  );
+  await tester.pumpAndSettle();
+  return container;
+}
+
+const _kertajaya = OtoxpertWorkshop(
+  id: 'workshop-kertajaya',
+  name: 'OtoXpert Kertajaya',
+  address: 'Jl. Kertajaya Indah Timur No. 35',
+  city: 'Surabaya',
+  timezone: 'Asia/Jakarta',
+  supportsPickupDelivery: false,
+  confirmationSlaMinutes: 30,
+);
+
+const _gantiOli = OtoxpertService(
+  id: 'service-ganti-oli',
+  code: 'ganti-oli',
+  name: 'Ganti Oli',
+  description: 'Penggantian oli mesin, gasket, dan filter oli.',
+  leadTimeDays: 1,
+);
 
 const _vehicle = ToyotaServiceVehicle(
   id: 'vehicle-1',

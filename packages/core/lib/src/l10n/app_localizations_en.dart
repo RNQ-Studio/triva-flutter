@@ -2171,14 +2171,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get otoxpertSelectVehicleDescription =>
-      'Choose a saved vehicle to show compatible workshops.';
+      'Choose the saved vehicle you want serviced.';
 
   @override
-  String get otoxpertChooseWorkshop => 'Choose an OtoXpert workshop';
+  String get otoxpertWorkshopLocation => 'Workshop location';
 
   @override
-  String get otoxpertWorkshopEmpty =>
-      'No compatible workshop is currently available for this vehicle.';
+  String get otoxpertBookingUnavailable =>
+      'OtoXpert booking is currently unavailable.';
+
+  @override
+  String get otoxpertBookingUnavailableDescription =>
+      'Contact OtoXpert on WhatsApp to schedule your service.';
 
   @override
   String get otoxpertChooseService => 'Choose a workshop service';

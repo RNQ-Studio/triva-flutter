@@ -4013,20 +4013,26 @@ abstract class AppLocalizations {
   /// No description provided for @otoxpertSelectVehicleDescription.
   ///
   /// In id, this message translates to:
-  /// **'Pilih kendaraan tersimpan untuk menampilkan bengkel yang kompatibel.'**
+  /// **'Pilih kendaraan tersimpan yang akan diservis.'**
   String get otoxpertSelectVehicleDescription;
 
-  /// No description provided for @otoxpertChooseWorkshop.
+  /// No description provided for @otoxpertWorkshopLocation.
   ///
   /// In id, this message translates to:
-  /// **'Pilih bengkel OtoXpert'**
-  String get otoxpertChooseWorkshop;
+  /// **'Lokasi bengkel'**
+  String get otoxpertWorkshopLocation;
 
-  /// No description provided for @otoxpertWorkshopEmpty.
+  /// No description provided for @otoxpertBookingUnavailable.
   ///
   /// In id, this message translates to:
-  /// **'Belum ada bengkel yang kompatibel untuk kendaraan ini.'**
-  String get otoxpertWorkshopEmpty;
+  /// **'Booking OtoXpert sedang tidak tersedia.'**
+  String get otoxpertBookingUnavailable;
+
+  /// No description provided for @otoxpertBookingUnavailableDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi OtoXpert lewat WhatsApp untuk menjadwalkan servis Anda.'**
+  String get otoxpertBookingUnavailableDescription;
 
   /// No description provided for @otoxpertChooseService.
   ///

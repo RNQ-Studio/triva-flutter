@@ -2167,14 +2167,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get otoxpertSelectVehicleDescription =>
-      'Pilih kendaraan tersimpan untuk menampilkan bengkel yang kompatibel.';
+      'Pilih kendaraan tersimpan yang akan diservis.';
 
   @override
-  String get otoxpertChooseWorkshop => 'Pilih bengkel OtoXpert';
+  String get otoxpertWorkshopLocation => 'Lokasi bengkel';
 
   @override
-  String get otoxpertWorkshopEmpty =>
-      'Belum ada bengkel yang kompatibel untuk kendaraan ini.';
+  String get otoxpertBookingUnavailable =>
+      'Booking OtoXpert sedang tidak tersedia.';
+
+  @override
+  String get otoxpertBookingUnavailableDescription =>
+      'Hubungi OtoXpert lewat WhatsApp untuk menjadwalkan servis Anda.';
 
   @override
   String get otoxpertChooseService => 'Pilih layanan bengkel';

@@ -124,7 +124,9 @@ class OtoxpertFlowController extends AsyncNotifier<OtoxpertFlowState> {
 
   Future<void> selectWorkshop(OtoxpertWorkshop workshop) async {
     final current = state.value;
-    if (current == null) return;
+    // Bengkel dipilih otomatis setiap kali step Layanan dibangun; memilih
+    // ulang bengkel yang sama tidak boleh menghapus layanan dan jadwal.
+    if (current == null || current.draft.workshop?.id == workshop.id) return;
     await _save(
       current.draft.copyWith(
         workshop: workshop,
