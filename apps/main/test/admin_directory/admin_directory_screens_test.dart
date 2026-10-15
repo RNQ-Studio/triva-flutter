@@ -165,6 +165,10 @@ void main() {
 
     expect(find.text('Detail appraisal'), findsOneWidget);
     expect(find.text('Taksiran'), findsOneWidget);
+    expect(find.text('Estimasi tukar tambah'), findsOneWidget);
+    expect(find.textContaining('160.000.000'), findsOneWidget);
+    expect(find.textContaining('140.000.000'), findsNothing);
+    expect(find.textContaining(' – '), findsNothing);
     await tester.drag(find.byType(ListView), const Offset(0, -900));
     await tester.pumpAndSettle();
     expect(find.text('Kondisi kendaraan'), findsOneWidget);

@@ -159,13 +159,14 @@ class AdminAppraisalDetailScreen extends ConsumerWidget {
                       appraisal.expectedPrice,
                     ),
                   ),
+                  // Revisi 15 Oktober 2026: satu harga, bukan rentang, sama
+                  // dengan harga yang dilihat pelanggan di hasil appraisal.
                   AdminDetailRow(
                     label: l10n.adminFieldTradeInEstimate,
-                    value: appraisal.tradeInLow == null
-                        ? '—'
-                        : '${formatAdminCurrency(context, appraisal.tradeInLow)}'
-                            ' – '
-                            '${formatAdminCurrency(context, appraisal.tradeInHigh)}',
+                    value: formatAdminCurrency(
+                      context,
+                      appraisal.tradeInHigh ?? appraisal.tradeInLow,
+                    ),
                   ),
                   AdminDetailRow(
                     label: l10n.adminFieldDecision,
